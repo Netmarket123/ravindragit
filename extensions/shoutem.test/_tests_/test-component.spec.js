@@ -4,7 +4,7 @@
  *
  */
 
-import {TestAtComponentLoaded} from '../test-component.spec.js';
+import { TestAtComponentLoaded } from '../test-component.spec.js';
 import { expect } from 'chai';
 
 describe('test in _tests_ folder', () => {
