@@ -57,6 +57,16 @@ import com.android.build.OutputFile
  * ]
  */
 
+/**
+*
+* ShoutEm Mobile App Custom settings
+*
+*/
+
+project.ext.react = [
+    entryFile: "index.js"
+]
+
 apply from: "react.gradle"
 
 /**
