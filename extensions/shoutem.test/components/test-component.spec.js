@@ -15,7 +15,9 @@ describe('<TestComponent />', () => {
 
     // "dom like" testing
     expect(wrapper.length).to.equal(1);
-    expect(wrapper.contains(<Text>I wonder if there will be any problems...</Text>)).to.equal(true);
+
+    // TODO find out how to test components with style? or other attributes
+    expect(wrapper.contains(<Text>Welcome to React Native!</Text>)).to.equal(true);
 
     // testing component public method
     expect(wrapper.instance().testMethod()).to.equal(5);
