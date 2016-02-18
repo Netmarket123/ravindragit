@@ -11,5 +11,6 @@ Mocha (test framework), Chai (assertion lib) and Enzyme (utility for react) are 
 
 ### Running a test
 - To run test just run `npm test` from extension root.
+- If you receive error "Slash module missing" when running npm test, re-run npm install (sometimes slash doesn't get installed)
 
 Todo - note which shoutem cli command is used to setup test environment
