@@ -4,7 +4,7 @@
  *
  */
 
-import React, { View, Text, StyleSheet } from 'react-native';
+import React, { Text } from 'react-native';
 import { shallow } from 'enzyme';
 import TestComponent from './test-component';
 import { expect } from 'chai';
@@ -16,7 +16,7 @@ describe('<TestComponent />', () => {
     // "dom like" testing
     expect(wrapper.length).to.equal(1);
 
-    // TODO find out how to test components with style? or other attributes
+    // TODO: Braco - find out how to test components with style? or other attributes
     expect(wrapper.contains(<Text>Welcome to React Native!</Text>)).to.equal(true);
 
     // testing component public method

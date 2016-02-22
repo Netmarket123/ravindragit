@@ -8,7 +8,7 @@ import { TestAtComponentLoaded } from '../test-component.spec.js';
 import { expect } from 'chai';
 
 describe('test in _tests_ folder', () => {
-    it('test at component should be true', () => {
-        expect(TestAtComponentLoaded).to.equal(true);
-    });
+  it('test at component should be true', () => {
+    expect(TestAtComponentLoaded).to.equal(true);
+  });
 });
