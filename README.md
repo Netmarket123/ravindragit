@@ -1,6 +1,12 @@
 # shoutem-client
 Shoutem React Native App
 
+## Code style
+[Five JavaScript Syle Guide](https://github.com/5minutes/javascript)
+
+### linting
+use [eslint](http://eslint.org/)
+
 ## Testing
 Mocha (test framework), Chai (assertion lib) and Enzyme (utility for react) are used for unit testing.
 
