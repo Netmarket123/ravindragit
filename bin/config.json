@@ -1,0 +1,11 @@
+{
+    "nid": 1016540,
+    "server": "api.shoutem.com/api",
+    "debug": true,
+    "designMode": true,
+    "tempPath": "./build-script/tmp/bundle.zip",
+    "assetsPath": "./assets/",
+    "appExtensionName": "shoutem.application",
+    "extensionsDir": "../extensions",
+    "extensionsJsPath": "./extensions.js"
+}
