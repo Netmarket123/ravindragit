@@ -17,5 +17,15 @@ indent_size = 2
 indent_style = space
 indent_size = 2
 
+# Java files
+[*.java]
+indent_style = space
+indent_size = 4
+
+# Objective C files
+[*{.h,.m,.mm}]
+indent_style = space
+indent_size = 2
+
 [*.md]
 trim_trailing_whitespace = false
