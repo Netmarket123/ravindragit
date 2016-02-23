@@ -40,11 +40,22 @@ public class MainActivity extends ReactActivity {
                 new MainReactPackage(), this._codePush.getReactPackage());
     }
 
-    // Override the getJSBundleFile method in order to let
-    // the CodePush runtime determine where to get the JS
-    // bundle location from on each app start
+    @Override
+    protected String getJSMainModuleName() {
+        return "index";
+    }
+
+    /**
+     * Override the getJSBundleFile method in order to let
+     * the CodePush runtime determine where to get the JS
+     * bundle location from on each app start
+     */
     @Override
     protected String getJSBundleFile() {
+        if (getUseDeveloperSupport()) {
+            return super.getJSBundleFile();
+        }
+
         return this._codePush.getBundleUrl("index.android.bundle");
     }
 }
