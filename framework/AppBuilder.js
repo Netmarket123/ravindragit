@@ -18,28 +18,6 @@ const styles = StyleSheet.create({
   },
 });
 
-function extractExtensionReducers(extensions) {
-  return Object.keys(extensions).reduce((prevResult, key) => {
-    const extension = extensions[key];
-    let result = prevResult;
-    if (extension.reducer) {
-      result = {
-        ...prevResult,
-        key: extension.reducer,
-      };
-    }
-
-    return result;
-  }, {});
-}
-
-function createApplicationStore(appContext) {
-  const extensionReducers = extractExtensionReducers(appContext.extensions);
-  const reducer = combineReducers(extensionReducers);
-  const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
-  return createStoreWithMiddleware(reducer);
-}
-
 function createApplication(appContext) {
   return class App extends Component {
     render() {
@@ -54,7 +32,43 @@ function createApplication(appContext) {
   };
 }
 
+function assertExtensionsExist(extensions) {
+  if (Object.keys(extensions).length <= 0) {
+    throw new Error('The app without any extensions cannot be created. ' +
+      'You must supply at least one extensions using the setExtensions method');
+  }
+}
+
+function assertScreensExist(screens) {
+  if (Object.keys(screens).length <= 0) {
+    throw new Error('The app without any screens cannot be created. ' +
+      'You must supply at least one screen using the setScreens method');
+  }
+}
+
 export default class AppBuilder {
+
+  static extractExtensionReducers(extensions) {
+    return Object.keys(extensions).reduce((prevResult, key) => {
+      const extension = extensions[key];
+      let result = prevResult;
+      if (extension.reducer) {
+        result = {
+          ...prevResult,
+          key: extension.reducer,
+        };
+      }
+
+      return result;
+    }, {});
+  }
+
+  static createApplicationStore(appContext) {
+    const extensionReducers = AppBuilder.extractExtensionReducers(appContext.extensions);
+    const reducer = combineReducers(extensionReducers);
+    const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
+    return createStoreWithMiddleware(reducer);
+  }
 
   constructor() {
     this.appContext = {
@@ -76,7 +90,10 @@ export default class AppBuilder {
 
   build() {
     const appContext = this.appContext;
-    appContext.store = createApplicationStore(appContext);
+    assertExtensionsExist(appContext.extensions);
+    assertScreensExist(appContext.screens);
+
+    appContext.store = AppBuilder.createApplicationStore(appContext);
     return createApplication(appContext);
   }
 }

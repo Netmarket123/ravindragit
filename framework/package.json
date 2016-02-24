@@ -18,7 +18,7 @@
     "react": "^0.14.7",
     "react-addons-test-utils": "^0.14.7",
     "react-dom": "^0.14.7",
-    "react-native-mock": "^0.0.3"
+    "react-native-mock": "^0.0.6"
   },
   "scripts": {
     "test": "mocha --require react-native-mock/mock.js --compilers js:babel-core/register $(find . -name '*.spec.js' ! -ipath '*node_modules*')"
