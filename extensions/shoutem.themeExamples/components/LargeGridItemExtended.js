@@ -1,11 +1,10 @@
 import React, {
-  Component,
   Text,
   View,
   Image,
   TouchableHighlight,
 } from 'react-native';
-import Theme  from '../theme/Theme';
+import Theme from '../theme/Theme';
 import ShoutemComponent from './ShoutemComponent';
 
 export default class LargeGridItemExtended extends ShoutemComponent {
