@@ -21,7 +21,7 @@ const componentsStyles = {};
  * @param componentStyle
  * @returns {*}
  */
-function createStyle(componentStyle) {
+export function createStyle(componentStyle) {
   const appThemeForComponent = this.getTheme();
 
   Mixins.merge(appThemeForComponent, componentStyle);
@@ -61,11 +61,22 @@ function getTheme() {
   return appTheme.getTheme();
 }
 
+// noinspection Eslint
+/**
+ * @param style
+ * @returns {Function}
+ */
+export function applyTheme(style) {
+  return function connect(component) {
+    return component;
+  };
+}
 const Theme = {
   variables, // TODO:Braco - variables should be immutable in the application
   getTheme,
   createStyle,
   registerComponentStyle,
   getComponentStyle,
+  applyTheme,
 };
 export default Theme;
