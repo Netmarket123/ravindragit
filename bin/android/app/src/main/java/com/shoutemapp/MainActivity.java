@@ -34,7 +34,9 @@ public class MainActivity extends ReactActivity {
    */
     @Override
     protected List<ReactPackage> getPackages() {
-        this._codePush = new CodePush("0dsIDongIcoH0mqAmoR0CYb5FhBZNy1w4Bf-l", this, BuildConfig.DEBUG);
+        String codePushAppKey = BuildConfig.CODE_PUSH_APP_KEY;
+
+        this._codePush = new CodePush(codePushAppKey, this, BuildConfig.DEBUG);
 
         return Arrays.<ReactPackage>asList(
                 new MainReactPackage(), this._codePush.getReactPackage());
