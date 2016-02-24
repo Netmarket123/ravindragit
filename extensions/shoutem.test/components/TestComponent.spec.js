@@ -9,8 +9,8 @@ import { shallow } from 'enzyme';
 import TestComponent from './TestComponent.jsx';
 import { assert } from 'chai';
 
-describe('<TestComponent />', () => {
-  it('should render stuff', () => {
+describe('<TestComponent />', function () {
+  it('should render stuff', function () {
     const wrapper = shallow(<TestComponent />);
 
     // "dom like" testing
