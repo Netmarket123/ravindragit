@@ -25,16 +25,16 @@ class AppBuild {
         response.pipe(zipFile);
         zipFile.on('finish', () => {
           zipFile.close(() => {
-            if(responseSent)  return;
+            if (responseSent) return;
             responseSent = true;
             console.timeEnd('download bundle');
             resolve(this.tempPath);
           });
         });
       }).on('error', err => {
-          if(responseSent)  return;
-          responseSent = true;
-          reject(err);
+        if (responseSent) return;
+        responseSent = true;
+        reject(err);
       });
     });
   }
@@ -56,18 +56,18 @@ class AppBuild {
   }
 
   getLocalExtensions(extensionsDir) {
-    let results = [];
+    const results = [];
 
     console.time('load local extensions');
     fs.readdirSync(extensionsDir).forEach((file) => {
-      let extensionPath = extensionsDir+'/'+file
-      let stat = fs.statSync(extensionPath);
+      const extensionPath = `${extensionsDir}/${file}`;
+      const stat = fs.statSync(extensionPath);
 
       if (stat && stat.isDirectory()) {
-          results.push({
-              type: file,
-              path: extensionPath
-          });
+        results.push({
+          type: file,
+          path: extensionPath,
+        });
       }
     });
     console.timeEnd('load local extensions');
@@ -79,15 +79,15 @@ class AppBuild {
     this.downloadBundle()
       .then((zipFilePath) => {
         console.log('SUCCESS: bundle downloaded!!');
-        return this.unzipBundle(zipFilePath, this.assetsPath)
+        return this.unzipBundle(zipFilePath, this.assetsPath);
       })
       .then((assetsPath) => {
         console.log('SUCCESS: bundle unzipped!!');
         this.configuration = this.getConfiguration(assetsPath);
-        let extensions = this.configuration.extensions;
-        let localExtensions = this.getLocalExtensions(this.extensionsDir);
-        let extensionsJsPath = this.extensionsJsPath;
-        let extensionsLoader = new ExtensionsLoader(localExtensions, extensions, extensionsJsPath);
+        const extensions = this.configuration.extensions;
+        const localExtensions = this.getLocalExtensions(this.extensionsDir);
+        const extensionsJsPath = this.extensionsJsPath;
+        const extensionsLoader = new ExtensionsLoader(localExtensions, extensions, extensionsJsPath);
         extensionsLoader.installExtensions();
         return extensionsLoader.createExtensionsJs();
       })
@@ -96,9 +96,9 @@ class AppBuild {
         console.log('Build finished!');
       })
       .catch((e) => {
-        console.log(e)
+        console.log(e);
       });
   }
 }
 
-module.exports = AppBuild
+module.exports = AppBuild;

@@ -10,11 +10,11 @@ class ExtensionsLoader {
     this.extensionsToInstall = [];
 
     extensions.forEach((extension) => {
-      let notAvailableLocally = localExtensions.some((localExtension) => {
+      const notAvailableLocally = localExtensions.some((localExtension) =>
         localExtension.type !== extension.type
-      });
+      );
 
-      if(notAvailableLocally) {
+      if (notAvailableLocally) {
         this.extensionsToInstall.push(extension);
       }
     });
@@ -33,15 +33,15 @@ class ExtensionsLoader {
   }
 
   createExtensionsJs() {
-    let extensions = this.localExtensions.concat(this.extensionsToInstall);
-    let extensionsMapping = [];
+    const extensions = this.localExtensions.concat(this.extensionsToInstall);
+    const extensionsMapping = [];
 
     extensions.forEach((extension) => {
       extensionsMapping.push(`'${extension.type}' : require('${extension.type}')`);
     });
 
-    let extensionsString = extensionsMapping.join(',\n\t');
-    let data = `export const extensions = {\n\t${extensionsString}\n}`;
+    const extensionsString = extensionsMapping.join(',\n\t');
+    const data = `export const extensions = {\n\t${extensionsString}\n}`;
 
     console.time('create extensions.js');
     return new Promise((resolve, reject) => {
