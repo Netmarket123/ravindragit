@@ -1,9 +1,4 @@
-// Mixins helper object
-const Mixins = {
-  merge,
-  join,
-  inject,
-};
+import lodash from 'lodash';
 
 /**
  * Append childStyle to parentStyle by mutating parentStyle
@@ -11,11 +6,13 @@ const Mixins = {
  * @param parentStyle
  * @param childStyle
  */
-function mergeStyles(parentStyle, childStyle) {
+function merge(parentStyle, childStyle) {
+  const finalStyle = parentStyle;
   lodash.forIn(childStyle, (style, property) => {
     const themeStyleObject = parentStyle[property];
-    parentStyle[property] = themeStyleObject ? Object.assign(themeStyleObject, style) : style;
+    finalStyle[property] = themeStyleObject ? Object.assign(themeStyleObject, style) : style;
   });
+  return finalStyle;
 }
 
 /**
@@ -35,15 +32,24 @@ function join() {
  * @param customStyle
  */
 function inject(componentStyle, customStyle) {
+  const finalStyle = componentStyle;
   lodash.forIn(customStyle, (style, property) => {
     if (componentStyle[property]) {
       // inject custom style to override default component
       // use react option to set component style as list of styles
-      componentStyle[property] = [componentStyle[property], style];
+      finalStyle[property] = [componentStyle[property], style];
     } else {
-      componentStyle[property] = style;
+      finalStyle[property] = style;
     }
   });
+  return finalStyle;
 }
+
+// Mixins helper object
+const Mixins = {
+  merge,
+  join,
+  inject,
+};
 
 export default Mixins;

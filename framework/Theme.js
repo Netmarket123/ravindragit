@@ -4,7 +4,7 @@ import Mixins from './Mixins';
 // Mocked config
 // TODO:Braco - implement real config data fetch
 const config = {
-  appTheme: null
+  appTheme: null,
 };
 
 // For this example theme is in shoutem.themeExamples theme/ShoutEmUI.js
@@ -16,22 +16,13 @@ const variables = appTheme.variables;
 // Custom components default style
 const componentsStyles = {};
 
-const Theme = {
-  variables, // TODO:Braco - variables should be immutable in the application
-  getTheme,
-  createStyle,
-  registerComponentStyle,
-  getComponentStyle,
-};
-export default Theme;
-
 /**
  * Merges app theme with component style to override default
  * @param componentStyle
- * @returns {appThemeForComponent}
+ * @returns {*}
  */
 function createStyle(componentStyle) {
-  const appThemeForComponent = Theme.getTheme();
+  const appThemeForComponent = this.getTheme();
 
   Mixins.merge(appThemeForComponent, componentStyle);
 
@@ -69,3 +60,12 @@ function getComponentStyle(componentName) {
 function getTheme() {
   return appTheme.getTheme();
 }
+
+const Theme = {
+  variables, // TODO:Braco - variables should be immutable in the application
+  getTheme,
+  createStyle,
+  registerComponentStyle,
+  getComponentStyle,
+};
+export default Theme;
