@@ -12,7 +12,9 @@ const App = new AppBuilder()
       },
     },
   })
-  .setScreens({})
+  .setScreens({
+    default: {},
+  })
   .build();
 
 // noinspection JSCheckFunctionSignatures
