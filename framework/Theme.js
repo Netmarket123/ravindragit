@@ -7,6 +7,9 @@ const config = {
   appTheme: null
 };
 
+// For this example theme is in shoutem.themeExamples theme/ShoutEmUI.js
+// Theme properties and variables would be gathered from selected theme
+
 const appTheme = config.appTheme;
 const variables = appTheme.variables;
 
