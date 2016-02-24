@@ -33,7 +33,7 @@ export default Theme;
 function createStyle(componentStyle) {
   const appThemeForComponent = Theme.getTheme();
 
-  Mixins.mergeStyles(appThemeForComponent, componentStyle);
+  Mixins.merge(appThemeForComponent, componentStyle);
 
   return StyleSheet.create(appThemeForComponent);
 }
