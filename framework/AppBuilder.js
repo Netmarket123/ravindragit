@@ -18,6 +18,14 @@ const styles = StyleSheet.create({
   },
 });
 
+/**
+ * Creates an application class that represents a root
+ * react native component, and uses the context initialized
+ * through the AppBuilder API. Each call to this method will
+ * return a new class.
+ * @param appContext The context configured through the builder API.
+ * @returns {App} The App class.
+ */
 function createApplication(appContext) {
   const App = class App extends Component {
     getContext() {
@@ -68,6 +76,19 @@ function assertReducersExist(reducers) {
     'You must supply at least one extension that has a reducer defined.');
 }
 
+/**
+ * Extracts all of the reducers from extensions. This function will
+ * return an object that is compatible with the combineReducers from
+ * redux. It will return an object that has a reducer function assigned
+ * to extension names, e.g.:
+ * {
+ *  extension1: extension1.reducer,
+ *  extension2: extension2.reducer,
+ *  ...
+ * }
+ * @param extensions The extensions configured through the builder API.
+ * @returns {*} The extension reducers object.
+ */
 function extractExtensionReducers(extensions) {
   return Object.keys(extensions).reduce((prevResult, key) => {
     const extension = extensions[key];
@@ -83,6 +104,19 @@ function extractExtensionReducers(extensions) {
   }, {});
 }
 
+/**
+ * Creates a redux store using the reducers from the extensions.
+ * The store will contain the extension keys on the root level,
+ * where each of those keys will be handled by the extensions
+ * reducer, e.g.:
+ * {
+ *  extension1: extension1.reducer,
+ *  extension2: extension2.reducer,
+ *  ...
+ * }
+ * @param appContext The context configured through the builder API
+ * @returns {*} The created redux store.
+ */
 function createApplicationStore(appContext) {
   const extensionReducers = extractExtensionReducers(appContext.extensions);
   assertReducersExist(extensionReducers);
@@ -92,6 +126,12 @@ function createApplicationStore(appContext) {
   return createStoreWithMiddleware(reducer);
 }
 
+/**
+ * Builds and initializes an App class that represents a root
+ * react native component. Every call to the build method will
+ * return a new App class that will use the data from the context
+ * initialized through the AppBuilder.
+ */
 export default class AppBuilder {
 
   constructor() {

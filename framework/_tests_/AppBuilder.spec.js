@@ -9,12 +9,21 @@ import { shallow, mount } from 'enzyme';
 
 import AppBuilder from '../AppBuilder.js';
 
+/**
+ * A simple component that will server as a screen
+ * in the tests.
+ */
 class Screen extends Component {
   render() {
     return (<Text>This is a screen!</Text>);
   }
 }
 
+/**
+ * A screen connected to the redux store. This screen should
+ * expose the entire state of the store through the 'state'
+ * key of it's props.
+ */
 const ConnectedScreen = connect(state => ({ state }))(Screen);
 
 function emptyReducer() {
@@ -55,7 +64,10 @@ function assertValidAppState(App, extensions) {
       <ConnectedScreen />
     </App>
   );
-  const screen = wrapper.find(Screen);
+
+  // Find the original Screen component that should
+  // receive the state in the props from the Connect wrapper
+  const screen = wrapper.find(ConnectedScreen.WrappedComponent);
 
   const state = screen.props().state;
   assert.isDefined(state, 'Invalid screen state detected.');
@@ -80,7 +92,7 @@ describe('AppBuilder', () => {
     assertValidApp(App);
   });
 
-  describe('can initialize an app with extensions', () => {
+  describe('initialize an app with extensions', () => {
     it('must not create an app without any extensions', () => {
       const builder = new AppBuilder()
         .setExtensions({})
@@ -108,7 +120,7 @@ describe('AppBuilder', () => {
     });
   });
 
-  describe('can initialize an app with screens', () => {
+  describe('initialize an app with screens', () => {
     it('must not create an app without any screens', () => {
       const builder = new AppBuilder()
         .setExtensions(getDefaultExtensions())
@@ -131,7 +143,7 @@ describe('AppBuilder', () => {
     });
   });
 
-  describe('can create multiple apps', () => {
+  describe('create multiple apps', () => {
     it('can create two apps', () => {
       const builder = new AppBuilder();
 
@@ -172,7 +184,7 @@ describe('AppBuilder', () => {
     });
   });
 
-  describe('can initialize a redux store', () => {
+  describe('initialize a redux store', () => {
     it('can create an app that provides a store', () => {
       const App = buildDefaultApp();
       assertValidAppState(App, getDefaultExtensions());
