@@ -19,56 +19,80 @@ const styles = StyleSheet.create({
 });
 
 function createApplication(appContext) {
-  return class App extends Component {
+  const App = class App extends Component {
+    getContext() {
+      return appContext;
+    }
+
     render() {
-      return (
-        <Provider store={appContext.store}>
+      const content = this.props.children ||
+        (
           <View style={styles.content}>
             <Text>Waiting for the initial screen...</Text>
           </View>
+        );
+
+      return (
+        <Provider store={appContext.store}>
+            {content}
         </Provider>
       );
     }
   };
+
+  App.propTypes = {
+    children: React.PropTypes.node,
+  };
+
+  return App;
+}
+
+function assertNotEmpty(target, errorMessage) {
+  if (Object.keys(target).length <= 0) {
+    throw new Error(errorMessage);
+  }
 }
 
 function assertExtensionsExist(extensions) {
-  if (Object.keys(extensions).length <= 0) {
-    throw new Error('The app without any extensions cannot be created. ' +
-      'You must supply at least one extensions using the setExtensions method');
-  }
+  assertNotEmpty(extensions, 'The app without any extensions cannot be created. ' +
+    'You must supply at least one extensions using the setExtensions method');
 }
 
 function assertScreensExist(screens) {
-  if (Object.keys(screens).length <= 0) {
-    throw new Error('The app without any screens cannot be created. ' +
-      'You must supply at least one screen using the setScreens method');
-  }
+  assertNotEmpty(screens, 'The app without any screens cannot be created. ' +
+    'You must supply at least one screen using the setScreens method');
+}
+
+function assertReducersExist(reducers) {
+  assertNotEmpty(reducers, 'The app without any reducers cannot be created. ' +
+    'You must supply at least one extension that has a reducer defined.');
+}
+
+function extractExtensionReducers(extensions) {
+  return Object.keys(extensions).reduce((prevResult, key) => {
+    const extension = extensions[key];
+    let result = prevResult;
+    if (extension.reducer) {
+      result = {
+        ...prevResult,
+        [key]: extension.reducer,
+      };
+    }
+
+    return result;
+  }, {});
+}
+
+function createApplicationStore(appContext) {
+  const extensionReducers = extractExtensionReducers(appContext.extensions);
+  assertReducersExist(extensionReducers);
+
+  const reducer = combineReducers(extensionReducers);
+  const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
+  return createStoreWithMiddleware(reducer);
 }
 
 export default class AppBuilder {
-
-  static extractExtensionReducers(extensions) {
-    return Object.keys(extensions).reduce((prevResult, key) => {
-      const extension = extensions[key];
-      let result = prevResult;
-      if (extension.reducer) {
-        result = {
-          ...prevResult,
-          key: extension.reducer,
-        };
-      }
-
-      return result;
-    }, {});
-  }
-
-  static createApplicationStore(appContext) {
-    const extensionReducers = AppBuilder.extractExtensionReducers(appContext.extensions);
-    const reducer = combineReducers(extensionReducers);
-    const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
-    return createStoreWithMiddleware(reducer);
-  }
 
   constructor() {
     this.appContext = {
@@ -89,11 +113,11 @@ export default class AppBuilder {
   }
 
   build() {
-    const appContext = this.appContext;
+    const appContext = Object.assign({}, this.appContext);
     assertExtensionsExist(appContext.extensions);
     assertScreensExist(appContext.screens);
 
-    appContext.store = AppBuilder.createApplicationStore(appContext);
+    appContext.store = createApplicationStore(appContext);
     return createApplication(appContext);
   }
 }
