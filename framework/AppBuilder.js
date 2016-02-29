@@ -126,6 +126,8 @@ function createApplicationStore(appContext) {
   return createStoreWithMiddleware(reducer);
 }
 
+const appContextSymbol = Symbol('appContext');
+
 /**
  * Builds and initializes an App class that represents a root
  * react native component. Every call to the build method will
@@ -135,7 +137,7 @@ function createApplicationStore(appContext) {
 export default class AppBuilder {
 
   constructor() {
-    this.appContext = {
+    this[appContextSymbol] = {
       store: {},
       extensions: {},
       screens: {},
@@ -143,17 +145,19 @@ export default class AppBuilder {
   }
 
   setExtensions(extensions) {
-    this.appContext.extensions = extensions;
+    this[appContextSymbol].extensions = Object.assign({}, extensions);
     return this;
   }
 
   setScreens(screens) {
-    this.appContext.screens = screens;
+    this[appContextSymbol].screens = Object.assign({}, screens);
     return this;
   }
 
   build() {
-    const appContext = Object.assign({}, this.appContext);
+    // Capture the cloned appContext here, so that
+    // each app gets its own context.
+    const appContext = Object.assign({}, this[appContextSymbol]);
     assertExtensionsExist(appContext.extensions);
     assertScreensExist(appContext.screens);
 
