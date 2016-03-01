@@ -113,7 +113,7 @@ android {
             buildConfigField "String", "CODE_PUSH_APP_KEY", CUSTOM_CODE_PUSH_APP_KEY
         }
 
-        // TODO: Vladimir - remove this config when CodePush viabliity testing is over
+        // TODO(Vladimir): remove this config when CodePush viabliity testing is over
         debug {
             buildConfigField "String", "CODE_PUSH_APP_KEY", CUSTOM_CODE_PUSH_APP_KEY
         }

@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends ReactActivity {
-    private CodePush _codePush;
+    private CodePush codePush;
     /**
      * Returns the name of the main component registered from JavaScript.
      * This is used to schedule rendering of the component.
@@ -36,10 +36,10 @@ public class MainActivity extends ReactActivity {
     protected List<ReactPackage> getPackages() {
         String codePushAppKey = BuildConfig.CODE_PUSH_APP_KEY;
 
-        this._codePush = new CodePush(codePushAppKey, this, BuildConfig.DEBUG);
+        this.codePush = new CodePush(codePushAppKey, this, BuildConfig.DEBUG);
 
         return Arrays.<ReactPackage>asList(
-                new MainReactPackage(), this._codePush.getReactPackage());
+                new MainReactPackage(), this.codePush.getReactPackage());
     }
 
     @Override
@@ -58,6 +58,6 @@ public class MainActivity extends ReactActivity {
             return super.getJSBundleFile();
         }
 
-        return this._codePush.getBundleUrl("index.android.bundle");
+        return this.codePush.getBundleUrl("index.android.bundle");
     }
 }

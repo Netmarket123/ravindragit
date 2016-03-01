@@ -34,9 +34,10 @@
     jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.bundle?platform=ios&dev=true"];
   #else
   /**
-   * configures the app to always load the most recent version of its JS bundle. On the first launch,
-   * this will correspond to the file that was compiled with the app. However, after an update has been pushed
-   * via CodePush, this will return the location of the most recently installed update.
+   * configures the app to always load the most recent version of its JS bundle.
+   * On the first launch, this will correspond to the file that was compiled
+   * with the app. However, after an update has been pushed via CodePush, this
+   * will return the location of the most recently installed update.
    *
    * NOTE: app's JS bundle must be named main.jsbundle
    */
