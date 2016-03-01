@@ -3,6 +3,12 @@
   "version": "1.0.0",
   "description": "ShoutEm test extesnion",
   "main": "index.js",
+  "dependencies": {
+    "react-native": "^0.19.0",
+    "react-redux": "^4.4.0",
+    "redux": "^3.3.1",
+    "redux-thunk": "^1.0.3"
+  },
   "devDependencies": {
     "babel": "^6.3.26",
     "babel-preset-airbnb": "^1.0.1",
@@ -12,7 +18,7 @@
     "react": "^0.14.7",
     "react-addons-test-utils": "^0.14.7",
     "react-dom": "^0.14.7",
-    "react-native-mock": "^0.0.3"
+    "react-native-mock": "^0.0.6"
   },
   "scripts": {
     "test": "mocha --require react-native-mock/mock.js --compilers js:babel-core/register $(find . -name '*.spec.js' ! -ipath '*node_modules*')"
