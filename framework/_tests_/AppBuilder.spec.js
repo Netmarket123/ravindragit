@@ -10,7 +10,7 @@ import { shallow, mount } from 'enzyme';
 import AppBuilder from '../AppBuilder.js';
 
 /**
- * A simple component that will server as a screen
+ * A simple component that will serve as a screen
  * in the tests.
  */
 class Screen extends Component {
