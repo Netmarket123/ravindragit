@@ -1,11 +1,9 @@
 {
-    "nid": 1016540,
-    "server": "api.shoutem.com/api",
+    "appId": 1016540,
+    "serverApiEndpoint": "api.shoutem.com/api",
     "debug": true,
     "designMode": true,
-    "tempPath": "./build-script/tmp/bundle.zip",
-    "assetsPath": "./assets/",
-    "appExtensionName": "shoutem.application",
+    "configurationFilePath": "../extensions/shoutem.application/configuration.json",
     "extensionsDir": "../extensions",
     "extensionsJsPath": "./extensions.js"
 }
