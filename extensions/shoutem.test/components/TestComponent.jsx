@@ -37,4 +37,3 @@ export default class TestComponent extends React.Component {
     );
   }
 }
-
