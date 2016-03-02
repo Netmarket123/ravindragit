@@ -19,6 +19,23 @@ const styles = StyleSheet.create({
 });
 
 /**
+ * Calls the lifecycle function with the given name on all
+ * extensions that export this function.
+ * @param app The app that will be passed to the lifecycle functions.
+ * @param extensions The extensions of the app.
+ * @param functionName The lifecycle function to call.
+ */
+function callLifecycleFunction(app, extensions, functionName) {
+  for (const extensionName of Object.keys(extensions)) {
+    const extension = extensions[extensionName];
+    const lifecycleFunction = extension[functionName];
+    if (typeof lifecycleFunction === 'function') {
+      lifecycleFunction(app);
+    }
+  }
+}
+
+/**
  * Creates an application class that represents a root
  * react native component, and uses the context initialized
  * through the AppBuilder API. Each call to this method will
@@ -28,17 +45,48 @@ const styles = StyleSheet.create({
  */
 function createApplication(appContext) {
   const App = class App extends Component {
-    getContext() {
-      return appContext;
+    /**
+     * Returns the redux store of the app.
+     * @returns {*} The redux store.
+     */
+    getStore() {
+      return appContext.store;
+    }
+
+    /**
+     * Returns the extensions used to initialize the app.
+     * @returns {*} The extensions.
+     */
+    getExtensions() {
+      return Object.assign({}, appContext.extensions);
+    }
+
+    /**
+     * Returns the screens used to initialize the app.
+     * @returns {*} The screens.
+     */
+    getScreens() {
+      return Object.assign({}, appContext.screens);
+    }
+
+    componentWillMount() {
+      callLifecycleFunction(this, appContext.extensions, 'appWillMount');
+    }
+
+    componentDidMount() {
+      callLifecycleFunction(this, appContext.extensions, 'appDidMount');
+    }
+
+    componentWillUnmount() {
+      callLifecycleFunction(this, appContext.extensions, 'appWillUnmount');
     }
 
     render() {
-      const content = this.props.children ||
-        (
-          <View style={styles.content}>
-            <Text>Waiting for the initial screen...</Text>
-          </View>
-        );
+      const content = this.props.children || (
+        <View style={styles.content}>
+          <Text>Waiting for the initial screen...</Text>
+        </View>
+      );
 
       return (
         <Provider store={appContext.store}>
