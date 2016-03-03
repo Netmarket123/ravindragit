@@ -1,0 +1,49 @@
+{
+    "application": {
+        "name": "Restaurants App",
+        "id": 423423
+    },
+    "extensions": [],
+    "navigation": [
+        {
+            "id": 343,
+            "title": "Home Screen",
+            "screen": "john.SMExt.Home",
+            "navigation": [
+                {
+                    "id": 12,
+                    "title": "Schools District 1",
+                    "screen": "john.SMExt.SchoolsList",
+                    "props": {
+                        "district": 33330
+                    }
+                },
+                {
+                    "id": 13,
+                    "title": "Schools District 2",
+                    "screen": "john.SMExt.SchoolsList",
+                    "props": {
+                        "district": 33331
+                    }
+                }
+            ]
+        }
+    ],
+    "screens": [{
+        "type": "john.RestaurantsExt.RestaurantsList",
+        "component": "extensions/john.RestaurantsExt/screens/RestaurantsList.js",
+        "authenticationRealm": "Shoutem",
+        "paymentRealm": "None",
+        "settings": {
+            "showOnlyOpenRestaurants": true
+        }
+    }],
+    "skin": {
+        "colors": {
+
+        },
+        "icons": {
+
+        }
+    }
+}
