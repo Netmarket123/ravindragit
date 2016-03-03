@@ -1,0 +1,9 @@
+{
+    "appId": 1016540,
+    "serverApiEndpoint": "api.shoutem.com/api",
+    "debug": true,
+    "designMode": true,
+    "configurationFilePath": "../extensions/shoutem.application/configuration.json",
+    "extensionsDir": "../extensions",
+    "extensionsJsPath": "./extensions.js"
+}

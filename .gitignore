@@ -1,3 +1,8 @@
+# Build
+bin/build-script/tmp
+bin/assets/resources
+bin/extensions.js
+
 # Logs
 logs
 *.log

@@ -1,7 +1,7 @@
 {
-  "name": "shoutem.test",
-  "version": "1.0.0",
-  "description": "ShoutEm test extesnion",
+  "name": "shoutem",
+  "version": "0.0.1",
+  "private": true,
   "main": "index.js",
   "dependencies": {
     "react-native": "^0.19.0",
@@ -18,11 +18,10 @@
     "react": "^0.14.7",
     "react-addons-test-utils": "^0.14.7",
     "react-dom": "^0.14.7",
-    "react-native-mock": "^0.0.6"
+    "react-native-mock": "^0.0.6",
+    "sinon": "^1.17.3"
   },
   "scripts": {
-    "test": "mocha --require react-native-mock/mock.js --compilers js:babel-core/register $(find . -name '*.spec.js' ! -ipath '*node_modules*')"
-  },
-  "author": "ShoutEm",
-  "license": "ISC"
+    "test": "mocha -R spec --require test-utils/setup.js --require react-native-mock/mock.js --compilers js:babel-core/register $(find . -name '*.spec.js' ! -ipath '*node_modules*')"
+  }
 }
