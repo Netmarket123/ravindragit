@@ -6,8 +6,6 @@ import React, {
     View,
 } from 'react-native';
 
-import codePush from 'react-native-code-push';
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -28,12 +26,6 @@ const styles = StyleSheet.create({
 });
 
 class ShoutemApp extends Component {
-  componentDidMount() {
-    // Active update, which lets the end user know
-    // about each update, and displays it to them
-    // immediately after downloading it
-    codePush.sync({ updateDialog: true, installMode: codePush.InstallMode.IMMEDIATE });
-  }
   render() {
     return (
           <View style={styles.container}>
