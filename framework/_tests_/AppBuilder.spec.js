@@ -96,7 +96,7 @@ describe('AppBuilder', () => {
   });
 
   describe('initializes an app with extensions', () => {
-    it('must not create an app without any extensions', () => {
+    it('does not create an app without any extensions', () => {
       const builder = new AppBuilder()
         .setExtensions({})
         .setScreens(getDefaultScreens());
@@ -124,7 +124,7 @@ describe('AppBuilder', () => {
   });
 
   describe('initializes an app with screens', () => {
-    it('must not create an app without any screens', () => {
+    it('does not create an app without any screens', () => {
       const builder = new AppBuilder()
         .setExtensions(getDefaultExtensions())
         .setScreens({});
@@ -304,7 +304,7 @@ describe('AppBuilder', () => {
       assertValidAppState(App, extensionsWithReducers);
     });
 
-    it('must not create an app without any reducers', () => {
+    it('does not create an app without any reducers', () => {
       const extensions = {
         extension1: {},
         extension2: {},
@@ -361,7 +361,7 @@ describe('AppBuilder', () => {
   });
 
   describe('app lifecycle', () => {
-    it('appWillMount is called on an extension', () => {
+    it('app calls appWillMount on an extension', () => {
       const appWillMountSpy = sinon.spy();
       const extensions = {
         extension1: {
@@ -382,7 +382,7 @@ describe('AppBuilder', () => {
         'appWillMount not called with the expected app');
     });
 
-    it('appDidMount is called on an extension', () => {
+    it('app calls appDidMount on an extension', () => {
       const appDidMountSpy = sinon.spy();
       const extensions = {
         extension1: {
@@ -403,7 +403,7 @@ describe('AppBuilder', () => {
         'appDidMount not called with the expected app');
     });
 
-    it('appWillUnmount is called on an extension', () => {
+    it('app calls appWillUnmount on an extension', () => {
       const appWillUnmountSpy = sinon.spy();
       const extensions = {
         extension1: {
@@ -425,7 +425,7 @@ describe('AppBuilder', () => {
         'appWillUnmount not called with the expected app');
     });
 
-    it('entire lifecycle is called on an extension', () => {
+    it('app calls the entire lifecycle on an extension', () => {
       const appWillMountSpy = sinon.spy();
       const appDidMountSpy = sinon.spy();
       const appWillUnmountSpy = sinon.spy();
@@ -465,7 +465,7 @@ describe('AppBuilder', () => {
         'appWillUnmount not called after appDidMount');
     });
 
-    it('lifecycle methods are called on multiple extensions', () => {
+    it('app calls lifecycle methods on multiple extensions', () => {
       const appWillMountSpy1 = sinon.spy();
       const appDidMountSpy1 = sinon.spy();
       const appDidMountSpy2 = sinon.spy();
