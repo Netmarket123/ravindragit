@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const AppBuild = require('./app-build');
 const config = require('../config.json');
 

@@ -3,12 +3,13 @@ package com.shoutemapp;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
+import com.microsoft.codepush.react.CodePush;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends ReactActivity {
-
+    private CodePush codePush;
     /**
      * Returns the name of the main component registered from JavaScript.
      * This is used to schedule rendering of the component.
@@ -33,8 +34,30 @@ public class MainActivity extends ReactActivity {
    */
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-        new MainReactPackage()
-      );
+        String codePushAppKey = BuildConfig.CODE_PUSH_APP_KEY;
+
+        this.codePush = new CodePush(codePushAppKey, this, BuildConfig.DEBUG);
+
+        return Arrays.<ReactPackage>asList(
+                new MainReactPackage(), this.codePush.getReactPackage());
+    }
+
+    @Override
+    protected String getJSMainModuleName() {
+        return "index";
+    }
+
+    /**
+     * Override the getJSBundleFile method in order to let
+     * the CodePush runtime determine where to get the JS
+     * bundle location from on each app start
+     */
+    @Override
+    protected String getJSBundleFile() {
+        if (getUseDeveloperSupport()) {
+            return super.getJSBundleFile();
+        }
+
+        return this.codePush.getBundleUrl("index.android.bundle");
     }
 }
