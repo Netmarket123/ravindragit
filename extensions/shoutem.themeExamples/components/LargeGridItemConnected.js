@@ -4,31 +4,17 @@ import React, {
   Image,
   TouchableHighlight,
 } from 'react-native';
-import Theme, { applyTheme } from '../theme/Theme';
-import { connect } from 'redux';
+import { connect } from 'react-redux';
+import InfoFields from './InfoFields';
+import { connectStyle } from '../theme/ThemeHelpers';
 
-export default class LargeGridItemConnected extends React.Component {
-  renderInfoFields() {
-    const infoFieldsComponents = [];
-    if (this.props.infoFields.length > 0) {
-      this.props.infoFields.forEach((info, i) => {
-        if (i > 0 && this.props.infoSeparator) {
-          infoFieldsComponents.push(
-            <Image
-              style={this.props.style.infoSeparator}
-              source={this.props.infoSeparator}
-              key={i * -1}
-            />
-          ); // key i * -1 ?
-        }
-        infoFieldsComponents.push(
-          <Text style={[this.props.style.paragraph, this.props.style.infoText]} key={i}>
-            {info}
-          </Text>
-        );
-      });
-    }
-    return infoFieldsComponents;
+
+class LargeGridItemConnected extends React.Component {
+  infoFieldsCustomStyle() {
+    return {
+      infoText: this.props.style.eventInfoText,
+      infoSeparator: this.props.style.eventInfoSeparator,
+    };
   }
 
   render() {
@@ -39,9 +25,10 @@ export default class LargeGridItemConnected extends React.Component {
           <Image style={style.backgroundImage} source={this.props.backgroundImage} />
         </View>
         <Text style={style.h1}>{this.props.headline}</Text>
-        <View style={style.info}>
-          {this.renderInfoFields()}
-        </View>
+        <InfoFields
+          infoFields={this.props.infoFields}
+          infoSeparator={this.props.infoSeparator}
+        />
         <TouchableHighlight>
           <View style={style.button}>
             <Image source={this.props.buttonIcon} style={style.buttonIcon} />
@@ -52,16 +39,18 @@ export default class LargeGridItemConnected extends React.Component {
     );
   }
 }
+
 LargeGridItemConnected.propTypes = {
-  buttonIcon: React.propTypes.object,
-  backgroundImage: React.propTypes.object,
-  infoSeparator: React.propTypes.object,
-  style: React.propTypes.object,
-  infoFields: React.propTypes.array,
-  buttonText: React.propTypes.string,
-  headline: React.propTypes.string,
+  buttonIcon: React.PropTypes.any,
+  backgroundImage: React.PropTypes.any,
+  infoSeparator: React.PropTypes.any,
+  style: React.PropTypes.object,
+  infoFields: React.PropTypes.array,
+  buttonText: React.PropTypes.string,
+  headline: React.PropTypes.string,
 };
-const style = Theme.createStyle({
+
+const style = {
   backgroundImageWrapper: {
     position: 'absolute',
     top: 0,
@@ -87,23 +76,8 @@ const style = Theme.createStyle({
   h1: {
     paddingHorizontal: 20,
     textAlign: 'center',
+    color: 'black',
     // fontSize: 20 // inherited from theme (for example)
-  },
-  infoSeparator: {
-    marginHorizontal: 10,
-    flex: 1,
-    width: 3,
-    height: 3,
-  },
-  infoText: {
-    fontSize: 12,
-  },
-  info: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 6,
-    marginBottom: 30,
   },
   button: {
     flexDirection: 'row',
@@ -118,15 +92,14 @@ const style = Theme.createStyle({
   },
   buttonText: {
     fontSize: 12,
-    color: Theme.variables.colorDark, // variable usage
   },
-});
-function mapStateToProps(state) {
+};
+
+function mapStateToProps() {
   return {
-    headline: state.headline,
   };
 }
 
-export default connect(mapStateToProps)(
-  applyTheme(style)(LargeGridItemConnected)
+export default connect(mapStateToProps, undefined, undefined, { withRef: true })(
+  connectStyle('dev.ext.LargeGridItem', style)(LargeGridItemConnected)
 );

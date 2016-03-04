@@ -1,22 +1,14 @@
-export const variables = {
-  colorFont: '#ffffff',
-  colorFontBackground: 'transparent',
-  colorDark: '#454545',
-};
-export function getTheme() {
-  // immutable
-  return {
+const theme = {
+  global: {
     h1: {
-      fontSize: 20,
-      color: variables.colorFont,
-      backgroundColor: variables.colorFontBackground,
+      fontSize: 28,
     },
-    paragraph: {
-      color: variables.colorFont,
-      backgroundColor: variables.colorFontBackground,
+  },
+  'dev.ext.LargeGridItem': {
+    h1: {
+      color: 'yellow',
     },
-    textCenter: {
-      textAlign: 'center',
-    },
-  };
-}
+  },
+};
+
+export default theme;

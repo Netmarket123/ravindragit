@@ -1,8 +1,20 @@
 import React, { AppRegistry } from 'react-native';
-import LargeGridItemExtended from './components/LargeGridItemExtended';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import Theme from './theme/Theme';
+import StyleProvider from './theme/StyleProvider.jsx';
+import LargeGridItemExtended from './components/LargeGridItemConnected';
 
-// Consider App as screen
-// This is complex example
+function reducer(state = {}, action) {
+  if (action.type) {
+    return state;
+  }
+  return state;
+}
+
+const store = createStore(reducer);
+const theme = new Theme();
+
 class App extends React.Component {
   render() {
     const headline = 'Mike Patton teaming with John Kaada for colab album Bacteria cult';
@@ -14,15 +26,19 @@ class App extends React.Component {
     const buttonText = 'Add to calendar';
     const backgroundImage = require('./assets/event_pic_big.png');
     return (
-      <LargeGridItemExtended
-        backgroundImage={backgroundImage}
-        headline={headline.toUpperCase()}
-        infoFields={infoFields}
-        infoSeparator={separatorSource}
-        buttonIcon={buttonIcon}
-        buttonText={buttonText.toUpperCase()}
-        style={{ h1: { color: 'red' } }}
-      />
+      <StyleProvider theme={theme}>
+        <Provider store={store}>
+          <LargeGridItemExtended
+            backgroundImage={backgroundImage}
+            headline={headline.toUpperCase()}
+            infoFields={infoFields}
+            infoSeparator={separatorSource}
+            buttonIcon={buttonIcon}
+            buttonText={buttonText.toUpperCase()}
+            style={ { h1: { backgroundColor: 'red' } } }
+          />
+        </Provider>
+      </StyleProvider>
     );
   }
 }
