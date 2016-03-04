@@ -1,7 +1,7 @@
 import codePush from 'react-native-code-push';
 
 export default {
-  appDidMount: () => {
+  appDidMount() {
     // Active update, which lets the end user know
     // about each update, and displays it to them
     // immediately after downloading it
