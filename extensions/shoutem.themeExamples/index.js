@@ -1,7 +1,8 @@
 import React, { AppRegistry } from 'react-native';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import Theme from './theme/Theme';
+import ShoutEmTheme from './theme/ShoutEmUI';
+import Theme from '../../framework/theme/Theme';
 import StyleProvider from './theme/StyleProvider.jsx';
 import LargeGridItemExtended from './components/LargeGridItemConnected';
 
@@ -13,7 +14,7 @@ function reducer(state = {}, action) {
 }
 
 const store = createStore(reducer);
-const theme = new Theme();
+const theme = new Theme(ShoutEmTheme);
 
 class App extends React.Component {
   render() {
