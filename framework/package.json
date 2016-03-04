@@ -4,6 +4,7 @@
   "private": true,
   "main": "index.js",
   "dependencies": {
+    "hoist-non-react-statics": "^1.0.5",
     "react-native": "^0.19.0",
     "react-redux": "^4.4.0",
     "redux": "^3.3.1",
