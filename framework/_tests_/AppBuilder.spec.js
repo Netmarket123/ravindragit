@@ -16,9 +16,14 @@ import AppBuilder from '../AppBuilder.js';
  */
 class Screen extends Component {
   render() {
-    return (<Text>This is a screen!</Text>);
+    const message = this.props.message || 'This is a screen!';
+    return (<Text>{message}</Text>);
   }
 }
+
+Screen.propTypes = {
+  message: React.PropTypes.string,
+};
 
 /**
  * A screen connected to the redux store. This screen should
@@ -45,11 +50,21 @@ function getDefaultScreens() {
   };
 }
 
-function buildDefaultApp() {
+function getDefaultInitialRoute() {
+  return {
+    screen: 'default',
+  };
+}
+
+function getDefaultBuilder() {
   return new AppBuilder()
     .setExtensions(getDefaultExtensions())
     .setScreens(getDefaultScreens())
-    .build();
+    .setInitialRoute(getDefaultInitialRoute());
+}
+
+function buildDefaultApp() {
+  return getDefaultBuilder().build();
 }
 
 function assertValidApp(App) {
@@ -79,7 +94,7 @@ function assertValidAppState(App, extensions) {
 }
 
 describe('AppBuilder', () => {
-  describe('builds a simple app', () => {
+  describe('(simple app)', () => {
     it('builder is created', () => {
       assert.isOk(new AppBuilder(), 'AppBuilder cannot be created');
     });
@@ -95,11 +110,12 @@ describe('AppBuilder', () => {
     });
   });
 
-  describe('initializes an app with extensions', () => {
+  describe('(extensions)', () => {
     it('does not create an app without any extensions', () => {
       const builder = new AppBuilder()
         .setExtensions({})
-        .setScreens(getDefaultScreens());
+        .setScreens(getDefaultScreens())
+        .setInitialRoute(getDefaultInitialRoute());
 
       assert.throws(builder.build.bind(builder),
         'The app without any extensions cannot be created.'
@@ -107,7 +123,7 @@ describe('AppBuilder', () => {
     });
 
     it('creates an app with multiple extensions', () => {
-      const App = new AppBuilder()
+      const App = getDefaultBuilder()
         .setExtensions({
           extension1: {
             reducer: emptyReducer,
@@ -116,29 +132,61 @@ describe('AppBuilder', () => {
             reducer: emptyReducer,
           },
         })
-        .setScreens(getDefaultScreens())
         .build();
 
       assertValidApp(App);
     });
   });
 
-  describe('initializes an app with screens', () => {
+  describe('(screens)', () => {
     it('does not create an app without any screens', () => {
-      const builder = new AppBuilder()
-        .setExtensions(getDefaultExtensions())
+      const builder = getDefaultBuilder()
         .setScreens({});
 
       assert.throws(builder.build.bind(builder), 'The app without any screens cannot be created.');
     });
 
     it('creates an app with multiple screens', () => {
-      const App = new AppBuilder()
-        .setExtensions(getDefaultExtensions())
+      const App = getDefaultBuilder()
         .setScreens({
           screen1: Screen,
           screen2: Screen,
           screen3: Screen,
+        })
+        .setInitialRoute({ screen: 'screen2' })
+        .build();
+
+      assertValidApp(App);
+    });
+  });
+
+  describe('(routing)', () => {
+    it('does not create an app without an initial route', () => {
+      const builder = getDefaultBuilder().setInitialRoute({});
+
+      assert.throws(builder.build.bind(builder),
+        'The app without an initial route cannot be created.'
+      );
+    });
+
+    it('does not create an app with an invalid initial route', () => {
+      const builder = getDefaultBuilder()
+        .setInitialRoute({
+          screen: 'invalidScreen',
+        });
+
+      assert.throws(builder.build.bind(builder),
+        'The initial route points to a screen that does not exist.'
+      );
+    });
+
+    it('creates a valid app with a valid initial route', () => {
+      const App = getDefaultBuilder()
+        .setScreens({
+          screen1: Screen,
+        })
+        .setInitialRoute({
+          screen: 'screen1',
         })
         .build();
 
@@ -146,17 +194,16 @@ describe('AppBuilder', () => {
     });
   });
 
-  describe('creates multiple apps', () => {
+  describe('(multiple apps)', () => {
     it('creates two apps', () => {
-      const builder = new AppBuilder();
+      const builder = getDefaultBuilder();
 
-      const App1 = builder.setExtensions(getDefaultExtensions())
-        .setScreens(getDefaultScreens())
-        .build();
+      const App1 = builder.build();
 
       const screens = {
         screen1: Screen,
         screen2: Screen,
+        default: Screen,
       };
       const App2 = builder.setScreens(screens).build();
 
@@ -166,12 +213,9 @@ describe('AppBuilder', () => {
     });
 
     it('creates independent apps', () => {
-      const builder = new AppBuilder();
+      const builder = getDefaultBuilder();
 
-      const App1 = builder.setExtensions(getDefaultExtensions())
-        .setScreens(getDefaultScreens())
-        .build();
-
+      const App1 = builder.build();
       const App2 = builder.build();
 
       assertValidApp(App1);
@@ -187,12 +231,10 @@ describe('AppBuilder', () => {
     });
 
     it('creates apps with different extensions', () => {
-      const builder = new AppBuilder();
+      const builder = getDefaultBuilder();
 
       const app1Extensions = getDefaultExtensions();
-      const App1 = builder.setExtensions(app1Extensions)
-        .setScreens(getDefaultScreens())
-        .build();
+      const App1 = builder.setExtensions(app1Extensions).build();
 
       const app2Extensions = {
         extension1: {
@@ -221,16 +263,15 @@ describe('AppBuilder', () => {
     });
 
     it('creates apps with different screens', () => {
-      const builder = new AppBuilder();
+      const builder = getDefaultBuilder();
 
       const app1Screens = getDefaultScreens();
-      const App1 = builder.setExtensions(getDefaultExtensions())
-        .setScreens(app1Screens)
-        .build();
+      const App1 = builder.setScreens(app1Screens).build();
 
       const app2Screens = {
         screen1: Screen,
         screen2: Screen,
+        default: Screen,
       };
       const App2 = builder.setScreens(app2Screens).build();
 
@@ -253,12 +294,7 @@ describe('AppBuilder', () => {
     });
   });
 
-  describe('initializes a redux store', () => {
-    it('creates an app that provides a store', () => {
-      const App = buildDefaultApp();
-      assertValidAppState(App, getDefaultExtensions());
-    });
-
+  describe('(redux store)', () => {
     it('creates an app that provides a store', () => {
       const App = buildDefaultApp();
       assertValidAppState(App, getDefaultExtensions());
@@ -274,9 +310,8 @@ describe('AppBuilder', () => {
         },
       };
 
-      const App = new AppBuilder()
+      const App = getDefaultBuilder()
         .setExtensions(extensions)
-        .setScreens(getDefaultScreens())
         .build();
 
       assertValidAppState(App, extensions);
@@ -296,9 +331,8 @@ describe('AppBuilder', () => {
           extension2: {},
         });
 
-      const App = new AppBuilder()
+      const App = getDefaultBuilder()
         .setExtensions(extensions)
-        .setScreens(getDefaultScreens())
         .build();
 
       assertValidAppState(App, extensionsWithReducers);
@@ -310,9 +344,8 @@ describe('AppBuilder', () => {
         extension2: {},
       };
 
-      const builder = new AppBuilder()
-        .setExtensions(extensions)
-        .setScreens(getDefaultScreens());
+      const builder = getDefaultBuilder()
+        .setExtensions(extensions);
 
       assert.throws(builder.build.bind(builder),
         'The app without any reducers cannot be created.'
@@ -320,12 +353,11 @@ describe('AppBuilder', () => {
     });
   });
 
-  describe('immutable apps', () => {
+  describe('(immutable apps)', () => {
     it('app extensions cannot be modified', () => {
       const originalExtensions = getDefaultExtensions();
-      const App = new AppBuilder()
+      const App = getDefaultBuilder()
         .setExtensions(originalExtensions)
-        .setScreens(getDefaultScreens())
         .build();
 
       const appInstance = new App();
@@ -342,8 +374,7 @@ describe('AppBuilder', () => {
 
     it('app screens cannot be modified', () => {
       const originalScreens = getDefaultScreens();
-      const App = new AppBuilder()
-        .setExtensions(getDefaultExtensions())
+      const App = getDefaultBuilder()
         .setScreens(originalScreens)
         .build();
 
@@ -360,7 +391,7 @@ describe('AppBuilder', () => {
     });
   });
 
-  describe('app lifecycle', () => {
+  describe('(app lifecycle)', () => {
     it('app calls appWillMount on an extension', () => {
       const appWillMountSpy = sinon.spy();
       const extensions = {
@@ -370,10 +401,7 @@ describe('AppBuilder', () => {
         },
       };
 
-      const App = new AppBuilder()
-        .setExtensions(extensions)
-        .setScreens(getDefaultScreens())
-        .build();
+      const App = getDefaultBuilder().setExtensions(extensions).build();
 
       const wrapper = mount(<App />);
       const appInstance = wrapper.instance();
@@ -391,10 +419,7 @@ describe('AppBuilder', () => {
         },
       };
 
-      const App = new AppBuilder()
-        .setExtensions(extensions)
-        .setScreens(getDefaultScreens())
-        .build();
+      const App = getDefaultBuilder().setExtensions(extensions).build();
 
       const wrapper = mount(<App />);
       const appInstance = wrapper.instance();
@@ -412,10 +437,7 @@ describe('AppBuilder', () => {
         },
       };
 
-      const App = new AppBuilder()
-        .setExtensions(extensions)
-        .setScreens(getDefaultScreens())
-        .build();
+      const App = getDefaultBuilder().setExtensions(extensions).build();
 
       const wrapper = mount(<App />);
       const appInstance = wrapper.instance();
@@ -438,10 +460,7 @@ describe('AppBuilder', () => {
         },
       };
 
-      const App = new AppBuilder()
-        .setExtensions(extensions)
-        .setScreens(getDefaultScreens())
-        .build();
+      const App = getDefaultBuilder().setExtensions(extensions).build();
 
       const wrapper = mount(<App />);
       wrapper.unmount();
@@ -481,10 +500,7 @@ describe('AppBuilder', () => {
         },
       };
 
-      const App = new AppBuilder()
-        .setExtensions(extensions)
-        .setScreens(getDefaultScreens())
-        .build();
+      const App = getDefaultBuilder().setExtensions(extensions).build();
 
       mount(<App />);
 
