@@ -19,23 +19,28 @@ function navigatorReducer(state = {}, action) {
 }
 
 export default function reducer(state = {}, action) {
-  console.log('Action: ' + JSON.stringify(action));
-  const navigatorName = action.navigator || ROOT_NAVIGATOR_NAME;
+  const navigatorName = action.navigator;
+  if (!navigatorName) {
+    return state;
+  }
+
   return {
     ...state,
     [navigatorName]: navigatorReducer(state[navigatorName], action),
   };
 }
 
-export function navigateTo(route) {
+export function navigateTo(route, navigator = ROOT_NAVIGATOR_NAME) {
   return {
     type: NAVIGATE_TO,
     route,
+    navigator,
   };
 }
 
-export function navigateBack() {
+export function navigateBack(navigator = ROOT_NAVIGATOR_NAME) {
   return {
     type: NAVIGATE_BACK,
+    navigator,
   };
 }

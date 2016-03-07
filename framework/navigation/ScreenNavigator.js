@@ -41,11 +41,11 @@ class ScreenNavigator extends Component {
     return route.sceneConfig || Navigator.SceneConfigs.FloatFromRight;
   }
 
-  renderScene(route) {
+  renderScene(route, navigator) {
     const Screen = this.context.screens[route.screen];
 
     return (
-      <Screen {...route.props} />
+      <Screen navigator={navigator} {...route.props} />
     );
   }
 
