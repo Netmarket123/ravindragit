@@ -90,7 +90,7 @@ function assertValidAppState(App, extensions) {
 
   const stateKeys = Object.keys(state);
   const expectedKeys = Object.keys(extensions);
-  assert.sameMembers(stateKeys, expectedKeys, 'Incorrect state keys detected.');
+  assert.includeMembers(stateKeys, expectedKeys, 'Incorrect state keys detected.');
 }
 
 describe('AppBuilder', () => {
@@ -249,13 +249,13 @@ describe('AppBuilder', () => {
       const app1Instance = new App1();
       const app2Instance = new App2();
 
-      assert.sameMembers(
+      assert.includeMembers(
         Object.keys(app1Instance.getExtensions()),
         Object.keys(app1Extensions),
         'The first app does not contain the expected extensions'
       );
 
-      assert.sameMembers(
+      assert.includeMembers(
         Object.keys(app2Instance.getExtensions()),
         Object.keys(app2Extensions),
         'The second app does not contain the expected extensions'
@@ -338,29 +338,31 @@ describe('AppBuilder', () => {
       assertValidAppState(App, extensionsWithReducers);
     });
 
-    it('does not create an app without any reducers', () => {
+    it('creates an app without any reducers', () => {
       const extensions = {
         extension1: {},
         extension2: {},
       };
 
-      const builder = getDefaultBuilder()
-        .setExtensions(extensions);
+      const App = getDefaultBuilder()
+        .setExtensions(extensions)
+        .build();
 
-      assert.throws(builder.build.bind(builder),
-        'The app without any reducers cannot be created.'
-      );
+      // None of the extensions have a reducer
+      const extensionsWithReducers = {};
+      assertValidAppState(App, extensionsWithReducers);
     });
   });
 
   describe('(immutable apps)', () => {
     it('app extensions cannot be modified', () => {
-      const originalExtensions = getDefaultExtensions();
       const App = getDefaultBuilder()
-        .setExtensions(originalExtensions)
+        .setExtensions(getDefaultExtensions())
         .build();
 
       const appInstance = new App();
+      const originalExtensions = appInstance.getExtensions();
+
       let extensions = appInstance.getExtensions();
       extensions.someExtension = {};
       extensions = appInstance.getExtensions();

@@ -1,50 +1,25 @@
-import React, {
+import {
   AppRegistry,
-  Component,
-  View,
-  Text,
-  StyleSheet,
 } from 'react-native';
 
 import { AppBuilder } from 'shoutem';
 
-const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
-
-class InitialScreen extends Component {
-  render() {
-    return (
-      <View style={styles.content}>
-        <Text>{this.props.message}</Text>
-      </View>
-    );
-  }
-}
-InitialScreen.propTypes = {
-  message: React.PropTypes.string,
-};
+import { ExampleScreen } from 'shoutem.test';
 
 const App = new AppBuilder()
   .setExtensions({
-    default: {
-      reducer() {
-        return {};
-      },
-    },
+    'shoutem.test': {},
   })
   .setScreens({
-    initialScreen: InitialScreen,
+    initialScreen: ExampleScreen,
+    screen1: ExampleScreen,
+    screen2: ExampleScreen,
+    screen3: ExampleScreen,
   })
   .setInitialRoute({
     screen: 'initialScreen',
     props: {
-      message: 'I am THE initial screen.',
+      message: 'The initial screen.',
     },
   })
   .build();

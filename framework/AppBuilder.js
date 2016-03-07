@@ -6,7 +6,8 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
-import ScreenNavigator from './navigation/ScreenNavigator';
+import { ScreenNavigator, ROOT_NAVIGATOR_NAME } from './navigation';
+import coreReducer from './coreReducer';
 
 /**
  * Calls the lifecycle function with the given name on all
@@ -77,7 +78,10 @@ function createApplication(appContext) {
 
     render() {
       const content = this.props.children || (
-        <ScreenNavigator initialRoute={appContext.initialRoute} />
+        <ScreenNavigator
+          name={ROOT_NAVIGATOR_NAME}
+          initialRoute={appContext.initialRoute}
+        />
       );
 
       return (
@@ -127,6 +131,23 @@ function assertInitialRouteExists(initialRoute, screens) {
   if (!screens[initialRoute.screen]) {
     throw new Error('The initial route points to a screen that does not exist.');
   }
+}
+
+/**
+ * Adds a core extension to the app extensions configured
+ * through the builder API. This extension needs to be included
+ * so that core framework components can use the application state
+ * to store their state, and expose this state to other extensions.
+ * @param appExtensions The extensions configured through the builder API.
+ * @returns {*} The extensions object that includes the core extension.
+ */
+function includeCoreExtension(appExtensions) {
+  return {
+    ...appExtensions,
+    'shoutem.core': {
+      reducer: coreReducer,
+    },
+  };
 }
 
 /**
@@ -220,6 +241,7 @@ export default class AppBuilder {
     assertExtensionsExist(appContext.extensions);
     assertScreensExist(appContext.screens);
     assertInitialRouteExists(appContext.initialRoute, appContext.screens);
+    appContext.extensions = includeCoreExtension(appContext.extensions);
 
     appContext.store = createApplicationStore(appContext);
     return createApplication(appContext);
