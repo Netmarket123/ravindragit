@@ -58,10 +58,8 @@ class AppBuild {
 
   prepareExtensions() {
     this.configuration = this.getConfiguration(this.configurationFilePath);
-    console.log('configuracija');
     const extensions = this.configuration.extensions;
     const localExtensions = getLocalExtensions(this.extensionsDir);
-    console.log('loc ext');
     const extensionsJsPath = this.extensionsJsPath;
     const extensionsInstaller = new ExtensionsInstaller(
       localExtensions,
