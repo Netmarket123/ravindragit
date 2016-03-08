@@ -1,22 +1,13 @@
 import React, {
   Component,
-  View,
-  Text,
-  StyleSheet,
 } from 'react-native';
 
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
-const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+import { ScreenNavigator, ROOT_NAVIGATOR_NAME } from './navigation';
+import coreReducer from './coreReducer';
 
 /**
  * Calls the lifecycle function with the given name on all
@@ -81,11 +72,16 @@ function createApplication(appContext) {
       callLifecycleFunction(this, appContext.extensions, 'appWillUnmount');
     }
 
+    getChildContext() {
+      return { screens: appContext.screens };
+    }
+
     render() {
       const content = this.props.children || (
-        <View style={styles.content}>
-          <Text>Waiting for the initial screen...</Text>
-        </View>
+        <ScreenNavigator
+          name={ROOT_NAVIGATOR_NAME}
+          initialRoute={appContext.initialRoute}
+        />
       );
 
       return (
@@ -98,6 +94,10 @@ function createApplication(appContext) {
 
   App.propTypes = {
     children: React.PropTypes.node,
+  };
+
+  App.childContextTypes = {
+    screens: React.PropTypes.object,
   };
 
   return App;
@@ -122,6 +122,32 @@ function assertScreensExist(screens) {
 function assertReducersExist(reducers) {
   assertNotEmpty(reducers, 'The app without any reducers cannot be created. ' +
     'You must supply at least one extension that has a reducer defined.');
+}
+
+function assertInitialRouteExists(initialRoute, screens) {
+  assertNotEmpty(initialRoute, 'The app without an initial route cannot be created. ' +
+    'You must define an initial route using the setInitialRoute method.');
+
+  if (!screens[initialRoute.screen]) {
+    throw new Error('The initial route points to a screen that does not exist.');
+  }
+}
+
+/**
+ * Adds a core extension to the app extensions configured
+ * through the builder API. This extension needs to be included
+ * so that core framework components can use the application state
+ * to store their state, and expose this state to other extensions.
+ * @param appExtensions The extensions configured through the builder API.
+ * @returns {*} The extensions object that includes the core extension.
+ */
+function includeCoreExtension(appExtensions) {
+  return {
+    ...appExtensions,
+    'shoutem.core': {
+      reducer: coreReducer,
+    },
+  };
 }
 
 /**
@@ -189,6 +215,7 @@ export default class AppBuilder {
       store: {},
       extensions: {},
       screens: {},
+      initialRoute: {},
     };
   }
 
@@ -202,12 +229,19 @@ export default class AppBuilder {
     return this;
   }
 
+  setInitialRoute(route) {
+    this[appContextSymbol].initialRoute = Object.assign({}, route);
+    return this;
+  }
+
   build() {
     // Capture the cloned appContext here, so that
     // each app gets its own context.
     const appContext = Object.assign({}, this[appContextSymbol]);
     assertExtensionsExist(appContext.extensions);
     assertScreensExist(appContext.screens);
+    assertInitialRouteExists(appContext.initialRoute, appContext.screens);
+    appContext.extensions = includeCoreExtension(appContext.extensions);
 
     appContext.store = createApplicationStore(appContext);
     return createApplication(appContext);
