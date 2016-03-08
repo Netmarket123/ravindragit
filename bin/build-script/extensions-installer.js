@@ -5,7 +5,7 @@ const shelljs = require('shelljs');
 const fs = require('fs');
 const fse = require('fs-extra');
 const rimraf = require('rimraf');
-const exec = require('child_process').spawn;
+const spawn = require('child_process').spawn;
 
 function installLocalExtension(extension) {
   const packageName = extension.type;
@@ -56,7 +56,11 @@ class ExtensionsInstaller {
       installLocalExtension(extension);
     });
 
-    exec('node', ['./build-script/watchLocalExtensions']);
+    const child = spawn('node', ['./build-script/watchLocalExtensions'], {
+      detached: true,
+      stdio: 'ignore',
+    });
+    child.unref();
 
     this.extensionsToInstall.forEach((extension) => {
       console.log(`installing ${extension.type}`);

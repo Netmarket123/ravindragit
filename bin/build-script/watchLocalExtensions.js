@@ -26,5 +26,3 @@ localExtensions.forEach((extension) => {
     });
   });
 });
-
-process.disconnect();

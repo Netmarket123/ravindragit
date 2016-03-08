@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "build": "node build-script",
-    "start": "node node_modules/react-native/local-cli/cli.js start"
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "watch": "node ./build-script/watchLocalExtensions.js"
   },
   "dependencies": {
     "fs-extra": "^0.26.5",
