@@ -3,6 +3,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const getLocalExtensions = require('./getLocalExtensions');
 const ExtensionsInstaller = require('./extensions-installer.js');
 
 /**
@@ -55,30 +56,10 @@ class AppBuild {
     return require(path.join('..', assetsPath));
   }
 
-  getLocalExtensions(extensionsDir) {
-    const results = [];
-    console.time('load local extensions');
-    fs.readdirSync(extensionsDir).forEach((file) => {
-      const extensionPath = path.join(extensionsDir, file);
-      const stat = fs.statSync(extensionPath);
-
-      if (stat && stat.isDirectory()) {
-        results.push({
-          type: file,
-          path: extensionPath,
-        });
-      }
-    });
-    console.timeEnd('load local extensions');
-    return results;
-  }
-
   prepareExtensions() {
     this.configuration = this.getConfiguration(this.configurationFilePath);
-    console.log('configuracija');
     const extensions = this.configuration.extensions;
-    const localExtensions = this.getLocalExtensions(this.extensionsDir);
-    console.log('loc ext');
+    const localExtensions = getLocalExtensions(this.extensionsDir);
     const extensionsJsPath = this.extensionsJsPath;
     const extensionsInstaller = new ExtensionsInstaller(
       localExtensions,
