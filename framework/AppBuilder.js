@@ -179,6 +179,23 @@ function extractExtensionReducers(extensions) {
 }
 
 /**
+ * Returns middleware that should be used only in development
+ * mode. This usually includes utilities to simplify debugging.
+ * @returns {Array} Redux middleware.
+ */
+function createDevelopmentReduxMiddleware() {
+  const middleware = [];
+
+  const createLogger = require('redux-logger');
+  const logger = createLogger({
+    collapsed: true,
+  });
+  middleware.push(logger);
+
+  return middleware;
+}
+
+/**
  * Creates a redux store using the reducers from the extensions.
  * The store will contain the extension keys on the root level,
  * where each of those keys will be handled by the extensions
@@ -196,8 +213,13 @@ function createApplicationStore(appContext) {
   assertReducersExist(extensionReducers);
 
   const reducer = combineReducers(extensionReducers);
-  const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
-  return createStoreWithMiddleware(reducer);
+  let middleware = [thunk];
+
+  if (process.env.NODE_ENV === 'development') {
+    middleware = middleware.concat(createDevelopmentReduxMiddleware());
+  }
+
+  return createStore(reducer, applyMiddleware(...middleware));
 }
 
 const appContextSymbol = Symbol('appContext');
