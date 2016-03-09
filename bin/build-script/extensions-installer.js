@@ -1,7 +1,29 @@
 'use strict';
 
+const path = require('path');
 const shelljs = require('shelljs');
 const fs = require('fs');
+const fse = require('fs-extra');
+const rimraf = require('rimraf');
+const spawn = require('child_process').spawn;
+
+function installLocalExtension(extension) {
+  const packageName = extension.type;
+  const packagePath = extension.path;
+  const nodeModules = 'node_modules';
+  const installedExtensionPath = path.join(nodeModules, packageName);
+  console.log(`Cleaning node_modules/${packageName}`);
+  rimraf(installedExtensionPath, () => {
+    console.log(`Copying ${packageName}`);
+    fse.copy(packagePath, installedExtensionPath, (error) => {
+      if (error) {
+        console.error(error);
+      }
+
+      return;
+    });
+  });
+}
 
 /**
  * ExtensionInstaller links all local extensions and installs all other extensions from app
@@ -31,9 +53,14 @@ class ExtensionsInstaller {
 
   installExtensions() {
     this.localExtensions.forEach((extension) => {
-      console.log(`linking ${extension.type}`);
-      shelljs.exec(`npm link ${extension.path}`);
+      installLocalExtension(extension);
     });
+
+    const child = spawn('node', ['./build-script/watchLocalExtensions'], {
+      detached: true,
+      stdio: 'ignore',
+    });
+    child.unref();
 
     this.extensionsToInstall.forEach((extension) => {
       console.log(`installing ${extension.type}`);
@@ -50,7 +77,7 @@ class ExtensionsInstaller {
     });
 
     const extensionsString = extensionsMapping.join(',\n\t');
-    const data = `export default const extensions = {\n\t${extensionsString}\n}`;
+    const data = `export default {\n\t${extensionsString}\n}`;
 
     console.time('create extensions.js');
     return new Promise((resolve, reject) => {
