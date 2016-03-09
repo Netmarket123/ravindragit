@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 
-function getLocalExtensions(extensionsDir) {
+function getLocalExtensions(extensionsDir, frameworkDir) {
   const results = [];
   console.time('load local extensions');
   fs.readdirSync(extensionsDir).forEach((file) => {
@@ -17,8 +17,15 @@ function getLocalExtensions(extensionsDir) {
       });
     }
   });
+
+  if (frameworkDir) {
+    results.push({
+      type: 'shoutem',
+      path: frameworkDir,
+    });
+  }
   console.timeEnd('load local extensions');
   return results;
-};
+}
 
 module.exports = getLocalExtensions;
