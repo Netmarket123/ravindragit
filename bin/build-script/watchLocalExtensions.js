@@ -14,7 +14,7 @@ localExtensions.forEach((extension) => {
   const installedExtensionPath = path.join(nodeModules, packageName);
   console.log(`Watching ${packageName}`);
   watch(packagePath, (filename) => {
-    const localPath = filename.split(packageName).pop();
+    const localPath = filename.split(packagePath).pop();
     const destination = path.join(installedExtensionPath, localPath);
     console.log(`Copying ${filename} to ${destination}`);
     fsExtra.copy(filename, destination, (error) => {
