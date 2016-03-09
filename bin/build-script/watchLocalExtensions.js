@@ -4,9 +4,9 @@ const path = require('path');
 const fsExtra = require('fs-extra');
 const watch = require('node-watch');
 const getLocalExtensions = require('./getLocalExtensions.js');
-const extensionsDir = require('../config.json').extensionsDir;
+const config = require('../config.json');
 
-const localExtensions = getLocalExtensions(extensionsDir);
+const localExtensions = getLocalExtensions(config.extensionsDir, config.frameworkDir);
 localExtensions.forEach((extension) => {
   const packageName = extension.type;
   const packagePath = extension.path;
