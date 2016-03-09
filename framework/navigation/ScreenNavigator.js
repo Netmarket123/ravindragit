@@ -3,10 +3,13 @@ import React, {
   Navigator,
 } from 'react-native';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import {
   NAVIGATE_TO,
   NAVIGATE_BACK,
+
+  navigationActionPerformed,
 } from './actions';
 
 class ScreenNavigator extends Component {
@@ -21,20 +24,29 @@ class ScreenNavigator extends Component {
       return;
     }
 
+    const navigator = this.refs.navigator;
     const action = nextProps.action;
     switch (action.type) {
       case NAVIGATE_TO: {
-        this.refs.navigator.push(action.route);
+        navigator.push(action.route);
         break;
       }
       case NAVIGATE_BACK: {
-        this.refs.navigator.pop();
+        navigator.pop();
         break;
       }
       default: {
         throw new Error(`Unsupported navigation action: ${action.type}`);
       }
     }
+
+    // We should end up here only if we successfully performed
+    // a navigation action.
+    this.props.navigationActionPerformed(action, navigator.getCurrentRoutes(), this.props.name);
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return nextProps.action;
   }
 
   configureScene(route) {
@@ -67,6 +79,7 @@ ScreenNavigator.propTypes = {
     props: React.PropTypes.object,
     sceneConfig: React.PropTypes.object,
   }).isRequired,
+  navigationActionPerformed: React.PropTypes.func.isRequired,
 };
 
 ScreenNavigator.contextTypes = {
@@ -83,4 +96,8 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps)(ScreenNavigator);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ navigationActionPerformed }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ScreenNavigator);
