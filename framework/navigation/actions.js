@@ -61,6 +61,13 @@ export default function reducer(state = {}, action) {
   };
 }
 
+/**
+ * Navigates to the specified route using the specified navigator.
+ * @param route The route to navigate to
+ * @param navigator The navigator to use, this is an optional
+ *  parameter, the root navigator will be used if it is undefined.
+ * @returns {*} The action.
+ */
 export function navigateTo(route, navigator = ROOT_NAVIGATOR_NAME) {
   return {
     type: NAVIGATE_TO,
@@ -69,6 +76,12 @@ export function navigateTo(route, navigator = ROOT_NAVIGATOR_NAME) {
   };
 }
 
+/**
+ * Navigates one step back on the specified navigator.
+ * @param navigator The navigator to use, this is an optional
+ *  parameter, the root navigator will be used if it is undefined.
+ * @returns {*} The action.
+ */
 export function navigateBack(navigator = ROOT_NAVIGATOR_NAME) {
   return {
     type: NAVIGATE_BACK,
@@ -76,6 +89,15 @@ export function navigateBack(navigator = ROOT_NAVIGATOR_NAME) {
   };
 }
 
+/**
+ * This action should be triggered each time when a navigator
+ * performs a navigation action. This action is used to sync
+ * the navigator's internal state with the redux.
+ * @param navigationAction The performed navigation action.
+ * @param navigationStack The new navigation stack.
+ * @param navigator The navigator name of the navigator that performed the action.
+ * @returns {*} The action.
+ */
 export function navigationActionPerformed(navigationAction, navigationStack, navigator) {
   return {
     type: NAVIGATION_ACTION_PERFORMED,
