@@ -1,5 +1,4 @@
-import React, {
-} from 'react-native';
+import React from 'react-native';
 
 import { assert } from 'chai';
 import sinon from 'sinon';
