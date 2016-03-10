@@ -19,7 +19,7 @@ import {
  * navigation operations should be performed through redux
  * actions.
  */
-class ScreenNavigator extends Component {
+export class ScreenNavigator extends Component {
   constructor(props) {
     super(props);
     this.renderScene = this.renderScene.bind(this);
