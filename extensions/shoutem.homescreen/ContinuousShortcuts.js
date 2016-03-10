@@ -2,7 +2,8 @@ import React, {
   Component,
   ListView,
   StyleSheet,
-} from 'react-native';
+}
+from 'react-native';
 
 import ConfigurationReader from './ConfigurationReader';
 import Shortcut from './Shortcut';
@@ -24,10 +25,24 @@ const shortcutsData = configurationReader.getShortcuts().map((shortcut) => {
 });
 
 const styles = StyleSheet.create({
-  verticalAlignment: {
+  list: {
+    flex: 1,
+  },
+  contentContainer: {
     flex: 1,
   },
 });
+
+function getStyleForLayoutPosition(layoutPosition) {
+  return {
+    list: {
+      alignSelf: layoutPosition.verticalAlignment,
+    },
+    contentContainer: {
+      alignSelf: layoutPosition.horizontalAlignment,
+    },
+  };
+}
 
 export default class ContinuousShortcuts extends Component {
   constructor(props) {
@@ -36,22 +51,22 @@ export default class ContinuousShortcuts extends Component {
 
     this.state = {
       dataSource: ds.cloneWithRows(shortcutsData),
-      style: this.props.layoutPositionStyle,
+      style: getStyleForLayoutPosition(this.props.layoutPosition),
     };
   }
 
   _renderListItem(data) {
-    return <Shortcut shortcutData={data} />;
+    return <Shortcut shortcutData = { data } />;
   }
 
   render() {
     return (
-      <ListView style={[styles.verticalAlignment, this.state.style.verticalAlignment]}
-        contentContainerStyle={[styles.horizontalAlignment, this.state.style.horizontalAlignment]}
+      <ListView style={[styles.list, this.state.style.list]}
+        contentContainerStyle={[styles.contentContainer, this.state.style.contentContainer]}
         dataSource={this.state.dataSource}
         renderRow={this._renderListItem}
-      />
-    );
+      / >
+  );
   }
 }
 

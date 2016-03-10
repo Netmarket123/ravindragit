@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
     flexDirection: 'column',
   },
   row: {
@@ -35,6 +34,14 @@ function splitIntoPages(items, pageSize) {
   }, [[]]);
 }
 
+function getStyleForLayoutPosition(layoutPosition) {
+  return {
+    container: {
+      alignItems: layoutPosition.horizontalAlignment,
+    },
+  };
+}
+
 export default class ShortcutsGrid extends Component {
   constructor(props) {
     super(props);
@@ -47,15 +54,12 @@ export default class ShortcutsGrid extends Component {
     this.state = {
       dataSources: rows.map((row) => ds.cloneWithRows(row)),
       dimensions: this.props.dimensions,
-      style: { container: {
-        alignItems: props.layoutSyle.horizontalAlignment.alignSelf
-      }, row: {} },
+      style: getStyleForLayoutPosition(this.props.layoutPosition),
     };
 
     if (this.state.dimensions.cols === 1) {
       this.state.style.row.flexDirection = 'column';
     }
-
 
     this._renderRow = this._renderRow.bind(this);
   }

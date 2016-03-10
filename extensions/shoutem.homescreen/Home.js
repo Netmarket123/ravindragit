@@ -24,78 +24,42 @@ const styles = StyleSheet.create({
   },
 });
 
-const layoutPositionStyles = {
+const layoutAlignments = {
   topLeft: {
-    verticalAlignment: {
-      alignSelf: 'flex-start',
-    },
-    horizontalAlignment: {
-      alignSelf: 'flex-start',
-    },
+    verticalAlignment: 'flex-start',
+    horizontalAlignment: 'flex-start',
   },
   topCenter: {
-    verticalAlignment: {
-      alignSelf: 'flex-start',
-    },
-    horizontalAlignment: {
-      alignSelf: 'center',
-    },
+    verticalAlignment: 'flex-start',
+    horizontalAlignment: 'center',
   },
   topRight: {
-    verticalAlignment: {
-      alignSelf: 'flex-start',
-    },
-    horizontalAlignment: {
-      alignSelf: 'flex-end',
-    },
+    verticalAlignment: 'flex-start',
+    horizontalAlignment: 'flex-end',
   },
   middleLeft: {
-    verticalAlignment: {
-      alignSelf: 'center',
-    },
-    horizontalAlignment: {
-      alignSelf: 'flex-start',
-    },
+    verticalAlignment: 'center',
+    horizontalAlignment: 'flex-start',
   },
   middleCenter: {
-    verticalAlignment: {
-      alignSelf: 'center',
-    },
-    horizontalAlignment: {
-      alignSelf: 'center',
-    },
+    verticalAlignment: 'center',
+    horizontalAlignment: 'center',
   },
   middleRight: {
-    verticalAlignment: {
-      alignSelf: 'center',
-    },
-    horizontalAlignment: {
-      alignSelf: 'flex-end',
-    },
+    verticalAlignment: 'center',
+    horizontalAlignment: 'flex-end',
   },
   bottomLeft: {
-    verticalAlignment: {
-      alignSelf: 'flex-end',
-    },
-    horizontalAlignment: {
-      alignSelf: 'flex-start',
-    },
+    verticalAlignment: 'flex-end',
+    horizontalAlignment: 'flex-start',
   },
   bottomCenter: {
-    verticalAlignment: {
-      alignSelf: 'flex-end',
-    },
-    horizontalAlignment: {
-      alignSelf: 'center',
-    },
+    verticalAlignment: 'flex-end',
+    horizontalAlignment: 'center',
   },
   bottomRight: {
-    verticalAlignment: {
-      alignSelf: 'flex-end',
-    },
-    horizontalAlignment: {
-      alignSelf: 'flex-end',
-    },
+    verticalAlignment: 'flex-end',
+    horizontalAlignment: 'flex-end',
   },
 };
 
@@ -107,7 +71,7 @@ function getBackgroundImage() {
 }
 
 function getLayoutPosition() {
-  return layoutPositionStyles[configurationReader.getLayoutPosition()];
+  return layoutAlignments[configurationReader.getLayoutPosition()];
 }
 
 export default class Home extends Component {
@@ -124,12 +88,10 @@ export default class Home extends Component {
 
   renderShortcuts() {
     if (this.state.scrollType === 'continuous') {
-      return (
-        <ContinuousShortcuts layoutPositionStyle={getLayoutPosition()}/>
-      );
+      return <ContinuousShortcuts layoutPosition={getLayoutPosition()}/> ;
     }
 
-    return <PagedShortcuts layoutPositionStyle={getLayoutPosition()}/>;
+    return <PagedShortcuts layoutPosition={getLayoutPosition()}/>;
   }
 
   render() {

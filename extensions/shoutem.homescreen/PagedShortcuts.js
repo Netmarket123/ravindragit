@@ -51,6 +51,13 @@ function splitIntoPages(items, pageSize) {
   }, [[]]);
 }
 
+function getStyleForLayoutPosition(layoutPosition) {
+  return {
+    container: {
+      alignSelf: layoutPosition.verticalAlignment,
+    },
+  };
+}
 
 export default class Shortcuts extends Component {
   constructor(props) {
@@ -62,6 +69,7 @@ export default class Shortcuts extends Component {
 
     this.state = {
       pagingDataSource: pagerDs.cloneWithPages(pages),
+      style: getStyleForLayoutPosition(this.props.layoutPosition),
     };
 
     this.renderPage = this.renderPage.bind(this);
@@ -71,14 +79,14 @@ export default class Shortcuts extends Component {
     return (
       <ShortcutsGrid gridItems={data}
         dimensions={pageDimensions}
-        layoutSyle={this.props.layoutPositionStyle}
+        layoutPosition={this.props.layoutPosition}
       />
     );
   }
 
   render() {
     return (
-      <View style={[styles.container, this.props.layoutPositionStyle.verticalAlignment]}>
+      <View style={[styles.container, this.state.style.container]}>
         <ViewPager
           dataSource={this.state.pagingDataSource}
           renderPage={this.renderPage}
