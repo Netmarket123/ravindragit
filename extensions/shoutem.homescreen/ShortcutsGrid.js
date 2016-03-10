@@ -7,6 +7,18 @@ import React, {
 
 import Shortcut from './Shortcut';
 
+const propTypes = {
+  layoutPosition: React.PropTypes.shape({
+    verticalAlignment: React.PropTypes.string,
+    horizontalAlignment: React.PropTypes.string,
+  }),
+  dimensions: React.PropTypes.shape({
+    cols: React.PropTypes.number,
+    rows: React.PropTypes.number,
+  }),
+  gridItems: React.PropTypes.array,
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -86,4 +98,6 @@ export default class ShortcutsGrid extends Component {
     );
   }
 }
+
+ShortcutsGrid.propTypes = propTypes;
 

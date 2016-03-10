@@ -6,7 +6,35 @@ import React, {
   Image,
   Dimensions,
   PixelRatio,
+  PropTypes,
 } from 'react-native';
+
+const propTypes = {
+  shortcutData: PropTypes.shape({
+    uri: PropTypes.string,
+    config: PropTypes.shape({
+      layoutDimension: PropTypes.shape({
+        width: PropTypes.number,
+        height: PropTypes.number,
+      }),
+      scalingStrategy: PropTypes.oneOf(['horizontal', 'vertical']),
+      size: PropTypes.shape({
+        width: PropTypes.number,
+        height: PropTypes.number,
+      }),
+      iconSize: PropTypes.shape({
+        width: PropTypes.number,
+        height: PropTypes.number,
+      }),
+      margin: PropTypes.shape({
+        top: PropTypes.number,
+        left: PropTypes.number,
+        bottom: PropTypes.number,
+        right: PropTypes.number,
+      }),
+    }),
+  }),
+};
 
 const defaultStyles = {
   shortcut: {
@@ -66,7 +94,7 @@ function getWindowDimensionsInPixels() {
   };
 }
 
-function getShortcutButtonMarginStyle(margin) {
+function getMarginStyle(margin) {
   return {
     marginTop: margin.top,
     marginBottom: margin.bottom,
@@ -79,13 +107,12 @@ export function resizeLayout(configuration, windowDimensionsInPixels) {
   const {
       layoutDimension,
       scalingStrategy,
-      size,
       iconSize,
       margin,
     } = configuration;
 
   const ratio = getResizeRatio(scalingStrategy, windowDimensionsInPixels, layoutDimension);
-  const shortcutStyle = Object.assign({}, defaultStyles.shortcut, getShortcutButtonMarginStyle(margin));
+  const shortcutStyle = Object.assign({}, defaultStyles.shortcut, getMarginStyle(margin));
   const buttonIconStyle = Object.assign({}, defaultStyles.buttonIcon, iconSize);
 
   const shortcut = getScaledObject(shortcutStyle, ratio);
@@ -107,14 +134,14 @@ export default class Shortcut extends Component {
   }
 
   render() {
-    const {shortcut, buttonIcon} = this.state.scaledStyle;
+    const { shortcut, buttonIcon } = this.state.scaledStyle;
 
     return (
       <TouchableHighlight>
-        <View style={ [styles.shortcut, shortcut] }>
+        <View style={[styles.shortcut, shortcut]}>
           <Image
-            source={ this.props.shortcutData }
-            style={ [styles.buttonIcon, buttonIcon] }
+            source={this.props.shortcutData}
+            style={[styles.buttonIcon, buttonIcon]}
             resizeMode={Image.resizeMode.stretch}
           />
         </View>
@@ -123,3 +150,4 @@ export default class Shortcut extends Component {
   }
 }
 
+Shortcut.propTypes = propTypes;

@@ -2,11 +2,18 @@ import React, {
   Component,
   ListView,
   StyleSheet,
-}
-from 'react-native';
+  PropTypes,
+} from 'react-native';
 
 import configurationProvider from './ConfigurationProvider';
 import Shortcut from './Shortcut';
+
+const propTypes = {
+  layoutPosition: PropTypes.shape({
+    verticalAlignment: PropTypes.string,
+    horizontalAlignment: PropTypes.string,
+  }),
+};
 
 const buttonConfig = {
   layoutDimension: configurationProvider.getLayoutDimension(),
@@ -16,12 +23,10 @@ const buttonConfig = {
   margin: configurationProvider.getButtonMargin(),
 };
 
-const shortcutsData = configurationProvider.getShortcuts().map((shortcut) => {
-  return {
-    uri: shortcut.buttonImageUrl,
-    config: buttonConfig,
-  };
-});
+const shortcutsData = configurationProvider.getShortcuts().map(shortcut => ({
+  uri: shortcut.buttonImageUrl,
+  config: buttonConfig,
+}));
 
 const styles = StyleSheet.create({
   list: {
@@ -55,7 +60,7 @@ export default class ContinuousShortcuts extends Component {
   }
 
   _renderListItem(data) {
-    return <Shortcut shortcutData = { data } />;
+    return <Shortcut shortcutData={data} />;
   }
 
   render() {
@@ -64,8 +69,10 @@ export default class ContinuousShortcuts extends Component {
         contentContainerStyle={[styles.contentContainer, this.state.style.contentContainer]}
         dataSource={this.state.dataSource}
         renderRow={this._renderListItem}
-      / >
-  );
+      />
+    );
   }
 }
+
+ContinuousShortcuts.propTypes = propTypes;
 

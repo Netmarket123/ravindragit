@@ -2,11 +2,19 @@ import React, {
   Component,
   View,
   StyleSheet,
+  PropTypes,
 } from 'react-native';
 
 import ViewPager from 'react-native-viewpager';
 import ShortcutsGrid from './ShortcutsGrid';
 import configurationProvider from './ConfigurationProvider';
+
+const propTypes = {
+  layoutPosition: PropTypes.shape({
+    verticalAlignment: PropTypes.string,
+    horizontalAlignment: PropTypes.string,
+  }),
+};
 
 const buttonConfig = {
   layoutDimension: configurationProvider.getLayoutDimension(),
@@ -22,12 +30,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const shortcutsData = configurationProvider.getShortcuts().map((shortcut) => {
-  return {
-    uri: shortcut.buttonImageUrl,
-    config: buttonConfig,
-  };
-});
+const shortcutsData = configurationProvider.getShortcuts().map(shortcut => ({
+  uri: shortcut.buttonImageUrl,
+  config: buttonConfig,
+}));
 
 const pageDimensions = {
   rows: configurationProvider.getRowCount(),
@@ -58,7 +64,7 @@ function getStyleForLayoutPosition(layoutPosition) {
   };
 }
 
-export default class Shortcuts extends Component {
+export default class PagedShortcuts extends Component {
   constructor(props) {
     super(props);
     const pagerDs = new ViewPager.DataSource({ pageHasChanged: (p1, p2) => p1 !== p2 });
@@ -94,4 +100,6 @@ export default class Shortcuts extends Component {
     );
   }
 }
+
+PagedShortcuts.propTypes = propTypes;
 
