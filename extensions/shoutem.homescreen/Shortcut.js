@@ -9,29 +9,29 @@ import React, {
   PropTypes,
 } from 'react-native';
 
+const dimensionsPropType = PropTypes.shape({
+  width: PropTypes.number,
+  height: PropTypes.number,
+});
+
+const marginPropType = PropTypes.shape({
+  top: PropTypes.number,
+  left: PropTypes.number,
+  bottom: PropTypes.number,
+  right: PropTypes.number,
+});
+
+const configPropType = PropTypes.shape({
+  layoutDimension: dimensionsPropType,
+  scalingStrategy: PropTypes.oneOf(['horizontal', 'vertical']),
+  size: dimensionsPropType,
+  iconSize: dimensionsPropType,
+  margin: marginPropType,
+});
+
 const propTypes = {
   shortcutData: PropTypes.shape({
     uri: PropTypes.string,
-    config: PropTypes.shape({
-      layoutDimension: PropTypes.shape({
-        width: PropTypes.number,
-        height: PropTypes.number,
-      }),
-      scalingStrategy: PropTypes.oneOf(['horizontal', 'vertical']),
-      size: PropTypes.shape({
-        width: PropTypes.number,
-        height: PropTypes.number,
-      }),
-      iconSize: PropTypes.shape({
-        width: PropTypes.number,
-        height: PropTypes.number,
-      }),
-      margin: PropTypes.shape({
-        top: PropTypes.number,
-        left: PropTypes.number,
-        bottom: PropTypes.number,
-        right: PropTypes.number,
-      }),
     }),
   }),
 };
