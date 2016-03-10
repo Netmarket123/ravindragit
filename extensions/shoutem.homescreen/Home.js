@@ -7,7 +7,7 @@ import React, {
 
 import PagedShortcuts from './PagedShortcuts.js';
 import ContinuousShortcuts from './ContinuousShortcuts';
-import ConfigurationReader from './ConfigurationReader';
+import configurationProvider from './ConfigurationProvider';
 
 const styles = StyleSheet.create({
   backgroundImage: {
@@ -63,15 +63,13 @@ const layoutAlignments = {
   },
 };
 
-const configurationReader = new ConfigurationReader();
-
 function getBackgroundImage() {
-  return configurationReader.getHomeScreenBackgroundImageWide() ||
-    configurationReader.getHomeScreenBackgroundImage();
+  return configurationProvider.getHomeScreenBackgroundImageWide() ||
+    configurationProvider.getHomeScreenBackgroundImage();
 }
 
 function getLayoutPosition() {
-  return layoutAlignments[configurationReader.getLayoutPosition()];
+  return layoutAlignments[configurationProvider.getLayoutPosition()];
 }
 
 export default class Home extends Component {
@@ -82,7 +80,7 @@ export default class Home extends Component {
       backgroundImage: {
         uri: getBackgroundImage(),
       },
-      scrollType: configurationReader.getScrollType(),
+      scrollType: configurationProvider.getScrollType(),
     };
   }
 

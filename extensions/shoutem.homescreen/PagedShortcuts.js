@@ -6,15 +6,14 @@ import React, {
 
 import ViewPager from 'react-native-viewpager';
 import ShortcutsGrid from './ShortcutsGrid';
-import ConfigurationReader from './ConfigurationReader';
+import configurationProvider from './ConfigurationProvider';
 
-const configurationReader = new ConfigurationReader();
 const buttonConfig = {
-  layoutDimension: configurationReader.getLayoutDimension(),
-  scalingStrategy: configurationReader.getScalingStrategy(),
-  size: configurationReader.getButtonSize(),
-  iconSize: configurationReader.getButtonIconSize(),
-  margin: configurationReader.getButtonMargin(),
+  layoutDimension: configurationProvider.getLayoutDimension(),
+  scalingStrategy: configurationProvider.getScalingStrategy(),
+  size: configurationProvider.getButtonSize(),
+  iconSize: configurationProvider.getButtonIconSize(),
+  margin: configurationProvider.getButtonMargin(),
 };
 
 const styles = StyleSheet.create({
@@ -23,7 +22,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const shortcutsData = configurationReader.getShortcuts().map((shortcut) => {
+const shortcutsData = configurationProvider.getShortcuts().map((shortcut) => {
   return {
     uri: shortcut.buttonImageUrl,
     config: buttonConfig,
@@ -31,8 +30,8 @@ const shortcutsData = configurationReader.getShortcuts().map((shortcut) => {
 });
 
 const pageDimensions = {
-  rows: configurationReader.getRowCount(),
-  cols: configurationReader.getColumnCount(),
+  rows: configurationProvider.getRowCount(),
+  cols: configurationProvider.getColumnCount(),
 };
 
 // TODO(Vladimir) - extract to mixin/decorator
