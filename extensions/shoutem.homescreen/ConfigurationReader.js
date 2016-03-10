@@ -30,7 +30,7 @@ export default class ConfigurationReader {
   }
 
   getButtonMargin() {
-    return this.configuration.layout.buttonLayout.margin.top;
+    return this.configuration.layout.buttonLayout.margin;
   }
 
   getColumnCount() {
@@ -59,5 +59,9 @@ export default class ConfigurationReader {
 
   getLayoutPosition() {
     return this.configuration.layout.layoutPosition;
+  }
+
+  getLayoutMargin() {
+    return this.configuration.layout.margin;
   }
 }

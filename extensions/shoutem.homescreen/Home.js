@@ -72,6 +72,16 @@ function getLayoutPosition() {
   return layoutAlignments[configurationProvider.getLayoutPosition()];
 }
 
+// TODO(Vladimir) - scale according to screen size
+function getLayoutMarginStyle(margin) {
+  return {
+    marginTop: margin.top,
+    marginBottom: margin.bottom,
+    marginLeft: margin.left,
+    marginRight: margin.right,
+  };
+}
+
 export default class Home extends Component {
   constructor() {
     super();
@@ -81,12 +91,13 @@ export default class Home extends Component {
         uri: getBackgroundImage(),
       },
       scrollType: configurationProvider.getScrollType(),
+      layoutMargin: getLayoutMarginStyle(configurationProvider.getLayoutMargin()),
     };
   }
 
   renderShortcuts() {
     if (this.state.scrollType === 'continuous') {
-      return <ContinuousShortcuts layoutPosition={getLayoutPosition()}/> ;
+      return <ContinuousShortcuts layoutPosition={getLayoutPosition()}/>;
     }
 
     return <PagedShortcuts layoutPosition={getLayoutPosition()}/>;
@@ -95,7 +106,7 @@ export default class Home extends Component {
   render() {
     return (
       <Image source={ this.state.backgroundImage } style={styles.backgroundImage}>
-        <View style={styles.content}>
+        <View style={[styles.content, this.state.layoutMargin]}>
           {this.renderShortcuts()}
         </View>
       </Image>

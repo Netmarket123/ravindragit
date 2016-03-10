@@ -11,12 +11,7 @@ import React, {
 const defaultStyles = {
   shortcut: {
     justifyContent: 'center',
-    margin: 10,
     alignItems: 'center',
-  },
-  buttonIcon: {
-    width: 150,
-    height: 150,
   },
 };
 
@@ -27,7 +22,8 @@ function getScaledValue(value, ratio) {
     return value;
   }
 
-  return Math.floor(value * ratio);
+  // TODO(Vladimir) - calculate this number for all devices
+  return Math.floor(value * ratio) / 1.2;
 }
 
 function getScaledObject(object, ratio) {
@@ -46,8 +42,8 @@ function getVerticalResizeRatio(windowDimensions, layoutDimensions) {
   return windowDimensions.height / layoutDimensions.height;
 }
 
-function getHorizontalResizeRation(windowDimensions, layoutDimensions) {
-  return ratio = windowDimensions.width / layoutDimensions.width;
+function getHorizontalResizeRatio(windowDimensions, layoutDimensions) {
+  return windowDimensions.width / layoutDimensions.width;
 }
 
 function getResizeRatio(scalingStrategy, windowDimensions, layoutDimensions) {
@@ -55,7 +51,7 @@ function getResizeRatio(scalingStrategy, windowDimensions, layoutDimensions) {
     return getVerticalResizeRatio(windowDimensions, layoutDimensions);
   }
 
-  return getHorizontalResizeRation(windowDimensions, layoutDimensions);
+  return getHorizontalResizeRatio(windowDimensions, layoutDimensions);
 }
 
 function getWindowDimensionsInPixels() {
@@ -70,6 +66,15 @@ function getWindowDimensionsInPixels() {
   };
 }
 
+function getShortcutButtonMarginStyle(margin) {
+  return {
+    marginTop: margin.top,
+    marginBottom: margin.bottom,
+    marginLeft: margin.left,
+    marginRight: margin.right,
+  };
+}
+
 export function resizeLayout(configuration, windowDimensionsInPixels) {
   const {
       layoutDimension,
@@ -80,10 +85,11 @@ export function resizeLayout(configuration, windowDimensionsInPixels) {
     } = configuration;
 
   const ratio = getResizeRatio(scalingStrategy, windowDimensionsInPixels, layoutDimension);
+  const shortcutStyle = Object.assign({}, defaultStyles.shortcut, getShortcutButtonMarginStyle(margin));
+  const buttonIconStyle = Object.assign({}, defaultStyles.buttonIcon, iconSize);
 
-  const style = Object.assign({}, defaultStyles);
-  const shortcut = getScaledObject(style.shortcut, ratio);
-  const buttonIcon = getScaledObject(style.buttonIcon, ratio);
+  const shortcut = getScaledObject(shortcutStyle, ratio);
+  const buttonIcon = getScaledObject(buttonIconStyle, ratio);
 
   return {
     shortcut,

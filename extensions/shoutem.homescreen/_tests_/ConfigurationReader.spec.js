@@ -230,7 +230,13 @@ describe('ConfigurationReader', () => {
   describe('getButtonMargin', () => {
     it('returns the button margin', () => {
       const actualMargin = reader.getButtonMargin();
-      const expectedMargin = 10;
+      const expectedMargin = {
+        top: 10,
+        left: 10,
+        bottom: 10,
+        right: 10,
+      };
+
       assert.deepEqual(actualMargin, expectedMargin, 'button margin is not correct');
     });
   });
@@ -289,6 +295,20 @@ describe('ConfigurationReader', () => {
       const actualPosition = reader.getLayoutPosition();
       const expectedPosition = 'bottomCenter';
       assert.deepEqual(actualPosition, expectedPosition, 'layoutPosition is not correct');
+    });
+  });
+
+  describe('getLayoutmargin', () => {
+    it('returns the layout margin', () => {
+      const actualMargin = reader.getLayoutMargin();
+      const expectedMargin = {
+        top: 10,
+        left: 10,
+        bottom: 20,
+        right: 10,
+      };
+
+      assert.deepEqual(actualMargin, expectedMargin, 'layout margin is not correct');
     });
   });
 });
