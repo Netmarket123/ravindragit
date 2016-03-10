@@ -1,8 +1,5 @@
 import React, {
-  Component,
-  Text,
 } from 'react-native';
-import { connect } from 'react-redux';
 
 import { assert } from 'chai';
 import sinon from 'sinon';
