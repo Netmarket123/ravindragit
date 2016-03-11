@@ -7,7 +7,7 @@ import GanetListScreen from './components/GanetListScreen';
 import ListScreen from './components/ListScreen';
 import ganetItems from './mocks/ganetItems';
 import items from './mocks/items';
-import customTheme from './mocks/theme';
+import customTheme from './theme/ShoutEmUI';
 
 function reducer(state = { }) {
   return state;
