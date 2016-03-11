@@ -8,6 +8,7 @@ import React, {
 import PagedShortcuts from './PagedShortcuts.js';
 import ContinuousShortcuts from './ContinuousShortcuts';
 import configurationProvider from './ConfigurationProvider';
+import { connect } from 'react-redux';
 
 const styles = StyleSheet.create({
   backgroundImage: {
@@ -82,7 +83,7 @@ function getLayoutMarginStyle(margin) {
   };
 }
 
-export default class Home extends Component {
+class Home extends Component {
   constructor() {
     super();
 
@@ -114,3 +115,4 @@ export default class Home extends Component {
   }
 }
 
+export default connect()(Home);
