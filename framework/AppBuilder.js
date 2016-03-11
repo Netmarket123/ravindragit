@@ -186,11 +186,11 @@ function extractExtensionReducers(extensions) {
 function createDevelopmentReduxMiddleware() {
   const middleware = [];
 
-  const createLogger = require('redux-logger');
-  const logger = createLogger({
-    collapsed: true,
-  });
-  middleware.push(logger);
+  //const createLogger = require('redux-logger');
+//  const logger = createLogger({
+//    collapsed: true,
+//  });
+//  middleware.push(logger);
 
   return middleware;
 }
