@@ -9,6 +9,12 @@ import React, {
   PropTypes,
 } from 'react-native';
 
+import {
+  navigateTo,
+} from 'shoutem/navigation';
+
+import { connect } from 'react-redux';
+
 const dimensionsPropType = PropTypes.shape({
   width: PropTypes.number,
   height: PropTypes.number,
@@ -123,7 +129,7 @@ export function resizeLayout(configuration, windowDimensionsInPixels) {
   };
 }
 
-export default class Shortcut extends Component {
+class Shortcut extends Component {
   constructor(props) {
     super(props);
     const windowDimensionsInPixels = getWindowDimensionsInPixels();
@@ -132,11 +138,30 @@ export default class Shortcut extends Component {
     this.state = { scaledStyle };
   }
 
+  navigateToScreen(screen, modal) {
+    const { dispatch } = this.props;
+    const nextScreenName = `screen${screen}`;
+
+    let route = {
+      screen: nextScreenName,
+      props: {
+        message: `Screen: ${screen}`,
+      },
+    };
+
+    if (modal) {
+      route = Object.assign(route, {
+        sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
+      });
+    }
+    dispatch(navigateTo(route));
+  }
+
   render() {
     const { shortcut, buttonIcon } = this.state.scaledStyle;
 
     return (
-      <TouchableHighlight>
+      <TouchableHighlight onPress={() => this.navigateToScreen(1)}>
         <View style={[styles.shortcut, shortcut]}>
           <Image
             source={this.props.shortcutData}
@@ -150,3 +175,5 @@ export default class Shortcut extends Component {
 }
 
 Shortcut.propTypes = propTypes;
+
+export default connect()(Shortcut);
