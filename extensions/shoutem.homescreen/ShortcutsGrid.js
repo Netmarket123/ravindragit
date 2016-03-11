@@ -69,10 +69,6 @@ export default class ShortcutsGrid extends Component {
       style: getStyleForLayoutPosition(this.props.layoutPosition),
     };
 
-    if (this.state.dimensions.cols === 1) {
-      this.state.style.row.flexDirection = 'column';
-    }
-
     this._renderRow = this._renderRow.bind(this);
   }
 
