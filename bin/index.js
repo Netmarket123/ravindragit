@@ -5,13 +5,14 @@ import {
 import { AppBuilder } from 'shoutem';
 
 import { ExampleScreen } from 'shoutem.test';
+import { Home } from 'shoutem.homescreen';
 
 const App = new AppBuilder()
   .setExtensions({
     'shoutem.test': {},
   })
   .setScreens({
-    initialScreen: ExampleScreen,
+    initialScreen: Home,
     screen1: ExampleScreen,
     screen2: ExampleScreen,
     screen3: ExampleScreen,
