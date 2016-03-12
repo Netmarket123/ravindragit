@@ -6,6 +6,9 @@ import { AppBuilder } from 'shoutem';
 
 import { ExampleScreen } from 'shoutem.test';
 import { Home } from 'shoutem.homescreen';
+import GanetListScreen from 'shoutem.themeExamples/components/GanetListScreen';
+import ListScreen from 'shoutem.themeExamples/components/ListScreen';
+import items from 'shoutem.themeExamples/mocks/items';
 
 const App = new AppBuilder()
   .setExtensions({
@@ -13,7 +16,7 @@ const App = new AppBuilder()
   })
   .setScreens({
     initialScreen: Home,
-    screen1: ExampleScreen,
+    screen1: GanetListScreen,
     screen2: ExampleScreen,
     screen3: ExampleScreen,
   })

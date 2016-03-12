@@ -15,6 +15,8 @@ import {
 
 import { connect } from 'react-redux';
 
+import ganetItems from 'shoutem.themeExamples/mocks/ganetItems';
+
 const dimensionsPropType = PropTypes.shape({
   width: PropTypes.number,
   height: PropTypes.number,
@@ -145,7 +147,8 @@ class Shortcut extends Component {
     let route = {
       screen: nextScreenName,
       props: {
-        message: `Screen: ${screen}`,
+        items: ganetItems,
+        featureFirst: true,
       },
     };
 

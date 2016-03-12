@@ -4,7 +4,7 @@ import React, {
   Component,
   Image,
 } from 'react-native';
-import { connectStyle } from '../theme/ThemeHelpers';
+import { connectStyle } from 'shoutem/theme/ThemeHelpers';
 import Button from './Button';
 
 class MediumListItem extends Component {

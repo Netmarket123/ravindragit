@@ -9,6 +9,12 @@ import thunk from 'redux-thunk';
 import { ScreenNavigator, ROOT_NAVIGATOR_NAME } from './navigation';
 import coreReducer from './coreReducer';
 
+import Theme from './theme/Theme';
+import StyleProvider from './theme/StyleProvider.jsx';
+import customTheme from 'shoutem.themeExamples/theme/ShoutEmUI';
+
+const theme = new Theme(customTheme);
+
 /**
  * Calls the lifecycle function with the given name on all
  * extensions that export this function.
@@ -85,9 +91,11 @@ function createApplication(appContext) {
       );
 
       return (
-        <Provider store={appContext.store}>
-            {content}
-        </Provider>
+        <StyleProvider theme={theme}>
+          <Provider store={appContext.store}>
+              {content}
+          </Provider>
+        </StyleProvider>
       );
     }
   };

@@ -2,7 +2,15 @@ import React, {
   View,
   Image,
   StyleSheet,
+  TouchableOpacity,
+  Text,
 } from 'react-native';
+
+import { connect } from 'react-redux';
+
+import {
+  navigateBack,
+} from 'shoutem/navigation';
 
 const styles = StyleSheet.create({
   backgroundImage: {
@@ -16,12 +24,12 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     position: 'absolute',
-    backgroundColor: 'red',
+    backgroundColor: 'white',
   },
   componentsContainer: {
     flex: 1,
     alignItems: 'flex-end',
-    backgroundColor: 'yellow',
+    backgroundColor: 'white',
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -56,13 +64,22 @@ class NavigationBar extends React.Component {
   setCenterComponent(component) {
     this.centerComponent = component;
   }
+  
+  navigateBack() {
+    const { dispatch } = this.props;
+    dispatch(navigateBack());
+  }
 
   render() {
     return (
       <View style={[styles.container, this.style]}>
         <Image source={this.backgroundImage} style={[styles.backgroundImage, this.style]}>
           <View style={styles.componentsContainer}>
-            <View style={styles.component}>{this.leftComponent}</View>
+            <View style={styles.component}><TouchableOpacity
+          style={styles.button}
+          onPress={() => this.navigateBack()}>
+          <Text>Back</Text>
+        </TouchableOpacity></View>
             <View style={styles.component}>{this.centerComponent}</View>
             <View style={styles.component}>{this.rightComponent}</View>
           </View>
@@ -72,4 +89,4 @@ class NavigationBar extends React.Component {
   }
 }
 
-export default NavigationBar;
+export default connect()(NavigationBar);

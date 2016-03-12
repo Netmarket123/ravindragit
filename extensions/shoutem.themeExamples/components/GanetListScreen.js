@@ -2,9 +2,10 @@ import React, {
   View,
   ListView,
 } from 'react-native';
-import { connectStyle } from '../theme/ThemeHelpers';
+import { connectStyle } from 'shoutem/theme/ThemeHelpers';
 import LargeGridItem from './LargeGridItem';
 import MediumListItem from './MediumListItem';
+import { NavigationBar } from 'shoutem.ui';
 
 class GanetListScreen extends React.Component {
   constructor(props, context) {
@@ -85,8 +86,9 @@ class GanetListScreen extends React.Component {
     this.listCounter = 0;
     return (
       <View style={style.screen}>
+      <NavigationBar />
         <ListView
-          style={style.list}
+          style={[style.list, { marginTop: 70 }]}
           dataSource={dataSourceItems}
           renderRow={this.thisRenderRow}
         />

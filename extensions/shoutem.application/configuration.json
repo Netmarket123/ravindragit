@@ -120,7 +120,7 @@
             "scrollDirection": "horizontal",
             "scrollType": "paged",
             "rowCount": 2,
-            "columnCount": 3,
+            "columnCount": 1,
             "boundingBox": {
                 "origin": {
                     "x": 1,

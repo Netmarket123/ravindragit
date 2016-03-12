@@ -5,7 +5,7 @@ import React, {
   Component,
   Image,
 } from 'react-native';
-import { connectStyle } from '../theme/ThemeHelpers';
+import { connectStyle } from 'shoutem/theme/ThemeHelpers';
 
 export default class Button extends Component {
   render() {

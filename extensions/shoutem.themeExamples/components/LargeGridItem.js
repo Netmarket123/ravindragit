@@ -5,7 +5,7 @@ import React, {
 } from 'react-native';
 import InfoFields from './InfoFields';
 import Button from './Button';
-import { connectStyle } from '../theme/ThemeHelpers';
+import { connectStyle } from 'shoutem/theme/ThemeHelpers';
 
 class LargeGridItem extends React.Component {
   infoFieldsStyle() {

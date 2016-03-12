@@ -2,7 +2,7 @@ import React, {
   View,
   ListView,
 } from 'react-native';
-import { connectStyle } from '../theme/ThemeHelpers';
+import { connectStyle } from 'shoutem/theme/ThemeHelpers';
 import LargeGridItemExtended from './LargeGridItem';
 import MediumListItem from './MediumListItem';
 
