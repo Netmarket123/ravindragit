@@ -55,6 +55,8 @@ class ExampleScreen extends Component {
   }
 
   render() {
+    this.props.navigationBar.setTitle(this.props.message);
+
     return (
       <View style={styles.content}>
         <Text>{this.props.message}</Text>
@@ -89,5 +91,6 @@ class ExampleScreen extends Component {
 ExampleScreen.propTypes = {
   message: React.PropTypes.string,
   dispatch: React.PropTypes.func,
+  navigationBar: React.PropTypes.object,
 };
 export default connect()(ExampleScreen);
