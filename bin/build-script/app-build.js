@@ -59,7 +59,7 @@ class AppBuild {
   prepareExtensions() {
     this.configuration = this.getConfiguration(this.configurationFilePath);
     const extensions = this.configuration.extensions;
-    const localExtensions = getLocalExtensions(this.extensionsDir, this.frameworkDir);
+    const localExtensions = getLocalExtensions(this.workingDirectories);
     const extensionsJsPath = this.extensionsJsPath;
     const extensionsInstaller = new ExtensionsInstaller(
       localExtensions,

@@ -3,25 +3,18 @@
 const path = require('path');
 const shelljs = require('shelljs');
 const fs = require('fs');
-const fse = require('fs-extra');
 const rimraf = require('rimraf');
 const spawn = require('child_process').spawn;
 
 function installLocalExtension(extension) {
-  const packageName = extension.type;
+  const packageName = extension.name;
   const packagePath = extension.path;
   const nodeModules = 'node_modules';
   const installedExtensionPath = path.join(nodeModules, packageName);
-  console.log(`Cleaning node_modules/${packageName}`);
-  rimraf(installedExtensionPath, () => {
-    console.log(`Copying ${packageName}`);
-    fse.copy(packagePath, installedExtensionPath, (error) => {
-      if (error) {
-        console.error(error);
-      }
-
-      return;
-    });
+  console.log(`Installing ${packageName}`);
+  shelljs.exec(`npm --cache-min 9999999 install file:${packagePath}`);
+  rimraf(path.join(installedExtensionPath, nodeModules), () => {
+    console.log(`${packageName} installed`);
   });
 }
 
@@ -41,7 +34,7 @@ class ExtensionsInstaller {
     if (extensions) {
       extensions.forEach((extension) => {
         const notAvailableLocally = localExtensions.some((localExtension) =>
-          localExtension.type !== extension.type
+          localExtension.name !== extension.name
         );
 
         if (notAvailableLocally) {
@@ -63,8 +56,8 @@ class ExtensionsInstaller {
     child.unref();
 
     this.extensionsToInstall.forEach((extension) => {
-      console.log(`installing ${extension.type}`);
-      shelljs.exec(`npm install ${extension.type}`);
+      console.log(`installing ${extension.name}`);
+      shelljs.exec(`npm install ${extension.name}`);
     });
   }
 
@@ -73,7 +66,7 @@ class ExtensionsInstaller {
     const extensionsMapping = [];
 
     extensions.forEach((extension) => {
-      extensionsMapping.push(`'${extension.type}' : require('${extension.type}')`);
+      extensionsMapping.push(`'${extension.name}' : require('${extension.name}')`);
     });
 
     const extensionsString = extensionsMapping.join(',\n\t');
