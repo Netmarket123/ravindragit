@@ -8,6 +8,7 @@ import React, {
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import Symbol from 'es6-symbol/polyfill';
 
 const styles = StyleSheet.create({
   content: {
