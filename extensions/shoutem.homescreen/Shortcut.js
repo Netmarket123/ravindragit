@@ -32,7 +32,7 @@ const configPropType = PropTypes.shape({
 const propTypes = {
   shortcutData: PropTypes.shape({
     uri: PropTypes.string,
-    }),
+    config: configPropType,
   }),
 };
 
