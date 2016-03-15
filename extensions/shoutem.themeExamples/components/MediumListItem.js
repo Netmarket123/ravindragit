@@ -51,7 +51,7 @@ class MediumListItem extends Component {
             <Text style={style.rightExtra}>{rightExtra}</Text>
           </View>
         </View>
-        <Button style={this.buttonStyle()} icon={buttonIcon} />
+        <Button style={style.mediumListItemButton} icon={buttonIcon} />
       </View>
     );
   }
@@ -113,12 +113,11 @@ const style = {
   rightExtra: {
     fontSize: 15,
   },
-  buttonContainer: {
-    alignSelf: 'stretch',
+  mediumListItemButton: {
+    buttonContainer: {
+      alignSelf: 'stretch',
+    },
   },
-  button: {},
-  buttonIcon: {},
-  buttonText: {},
 };
 
 export default connectStyle('dev.ext.MediumListItem', style)(MediumListItem);

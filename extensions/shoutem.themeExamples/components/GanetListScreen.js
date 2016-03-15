@@ -6,49 +6,13 @@ import { connectStyle } from '../theme/ThemeHelpers';
 import LargeGridItem from './LargeGridItem';
 import MediumListItem from './MediumListItem';
 
-class GanetListScreen extends React.Component {
+class GannettListScreen extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
       extrasSeparator: require('../assets/circle_grey.png'),
     };
     this.thisRenderRow = this.renderRow.bind(this);
-  }
-
-  mediumListItemStyle() {
-    const style = this.props.style;
-    return {
-      container: style.mediumListItemContainer,
-      itemImage: style.mediumListItemImage,
-      itemInfo: style.mediumListItemInfo,
-      itemExtras: style.mediumListItemExtras,
-      itemDescription: style.mediumListItemDescription,
-      extrasSeparator: style.mediumListItemExtrasSeparator,
-      leftExtra: style.mediumListItemLeftExtra,
-      rightExtra: style.mediumListItemRightExtra,
-      buttonContainer: style.mediumListItemButtonContainer,
-      button: style.mediumListItemButton,
-      buttonIcon: style.mediumListItemButtonIcon,
-      buttonText: style.mediumListItemButtonText,
-    };
-  }
-
-  largeGridItemStyle() {
-    const style = this.props.style;
-    return {
-      backgroundImage: style.largeGridItemBackgroundImage,
-      container: style.largeGridItemContainer,
-      h1: style.largeGridItemH1,
-      bottomButtonContainer: style.largeGridItemBottomButtonContainer,
-      bottomButton: style.largeGridItemBottomButton,
-      bottomButtonIcon: style.largeGridItemBottomButtonIcon,
-      bottomButtonText: style.largeGridItemBottomButtonText,
-      topLabel: style.largeGridItemTopLabel,
-      bottomLabel: style.largeGridItemBottomLabel,
-      info: style.largeGridItemInfo,
-      infoText: style.largeGridItemInfoText,
-      infoSeparator: style.largeGridItemInfoSeparator,
-    };
   }
 
   renderRow(item) {
@@ -60,7 +24,7 @@ class GanetListScreen extends React.Component {
           backgroundImage={item.image}
           headline={item.description.toUpperCase()}
           infoFields={[item.source, item.date]}
-          style={this.largeGridItemStyle()}
+          style={this.props.style.featuredItem}
         />
       );
     }
@@ -73,7 +37,7 @@ class GanetListScreen extends React.Component {
         leftExtra={item.source}
         rightExtra={item.date}
         id={item.id}
-        style={this.mediumListItemStyle()}
+        style={this.props.style.items}
       />
     );
   }
@@ -95,7 +59,7 @@ class GanetListScreen extends React.Component {
   }
 }
 
-GanetListScreen.propTypes = {
+GannettListScreen.propTypes = {
   items: React.PropTypes.array,
   style: React.PropTypes.object,
   featureFirst: React.PropTypes.bool,
@@ -104,31 +68,8 @@ GanetListScreen.propTypes = {
 const style = {
   screen: {},
   list: {},
-  mediumListItemRightExtra: {},
-  mediumListItemContainer: {},
-  mediumListItemImage: {},
-  mediumListItemInfo: {},
-  mediumListItemExtras: {},
-  mediumListItemDescription: {},
-  mediumListItemExtrasSeparator: {},
-  mediumListItemLeftExtra: {},
-  mediumListItemBaseFont: {},
-  mediumListItemButtonContainer: {},
-  mediumListItemButton: {},
-  mediumListItemButtonIcon: {},
-  mediumListItemButtonText: {},
-  largeGridItemBackgroundImage: {},
-  largeGridItemContainer: {},
-  largeGridItemH1: {},
-  largeGridItemBottomButtonContainer: {},
-  largeGridItemBottomButton: {},
-  largeGridItemBottomButtonIcon: {},
-  largeGridItemBottomButtonText: {},
-  largeGridItemInfo: {},
-  largeGridItemInfoText: {},
-  largeGridItemInfoSeparator: {},
-  largeGridItemTopLabel: {},
-  largeGridItemBottomLabel: {},
+  featuredItem: {},
+  items: {},
 };
 
-export default connectStyle('dev.ext.GanetListScreen', style)(GanetListScreen);
+export default connectStyle('dev.ext.GannettListScreen', style)(GannettListScreen);

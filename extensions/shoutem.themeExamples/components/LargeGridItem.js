@@ -8,25 +8,6 @@ import Button from './Button';
 import { connectStyle } from '../theme/ThemeHelpers';
 
 class LargeGridItem extends React.Component {
-  infoFieldsStyle() {
-    const style = this.props.style;
-    return {
-      infoText: style.infoText,
-      infoSeparator: style.infoSeparator,
-      info: style.info,
-    };
-  }
-
-  bottomButtonStyle() {
-    const style = this.props.style;
-    return {
-      button: style.bottomButton,
-      buttonContainer: style.bottomButtonContainer,
-      buttonIcon: style.bottomButtonIcon,
-      buttonText: style.bottomButtonText,
-    };
-  }
-
   render() {
     const { style, topLabel, bottomLabel } = this.props;
     const topLabelComp = topLabel ? <Text style={style.topLabel}>{topLabel}</Text> : null;
@@ -43,13 +24,13 @@ class LargeGridItem extends React.Component {
             <InfoFields
               infoFields={this.props.infoFields}
               infoSeparator={this.props.infoSeparator}
-              style={this.infoFieldsStyle()}
+              style={style.infoFields}
             />
             {botLabelComp}
             <Button
               text={this.props.bottomButtonText}
               icon={this.props.bottomButtonIcon}
-              style={this.bottomButtonStyle()}
+              style={style.button}
             />
           </View>
         </Image>
@@ -90,32 +71,34 @@ const style = {
   h1: {
     textAlign: 'center',
     fontSize: 25,
-    color: 'black',
+    //color: 'red',
     backgroundColor: 'transparent',
   },
-  bottomButtonContainer: {
-    backgroundColor: '#fff',
-    borderRadius: 2,
-  },
-  bottomButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 15,
-    paddingVertical: 9,
-  },
-  bottomButtonIcon: {
-    marginRight: 10,
-  },
-  bottomButtonText: {
-    fontSize: 12,
+  button: {
+    buttonContainer: {
+      backgroundColor: '#fff',
+      borderRadius: 2,
+    },
+    button: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingHorizontal: 15,
+      paddingVertical: 9,
+    },
+    buttonIcon: {
+      marginRight: 10,
+    },
+    buttonText: {
+      fontSize: 12,
+    },
   },
   topLabel: {},
   bottomLabel: {},
-  info: {
-    marginBottom: 30,
+  infoFields: {
+    info: {
+      marginBottom: 30,
+    },
   },
-  infoText: {},
-  infoSeparator: {},
 };
 
 export default connectStyle('dev.ext.LargeGridItem', style)(LargeGridItem);
