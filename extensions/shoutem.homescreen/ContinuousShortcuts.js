@@ -61,7 +61,7 @@ export default class ContinuousShortcuts extends Component {
     };
   }
 
-  _renderListItem(data) {
+  renderListItem(data) {
     return <Shortcut shortcutData={data} />;
   }
 
@@ -70,7 +70,7 @@ export default class ContinuousShortcuts extends Component {
       <ListView style={[styles.list, this.state.style.list]}
         contentContainerStyle={[styles.contentContainer, this.state.style.contentContainer]}
         dataSource={this.state.dataSource}
-        renderRow={this._renderListItem}
+        renderRow={this.renderListItem}
       />
     );
   }

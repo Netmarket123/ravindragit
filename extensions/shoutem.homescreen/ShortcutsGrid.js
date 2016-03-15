@@ -73,18 +73,18 @@ export default class ShortcutsGrid extends Component {
       this.state.style.row.flexDirection = 'column';
     }
 
-    this._renderRow = this._renderRow.bind(this);
+    this.renderRow = this.renderRow.bind(this);
   }
 
-  _renderListItem(data) {
+  renderListItem(data) {
     return <Shortcut shortcutData={data} />;
   }
 
-  _renderRow(dataSource, key) {
+  renderRow(dataSource, key) {
     return (
       <ListView contentContainerStyle={[styles.row, this.state.style.row]}
         dataSource={dataSource}
-        renderRow={this._renderListItem}
+        renderRow={this.renderListItem}
         key={key}
       />
     );
@@ -93,7 +93,7 @@ export default class ShortcutsGrid extends Component {
   render() {
     return (
       <View style={[styles.container, this.state.style.container]}>
-        {this.state.dataSources.map(this._renderRow)}
+        {this.state.dataSources.map(this.renderRow)}
       </View>
     );
   }
