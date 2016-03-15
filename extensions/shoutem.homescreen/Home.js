@@ -97,10 +97,10 @@ export default class Home extends Component {
 
   renderShortcuts() {
     if (this.state.scrollType === 'continuous') {
-      return <ContinuousShortcuts layoutPosition={getLayoutPosition()}/>;
+      return <ContinuousShortcuts layoutPosition={getLayoutPosition()} />;
     }
 
-    return <PagedShortcuts layoutPosition={getLayoutPosition()}/>;
+    return <PagedShortcuts layoutPosition={getLayoutPosition()} />;
   }
 
   render() {
