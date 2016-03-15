@@ -5,9 +5,9 @@ import React, {
   Image,
 } from 'react-native';
 
-import PagedShortcuts from './PagedShortcuts.js';
-import ContinuousShortcuts from './ContinuousShortcuts';
-import configurationProvider from './ConfigurationProvider';
+import PagedShortcuts from '../components/PagedShortcuts.js';
+import ContinuousShortcuts from '../components/ContinuousShortcuts';
+import configurationProvider from '../ConfigurationProvider';
 
 const styles = StyleSheet.create({
   backgroundImage: {

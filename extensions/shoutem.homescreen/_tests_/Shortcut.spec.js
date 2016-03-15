@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { resizeLayout } from '../Shortcut';
+import { resizeLayout } from '../components/Shortcut';
 
 describe('resizeLayout', () => {
   describe('screen size is the same as the layout dimensions', () => {

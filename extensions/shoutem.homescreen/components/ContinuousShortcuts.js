@@ -6,7 +6,7 @@ import React, {
 } from 'react-native';
 
 // TODO(Vladimir) - read all configuration data from props
-import configurationProvider from './ConfigurationProvider';
+import configurationProvider from '../ConfigurationProvider';
 import Shortcut from './Shortcut';
 
 const propTypes = {
