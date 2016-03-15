@@ -2,7 +2,7 @@ import React, {
   Component,
   StyleSheet,
   View,
-  TouchableHighlight,
+  TouchableOpacity,
   Image,
   Dimensions,
   PixelRatio,
@@ -32,6 +32,7 @@ const configPropType = PropTypes.shape({
 const propTypes = {
   shortcutData: PropTypes.shape({
     uri: PropTypes.string,
+    highlightedUri: PropTypes.string,
     config: configPropType,
   }),
 };
@@ -40,6 +41,11 @@ const defaultStyles = {
   shortcut: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  hiddenIcon: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
   },
 };
 
@@ -135,17 +141,24 @@ export default class Shortcut extends Component {
 
   render() {
     const { shortcut, buttonIcon } = this.state.scaledStyle;
+    const { uri, highlightedUri } = this.props.shortcutData;
 
     return (
-      <TouchableHighlight>
         <View style={[styles.shortcut, shortcut]}>
           <Image
-            source={this.props.shortcutData}
-            style={[styles.buttonIcon, buttonIcon]}
+            source={{ uri }}
+            style={[styles.buttonIcon, buttonIcon, styles.hiddenIcon]}
             resizeMode={Image.resizeMode.stretch}
           />
+          <TouchableOpacity activeOpacity={0}>
+            <Image
+              source={this.props.shortcutData}
+              source={{ uri: highlightedUri }}
+              style={[styles.buttonIcon, buttonIcon]}
+              resizeMode={Image.resizeMode.stretch}
+            />
+          </TouchableOpacity>
         </View>
-      </TouchableHighlight>
     );
   }
 }

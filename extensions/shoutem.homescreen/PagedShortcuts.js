@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
 
 const shortcutsData = configurationProvider.getShortcuts().map(shortcut => ({
   uri: shortcut.buttonImageUrl,
+  highlightedUri: shortcut.buttonImageHighlightedUrl,
   config: buttonConfig,
 }));
 
