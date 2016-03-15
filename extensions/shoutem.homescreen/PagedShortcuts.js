@@ -7,6 +7,8 @@ import React, {
 
 import ViewPager from 'react-native-viewpager';
 import ShortcutsGrid from './ShortcutsGrid';
+
+// TODO(Vladimir) - read all configuration data from props
 import configurationProvider from './ConfigurationProvider';
 
 const propTypes = {
