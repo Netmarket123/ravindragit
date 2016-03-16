@@ -6,15 +6,15 @@ const watch = require('node-watch');
 const getLocalExtensions = require('./getLocalExtensions.js');
 const config = require('../config.json');
 
-const localExtensions = getLocalExtensions(config.extensionsDir, config.frameworkDir);
+const localExtensions = getLocalExtensions(config.workingDirectories);
 localExtensions.forEach((extension) => {
-  const packageName = extension.type;
+  const packageName = extension.name;
   const packagePath = extension.path;
   const nodeModules = 'node_modules';
   const installedExtensionPath = path.join(nodeModules, packageName);
   console.log(`Watching ${packageName}`);
   watch(packagePath, (filename) => {
-    const localPath = filename.split(packageName).pop();
+    const localPath = filename.split(packagePath).pop();
     const destination = path.join(installedExtensionPath, localPath);
     console.log(`Copying ${filename} to ${destination}`);
     fsExtra.copy(filename, destination, (error) => {
