@@ -5,7 +5,8 @@ import React, {
 } from 'react-native';
 import InfoFields from './InfoFields';
 import Button from './Button';
-import { connectStyle } from '../theme/ThemeHelpers';
+import connectStyle from '../theme/StyleConnector';
+import { INCLUDE } from '../theme/StyleIncluder';
 
 class LargeGridItem extends React.Component {
   render() {
@@ -20,7 +21,7 @@ class LargeGridItem extends React.Component {
         >
           <View style={style.imageOverlay}>
             {topLabelComp}
-            <Text style={style.h1}>{this.props.headline}</Text>
+            <Text style={style.headline}>{this.props.headline}</Text>
             <InfoFields
               infoFields={this.props.infoFields}
               infoSeparator={this.props.infoSeparator}
@@ -52,6 +53,9 @@ LargeGridItem.propTypes = {
 };
 
 const style = {
+  bo: {
+    backgroundColor: 'red',
+  },
   backgroundImage: {
     width: null,
     height: null,
@@ -65,14 +69,16 @@ const style = {
     flexDirection: 'column',
     backgroundColor: 'rgba(0,0,0,0.2)',
   },
+  horizontal_layout: {},
   container: {
     height: 330,
   },
-  h1: {
+  headline: {
     textAlign: 'center',
     fontSize: 25,
+    [INCLUDE]: ['bo', 'h1'],
     //color: 'red',
-    backgroundColor: 'transparent',
+    //backgroundColor: 'transparent',
   },
   button: {
     buttonContainer: {

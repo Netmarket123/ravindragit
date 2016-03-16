@@ -1,38 +1,41 @@
+import { INCLUDE } from '../theme/StyleIncluder';
+
 const variables = {
   ganetColor: '#961a2d',
-}
+};
+
 export default {
-  global: {
-    baseFont: {
-      fontFamily: 'Rubik-Regular',
-    },
-    buttonText: {
-      fontFamily: 'Rubik-Regular',
-    },
-    leftExtra: {
-      fontFamily: 'Rubik-Regular',
-    },
-    rightExtra: {
-      fontFamily: 'Rubik-Regular',
-    },
-    infoText: {
-      fontFamily: 'Rubik-Regular',
-    },
-    itemDescription: {
-      fontFamily: 'Rubik-Regular',
-    },
-    h1: {
-      color: 'yellow',
-    },
-    list: {
-      position: 'relative',
-      flex: 1,
-    },
-    screen: {
-      flexDirection: 'column',
-      alignItems: 'stretch',
-      flex: 1,
-    },
+  baseFont: {
+    fontFamily: 'Rubik-Regular',
+  },
+  buttonText: {
+    [INCLUDE]: ['baseFont'],
+  },
+  leftExtra: {
+    [INCLUDE]: ['baseFont'],
+  },
+  rightExtra: {
+    [INCLUDE]: ['baseFont'],
+  },
+  infoText: {
+    [INCLUDE]: ['baseFont'],
+  },
+  itemDescription: {
+    [INCLUDE]: ['baseFont'],
+  },
+  h1: {
+    [INCLUDE]: ['baseFont'],
+    color: 'yellow',
+    fontSize: 20,
+  },
+  list: {
+    position: 'relative',
+    flex: 1,
+  },
+  screen: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    flex: 1,
   },
   'dev.ext.LargeGridItem': {
     h1: {
@@ -55,10 +58,9 @@ export default {
         borderRadius: 2,
         marginBottom: 25,
       },
-      h1: {
-        fontFamily: 'Rubik-Regular',
-        fontSize: 20,
-        //color: '#fff',
+      headline: {
+        [INCLUDE]: ['h1'],
+        color: 'green',
       },
       bottomLabel: {
         fontFamily: 'Rubik-Regular',
@@ -91,11 +93,9 @@ export default {
         padding: 30,
         backgroundColor: variables.ganetColor,
       },
-      h1: {
-        fontFamily: 'Rubik-Regular',
-        fontSize: 20,
-        color: '#fff',
-        marginBottom: 10,
+      headline: {
+        marginBottom: 30,
+        //color: 'green',
       },
     },
     items: {
@@ -103,6 +103,9 @@ export default {
         fontSize: 12,
         textDecorationLine: 'line-through',
         color: '#888',
+      },
+      itemDescription: {
+        //color: 'black',
       },
       extrasSeparator: {
         height: 3,

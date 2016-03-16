@@ -2,7 +2,7 @@ import React, {
   View,
   ListView,
 } from 'react-native';
-import { connectStyle } from '../theme/ThemeHelpers';
+import connectStyle from '../theme/StyleConnector';
 import LargeGridItemExtended from './LargeGridItem';
 import MediumListItem from './MediumListItem';
 
@@ -10,42 +10,6 @@ class ListScreen extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.thisRenderRow = this.renderRow.bind(this);
-  }
-
-  mediumListItemStyle() {
-    const style = this.props.style;
-    return {
-      container: style.mediumListItemContainer,
-      itemImage: style.mediumListItemImage,
-      itemInfo: style.mediumListItemInfo,
-      itemExtras: style.mediumListItemExtras,
-      itemDescription: style.mediumListItemDescription,
-      extrasSeparator: style.mediumListItemExtrasSeparator,
-      leftExtra: style.mediumListItemLeftExtra,
-      rightExtra: style.mediumListItemRightExtra,
-      buttonContainer: style.mediumListItemButtonContainer,
-      button: style.mediumListItemButton,
-      buttonIcon: style.mediumListItemButtonIcon,
-      buttonText: style.mediumListItemButtonText,
-    };
-  }
-
-  largeGridItemStyle() {
-    const style = this.props.style;
-    return {
-      backgroundImage: style.largeGridItemBackgroundImage,
-      container: style.largeGridItemContainer,
-      h1: style.largeGridItemH1,
-      bottomButtonContainer: style.largeGridItemBottomButtonContainer,
-      bottomButton: style.largeGridItemBottomButton,
-      bottomButtonIcon: style.largeGridItemBottomButtonIcon,
-      bottomButtonText: style.largeGridItemBottomButtonText,
-      topLabel: style.largeGridItemTopLabel,
-      bottomLabel: style.largeGridItemBottomLabel,
-      info: style.largeGridItemInfo,
-      infoText: style.largeGridItemInfoText,
-      infoSeparator: style.largeGridItemInfoSeparator,
-    };
   }
 
   renderRow(item) {

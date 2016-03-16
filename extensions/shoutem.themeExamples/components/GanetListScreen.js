@@ -2,7 +2,8 @@ import React, {
   View,
   ListView,
 } from 'react-native';
-import { connectStyle } from '../theme/ThemeHelpers';
+import connectStyle from '../theme/StyleConnector';
+import { INCLUDE } from '../theme/StyleIncluder';
 import LargeGridItem from './LargeGridItem';
 import MediumListItem from './MediumListItem';
 
@@ -66,10 +67,17 @@ GannettListScreen.propTypes = {
 };
 
 const style = {
+  toInclude: {
+    color: 'red',
+  },
   screen: {},
   list: {},
   featuredItem: {},
-  items: {},
+  items: {
+    itemDescription: {
+      [INCLUDE]: ['toInclude'],
+    },
+  },
 };
 
 export default connectStyle('dev.ext.GannettListScreen', style)(GannettListScreen);

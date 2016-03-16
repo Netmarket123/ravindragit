@@ -21,7 +21,7 @@ export default class StyleProvider extends React.Component {
   render() {
     const { children } = this.props;
 
-    // TODO: Braco - why Children.only ???
+    // TODO(Braco): - why Children.only ???
     return Children.only(children);
   }
 }
