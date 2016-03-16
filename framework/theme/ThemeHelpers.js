@@ -39,17 +39,6 @@ export function separatePureAndNestedStyle(mixedStyle) {
   return { pureStyle, nestedStyle };
 }
 
-export function resolveMixedStyle(mixedStyle, baseStyle = {}) {
-  const {
-    pureStyle: style,
-    nestedStyle,
-    } = separatePureAndNestedStyle(mixedStyle);
-  _.forIn(nestedStyle, (nestedMixedStyle, styleName) => {
-    style[styleName] = resolveMixedStyle(nestedMixedStyle, baseStyle);
-  });
-  return style;
-}
-
 /**
  * Merge component style, component custom style and theme style.
  * Updates component style if new style received from parent.
@@ -116,7 +105,7 @@ export function connectStyle(componentStyleName, componentStyle) {
  * @param style
  * @param customStyle
  */
-export function mergePureStyle(style, customStyle, inheritStyleProps = true) {
+export function mergePureStyles(style, customStyle, inheritStyleProps = true) {
   const mergedStyle = inheritStyleProps ? style : {};
   const isStyleReactStyle = isReactStyle(style);
   const isCustomStyleReactStyle = isReactStyle(customStyle);
@@ -150,24 +139,13 @@ export function mergePureStyle(style, customStyle, inheritStyleProps = true) {
  * @param style
  * @param customStyle
  */
-export function mergeNestedStyle(style, customStyle) {
+export function mergeNestedStyles(style, customStyle) {
   const mergedNestedStyle = {};
 
   _.forIn(style, (childStyle, childStyleName) => {
     if (customStyle[childStyleName]) {
-      const {
-        pureStyle,
-        nestedStyle,
-        } = separatePureAndNestedStyle(childStyle);
-      const {
-        pureStyle: pureCustomChildStyle,
-        nestedStyle: nestedCustomChildStyle,
-        } = separatePureAndNestedStyle(customStyle[childStyleName]);
-
-      mergedNestedStyle[childStyleName] = {
-        ...mergePureStyle(pureStyle, pureCustomChildStyle),
-        ...mergeNestedStyle(nestedStyle, nestedCustomChildStyle),
-      };
+      // eslint-disable-next-line
+      mergedNestedStyle[childStyleName] = mergeStyles(childStyle, customStyle[childStyleName]);
     } else {
       mergedNestedStyle[childStyleName] = Object.assign({}, childStyle);
     }
@@ -181,4 +159,33 @@ export function mergeNestedStyle(style, customStyle) {
   });
 
   return mergedNestedStyle;
+}
+
+/**
+ * Merges mixed style by merging pure style with custom pure style and
+ * nested style with custom nested style.
+ * @param style
+ * @param customStyle
+ */
+export function mergeStyles(style, customStyle, options = {}) {
+  const {
+    pureStyle,
+    nestedStyle,
+  } = options.styleSeparated ? style : separatePureAndNestedStyle(style);
+  const {
+    pureStyle: customPureStyle,
+    nestedStyle: customNestedStyle,
+  } = options.customStyleSeparated ? customStyle : separatePureAndNestedStyle(customStyle);
+
+  if (options.returnSeparated) {
+    return {
+      pureStyle: mergePureStyles(pureStyle, customPureStyle),
+      nestedStyle: mergeNestedStyles(nestedStyle, customNestedStyle),
+    };
+  }
+
+  return {
+    ...mergePureStyles(pureStyle, customPureStyle),
+    ...mergeNestedStyles(nestedStyle, customNestedStyle),
+  };
 }
