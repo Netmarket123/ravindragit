@@ -7,7 +7,8 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
 import { ScreenNavigator, ROOT_NAVIGATOR_NAME } from './navigation';
-import coreReducer from './coreReducer';
+import coreExtensions from './coreExtensions';
+import devEnvironment from './devEnvironment';
 
 /**
  * Calls the lifecycle function with the given name on all
@@ -144,9 +145,7 @@ function assertInitialRouteExists(initialRoute, screens) {
 function includeCoreExtension(appExtensions) {
   return {
     ...appExtensions,
-    'shoutem.core': {
-      reducer: coreReducer,
-    },
+    ...coreExtensions,
   };
 }
 
@@ -179,23 +178,6 @@ function extractExtensionReducers(extensions) {
 }
 
 /**
- * Returns middleware that should be used only in development
- * mode. This usually includes utilities to simplify debugging.
- * @returns {Array} Redux middleware.
- */
-function createDevelopmentReduxMiddleware() {
-  const middleware = [];
-
-  const createLogger = require('redux-logger');
-  const logger = createLogger({
-    collapsed: true,
-  });
-  middleware.push(logger);
-
-  return middleware;
-}
-
-/**
  * Creates a redux store using the reducers from the extensions.
  * The store will contain the extension keys on the root level,
  * where each of those keys will be handled by the extensions
@@ -216,7 +198,7 @@ function createApplicationStore(appContext) {
   let middleware = [thunk];
 
   if (process.env.NODE_ENV === 'development') {
-    middleware = middleware.concat(createDevelopmentReduxMiddleware());
+    middleware = middleware.concat(devEnvironment.getReduxMiddleware());
   }
 
   return createStore(reducer, applyMiddleware(...middleware));
