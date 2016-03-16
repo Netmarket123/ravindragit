@@ -2,16 +2,14 @@ import { PropTypes } from 'react-native';
 import {
   mergeStyles,
   mergePureStyles,
-} from './ThemeHelpers';
+} from './StyleMerger';
+import includeStyles from './StyleIncluder';
 
 /**
  * Pure style is style which can be optimized with StyleSheet.create and
  * is used to style basic react components.
  * Nested style we pass to children.
  */
-
-// Constants
-const GLOBAL_STYLE = 'global';
 
 // Privates
 const THEME_STYLE = Symbol('themeStyle');
@@ -24,8 +22,8 @@ const CREATE_COMPONENT_THEME_STYLE = Symbol('createComponentThemeStyle');
  *  Component static style is merged and cached for reuse.
  */
 export default class Theme {
-  constructor(themeStyles) {
-    this[THEME_STYLE] = themeStyles;
+  constructor(themeStyle) {
+    this[THEME_STYLE] = includeStyles(themeStyle);
     this[THEME_CACHED_STYLE] = {};
   }
   resolveComponentStyle(styleName, style, customStyle) {
@@ -35,27 +33,23 @@ export default class Theme {
       componentThemeStyle = this[CREATE_COMPONENT_THEME_STYLE](styleName, style);
     }
 
-    return mergeStyles(componentThemeStyle, customStyle, { styleSeparated: true });
+    return mergeStyles(componentThemeStyle, customStyle);
   }
   [CREATE_COMPONENT_THEME_STYLE](styleName, style) {
-    // TODO:Braco - include everything that needs to be included
-    const globalThemeStyle = this[THEME_STYLE][GLOBAL_STYLE];
-    const {
-      pureStyle: componentPureThemedStyle,
-      nestedStyle: compNestedStaticStyle,
-    } = mergeStyles(style, this[THEME_STYLE][styleName], { returnSeparated: true });
+    const componentIncludedStyle = includeStyles(style, this[THEME_STYLE]);
+    const componentThemeStyle = mergeStyles(componentIncludedStyle, this[THEME_STYLE][styleName]);
+
+    // Merging only common style, not all theme style with component style
+    const themedComponentStyle = mergeStyles(this[THEME_STYLE], componentThemeStyle, true);
 
     /**
-     * globalThemeStyle is always pure
-     * Merging only common styles, not all global theme style with component style
+     * This is static component style (static per styleName).
+     * On every new component use it will be reused when merging
+     * with custom component style.
      */
-    const compPureStaticStyle = mergePureStyles(globalThemeStyle, componentPureThemedStyle, false);
+    this[THEME_CACHED_STYLE][styleName] = themedComponentStyle;
 
-    this[THEME_CACHED_STYLE][styleName] = {
-      pureStyle: compPureStaticStyle,
-      nestedStyle: compNestedStaticStyle,
-    };
-    return this[THEME_CACHED_STYLE][styleName];
+    return themedComponentStyle;
   }
   [GET_COMPONENT_THEME_STYLE](styleName) {
     return this[THEME_CACHED_STYLE][styleName];
