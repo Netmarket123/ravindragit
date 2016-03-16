@@ -6,9 +6,9 @@ const watch = require('node-watch');
 const getLocalExtensions = require('./getLocalExtensions.js');
 const config = require('../config.json');
 
-const localExtensions = getLocalExtensions(config.extensionsDir, config.frameworkDir);
+const localExtensions = getLocalExtensions(config.workingDirectories);
 localExtensions.forEach((extension) => {
-  const packageName = extension.type;
+  const packageName = extension.name;
   const packagePath = extension.path;
   const nodeModules = 'node_modules';
   const installedExtensionPath = path.join(nodeModules, packageName);

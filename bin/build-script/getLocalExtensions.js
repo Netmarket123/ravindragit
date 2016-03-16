@@ -2,28 +2,41 @@
 
 const fs = require('fs');
 const path = require('path');
+const glob = require('glob');
 
-function getLocalExtensions(extensionsDir, frameworkDir) {
+/**
+ * Gets collection of all local extensions where
+ * collection item has {String} name and {String} path keys
+ * @param {Array} workingDirectories array of all paths
+ * that need to be watched and installed in projects' node_modules folder
+ */
+function getLocalExtensions(workingDirectories) {
   const results = [];
   console.time('load local extensions');
-  fs.readdirSync(extensionsDir).forEach((file) => {
-    const extensionPath = path.join(extensionsDir, file);
-    const stat = fs.statSync(extensionPath);
+  [].concat(workingDirectories).forEach((workDirPattern) => {
+    const paths = glob.sync(workDirPattern);
+    paths.forEach((packagePath) => {
+      const stat = fs.statSync(packagePath);
 
-    if (stat && stat.isDirectory()) {
-      results.push({
-        type: file,
-        path: extensionPath,
-      });
-    }
-  });
+      if (stat && stat.isDirectory()) {
+        try {
+          const packageJson = path.join(packagePath, 'package.json');
+          const packageStat = fs.statSync(packageJson);
 
-  if (frameworkDir) {
-    results.push({
-      type: 'shoutem',
-      path: frameworkDir,
+          if (packageStat && packageStat.isFile()) {
+            const packageName = require(path.join('..', packageJson)).name;
+            results.push({
+              name: packageName,
+              path: packagePath,
+            });
+          }
+        } catch (e) {
+          console.log(e);
+          console.log(`Skipping ${packagePath}`);
+        }
+      }
     });
-  }
+  });
   console.timeEnd('load local extensions');
   return results;
 }
