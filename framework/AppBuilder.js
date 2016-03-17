@@ -7,7 +7,8 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
 import { ScreenNavigator, ROOT_NAVIGATOR_NAME } from './navigation';
-import coreReducer from './coreReducer';
+import coreExtensions from './coreExtensions';
+import devEnvironment from './devEnvironment';
 
 /**
  * Calls the lifecycle function with the given name on all
@@ -144,9 +145,7 @@ function assertInitialRouteExists(initialRoute, screens) {
 function includeCoreExtension(appExtensions) {
   return {
     ...appExtensions,
-    'shoutem.core': {
-      reducer: coreReducer,
-    },
+    ...coreExtensions,
   };
 }
 
@@ -196,8 +195,13 @@ function createApplicationStore(appContext) {
   assertReducersExist(extensionReducers);
 
   const reducer = combineReducers(extensionReducers);
-  const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
-  return createStoreWithMiddleware(reducer);
+  let middleware = [thunk];
+
+  if (process.env.NODE_ENV === 'development') {
+    middleware = middleware.concat(devEnvironment.getReduxMiddleware());
+  }
+
+  return createStore(reducer, applyMiddleware(...middleware));
 }
 
 const appContextSymbol = Symbol('appContext');
