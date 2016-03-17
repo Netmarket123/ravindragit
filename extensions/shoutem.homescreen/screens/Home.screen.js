@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import PagedShortcuts from '../components/PagedShortcuts.js';
 import ContinuousShortcuts from '../components/ContinuousShortcuts';
 import ConfigurationReader from '../ConfigurationReader';
-import { configuration } from 'shoutem.application';
+import { configuration as appConfiguration } from 'shoutem.application';
 
 const styles = StyleSheet.create({
   backgroundImage: {
@@ -65,53 +65,66 @@ const layoutAlignments = {
   },
 };
 
-function getBackgroundImage(configurationProvider) {
-  return configurationProvider.getHomeScreenBackgroundImageWide() ||
-    configurationProvider.getHomeScreenBackgroundImage();
-}
 
-function getLayoutPosition(configurationProvider) {
-  return layoutAlignments[configurationProvider.getLayoutPosition()];
-}
+class HomeScreenPropsCreator {
+  constructor(configuration) {
+    this.configurationProvider = new ConfigurationReader(configuration);
+  }
 
-// TODO(Vladimir) - scale according to screen size
-function getLayoutMarginStyle(margin) {
-  return {
-    marginTop: margin.top,
-    marginBottom: margin.bottom,
-    marginLeft: margin.left,
-    marginRight: margin.right,
-  };
-}
+  getButtonConfiguration() {
+    return {
+      layoutDimension: this.configurationProvider.getLayoutDimension(),
+      scalingStrategy: this.configurationProvider.getScalingStrategy(),
+      size: this.configurationProvider.getButtonSize(),
+      iconSize: this.configurationProvider.getButtonIconSize(),
+      margin: this.configurationProvider.getButtonMargin(),
+    };
+  }
 
-function getButtonConfiguration(configurationProvider) {
-  return {
-    layoutDimension: configurationProvider.getLayoutDimension(),
-    scalingStrategy: configurationProvider.getScalingStrategy(),
-    size: configurationProvider.getButtonSize(),
-    iconSize: configurationProvider.getButtonIconSize(),
-    margin: configurationProvider.getButtonMargin(),
-  };
-}
+  getShortcutsData() {
+    return this.configurationProvider.getShortcuts().map(shortcut => ({
+      uri: shortcut.buttonImageUrl,
+      highlightedUri: shortcut.buttonImageHighlightedUrl,
+      config: this.getButtonConfiguration(),
+    }));
+  }
 
-function getShortcutsData(configurationProvider) {
-  return configurationProvider.getShortcuts().map(shortcut => ({
-    uri: shortcut.buttonImageUrl,
-    highlightedUri: shortcut.buttonImageHighlightedUrl,
-    config: getButtonConfiguration(configurationProvider),
-  }));
-}
+  getLayoutDimensions() {
+    return {
+      rows: this.configurationProvider.getRowCount(),
+      cols: this.configurationProvider.getColumnCount(),
+    };
+  }
 
-function getLayoutDimensions(configurationProvider) {
-  return {
-    rows: configurationProvider.getRowCount(),
-    cols: configurationProvider.getColumnCount(),
-  };
+  getBackgroundImage() {
+    return this.configurationProvider.getHomeScreenBackgroundImageWide() ||
+      this.configurationProvider.getHomeScreenBackgroundImage();
+  }
+
+  getLayoutPosition() {
+    return layoutAlignments[this.configurationProvider.getLayoutPosition()];
+  }
+
+  // TODO(Vladimir) - scale according to screen size
+  getLayoutMarginStyle() {
+    const margin = this.configurationProvider.getLayoutMargin();
+
+    return {
+      marginTop: margin.top,
+      marginBottom: margin.bottom,
+      marginLeft: margin.left,
+      marginRight: margin.right,
+    };
+  }
+
+  getScrollType() {
+    return this.configurationProvider.getScrollType();
+  }
 }
 
 function mapStateToProps(state) {
   return {
-    appState: { 'shoutem.core.configuration': configuration, ...state },
+    appState: { 'shoutem.core.configuration': appConfiguration, ...state },
   };
 }
 
@@ -119,34 +132,37 @@ class Home extends Component {
   constructor(props) {
     super(props);
     const { dispatch, appState } = props;
-    this.configurationProvider = new ConfigurationReader(appState['shoutem.core.configuration']);
+    const propsCreator = new HomeScreenPropsCreator(appState['shoutem.core.configuration']);
 
     console.warn(JSON.stringify(props.appState));
 
     this.state = {
       backgroundImage: {
-        uri: getBackgroundImage(this.configurationProvider),
+        uri: propsCreator.getBackgroundImage(),
       },
-      scrollType: this.configurationProvider.getScrollType(),
-      layoutMargin: getLayoutMarginStyle(this.configurationProvider.getLayoutMargin()),
+      scrollType: propsCreator.getScrollType(),
+      layoutMargin: propsCreator.getLayoutMarginStyle(),
     };
   }
 
   renderShortcuts() {
+    const { appState } = this.props;
+    const propsCreator = new HomeScreenPropsCreator(appState['shoutem.core.configuration']);
+
     if (this.state.scrollType === 'continuous') {
       return (
         <ContinuousShortcuts
-          layoutPosition={getLayoutPosition(this.configurationProvider)}
-          shortcutsData={getShortcutsData(this.configurationProvider)}
+          layoutPosition={propsCreator.getLayoutPosition()}
+          shortcutsData={propsCreator.getShortcutsData()}
         />
       );
     }
 
     return (
       <PagedShortcuts
-        layoutPosition={getLayoutPosition(this.configurationProvider)}
-        shortcutsData={getShortcutsData(this.configurationProvider)}
-        dimensions={getLayoutDimensions(this.configurationProvider)}
+        layoutPosition={propsCreator.getLayoutPosition()}
+        shortcutsData={propsCreator.getShortcutsData()}
+        dimensions={propsCreator.getLayoutDimensions()}
       />
     );
   }
