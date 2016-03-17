@@ -5,30 +5,16 @@ import React, {
   PropTypes,
 } from 'react-native';
 
-// TODO(Vladimir) - read all configuration data from props
-import configurationProvider from '../ConfigurationProvider';
 import Shortcut from './Shortcut';
+import shortcutDataShape from './ShortcutDataShape';
 
 const propTypes = {
   layoutPosition: PropTypes.shape({
     verticalAlignment: PropTypes.string,
     horizontalAlignment: PropTypes.string,
   }),
+  shortcutsData: PropTypes.arrayOf(PropTypes.shape(shortcutDataShape)),
 };
-
-const buttonConfig = {
-  layoutDimension: configurationProvider.getLayoutDimension(),
-  scalingStrategy: configurationProvider.getScalingStrategy(),
-  size: configurationProvider.getButtonSize(),
-  iconSize: configurationProvider.getButtonIconSize(),
-  margin: configurationProvider.getButtonMargin(),
-};
-
-const shortcutsData = configurationProvider.getShortcuts().map(shortcut => ({
-  uri: shortcut.buttonImageUrl,
-  highlightedUri: shortcut.buttonImageHighlightedUrl,
-  config: buttonConfig,
-}));
 
 const styles = StyleSheet.create({
   list: {
@@ -56,8 +42,8 @@ export default class ContinuousShortcuts extends Component {
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
     this.state = {
-      dataSource: ds.cloneWithRows(shortcutsData),
-      style: getStyleForLayoutPosition(this.props.layoutPosition),
+      dataSource: ds.cloneWithRows(props.shortcutsData),
+      style: getStyleForLayoutPosition(props.layoutPosition),
     };
   }
 

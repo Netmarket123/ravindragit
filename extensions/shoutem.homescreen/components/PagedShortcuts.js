@@ -8,22 +8,15 @@ import React, {
 import ViewPager from 'react-native-viewpager';
 import ShortcutsGrid from './ShortcutsGrid';
 
-// TODO(Vladimir) - read all configuration data from props
-import configurationProvider from '../ConfigurationProvider';
-
 const propTypes = {
   layoutPosition: PropTypes.shape({
     verticalAlignment: PropTypes.string,
     horizontalAlignment: PropTypes.string,
   }),
-};
-
-const buttonConfig = {
-  layoutDimension: configurationProvider.getLayoutDimension(),
-  scalingStrategy: configurationProvider.getScalingStrategy(),
-  size: configurationProvider.getButtonSize(),
-  iconSize: configurationProvider.getButtonIconSize(),
-  margin: configurationProvider.getButtonMargin(),
+  dimensions: React.PropTypes.shape({
+    cols: React.PropTypes.number,
+    rows: React.PropTypes.number,
+  }),
 };
 
 const styles = StyleSheet.create({
@@ -31,17 +24,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-
-const shortcutsData = configurationProvider.getShortcuts().map(shortcut => ({
-  uri: shortcut.buttonImageUrl,
-  highlightedUri: shortcut.buttonImageHighlightedUrl,
-  config: buttonConfig,
-}));
-
-const pageDimensions = {
-  rows: configurationProvider.getRowCount(),
-  cols: configurationProvider.getColumnCount(),
-};
 
 // TODO(Vladimir) - extract to mixin/decorator
 function splitIntoPages(items, pageSize) {
@@ -71,8 +53,9 @@ export default class PagedShortcuts extends Component {
   constructor(props) {
     super(props);
     const pagerDs = new ViewPager.DataSource({ pageHasChanged: (p1, p2) => p1 !== p2 });
+    const { shortcutsData, dimensions } = props;
 
-    const pageSize = pageDimensions.rows * pageDimensions.cols;
+    const pageSize = dimensions.rows * dimensions.cols;
     const pages = splitIntoPages(shortcutsData, pageSize);
 
     this.state = {
@@ -86,7 +69,7 @@ export default class PagedShortcuts extends Component {
   renderPage(data) {
     return (
       <ShortcutsGrid gridItems={data}
-        dimensions={pageDimensions}
+        dimensions={this.props.dimensions}
         layoutPosition={this.props.layoutPosition}
       />
     );
