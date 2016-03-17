@@ -16,6 +16,21 @@ export const INCLUDE = Symbol('include');
  * @param base
  */
 export default function includeStyles(target, base = {}) {
+  // Used to prevent circular including
+  const includingStack = {};
+
+  function styleIncludingStarted(styleName) {
+    if (includingStack[styleName]) {
+      // TODO(Braco) - create style including stack?
+      throw Error(`Circular style including ${styleName}`);
+    }
+    includingStack[styleName] = true;
+  }
+
+  function styleIncludingEnded(styleName) {
+    includingStack[styleName] = false;
+  }
+
   /**
    * Creates list of required styles object in given order.
    * @param includes
@@ -61,6 +76,8 @@ export default function includeStyles(target, base = {}) {
   function getStylesFromTargetAndBase(styleName) {
     const targetAndBaseStyles = [];
 
+    styleIncludingStarted(styleName);
+
     if (base[styleName]) {
       targetAndBaseStyles.push(
         // eslint-disable-next-line
@@ -73,6 +90,9 @@ export default function includeStyles(target, base = {}) {
         resolveStyleIncludes(target[styleName], Object.keys(target[styleName]))
       );
     }
+
+    styleIncludingEnded(styleName);
+
     if (targetAndBaseStyles.length === 0) {
       console.warn(`Including unexisting style: ${styleName}`);
     }
@@ -89,7 +109,9 @@ export default function includeStyles(target, base = {}) {
    */
   function resolveStyleIncludes(value, keys) {
     const newValue = value;
-    if (keys.length === 0) {
+    const includes = newValue[INCLUDE];
+
+    if (keys.length === 0 && !includes) {
       return value;
     }
 
@@ -99,8 +121,7 @@ export default function includeStyles(target, base = {}) {
       }
     }
 
-    const includes = newValue[INCLUDE];
-
+    // Todo(Braco): - cache resolved style includes for reuse when required again
     if (includes) {
       return {
         ...include(includes),
