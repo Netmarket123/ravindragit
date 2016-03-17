@@ -3,7 +3,7 @@ import hoistStatics from 'hoist-non-react-statics';
 import { ThemeShape } from './Theme';
 import * as _ from 'lodash';
 
-export function isReactStyle(style) {
+function isReactStyle(style) {
   const styleFirstProp = Object.keys(style)[0];
   return styleFirstProp && _.isNumber(style[styleFirstProp]);
 }
@@ -13,13 +13,20 @@ function doesStyleNameContainsNamespace(styleName) {
 }
 
 /**
- * Merge component style, component custom style and theme style.
- * Updates component style if new style received from parent.
+ * Connects component style with theme style.
+ * Provides merged style to connected component through component props, using "style" prop.
+ * Updates component style if new (custom) style received from parent.
+ *
+ * Will provide merged style (upper style overrides lower):
+ * 1. Custom style passed from parent
+ * 2. Theme component style
+ * 3. Component style
+ * 4. Theme root style, defined at component style
+ *
  * @param componentStyle
  * @returns {wrapWithStyledComponent}
  */
 export default function connectStyle(componentStyleName, componentStyle) {
-
   if (!doesStyleNameContainsNamespace(componentStyleName)) {
     throw Error('Component name should contain unique namespace with developer name)');
   }

@@ -39,7 +39,7 @@ export default {
   },
   'dev.ext.LargeGridItem': {
     h1: {
-      //color: 'green',
+      // color: 'green',
     },
     button: {
       buttonText: {
@@ -95,7 +95,7 @@ export default {
       },
       headline: {
         marginBottom: 30,
-        //color: 'green',
+        // color: 'green',
       },
     },
     items: {
@@ -105,7 +105,7 @@ export default {
         color: '#888',
       },
       itemDescription: {
-        //color: 'black',
+        // color: 'black',
       },
       extrasSeparator: {
         height: 3,
@@ -116,4 +116,4 @@ export default {
       },
     },
   },
-}
+};

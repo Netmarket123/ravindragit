@@ -5,7 +5,7 @@ import { ThemeShape } from './Theme';
 const providerThemeSymbol = Symbol('providerTheme');
 
 /**
- *  Provides theme instance trough children context.
+ *  Provides Theme instance trough context.
  *  Constructor props expect theme instance!
  */
 export default class StyleProvider extends React.Component {
@@ -21,7 +21,6 @@ export default class StyleProvider extends React.Component {
   render() {
     const { children } = this.props;
 
-    // TODO(Braco): - why Children.only ???
     return Children.only(children);
   }
 }

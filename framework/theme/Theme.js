@@ -1,15 +1,8 @@
 import { PropTypes } from 'react-native';
 import {
   mergeStyles,
-  mergePureStyles,
 } from './StyleMerger';
 import includeStyles from './StyleIncluder';
-
-/**
- * Pure style is style which can be optimized with StyleSheet.create and
- * is used to style basic react components.
- * Nested style we pass to children.
- */
 
 // Privates
 const THEME_STYLE = Symbol('themeStyle');
@@ -18,14 +11,38 @@ const GET_COMPONENT_THEME_STYLE = Symbol('getComponentThemeStyle');
 const CREATE_COMPONENT_THEME_STYLE = Symbol('createComponentThemeStyle');
 
 /**
- *  Theme holds application theme.
- *  Component static style is merged and cached for reuse.
+ *  Theme holds application style.
+ *  Provides method to resolve component style.
+ *
+ *  Terms:
+ *  - Theme root style: first level style at theme; used to define general style
+ *    together with screen style
+ *    I.E:
+ *      - base style (h1, baseFont, text)
+ *      - theme component style ('dev.Ext.GridListItem')
+ *      - screen style, specific case of "theme component style" ('dev.Ext.GannetListScreen')
+ *  - Theme component style: component specific style defined at theme
+ *  - Component style: style defined at component definition
+ *  - Custom style: style passed to component through style property
  */
 export default class Theme {
   constructor(themeStyle) {
     this[THEME_STYLE] = includeStyles(themeStyle);
     this[THEME_CACHED_STYLE] = {};
   }
+
+  /**
+   * Resolve component style for specific usage.
+   * Component static style is cached and reused if existing.
+   *
+   * Style resolving occurs in two steps:
+   * 1. Merge every static style of component
+   * 2. Merge component static style with current implementation custom style
+   *
+   * @param styleName
+   * @param style
+   * @param customStyle
+   */
   resolveComponentStyle(styleName, style, customStyle) {
     let componentThemeStyle = this[GET_COMPONENT_THEME_STYLE](styleName);
 
@@ -35,6 +52,20 @@ export default class Theme {
 
     return mergeStyles(componentThemeStyle, customStyle);
   }
+
+  /**
+   * Merges and cache component static style,
+   * Theme root style + Theme component style + Component style.
+   *
+   * Component static style merge steps:
+   * 1. Include component style includes
+   * 2. Merge component style with theme component style
+   * 3. Merge componentThemeStyle with theme root style
+   * 4. Cache component static style
+   *
+   * @param styleName
+   * @param style
+   */
   [CREATE_COMPONENT_THEME_STYLE](styleName, style) {
     const componentIncludedStyle = includeStyles(style, this[THEME_STYLE]);
     const componentThemeStyle = mergeStyles(componentIncludedStyle, this[THEME_STYLE][styleName]);
@@ -51,6 +82,12 @@ export default class Theme {
 
     return themedComponentStyle;
   }
+
+  /**
+   * Returns component cached style, if any.
+   * @param styleName
+   * @returns {*}
+   */
   [GET_COMPONENT_THEME_STYLE](styleName) {
     return this[THEME_CACHED_STYLE][styleName];
   }
