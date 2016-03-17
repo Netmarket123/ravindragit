@@ -30,6 +30,14 @@ const styles = StyleSheet.create({
 });
 
 class ExampleScreen extends Component {
+  constructor(props) {
+    super(props);
+
+    props.setNavBarProps({
+      title: this.props.message,
+    });
+  }
+
   navigateToScreen(screen, modal) {
     const { dispatch } = this.props;
     const nextScreenName = `screen${screen}`;
@@ -55,6 +63,8 @@ class ExampleScreen extends Component {
   }
 
   render() {
+    console.log('Screen render');
+
     return (
       <View style={styles.content}>
         <Text>{this.props.message}</Text>
@@ -89,5 +99,6 @@ class ExampleScreen extends Component {
 ExampleScreen.propTypes = {
   message: React.PropTypes.string,
   dispatch: React.PropTypes.func,
+  setNavBarProps: React.PropTypes.func,
 };
 export default connect()(ExampleScreen);
