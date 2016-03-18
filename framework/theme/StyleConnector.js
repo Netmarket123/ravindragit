@@ -61,7 +61,7 @@ export default function connectStyle(componentStyleName, componentStyle) {
 
       render() {
         // always passing reference so redux connect can access original component
-        return <WrappedComponent {...this.props} style={this.state.style} ref="wrappedInstance"/>;
+        return <WrappedComponent {...this.props} style={this.state.style} ref="wrappedInstance" />;
       }
     }
 
@@ -77,4 +77,3 @@ export default function connectStyle(componentStyleName, componentStyle) {
     return hoistStatics(StyledComponent, WrappedComponent);
   };
 }
-

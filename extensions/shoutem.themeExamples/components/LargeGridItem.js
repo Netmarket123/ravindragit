@@ -77,8 +77,6 @@ const style = {
     textAlign: 'center',
     fontSize: 25,
     [INCLUDE]: ['bo', 'h1'],
-    //color: 'red',
-    //backgroundColor: 'transparent',
   },
   button: {
     buttonContainer: {
