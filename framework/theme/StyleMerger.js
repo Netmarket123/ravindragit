@@ -10,8 +10,8 @@ import * as _ from 'lodash';
  */
 export function mergeStyles(style, customStyle, onlyCommon = false) {
   if (onlyCommon) {
-    return _.merge(_.pick(style, _.keys(customStyle)), customStyle);
+    return _.merge({}, _.pick(style, _.keys(customStyle)), customStyle);
   }
 
-  return _.merge(style, customStyle);
+  return _.merge({}, style, customStyle);
 }
