@@ -1,7 +1,22 @@
 'use strict';
 
+const path = require('path');
 const shelljs = require('shelljs');
 const fs = require('fs');
+const rimraf = require('rimraf');
+const spawn = require('child_process').spawn;
+
+function installLocalExtension(extension) {
+  const packageName = extension.name;
+  const packagePath = extension.path;
+  const nodeModules = 'node_modules';
+  const installedExtensionPath = path.join(nodeModules, packageName);
+  console.log(`Installing ${packageName}`);
+  shelljs.exec(`npm --cache-min 9999999 install file:${packagePath}`);
+  rimraf(path.join(installedExtensionPath, nodeModules), () => {
+    console.log(`${packageName} installed`);
+  });
+}
 
 /**
  * ExtensionInstaller links all local extensions and installs all other extensions from app
@@ -19,7 +34,7 @@ class ExtensionsInstaller {
     if (extensions) {
       extensions.forEach((extension) => {
         const notAvailableLocally = localExtensions.some((localExtension) =>
-          localExtension.type !== extension.type
+          localExtension.name !== extension.name
         );
 
         if (notAvailableLocally) {
@@ -31,13 +46,18 @@ class ExtensionsInstaller {
 
   installExtensions() {
     this.localExtensions.forEach((extension) => {
-      console.log(`linking ${extension.type}`);
-      shelljs.exec(`npm link ${extension.path}`);
+      installLocalExtension(extension);
     });
 
+    const child = spawn('node', ['./build-script/watchLocalExtensions'], {
+      detached: true,
+      stdio: 'ignore',
+    });
+    child.unref();
+
     this.extensionsToInstall.forEach((extension) => {
-      console.log(`installing ${extension.type}`);
-      shelljs.exec(`npm install ${extension.type}`);
+      console.log(`installing ${extension.name}`);
+      shelljs.exec(`npm install ${extension.name}`);
     });
   }
 
@@ -46,11 +66,11 @@ class ExtensionsInstaller {
     const extensionsMapping = [];
 
     extensions.forEach((extension) => {
-      extensionsMapping.push(`'${extension.type}' : require('${extension.type}')`);
+      extensionsMapping.push(`'${extension.name}' : require('${extension.name}')`);
     });
 
     const extensionsString = extensionsMapping.join(',\n\t');
-    const data = `export default const extensions = {\n\t${extensionsString}\n}`;
+    const data = `export default {\n\t${extensionsString}\n}`;
 
     console.time('create extensions.js');
     return new Promise((resolve, reject) => {

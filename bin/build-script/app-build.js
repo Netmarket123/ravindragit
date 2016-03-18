@@ -3,6 +3,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const getLocalExtensions = require('./getLocalExtensions');
 const ExtensionsInstaller = require('./extensions-installer.js');
 
 /**
@@ -25,7 +26,7 @@ class AppBuild {
 
   getConfigurationUrl() {
     // TODO(Ivan): change this with /apps/1/assets/app/configuration when api will be available
-    return 'http://api.shoutem.com/api/applications/configuration/new.json?version=58&device_id=html5-50dd8f7e-ca90-4eac-aff5-92d8c3c71596&device_type=iphone&include_shoutem_fields=true&nid=206870578&design_mode=true&platform=web&screen_density=retina&width=320&height=548&aspect_ratio=wide';
+    return '';
   }
 
   downloadConfiguration() {
@@ -55,30 +56,10 @@ class AppBuild {
     return require(path.join('..', assetsPath));
   }
 
-  getLocalExtensions(extensionsDir) {
-    const results = [];
-    console.time('load local extensions');
-    fs.readdirSync(extensionsDir).forEach((file) => {
-      const extensionPath = path.join(extensionsDir, file);
-      const stat = fs.statSync(extensionPath);
-
-      if (stat && stat.isDirectory()) {
-        results.push({
-          type: file,
-          path: extensionPath,
-        });
-      }
-    });
-    console.timeEnd('load local extensions');
-    return results;
-  }
-
   prepareExtensions() {
     this.configuration = this.getConfiguration(this.configurationFilePath);
-    console.log('configuracija');
     const extensions = this.configuration.extensions;
-    const localExtensions = this.getLocalExtensions(this.extensionsDir);
-    console.log('loc ext');
+    const localExtensions = getLocalExtensions(this.workingDirectories);
     const extensionsJsPath = this.extensionsJsPath;
     const extensionsInstaller = new ExtensionsInstaller(
       localExtensions,
@@ -91,10 +72,11 @@ class AppBuild {
 
   run() {
     console.log(`starting build for app ${this.appId}`);
-    this.downloadConfiguration()
-      .then(() => this.prepareExtensions())
-      .then(() => console.log('build finished'))
-      .catch((e) => console.log(e));
+    // TO DO(Ivan) add this.downloadConfiguration() as first step when
+    // configuration api is available
+    this.prepareExtensions()
+    .then(() => console.log('build finished'))
+    .catch((e) => console.log(e));
   }
 }
 

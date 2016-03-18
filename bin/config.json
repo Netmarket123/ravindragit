@@ -4,6 +4,9 @@
     "debug": true,
     "designMode": true,
     "configurationFilePath": "../extensions/shoutem.application/configuration.json",
-    "extensionsDir": "../extensions",
+    "workingDirectories": [
+      "../framework",
+      "../extensions/*"
+    ],
     "extensionsJsPath": "./extensions.js"
 }
