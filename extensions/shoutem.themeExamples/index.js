@@ -9,8 +9,8 @@ import gannettItems from './mocks/ganetItems';
 import items from './mocks/items';
 import customTheme from './mocks/theme';
 
-function reducer(state = { }) {
-    return state;
+function reducer(state = {}) {
+  return state;
 }
 
 const store = createStore(reducer);
@@ -18,32 +18,32 @@ const store = createStore(reducer);
 const theme = new Theme(customTheme);
 
 class App extends React.Component {
-    render() {
-        const gannett = true;
-        let screen;
-        if (gannett) {
-            screen = (
-                <GannettListScreen
-                    items={gannettItems}
-                    featureFirst
-                />
-            );
-        } else {
-            screen = (
-                <ListScreen
-                    items={items}
-                    featureFirst
-                />
-            );
-        }
-        return (
-            <StyleProvider theme={theme}>
-                <Provider store={store}>
-                    {screen}
-                </Provider>
-            </StyleProvider>
-        );
+  render() {
+    const gannett = true;
+    let screen;
+    if (gannett) {
+      screen = (
+        <GannettListScreen
+          items={gannettItems}
+          featureFirst
+        />
+      );
+    } else {
+      screen = (
+        <ListScreen
+          items={items}
+          featureFirst
+        />
+      );
     }
+    return (
+      <StyleProvider theme={theme}>
+        <Provider store={store}>
+          {screen}
+        </Provider>
+      </StyleProvider>
+    );
+  }
 }
 
 AppRegistry.registerComponent('App', () => App);
