@@ -3,6 +3,7 @@ import React, {
   View,
   StyleSheet,
   Image,
+  PropTypes,
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -10,6 +11,12 @@ import PagedShortcuts from '../components/PagedShortcuts.js';
 import ContinuousShortcuts from '../components/ContinuousShortcuts';
 import ConfigurationReader from '../ConfigurationReader';
 import { configuration as appConfiguration } from 'shoutem.application';
+
+const propTypes = {
+  appState: PropTypes.shape({
+    'shoutem.core.configuration': PropTypes.object,
+  }),
+};
 
 const styles = StyleSheet.create({
   backgroundImage: {
@@ -131,7 +138,7 @@ function mapStateToProps(state) {
 class Home extends Component {
   constructor(props) {
     super(props);
-    const { dispatch, appState } = props;
+    const { appState } = this.props;
     const propsCreator = new HomeScreenPropsCreator(appState['shoutem.core.configuration']);
 
     console.warn(JSON.stringify(props.appState));
@@ -177,5 +184,7 @@ class Home extends Component {
     );
   }
 }
+
+Home.propTypes = propTypes;
 
 export default connect(mapStateToProps)(Home);
