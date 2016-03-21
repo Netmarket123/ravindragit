@@ -15,8 +15,6 @@ const marginPropType = PropTypes.shape({
 });
 
 const configPropType = PropTypes.shape({
-  layoutDimension: dimensionsPropType,
-  scalingStrategy: PropTypes.oneOf(['horizontal', 'vertical']),
   size: dimensionsPropType,
   iconSize: dimensionsPropType,
   margin: marginPropType,

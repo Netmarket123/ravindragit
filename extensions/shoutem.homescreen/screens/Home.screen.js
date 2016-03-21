@@ -4,6 +4,8 @@ import React, {
   StyleSheet,
   Image,
   PropTypes,
+  Dimensions,
+  PixelRatio,
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -11,6 +13,7 @@ import PagedShortcuts from '../components/PagedShortcuts.js';
 import ContinuousShortcuts from '../components/ContinuousShortcuts';
 import ConfigurationReader from '../ConfigurationReader';
 import { configuration as appConfiguration } from 'shoutem.application';
+import Rescaler from '../Rescaler';
 
 const propTypes = {
   appState: PropTypes.shape({
@@ -72,19 +75,33 @@ const layoutAlignments = {
   },
 };
 
+function getWindowDimensionsInPixels() {
+  const {
+      height,
+      width,
+    } = Dimensions.get('window');
+
+  return {
+    height: PixelRatio.getPixelSizeForLayoutSize(height),
+    width: PixelRatio.getPixelSizeForLayoutSize(width),
+  };
+}
 
 class HomeScreenPropsCreator {
   constructor(configuration) {
     this.configurationProvider = new ConfigurationReader(configuration);
+    this.scaler = new Rescaler(
+      this.configurationProvider.getScalingStrategy(),
+      getWindowDimensionsInPixels(),
+      this.configurationProvider.getLayoutDimension()
+    );
   }
 
   getButtonConfiguration() {
     return {
-      layoutDimension: this.configurationProvider.getLayoutDimension(),
-      scalingStrategy: this.configurationProvider.getScalingStrategy(),
-      size: this.configurationProvider.getButtonSize(),
-      iconSize: this.configurationProvider.getButtonIconSize(),
-      margin: this.configurationProvider.getButtonMargin(),
+      size: this.scaler.scale(this.configurationProvider.getButtonSize()),
+      iconSize: this.scaler.scale(this.configurationProvider.getButtonIconSize()),
+      margin: this.scaler.scale(this.configurationProvider.getButtonMargin()),
     };
   }
 
