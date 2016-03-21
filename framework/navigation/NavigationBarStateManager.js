@@ -11,10 +11,6 @@ export default class NavigationBarStateManager {
   }
 
   onRouteChange(route) {
-    console.log(`onRouteChange: ${JSON.stringify(route)}`);
-    for (const [r, ro] of this.routeStates) {
-      console.log(`${r.screen}: ${JSON.stringify(ro)}`);
-    }
     this.currentRoute = route;
 
     const state = this.routeStates.get(route);
@@ -46,10 +42,6 @@ export default class NavigationBarStateManager {
       return;
     }
 
-    //if (_.isEqual(oldState, newState)) {
-    //  return;
-    //}
-
     _.defer(() => {
       console.log('triggered');
       listener(Object.assign({}, oldState), Object.assign({}, newState));
@@ -57,9 +49,8 @@ export default class NavigationBarStateManager {
   }
 
   setState(state) {
-    console.log(`setState: ${JSON.stringify(state)}`);
     const oldState = this.state;
-    const newState = Object.assign({}, oldState, state);
+    const newState = Object.assign({}, state);
 
     this.state = newState;
     const route = this.currentRoute;

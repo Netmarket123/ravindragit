@@ -34,7 +34,7 @@ class ExampleScreen extends Component {
     super(props);
 
     props.setNavBarProps({
-      title: this.props.message,
+      centerComponent: <Text>{this.props.message}</Text>,
     });
   }
 
@@ -89,6 +89,18 @@ class ExampleScreen extends Component {
         <TouchableOpacity
           style={styles.button}
           onPress={() => this.navigateToScreen(3, true)}
+        >
+          <Text>Screen 3</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => this.props.setNavBarProps({
+            centerComponent: <Text>Plavi ekran iliti screen</Text>,
+            rightComponent: <Text>Desno</Text>,
+            style: {
+              backgroundColor: 'blue',
+            }
+          })}
         >
           <Text>Screen 3</Text>
         </TouchableOpacity>

@@ -6,6 +6,8 @@ import { AppBuilder } from 'shoutem';
 
 import { ExampleScreen } from 'shoutem.test';
 
+import { NavigationBar } from 'shoutem.ui';
+
 const App = new AppBuilder()
   .setExtensions({
     'shoutem.test': {},
@@ -22,6 +24,7 @@ const App = new AppBuilder()
       message: 'The initial screen.',
     },
   })
+  .setNavigationBarComponent(NavigationBar)
   .build();
 
 // noinspection JSCheckFunctionSignatures

@@ -12,8 +12,8 @@ import {
   navigationActionPerformed,
 } from './actions';
 
-import NavigationBar from './NavigationBar';
 import NavigationBarStateManager from './NavigationBarStateManager';
+import NavigationBarContainer from './NavigationBarContainer';
 
 /**
  * The ScreenNavigator handles navigation to any of the
@@ -23,8 +23,8 @@ import NavigationBarStateManager from './NavigationBarStateManager';
  * actions.
  */
 export class ScreenNavigator extends Component {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     console.log('Screen navigator constructor');
 
@@ -35,7 +35,13 @@ export class ScreenNavigator extends Component {
     this.captureNavigatorRef = this.captureNavigatorRef.bind(this);
     this.setNavigationBarState = this.setNavigationBarState.bind(this);
 
-    this.navBarManager = new NavigationBarStateManager();
+    this.navBarManager = props.hasOwnNavigationBar ? new NavigationBarStateManager() : this.context.parentNavigator.navBarManager;
+  }
+
+  getChildContext() {
+    return {
+      parentNavigator: this,
+    };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -81,8 +87,10 @@ export class ScreenNavigator extends Component {
         break;
       }
       case NAVIGATE_BACK: {
-        this.navBarManager.onRouteRemoved(this.getCurrentRoute());
-        navigator.pop();
+        if (this.getRouteStackLength() > 1) {
+          navigator.pop();
+          this.navBarManager.onRouteRemoved(this.getCurrentRoute());
+        }
         break;
       }
       default: {
@@ -107,14 +115,21 @@ export class ScreenNavigator extends Component {
     return route.sceneConfig || Navigator.SceneConfigs.FloatFromRight;
   }
 
-  renderNavigationBar() {
+  getRouteStackLength() {
+    return this.navigator.getCurrentRoutes().length;
+  }
+
+  renderNavigationBar(navigator) {
     // Navigation bar should attach itself to the
     // navigation bar manager.
-    return (
-      <NavigationBar
-        manager={this.navBarManager}
-      />
-    );
+    if (this.props.hasOwnNavigationBar) {
+      return (
+        <NavigationBarContainer
+          manager={this.navBarManager}
+          navigationBarComponent={this.props.navigationBarComponent}
+        />
+      );
+    }
   }
 
   renderScene(route) {
@@ -135,7 +150,7 @@ export class ScreenNavigator extends Component {
         initialRoute={this.props.initialRoute}
         configureScene={this.configureScene}
         renderScene={this.renderScene}
-        navigationBar={this.renderNavigationBar()}
+        navigationBar={this.renderNavigationBar(navigator)}
         onWillFocus={this.beforeRouteChange}
       />
     );
@@ -163,10 +178,26 @@ ScreenNavigator.propTypes = {
    * navigation action is performed.
    */
   navigationActionPerformed: React.PropTypes.func.isRequired,
+
+  /**
+   * If set to true navigator will set its own instance of,
+   * NavigationBarManager, otherwise it will inherit
+   * one from parent navigator
+   */
+  hasOwnNavigationBar: React.PropTypes.bool,
+
+  /**
+   * React component that will be used for navigation bar
+   */
+  navigationBarComponent: React.PropTypes.func,
 };
 
 ScreenNavigator.contextTypes = {
   screens: React.PropTypes.object,
+};
+
+ScreenNavigator.childContextTypes = {
+  parentNavigator: React.PropTypes.object,
 };
 
 // Connect to the redux state

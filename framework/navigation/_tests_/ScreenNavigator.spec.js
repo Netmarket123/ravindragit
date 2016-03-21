@@ -1,8 +1,8 @@
-import React from 'react-native';
+import React, { View, Component } from 'react-native';
 
 import { assert } from 'chai';
 import sinon from 'sinon';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 
 import { ScreenNavigator } from '../ScreenNavigator';
 import {
@@ -35,6 +35,16 @@ class RNNavigatorMock {
   }
 }
 
+class NavigationBarMock extends Component {
+  render() {
+    return (
+      <View></View>
+    );
+  }
+}
+
+
+
 function renderNavigator() {
   const props = {
     name: 'testNavigator',
@@ -44,20 +54,22 @@ function renderNavigator() {
     navigationActionPerformed: sinon.spy(),
   };
 
-  const navigator = mount((
+  const screenNavigator = mount((
     <ScreenNavigator
       name={props.name}
       initialRoute={props.initialRoute}
       navigationActionPerformed={props.navigationActionPerformed}
+      hasOwnNavigationBar={true}
+      navigationBarComponent={NavigationBarMock}
     />
   ));
 
   // Setup a simple mock for the RN navigator
   const initialRoutes = [{ screen: 'initialScreen' }];
-  navigator.instance().refs.navigator = new RNNavigatorMock(initialRoutes);
+  screenNavigator.instance().navigator = new RNNavigatorMock(initialRoutes);
 
   return {
-    navigator,
+    screenNavigator,
     props,
     initialRoutes,
   };
@@ -66,13 +78,13 @@ function renderNavigator() {
 describe('ScreenNavigator', () => {
   describe('(navigation actions)', () => {
     it('handles navigate to route action', () => {
-      const { navigator, props, initialRoutes } = renderNavigator();
+      const { screenNavigator, props, initialRoutes } = renderNavigator();
       const route = {
         screen: 'screen1',
       };
 
       const action = navigateTo(route, props.name);
-      navigator.setProps({
+      screenNavigator.setProps({
         action,
       });
 
@@ -86,14 +98,14 @@ describe('ScreenNavigator', () => {
     });
 
     it('handles navigate back action', () => {
-      const { navigator, props, initialRoutes } = renderNavigator();
+      const { screenNavigator, props, initialRoutes } = renderNavigator();
 
       const action = navigateBack(props.name);
-      navigator.setProps({
+      screenNavigator.setProps({
         action,
       });
 
-      const expectedRoutes = initialRoutes.slice(0, -1);
+      const expectedRoutes = initialRoutes;
       assert.isTrue(props.navigationActionPerformed.called,
         'navigationActionPerformed not called');
       assert(props.navigationActionPerformed.calledWith(
@@ -102,7 +114,7 @@ describe('ScreenNavigator', () => {
     });
 
     it('does not handle an unknown navigation action', () => {
-      const { navigator, props } = renderNavigator();
+      const { screenNavigator, props } = renderNavigator();
 
       const action = {
         type: 'UNKNOWN_ACTION',
@@ -110,7 +122,7 @@ describe('ScreenNavigator', () => {
       };
 
       assert.throws(() => {
-        navigator.setProps({
+        screenNavigator.setProps({
           action,
         });
       }, 'Unsupported navigation action');
@@ -119,9 +131,9 @@ describe('ScreenNavigator', () => {
     });
 
     it('ignores a null navigation action', () => {
-      const { navigator, props } = renderNavigator();
+      const { screenNavigator, props } = renderNavigator();
 
-      navigator.setProps({
+      screenNavigator.setProps({
         action: null,
       });
 

@@ -2,7 +2,14 @@ import React, {
   View,
   Image,
   StyleSheet,
+  Text,
+  TouchableOpacity,
 } from 'react-native';
+import { connect } from 'react-redux';
+
+import {
+  navigateBack,
+} from 'shoutem/navigation';
 
 const styles = StyleSheet.create({
   backgroundImage: {
@@ -16,18 +23,14 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     position: 'absolute',
-    backgroundColor: 'red',
   },
   componentsContainer: {
     flex: 1,
     alignItems: 'flex-end',
-    backgroundColor: 'yellow',
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   component: {
-    backgroundColor: 'white',
-    width: 50,
     height: 24,
   },
 });
@@ -36,35 +39,31 @@ class NavigationBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      style: {},
+      leftComponent: false,
       centerComponent: false,
+      rightComponent: false,
     };
-
-    this.setCenterComponent = this.setCenterComponent.bind(this);
-  }
-  setLeftComponent(component) {
-    this.leftComponent = component;
   }
 
-  setRightComponent(component) {
-    this.rightComponent = component;
-  }
-
-  setBackgroundImage(image) {
-    this.backgroundImage = image;
-  }
-
-  setCenterComponent(component) {
-    this.centerComponent = component;
+  navigateBack() {
+    const { dispatch } = this.props;
+    dispatch(navigateBack());
   }
 
   render() {
+    const backButton = <TouchableOpacity onPress={() => this.navigateBack()}>
+      <Text>Back</Text>
+    </TouchableOpacity>;
+    const leftComponent = this.props.hasHistory ? backButton : this.props.leftComponent;
+
     return (
-      <View style={[styles.container, this.style]}>
-        <Image source={this.backgroundImage} style={[styles.backgroundImage, this.style]}>
+      <View style={[styles.container, this.props.style]}>
+        <Image source={this.backgroundImage} style={[styles.backgroundImage, this.props.style]}>
           <View style={styles.componentsContainer}>
-            <View style={styles.component}>{this.leftComponent}</View>
-            <View style={styles.component}>{this.centerComponent}</View>
-            <View style={styles.component}>{this.rightComponent}</View>
+            <View style={styles.component}>{leftComponent}</View>
+            <View style={styles.component}>{this.props.centerComponent}</View>
+            <View style={styles.component}>{this.props.rightComponent}</View>
           </View>
         </Image>
       </View>
@@ -72,4 +71,4 @@ class NavigationBar extends React.Component {
   }
 }
 
-export default NavigationBar;
+export default connect()(NavigationBar);
