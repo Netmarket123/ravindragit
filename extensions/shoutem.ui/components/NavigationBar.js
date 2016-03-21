@@ -38,12 +38,6 @@ const styles = StyleSheet.create({
 class NavigationBar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      style: {},
-      leftComponent: false,
-      centerComponent: false,
-      rightComponent: false,
-    };
 
     this.navigateBack = this.navigateBack.bind(this);
   }
