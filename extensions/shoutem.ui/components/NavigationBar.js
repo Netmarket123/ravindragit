@@ -71,4 +71,12 @@ class NavigationBar extends React.Component {
   }
 }
 
+NavigationBar.propTypes = {
+  leftComponent: React.PropTypes.object,
+  centerComponent: React.PropTypes.object,
+  rightComponent: React.PropTypes.object,
+  style: React.PropTypes.object,
+  hasHistory: React.PropTypes.bool,
+}
+
 export default connect()(NavigationBar);
