@@ -82,6 +82,8 @@ function createApplication(appContext) {
         <ScreenNavigator
           name={ROOT_NAVIGATOR_NAME}
           initialRoute={appContext.initialRoute}
+          hasOwnNavigationBar
+          navigationBarComponent={appContext.navigationBarComponent}
         />
       );
 
@@ -235,6 +237,11 @@ export default class AppBuilder {
 
   setInitialRoute(route) {
     this[appContextSymbol].initialRoute = Object.assign({}, route);
+    return this;
+  }
+
+  setNavigationBarComponent(component) {
+    this[appContextSymbol].navigationBarComponent = component;
     return this;
   }
 
