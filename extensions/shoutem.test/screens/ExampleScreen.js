@@ -30,6 +30,14 @@ const styles = StyleSheet.create({
 });
 
 class ExampleScreen extends Component {
+  constructor(props) {
+    super(props);
+
+    props.setNavBarProps({
+      centerComponent: <Text>{this.props.message}</Text>,
+    });
+  }
+
   navigateToScreen(screen, modal) {
     const { dispatch } = this.props;
     const nextScreenName = `screen${screen}`;
@@ -55,6 +63,8 @@ class ExampleScreen extends Component {
   }
 
   render() {
+    console.log('Screen render');
+
     return (
       <View style={styles.content}>
         <Text>{this.props.message}</Text>
@@ -82,6 +92,18 @@ class ExampleScreen extends Component {
         >
           <Text>Screen 3</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => this.props.setNavBarProps({
+            centerComponent: <Text>Plavi ekran iliti screen</Text>,
+            rightComponent: <Text>Desno</Text>,
+            style: {
+              backgroundColor: 'blue',
+            },
+          })}
+        >
+          <Text>Screen 3</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -89,5 +111,6 @@ class ExampleScreen extends Component {
 ExampleScreen.propTypes = {
   message: React.PropTypes.string,
   dispatch: React.PropTypes.func,
+  setNavBarProps: React.PropTypes.func,
 };
 export default connect()(ExampleScreen);
