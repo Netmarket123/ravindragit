@@ -129,16 +129,15 @@ class HomeScreenPropsCreator {
     return layoutAlignments[this.configurationProvider.getLayoutPosition()];
   }
 
-  // TODO(Vladimir) - scale according to screen size
   getLayoutMarginStyle() {
     const margin = this.configurationProvider.getLayoutMargin();
 
-    return {
+    return this.scaler.scale({
       marginTop: margin.top,
       marginBottom: margin.bottom,
       marginLeft: margin.left,
       marginRight: margin.right,
-    };
+    });
   }
 
   getScrollType() {
