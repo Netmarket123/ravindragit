@@ -1,4 +1,4 @@
-import { INCLUDE } from '../theme/StyleIncluder';
+import { INCLUDE } from 'shoutem/theme/StyleIncluder';
 
 const variables = {
   ganetColor: '#961a2d',

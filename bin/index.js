@@ -8,7 +8,7 @@ import { ExampleScreen } from 'shoutem.test';
 
 import { NavigationBar } from 'shoutem.ui';
 
-import { GannettDetailsScreen, GannettListScreen, gannettItems } from 'gannet.news';
+import { GannettDetailsScreen, GannettListScreen, mockedItems } from 'gannet.news';
 
 const App = new AppBuilder()
   .setExtensions({
@@ -23,7 +23,7 @@ const App = new AppBuilder()
   .setInitialRoute({
     screen: 'initialScreen',
     props: {
-      items: gannettItems,
+      items: mockedItems,
     },
   })
   .setNavigationBarComponent(NavigationBar)

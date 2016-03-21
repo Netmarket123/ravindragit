@@ -10,6 +10,12 @@ import { ScreenNavigator, ROOT_NAVIGATOR_NAME } from './navigation';
 import coreExtensions from './coreExtensions';
 import devEnvironment from './devEnvironment';
 
+import Theme from './theme/Theme';
+import StyleProvider from './theme/StyleProvider.jsx';
+import customTheme from 'gannet.news/mocks/theme';
+
+const theme = new Theme(customTheme);
+
 /**
  * Calls the lifecycle function with the given name on all
  * extensions that export this function.
@@ -88,9 +94,11 @@ function createApplication(appContext) {
       );
 
       return (
-        <Provider store={appContext.store}>
-            {content}
-        </Provider>
+        <StyleProvider theme={theme}>
+          <Provider store={appContext.store}>
+              {content}
+          </Provider>
+        </StyleProvider>
       );
     }
   };
