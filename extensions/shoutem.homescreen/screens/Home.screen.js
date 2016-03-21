@@ -13,7 +13,7 @@ import PagedShortcuts from '../components/PagedShortcuts.js';
 import ContinuousShortcuts from '../components/ContinuousShortcuts';
 import ConfigurationReader from '../ConfigurationReader';
 import { configuration as appConfiguration } from 'shoutem.application';
-import Rescaler from '../Rescaler';
+import Scaler from '../Scaler';
 
 const propTypes = {
   appState: PropTypes.shape({
@@ -90,7 +90,7 @@ function getWindowDimensionsInPixels() {
 class HomeScreenPropsCreator {
   constructor(configuration) {
     this.configurationProvider = new ConfigurationReader(configuration);
-    this.scaler = new Rescaler(
+    this.scaler = new Scaler(
       this.configurationProvider.getScalingStrategy(),
       getWindowDimensionsInPixels(),
       this.configurationProvider.getLayoutDimension()

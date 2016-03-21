@@ -34,7 +34,7 @@ function getResizeRatio(scalingStrategy, windowDimensions, layoutDimensions) {
   return getHorizontalResizeRatio(windowDimensions, layoutDimensions);
 }
 
-export default class Rescaler {
+export default class Scaler {
   constructor(scalingStrategy, windowDimensionsInPixels, layoutDimension) {
     this.ratio = getResizeRatio(scalingStrategy, windowDimensionsInPixels, layoutDimension);
   }
