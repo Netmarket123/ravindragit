@@ -137,8 +137,8 @@ export class ScreenNavigator extends Component {
 
     return (
       <Screen
-        setNavBarProps={this.setNavigationBarState}
         {...route.props}
+        setNavBarProps={this.setNavigationBarState}
       />
     );
   }

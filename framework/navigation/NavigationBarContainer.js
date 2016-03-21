@@ -25,7 +25,7 @@ export default class NavigationBarContainer extends Component {
     // send only props that are set by new screen
     const navBarProps = _.pick(this.state, Object.keys(this.newState));
     return (
-      <NavigationBar hasHistory={hasHistory} {...navBarProps} />
+      <NavigationBar {...navBarProps} hasHistory={hasHistory} />
     );
   }
 }
