@@ -1,17 +1,67 @@
 import React, {
   View,
   Image,
-  StyleSheet,
   Text,
   TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
+import { connectStyle } from 'shoutem/theme/StyleConnector';
 
 import {
   navigateBack,
 } from 'shoutem/navigation';
 
-const styles = StyleSheet.create({
+
+class NavigationBar extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.navigateBack = this.navigateBack.bind(this);
+  }
+
+  navigateBack() {
+    const { dispatch } = this.props;
+    dispatch(navigateBack());
+  }
+
+  render() {
+    const backButton = (
+      <TouchableOpacity onPress={this.navigateBack}>
+        <Text>Back</Text>
+      </TouchableOpacity>
+    );
+    const leftComponent = this.props.hasHistory && !this.props.leftComponent ? backButton
+      : this.props.leftComponent;
+    const {
+      style,
+      centerComponent,
+      rightComponent,
+    } = this.props;
+
+    return (
+      <View style={style.container}>
+        <Image source={this.backgroundImage} style={style.backgroundImage}>
+          <View style={style.componentsContainer}>
+            <View style={style.component}>{leftComponent}</View>
+            <View style={style.component}>{centerComponent}</View>
+            <View style={style.component}>{rightComponent}</View>
+          </View>
+        </Image>
+      </View>
+    );
+  }
+}
+
+NavigationBar.propTypes = {
+  leftComponent: React.PropTypes.object,
+  centerComponent: React.PropTypes.object,
+  rightComponent: React.PropTypes.object,
+  style: React.PropTypes.object,
+  hasHistory: React.PropTypes.bool,
+  dispatch: React.PropTypes.func,
+};
+
+const style = {
   backgroundImage: {
     padding: 15,
     backgroundColor: 'transparent',
@@ -33,50 +83,8 @@ const styles = StyleSheet.create({
   component: {
     height: 24,
   },
-});
-
-class NavigationBar extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.navigateBack = this.navigateBack.bind(this);
-  }
-
-  navigateBack() {
-    const { dispatch } = this.props;
-    dispatch(navigateBack());
-  }
-
-  render() {
-    const backButton = (<TouchableOpacity onPress={this.navigateBack}>
-      <Text>Back</Text>
-    </TouchableOpacity>);
-    const leftComponent = this.props.hasHistory && !this.props.leftComponent ? backButton
-      : this.props.leftComponent;
-    const centerComponent = this.props.centerComponent;
-    const rightComponent = this.props.rightComponent;
-
-    return (
-      <View style={[styles.container, this.props.style]}>
-        <Image source={this.backgroundImage} style={[styles.backgroundImage, this.props.style]}>
-          <View style={styles.componentsContainer}>
-            <View style={styles.component}>{leftComponent}</View>
-            <View style={styles.component}>{centerComponent}</View>
-            <View style={styles.component}>{rightComponent}</View>
-          </View>
-        </Image>
-      </View>
-    );
-  }
-}
-
-NavigationBar.propTypes = {
-  leftComponent: React.PropTypes.object,
-  centerComponent: React.PropTypes.object,
-  rightComponent: React.PropTypes.object,
-  style: React.PropTypes.object,
-  hasHistory: React.PropTypes.bool,
-  dispatch: React.PropTypes.func,
 };
 
-export default connect()(NavigationBar);
+export default connect()(
+  connectStyle(style)(NavigationBar)
+);
