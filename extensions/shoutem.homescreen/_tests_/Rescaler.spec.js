@@ -35,7 +35,7 @@ describe('Rescaler', () => {
         };
 
         it('returns object that is equal to the original one', () => {
-          assert.equal(rescaler.scale(testObjectToResize), expected,
+          assert.deepEqual(rescaler.scale(testObjectToResize), expected,
                        'object has not been resized properly');
         });
       });
@@ -65,7 +65,7 @@ describe('Rescaler', () => {
         };
 
         it('returns object that is half the size of to the original one', () => {
-          assert.equal(rescaler.scale(testObjectToResize), expected,
+          assert.deepEqual(rescaler.scale(testObjectToResize), expected,
                        'object has not been resized properly');
         });
       });
@@ -88,7 +88,7 @@ describe('Rescaler', () => {
         };
 
         it('returns object that is equal to the original one', () => {
-          assert.equal(rescaler.scale(testObjectToResize), expected,
+          assert.deepEqual(rescaler.scale(testObjectToResize), expected,
                        'object has not been resized properly');
         });
       });
