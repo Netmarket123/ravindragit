@@ -9,8 +9,8 @@ import React, {
 } from 'react-native';
 
 import { connect } from 'react-redux';
-import PagedShortcuts from '../components/PagedShortcuts.js';
-import ContinuousScroller from '../components/ContinuousShortcuts';
+import PagedScroller from '../components/PagedScroller';
+import ContinuousScroller from '../components/ContinuousScroller';
 import ConfigurationReader from '../ConfigurationReader';
 import { configuration as appConfiguration } from 'shoutem.application';
 import Scaler from '../Scaler';
@@ -169,7 +169,7 @@ class Home extends Component {
     }
 
     return (
-      <PagedShortcuts
+      <PagedScroller
         layoutPosition={propsCreator.getLayoutPosition()}
         shortcutsData={propsCreator.getShortcutsData()}
         dimensions={propsCreator.getLayoutDimensions()}

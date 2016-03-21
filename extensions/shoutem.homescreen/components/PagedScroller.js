@@ -61,8 +61,7 @@ function createPagingDataSource(data, dimensions) {
   return pagerDs.cloneWithPages(pages);
 }
 
-// TODO(Vladimir) - rename to PagedScroller
-export default class PagedShortcuts extends Component {
+export default class PagedScroller extends Component {
   constructor(props) {
     super(props);
     this.renderPage = this.renderPage.bind(this);
@@ -98,5 +97,5 @@ export default class PagedShortcuts extends Component {
   }
 }
 
-PagedShortcuts.propTypes = propTypes;
+PagedScroller.propTypes = propTypes;
 
