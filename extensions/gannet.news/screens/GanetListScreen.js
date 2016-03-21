@@ -3,8 +3,7 @@ import React, {
   ListView,
 } from 'react-native';
 import connectStyle from 'shoutem/theme/StyleConnector';
-import LargeGridItem from './LargeGridItem';
-import MediumListItem from './MediumListItem';
+import { LargeGridItem, MediumListItem } from 'shoutem.ui';
 
 class GannettListScreen extends React.Component {
   constructor(props, context) {

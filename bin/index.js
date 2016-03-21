@@ -8,12 +8,14 @@ import { ExampleScreen } from 'shoutem.test';
 
 import { NavigationBar } from 'shoutem.ui';
 
+import { GannettDetailsScreen, GannettListScreen, gannettItems } from 'gannet.news';
+
 const App = new AppBuilder()
   .setExtensions({
     'shoutem.test': {},
   })
   .setScreens({
-    initialScreen: ExampleScreen,
+    initialScreen: GannettListScreen,
     screen1: ExampleScreen,
     screen2: ExampleScreen,
     screen3: ExampleScreen,
@@ -21,7 +23,7 @@ const App = new AppBuilder()
   .setInitialRoute({
     screen: 'initialScreen',
     props: {
-      message: 'The initial screen.',
+      items: gannettItems,
     },
   })
   .setNavigationBarComponent(NavigationBar)
