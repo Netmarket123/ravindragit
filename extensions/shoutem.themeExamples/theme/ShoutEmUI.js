@@ -1,10 +1,6 @@
-import { INCLUDE } from '../theme/StyleIncluder';
+import { INCLUDE } from 'shoutem/theme';
 
-const variables = {
-  ganetColor: '#961a2d',
-};
-
-export default {
+export default (variables) => ({
   baseFont: {
     fontFamily: 'Rubik-Regular',
   },
@@ -26,7 +22,7 @@ export default {
   h1: {
     [INCLUDE]: ['baseFont'],
     color: 'yellow',
-    fontSize: 20,
+    fontSize: 25,
   },
   list: {
     position: 'relative',
@@ -41,7 +37,7 @@ export default {
     h1: {
       // color: 'green',
     },
-    button: {
+    bottomButton: {
       buttonText: {
       },
     },
@@ -116,4 +112,4 @@ export default {
       },
     },
   },
-};
+});

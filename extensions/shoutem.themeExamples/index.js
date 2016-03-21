@@ -1,7 +1,6 @@
 import React, { AppRegistry } from 'react-native';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import Theme from './theme/Theme';
 import StyleProvider from './theme/StyleProvider.jsx';
 import GannettListScreen from './components/GanetListScreen';
 import ListScreen from './components/ListScreen';
@@ -15,7 +14,7 @@ function reducer(state = {}) {
 
 const store = createStore(reducer);
 
-const theme = new Theme(customTheme);
+
 
 class App extends React.Component {
   render() {
@@ -37,7 +36,7 @@ class App extends React.Component {
       );
     }
     return (
-      <StyleProvider theme={theme}>
+      <StyleProvider theme={customTheme}>
         <Provider store={store}>
           {screen}
         </Provider>

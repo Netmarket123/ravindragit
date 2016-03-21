@@ -20,8 +20,8 @@ export default class Button extends Component {
       return null;
     }
     return (
-      <TouchableHighlight style={style.buttonContainer} underlayColor={'transparent'}>
-        <View style={style.button}>
+      <TouchableHighlight style={style.button} underlayColor={style.buttonActive.backgroundColor}>
+        <View style={style.buttonContent}>
           {buttonImage}
           {buttonText}
         </View>
@@ -37,13 +37,16 @@ Button.propTypes = {
 };
 
 const style = {
-  buttonContainer: {
+  button: {
     alignItems: 'center',
     justifyContent: 'center',
   },
-  button: {
+  buttonContent: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  buttonActive: {
+    backgroundColor: '#ccc',
   },
   buttonIcon: {},
   buttonText: {},

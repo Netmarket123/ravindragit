@@ -2,10 +2,11 @@ import React, {
   View,
   ListView,
 } from 'react-native';
-import connectStyle from '../theme/StyleConnector';
-import { INCLUDE } from '../theme/StyleIncluder';
+import { INCLUDE, connectStyle } from 'shoutem/theme';
 import LargeGridItem from './LargeGridItem';
 import MediumListItem from './MediumListItem';
+
+const CREATE_DATA_SOURCE = Symbol('createDataSource');
 
 class GannettListScreen extends React.Component {
   constructor(props, context) {
@@ -13,7 +14,12 @@ class GannettListScreen extends React.Component {
     this.state = {
       extrasSeparator: require('../assets/circle_grey.png'),
     };
-    this.thisRenderRow = this.renderRow.bind(this);
+    this.renderRow = this.renderRow.bind(this);
+  }
+
+  [CREATE_DATA_SOURCE](items) {
+    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+    return ds.cloneWithRows(items);
   }
 
   renderRow(item) {
@@ -43,17 +49,16 @@ class GannettListScreen extends React.Component {
     );
   }
 
+
   render() {
     const { style, items } = this.props;
-    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-    const dataSourceItems = ds.cloneWithRows(items);
     this.listCounter = 0;
     return (
       <View style={style.screen}>
         <ListView
           style={style.list}
-          dataSource={dataSourceItems}
-          renderRow={this.thisRenderRow}
+          dataSource={this[CREATE_DATA_SOURCE](items)}
+          renderRow={this.renderRow}
         />
       </View>
     );

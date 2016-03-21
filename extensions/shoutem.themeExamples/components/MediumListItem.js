@@ -7,11 +7,23 @@ import React, {
 import connectStyle from '../theme/StyleConnector';
 import Button from './Button';
 
+/**
+ * Used to show single list item.
+ * Contains description, image, leftExtra, rightExtra, extraSeparator & button.
+ * Available properties:
+ *  - id: Number
+ *  - description: String
+ *  - leftExtra: String
+ *  - rightExtra: String
+ *  - image: Image
+ *  - extrasSeparatorImage: Image
+ *  - buttonIcon: Image
+ */
 class MediumListItem extends Component {
   buttonStyle() {
     const style = this.props.style;
     return {
-      buttonContainer: style.buttonContainer,
+      buttonContainer: style.button,
       button: style.button,
       buttonText: style.buttonText,
       buttonIcon: style.buttonIcon,
@@ -114,7 +126,7 @@ const style = {
     fontSize: 15,
   },
   mediumListItemButton: {
-    buttonContainer: {
+    button: {
       alignSelf: 'stretch',
     },
   },

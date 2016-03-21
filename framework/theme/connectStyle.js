@@ -3,13 +3,13 @@ import hoistStatics from 'hoist-non-react-statics';
 import { ThemeShape } from './Theme';
 import * as _ from 'lodash';
 
+/**
+ * Used to check if provided style is optimised with react-native StyleSheet.create
+ * @param style
+ */
 function isReactStyle(style) {
   const styleFirstProp = Object.keys(style)[0];
   return styleFirstProp && _.isNumber(style[styleFirstProp]);
-}
-
-function doesStyleNameContainsNamespace(styleName) {
-  return _.isString(styleName) && styleName.match(/\./g).length === 2;
 }
 
 /**
@@ -17,20 +17,16 @@ function doesStyleNameContainsNamespace(styleName) {
  * Provides merged style to connected component through component props, using "style" prop.
  * Updates component style if new (custom) style received from parent.
  *
- * Will provide merged style (upper style overrides lower):
+ * Merges the styles in the following order (lower numbers override the higher ones):
  * 1. Custom style passed from parent
  * 2. Theme component style
  * 3. Component style
  * 4. Theme root style, defined at component style
  *
  * @param componentStyle
- * @returns {wrapWithStyledComponent}
+ * @returns {StyledComponent}
  */
 export default function connectStyle(componentStyleName, componentStyle) {
-  if (!doesStyleNameContainsNamespace(componentStyleName)) {
-    throw Error('Component name should contain unique namespace with developer name)');
-  }
-
   if (isReactStyle(componentStyle)) {
     throw Error('Raw style should be passed, do not create style with StyleSheet.create.');
   }
@@ -60,7 +56,12 @@ export default function connectStyle(componentStyleName, componentStyle) {
       }
 
       render() {
-        // always passing reference so redux connect can access original component
+        /**
+         * Redux connect has option to pass ref of wrapped component if it will be needed.
+         * To remove this additional option, we are always passing ref so developer doesn't
+         * have to think about it or define this option when connecting style.
+         * Redux connect requires option "withRef" to be able to get component ref.
+         */
         return <WrappedComponent {...this.props} style={this.state.style} ref="wrappedInstance" />;
       }
     }
