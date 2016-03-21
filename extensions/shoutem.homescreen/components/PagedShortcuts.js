@@ -7,6 +7,7 @@ import React, {
 
 import ViewPager from 'react-native-viewpager';
 import ShortcutsGrid from './ShortcutsGrid';
+import shortcutDataShape from './ShortcutDataShape';
 
 const propTypes = {
   layoutPosition: PropTypes.shape({
@@ -17,6 +18,7 @@ const propTypes = {
     cols: React.PropTypes.number,
     rows: React.PropTypes.number,
   }),
+  shortcutsData: PropTypes.arrayOf(PropTypes.shape(shortcutDataShape)),
 };
 
 const styles = StyleSheet.create({
@@ -49,20 +51,17 @@ function getStyleForLayoutPosition(layoutPosition) {
   };
 }
 
+function createPagingDataSource(data, dimensions) {
+  const pagerDs = new ViewPager.DataSource({ pageHasChanged: (p1, p2) => p1 !== p2 });
+  const pageSize = dimensions.rows * dimensions.cols;
+  const pages = splitIntoPages(data, pageSize);
+
+  return pagerDs.cloneWithPages(pages);
+}
+
 export default class PagedShortcuts extends Component {
   constructor(props) {
     super(props);
-    const pagerDs = new ViewPager.DataSource({ pageHasChanged: (p1, p2) => p1 !== p2 });
-    const { shortcutsData, dimensions } = props;
-
-    const pageSize = dimensions.rows * dimensions.cols;
-    const pages = splitIntoPages(shortcutsData, pageSize);
-
-    this.state = {
-      pagingDataSource: pagerDs.cloneWithPages(pages),
-      style: getStyleForLayoutPosition(this.props.layoutPosition),
-    };
-
     this.renderPage = this.renderPage.bind(this);
   }
 
@@ -73,13 +72,15 @@ export default class PagedShortcuts extends Component {
         layoutPosition={this.props.layoutPosition}
       />
     );
+
+    // TODO:(Vladimir) - OR ShortcutsList
   }
 
   render() {
     return (
-      <View style={[styles.container, this.state.style.container]}>
+      <View style={[styles.container, getStyleForLayoutPosition(this.props).container]}>
         <ViewPager
-          dataSource={this.state.pagingDataSource}
+          dataSource={createPagingDataSource(this.props.shortcutsData, this.props.dimensions)}
           renderPage={this.renderPage}
         />
       </View>

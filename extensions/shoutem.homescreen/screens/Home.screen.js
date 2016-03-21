@@ -152,27 +152,8 @@ function mapStateToProps(state) {
 }
 
 class Home extends Component {
-  constructor(props) {
-    super(props);
-    const { appState } = this.props;
-    const propsCreator = new HomeScreenPropsCreator(appState['shoutem.core.configuration']);
-
-    console.warn(JSON.stringify(props.appState));
-
-    this.state = {
-      backgroundImage: {
-        uri: propsCreator.getBackgroundImage(),
-      },
-      scrollType: propsCreator.getScrollType(),
-      layoutMargin: propsCreator.getLayoutMarginStyle(),
-    };
-  }
-
-  renderShortcuts() {
-    const { appState } = this.props;
-    const propsCreator = new HomeScreenPropsCreator(appState['shoutem.core.configuration']);
-
-    if (this.state.scrollType === 'continuous') {
+  renderShortcuts(propsCreator) {
+    if (propsCreator.getScrollType() === 'continuous') {
       return (
         <ContinuousShortcuts
           layoutPosition={propsCreator.getLayoutPosition()}
@@ -191,10 +172,13 @@ class Home extends Component {
   }
 
   render() {
+    const { appState } = this.props;
+    const propsCreator = new HomeScreenPropsCreator(appState['shoutem.core.configuration']);
+
     return (
-      <Image source={ this.state.backgroundImage } style={styles.backgroundImage}>
-        <View style={[styles.content, this.state.layoutMargin]}>
-          {this.renderShortcuts()}
+      <Image source={{ uri: propsCreator.getBackgroundImage() }} style={styles.backgroundImage}>
+        <View style={[styles.content, propsCreator.getLayoutMarginStyle()]}>
+          {this.renderShortcuts(propsCreator)}
         </View>
       </Image>
     );

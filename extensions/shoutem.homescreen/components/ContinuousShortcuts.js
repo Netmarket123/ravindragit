@@ -36,26 +36,22 @@ function getStyleForLayoutPosition(layoutPosition) {
   };
 }
 
+function createDataSourceFromData(data) {
+  const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+  return ds.cloneWithRows(data);
+}
+
 export default class ContinuousShortcuts extends Component {
-  constructor(props) {
-    super(props);
-    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-
-    this.state = {
-      dataSource: ds.cloneWithRows(props.shortcutsData),
-      style: getStyleForLayoutPosition(props.layoutPosition),
-    };
-  }
-
   renderListItem(data) {
     return <Shortcut shortcutData={data} />;
   }
 
   render() {
+    const layoutPositionStyle = getStyleForLayoutPosition(this.props.layoutPosition);
     return (
-      <ListView style={[styles.list, this.state.style.list]}
-        contentContainerStyle={[styles.contentContainer, this.state.style.contentContainer]}
-        dataSource={this.state.dataSource}
+      <ListView style={[styles.list, layoutPositionStyle.list]}
+        contentContainerStyle={[styles.contentContainer, layoutPositionStyle.contentContainer]}
+        dataSource={createDataSourceFromData(this.props.shortcutsData)}
         renderRow={this.renderListItem}
       />
     );
