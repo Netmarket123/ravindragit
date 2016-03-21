@@ -2,7 +2,7 @@ import React, { View, Component } from 'react-native';
 
 import { assert } from 'chai';
 import sinon from 'sinon';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
 import { ScreenNavigator } from '../ScreenNavigator';
 import {
@@ -38,12 +38,10 @@ class RNNavigatorMock {
 class NavigationBarMock extends Component {
   render() {
     return (
-      <View></View>
+      <View />
     );
   }
 }
-
-
 
 function renderNavigator() {
   const props = {
@@ -59,7 +57,7 @@ function renderNavigator() {
       name={props.name}
       initialRoute={props.initialRoute}
       navigationActionPerformed={props.navigationActionPerformed}
-      hasOwnNavigationBar={true}
+      hasOwnNavigationBar
       navigationBarComponent={NavigationBarMock}
     />
   ));

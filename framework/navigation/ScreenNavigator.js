@@ -35,7 +35,8 @@ export class ScreenNavigator extends Component {
     this.captureNavigatorRef = this.captureNavigatorRef.bind(this);
     this.setNavigationBarState = this.setNavigationBarState.bind(this);
 
-    this.navBarManager = props.hasOwnNavigationBar ? new NavigationBarStateManager() : this.context.parentNavigator.navBarManager;
+    this.navBarManager = props.hasOwnNavigationBar ? new NavigationBarStateManager()
+      : this.context.parentNavigator.navBarManager;
   }
 
   getChildContext() {
@@ -87,7 +88,7 @@ export class ScreenNavigator extends Component {
         break;
       }
       case NAVIGATE_BACK: {
-        if (this.getRouteStackLength() > 1) {
+        if (this.navigator.getCurrentRoutes().length > 1) {
           navigator.pop();
           this.navBarManager.onRouteRemoved(this.getCurrentRoute());
         }
@@ -115,21 +116,20 @@ export class ScreenNavigator extends Component {
     return route.sceneConfig || Navigator.SceneConfigs.FloatFromRight;
   }
 
-  getRouteStackLength() {
-    return this.navigator.getCurrentRoutes().length;
-  }
-
-  renderNavigationBar(navigator) {
+  renderNavigationBar() {
     // Navigation bar should attach itself to the
     // navigation bar manager.
+    let navigationBarContainer;
     if (this.props.hasOwnNavigationBar) {
-      return (
+      navigationBarContainer = (
         <NavigationBarContainer
           manager={this.navBarManager}
           navigationBarComponent={this.props.navigationBarComponent}
         />
       );
     }
+
+    return navigationBarContainer;
   }
 
   renderScene(route) {

@@ -82,7 +82,7 @@ function createApplication(appContext) {
         <ScreenNavigator
           name={ROOT_NAVIGATOR_NAME}
           initialRoute={appContext.initialRoute}
-          hasOwnNavigationBar={true}
+          hasOwnNavigationBar
           navigationBarComponent={appContext.navigationBarComponent}
         />
       );

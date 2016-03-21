@@ -99,7 +99,7 @@ class ExampleScreen extends Component {
             rightComponent: <Text>Desno</Text>,
             style: {
               backgroundColor: 'blue',
-            }
+            },
           })}
         >
           <Text>Screen 3</Text>

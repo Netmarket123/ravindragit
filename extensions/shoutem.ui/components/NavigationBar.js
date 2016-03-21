@@ -44,6 +44,8 @@ class NavigationBar extends React.Component {
       centerComponent: false,
       rightComponent: false,
     };
+
+    this.navigateBack = this.navigateBack.bind(this);
   }
 
   navigateBack() {
@@ -52,9 +54,9 @@ class NavigationBar extends React.Component {
   }
 
   render() {
-    const backButton = <TouchableOpacity onPress={() => this.navigateBack()}>
+    const backButton = (<TouchableOpacity onPress={this.navigateBack}>
       <Text>Back</Text>
-    </TouchableOpacity>;
+    </TouchableOpacity>);
     const leftComponent = this.props.hasHistory ? backButton : this.props.leftComponent;
 
     return (
@@ -77,6 +79,7 @@ NavigationBar.propTypes = {
   rightComponent: React.PropTypes.object,
   style: React.PropTypes.object,
   hasHistory: React.PropTypes.bool,
-}
+  dispatch: React.PropTypes.func,
+};
 
 export default connect()(NavigationBar);
