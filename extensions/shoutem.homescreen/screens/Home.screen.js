@@ -10,7 +10,7 @@ import React, {
 
 import { connect } from 'react-redux';
 import PagedShortcuts from '../components/PagedShortcuts.js';
-import ContinuousShortcuts from '../components/ContinuousShortcuts';
+import ContinuousScroller from '../components/ContinuousShortcuts';
 import ConfigurationReader from '../ConfigurationReader';
 import { configuration as appConfiguration } from 'shoutem.application';
 import Scaler from '../Scaler';
@@ -143,6 +143,10 @@ class HomeScreenPropsCreator {
   getScrollType() {
     return this.configurationProvider.getScrollType();
   }
+
+  getLayoutType() {
+    return this.configurationProvider.getLayoutType();
+  }
 }
 
 function mapStateToProps(state) {
@@ -155,9 +159,11 @@ class Home extends Component {
   renderShortcuts(propsCreator) {
     if (propsCreator.getScrollType() === 'continuous') {
       return (
-        <ContinuousShortcuts
+        <ContinuousScroller
           layoutPosition={propsCreator.getLayoutPosition()}
           shortcutsData={propsCreator.getShortcutsData()}
+          dimensions={propsCreator.getLayoutDimensions()}
+          layoutType={propsCreator.getLayoutType()}
         />
       );
     }
@@ -167,6 +173,7 @@ class Home extends Component {
         layoutPosition={propsCreator.getLayoutPosition()}
         shortcutsData={propsCreator.getShortcutsData()}
         dimensions={propsCreator.getLayoutDimensions()}
+        layoutType={propsCreator.getLayoutType()}
       />
     );
   }

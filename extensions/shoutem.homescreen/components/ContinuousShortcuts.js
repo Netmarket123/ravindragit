@@ -1,11 +1,10 @@
 import React, {
   Component,
-  ListView,
-  StyleSheet,
   PropTypes,
 } from 'react-native';
 
-import Shortcut from './Shortcut';
+import ShortcutsList from './ShortcutsList';
+import ShortcutsGrid from './ShortcutsGrid';
 import shortcutDataShape from './ShortcutDataShape';
 
 const propTypes = {
@@ -16,47 +15,25 @@ const propTypes = {
   shortcutsData: PropTypes.arrayOf(PropTypes.shape(shortcutDataShape)),
 };
 
-const styles = StyleSheet.create({
-  list: {
-    flex: 1,
-  },
-  contentContainer: {
-    flex: 1,
-  },
-});
-
-function getStyleForLayoutPosition(layoutPosition) {
-  return {
-    list: {
-      alignSelf: layoutPosition.verticalAlignment,
-    },
-    contentContainer: {
-      alignSelf: layoutPosition.horizontalAlignment,
-    },
-  };
-}
-
-function createDataSourceFromData(data) {
-  const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-  return ds.cloneWithRows(data);
-}
-
-export default class ContinuousShortcuts extends Component {
-  renderListItem(data) {
-    return <Shortcut shortcutData={data} />;
-  }
-
+export default class ContinuousScroller extends Component {
   render() {
-    const layoutPositionStyle = getStyleForLayoutPosition(this.props.layoutPosition);
+    if (this.props.layoutType === 'grid') {
+      return (
+        <ShortcutsGrid gridItems={this.props.shortcutsData}
+          dimensions={this.props.dimensions}
+          layoutPosition={this.props.layoutPosition}
+        />
+      );
+    }
+
     return (
-      <ListView style={[styles.list, layoutPositionStyle.list]}
-        contentContainerStyle={[styles.contentContainer, layoutPositionStyle.contentContainer]}
-        dataSource={createDataSourceFromData(this.props.shortcutsData)}
-        renderRow={this.renderListItem}
+      <ShortcutsList
+        layoutPosition={this.props.layoutPosition}
+        shortcutsData={this.props.shortcutsData}
       />
     );
   }
 }
 
-ContinuousShortcuts.propTypes = propTypes;
+ContinuousScroller.propTypes = propTypes;
 

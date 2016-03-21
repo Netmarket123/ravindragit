@@ -7,6 +7,7 @@ import React, {
 
 import ViewPager from 'react-native-viewpager';
 import ShortcutsGrid from './ShortcutsGrid';
+import ShortcutsList from './ShortcutsList';
 import shortcutDataShape from './ShortcutDataShape';
 
 const propTypes = {
@@ -14,11 +15,12 @@ const propTypes = {
     verticalAlignment: PropTypes.string,
     horizontalAlignment: PropTypes.string,
   }),
-  dimensions: React.PropTypes.shape({
-    cols: React.PropTypes.number,
-    rows: React.PropTypes.number,
+  dimensions: PropTypes.shape({
+    cols: PropTypes.number,
+    rows: PropTypes.number,
   }),
   shortcutsData: PropTypes.arrayOf(PropTypes.shape(shortcutDataShape)),
+  layoutType: PropTypes.oneOf(['list', 'grid']),
 };
 
 const styles = StyleSheet.create({
@@ -59,6 +61,7 @@ function createPagingDataSource(data, dimensions) {
   return pagerDs.cloneWithPages(pages);
 }
 
+// TODO(Vladimir) - rename to PagedScroller
 export default class PagedShortcuts extends Component {
   constructor(props) {
     super(props);
@@ -66,23 +69,30 @@ export default class PagedShortcuts extends Component {
   }
 
   renderPage(data) {
+    if (this.props.layoutType === 'grid') {
+      return (
+        <ShortcutsGrid gridItems={data}
+          dimensions={this.props.dimensions}
+          layoutPosition={this.props.layoutPosition}
+        />
+      );
+    }
+
     return (
-      <ShortcutsGrid gridItems={data}
-        dimensions={this.props.dimensions}
+      <ShortcutsList
         layoutPosition={this.props.layoutPosition}
+        shortcutsData={data}
       />
     );
-
-    // TODO:(Vladimir) - OR ShortcutsList
   }
 
   render() {
     return (
       <View style={[styles.container, getStyleForLayoutPosition(this.props).container]}>
-        <ViewPager
-          dataSource={createPagingDataSource(this.props.shortcutsData, this.props.dimensions)}
-          renderPage={this.renderPage}
-        />
+      <ViewPager
+        dataSource={createPagingDataSource(this.props.shortcutsData, this.props.dimensions)}
+        renderPage={this.renderPage}
+      />
       </View>
     );
   }
