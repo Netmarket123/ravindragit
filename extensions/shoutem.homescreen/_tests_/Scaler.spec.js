@@ -1,7 +1,7 @@
 import { assert } from 'chai';
-import Rescaler from '../Rescaler';
+import Scaler from '../Scaler';
 
-describe('Rescaler', () => {
+describe('Scaler', () => {
   const testObjectToResize = {
     width: 150,
     height: 150,
@@ -20,11 +20,11 @@ describe('Rescaler', () => {
 
     describe('scalingStrategy is horizontal', () => {
       const scalingStrategy = 'horizontal';
-      const rescaler = new Rescaler(scalingStrategy, testScreenSize, layoutDimension);
+      const scaler = new Scaler(scalingStrategy, testScreenSize, layoutDimension);
 
       describe('getRatio', () => {
         it('returns the ratio', () => {
-          assert.equal(rescaler.getRatio(), 1, 'ratio is not correct');
+          assert.equal(scaler.getRatio(), 1, 'ratio is not correct');
         });
       });
 
@@ -35,7 +35,7 @@ describe('Rescaler', () => {
         };
 
         it('returns object that is equal to the original one', () => {
-          assert.deepEqual(rescaler.scale(testObjectToResize), expected,
+          assert.deepEqual(scaler.scale(testObjectToResize), expected,
                        'object has not been resized properly');
         });
       });
@@ -50,11 +50,11 @@ describe('Rescaler', () => {
 
     describe('scalingStrategy is horizontal', () => {
       const scalingStrategy = 'horizontal';
-      const rescaler = new Rescaler(scalingStrategy, testScreenSize, layoutDimension);
+      const scaler = new Scaler(scalingStrategy, testScreenSize, layoutDimension);
 
       describe('getRatio', () => {
         it('returns the ratio of 0.5', () => {
-          assert.equal(rescaler.getRatio(), 0.5, 'ratio is not correct');
+          assert.equal(scaler.getRatio(), 0.5, 'ratio is not correct');
         });
       });
 
@@ -65,7 +65,7 @@ describe('Rescaler', () => {
         };
 
         it('returns object that is half the size of to the original one', () => {
-          assert.deepEqual(rescaler.scale(testObjectToResize), expected,
+          assert.deepEqual(scaler.scale(testObjectToResize), expected,
                        'object has not been resized properly');
         });
       });
@@ -73,11 +73,11 @@ describe('Rescaler', () => {
 
     describe('scalingStrategy is vertical', () => {
       const scalingStrategy = 'vertical';
-      const rescaler = new Rescaler(scalingStrategy, testScreenSize, layoutDimension);
+      const scaler = new Scaler(scalingStrategy, testScreenSize, layoutDimension);
 
       describe('getRatio', () => {
         it('returns the ratio', () => {
-          assert.equal(rescaler.getRatio(), 1, 'ratio is not correct');
+          assert.equal(scaler.getRatio(), 1, 'ratio is not correct');
         });
       });
 
@@ -88,7 +88,7 @@ describe('Rescaler', () => {
         };
 
         it('returns object that is equal to the original one', () => {
-          assert.deepEqual(rescaler.scale(testObjectToResize), expected,
+          assert.deepEqual(scaler.scale(testObjectToResize), expected,
                        'object has not been resized properly');
         });
       });
