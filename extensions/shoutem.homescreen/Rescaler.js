@@ -3,8 +3,7 @@ function getScaledValue(value, ratio) {
     return value;
   }
 
-  // TODO(Vladimir) - calculate this number for all devices
-  return Math.floor(value * ratio) / 1.2;
+  return Math.floor(value * ratio);
 }
 
 function getScaledObject(object, ratio) {
