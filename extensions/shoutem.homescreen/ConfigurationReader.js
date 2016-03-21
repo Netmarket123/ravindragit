@@ -64,4 +64,8 @@ export default class ConfigurationReader {
   getLayoutMargin() {
     return this.configuration.layout.margin;
   }
+
+  getLayoutType() {
+    return this.configuration.layout.layoutType;
+  }
 }

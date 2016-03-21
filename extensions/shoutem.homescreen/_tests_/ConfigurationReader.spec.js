@@ -311,5 +311,13 @@ describe('ConfigurationReader', () => {
       assert.deepEqual(actualMargin, expectedMargin, 'layout margin is not correct');
     });
   });
+  describe('getLayoutType', () => {
+    it('returns the layout type', () => {
+      const actualType = reader.getLayoutType();
+      const expectedType = 'grid';
+
+      assert.deepEqual(actualType, expectedType, 'layout is type not correct');
+    });
+  });
 });
 
