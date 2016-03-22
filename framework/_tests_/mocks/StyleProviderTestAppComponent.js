@@ -13,7 +13,7 @@ export default class StyleProviderTestAppComponent extends Component {
   render() {
     return (
       <Provider store={store}>
-        <StyleProvider theme={testTheme}>
+        <StyleProvider getTheme={testTheme}>
           {this.props.children}
         </StyleProvider>
       </Provider>

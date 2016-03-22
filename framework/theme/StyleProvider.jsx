@@ -11,7 +11,7 @@ const THEME = Symbol('theme');
  */
 class StyleProvider extends React.Component {
   static propTypes = {
-    theme: React.PropTypes.func,
+    getTheme: React.PropTypes.func,
     children: PropTypes.element.isRequired,
     themeVariables: React.PropTypes.object,
   };
@@ -20,7 +20,7 @@ class StyleProvider extends React.Component {
   };
   constructor(props, context) {
     super(props, context);
-    this[THEME] = new Theme(props.theme(props.themeVariables));
+    this[THEME] = new Theme(props.getTheme(props.themeVariables));
   }
   getChildContext() {
     return {
