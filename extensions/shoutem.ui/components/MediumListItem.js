@@ -3,6 +3,7 @@ import React, {
   Text,
   Component,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import connectStyle from 'shoutem/theme/StyleConnector';
 import Button from './Button';
@@ -18,6 +19,7 @@ class MediumListItem extends Component {
       image,
       extrasSeparatorImage,
       buttonIcon,
+      onPress,
     } = this.props;
     let separatorImage = null;
     if (extrasSeparatorImage) {
@@ -29,20 +31,22 @@ class MediumListItem extends Component {
       );
     }
     return (
-      <View style={style.container} key={id}>
-        <Image style={style.itemImage} source={image} />
-        <View style={style.itemInfo}>
-          <Text style={[style.baseFont, style.itemDescription]}>
-            {description}
-          </Text>
-          <View style={style.itemExtras}>
-            <Text style={[style.baseFont, style.leftExtra]}>{leftExtra}</Text>
-            {separatorImage}
-            <Text style={style.rightExtra}>{rightExtra}</Text>
+      <TouchableOpacity onPress={onPress}>
+        <View style={style.container} key={id}>
+          <Image style={style.itemImage} source={image} />
+          <View style={style.itemInfo}>
+            <Text style={[style.baseFont, style.itemDescription]}>
+              {description}
+            </Text>
+            <View style={style.itemExtras}>
+              <Text style={[style.baseFont, style.leftExtra]}>{leftExtra}</Text>
+              {separatorImage}
+              <Text style={style.rightExtra}>{rightExtra}</Text>
+            </View>
           </View>
+          <Button style={style.mediumListItemButton} icon={buttonIcon} />
         </View>
-        <Button style={style.mediumListItemButton} icon={buttonIcon} />
-      </View>
+      </TouchableOpacity>
     );
   }
 }

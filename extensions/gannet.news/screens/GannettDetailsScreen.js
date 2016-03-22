@@ -89,7 +89,7 @@ class GannettDetailsScreen extends React.Component {
   }
 
   render() {
-    const { style, item } = this.props;
+    const { style, item, setNavBarProps, } = this.props;
 
     return (
       <View style={style.screen}>
@@ -121,7 +121,7 @@ const style = {
     position: 'relative',
   },
   title: {
-    [INCLUDE]: ['h1'], // include
+    [INCLUDE]: ['h1'],
     color: 'black',
     paddingBottom: 20,
     position: 'absolute',
@@ -153,4 +153,4 @@ const style = {
   },
 };
 
-export default connectStyle('dev.ext.GannettListScreen', style)(GannettDetailsScreen);
+export default connectStyle('dev.ext.GannettDetailsScreen', style)(GannettDetailsScreen);

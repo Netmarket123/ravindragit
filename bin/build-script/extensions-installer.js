@@ -12,7 +12,7 @@ function installLocalExtension(extension) {
   const nodeModules = 'node_modules';
   const installedExtensionPath = path.join(nodeModules, packageName);
   console.log(`Installing ${packageName}`);
-  shelljs.exec(`npm --cache-min 9999999 install file:${packagePath}`);
+  shelljs.exec(`npm install file:${packagePath}`);
   rimraf(path.join(installedExtensionPath, nodeModules), () => {
     console.log(`${packageName} installed`);
   });

@@ -9,9 +9,9 @@ export default {
     color: '#454545',
   },
   h1: {
-    [INCLUDE]: ['baseFont'],
     fontSize: 20,
     color: '#fff',
+    lineHeight: 20,
   },
   list: {
     position: 'relative',
@@ -70,6 +70,9 @@ export default {
     },
   },
   'dev.ext.GannettListScreen': {
+    screen: {
+      marginTop: 70,
+    },
     featuredItem: {
       container: {
         padding: 30,
@@ -95,5 +98,16 @@ export default {
         marginHorizontal: 10,
       },
     },
+  },
+  'shoutem.ui.NavigationBar': {
+    container: {
+      backgroundColor: variables.ganetColor,
+    },
+    backButton: {
+      buttonIcon: {
+        color: 'white',
+        fontSize: 24,
+      }
+    }
   },
 };

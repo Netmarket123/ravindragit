@@ -1,10 +1,13 @@
 import React, {
-  TouchableHighlight,
+  TouchableOpacity,
   View,
   Text,
   Component,
   Image,
 } from 'react-native';
+
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
 import connectStyle from 'shoutem/theme/StyleConnector';
 
 export default class Button extends Component {
@@ -12,7 +15,7 @@ export default class Button extends Component {
     const style = this.props.style;
     let buttonImage = null;
     if (this.props.icon) {
-      buttonImage = <Image source={this.props.icon} style={style.buttonIcon} />;
+      buttonImage = <Icon name={this.props.icon} style={style.buttonIcon} />;
     }
     const buttonText = this.props.text ?
       <Text style={style.buttonText}>{this.props.text}</Text> : null;
@@ -20,12 +23,12 @@ export default class Button extends Component {
       return null;
     }
     return (
-      <TouchableHighlight style={style.buttonContainer} underlayColor={'transparent'}>
+      <TouchableOpacity style={style.buttonContainer} underlayColor={'transparent'} onPress={this.props.onPress}>
         <View style={style.button}>
           {buttonImage}
           {buttonText}
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
     );
   }
 }

@@ -1,9 +1,14 @@
 import React, {
   View,
   ListView,
+  Text,
 } from 'react-native';
+
+import { connect } from 'react-redux';
+
 import connectStyle from 'shoutem/theme/StyleConnector';
 import { LargeGridItem, MediumListItem } from 'shoutem.ui';
+import { navigateTo } from 'shoutem/navigation';
 
 class GannettListScreen extends React.Component {
   constructor(props, context) {
@@ -12,11 +17,20 @@ class GannettListScreen extends React.Component {
       extrasSeparator: require('../assets/circle_grey.png'),
     };
     this.thisRenderRow = this.renderRow.bind(this);
+    this.openDetailsScreen = this.openDetailsScreen.bind(this);
+  }
+
+  openDetailsScreen(item) {
+    const { dispatch } = this.props;
+    const route = { screen: 'newsDetails', props: { item: item } }
+
+    dispatch(navigateTo(route));
   }
 
   renderRow(item) {
     const { featureFirst } = this.props;
     this.listCounter += 1;
+
     if (featureFirst && this.listCounter === 1) {
       return (
         <LargeGridItem
@@ -37,6 +51,7 @@ class GannettListScreen extends React.Component {
         rightExtra={item.date}
         id={item.id}
         style={this.props.style.items}
+        onPress={() => { this.openDetailsScreen(item) }}
       />
     );
   }
@@ -45,7 +60,11 @@ class GannettListScreen extends React.Component {
     const { style, items } = this.props;
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     const dataSourceItems = ds.cloneWithRows(items);
+    const navBarTtile = <Text style={style.h1}>News</Text>;
     this.listCounter = 0;
+    this.props.setNavBarProps({
+      centerComponent: navBarTtile,
+    })
     return (
       <View style={style.screen}>
         <ListView
@@ -62,13 +81,15 @@ GannettListScreen.propTypes = {
   items: React.PropTypes.array,
   style: React.PropTypes.object,
   featureFirst: React.PropTypes.bool,
+  dispatch: React.PropTypes.func,
 };
 
 const style = {
   screen: {},
+  h1: {},
   list: {},
   featuredItem: {},
   items: {},
 };
 
-export default connectStyle('dev.ext.GannettListScreen', style)(GannettListScreen);
+export default connect()(connectStyle('dev.ext.GannettListScreen', style)(GannettListScreen));

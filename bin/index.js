@@ -16,7 +16,7 @@ const App = new AppBuilder()
   })
   .setScreens({
     initialScreen: GannettListScreen,
-    screen1: ExampleScreen,
+    newsDetails: GannettDetailsScreen,
     screen2: ExampleScreen,
     screen3: ExampleScreen,
   })
