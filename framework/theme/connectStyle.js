@@ -11,6 +11,14 @@ function isReactStyle(style) {
   const styleFirstProp = Object.keys(style)[0];
   return styleFirstProp && _.isNumber(style[styleFirstProp]);
 }
+/**
+ * Formats and throws error if any occurs when connecting component style with theme.
+ * @param errorText
+ * @param componentDisplayName
+ */
+function throwConnectStyleError(errorText, componentDisplayName) {
+  throw Error(`${errorText} - when style connecting ${componentDisplayName} component.`);
+}
 
 /**
  * Connects component style with theme style.
@@ -27,15 +35,32 @@ function isReactStyle(style) {
  * @returns {StyledComponent}
  */
 export default function connectStyle(componentStyleName, componentStyle) {
-  if (isReactStyle(componentStyle)) {
-    throw Error('Raw style should be passed, do not create style with StyleSheet.create.');
-  }
-
   function getDisplayName(WrappedComponent) {
     return WrappedComponent.displayName || WrappedComponent.name || 'Component';
   }
 
   return function wrapWithStyledComponent(WrappedComponent) {
+    const componentDisplayName = getDisplayName(WrappedComponent);
+
+    if (!_.isPlainObject(componentStyle)) {
+      throwConnectStyleError(
+        'Component style must be plain object',
+        componentDisplayName
+      );
+    }
+    if (isReactStyle(componentStyle)) {
+      throwConnectStyleError(
+        'Raw style should be passed, do not create style with StyleSheet.create',
+        componentDisplayName
+      );
+    }
+    if (!_.isString(componentStyleName)) {
+      throwConnectStyleError(
+        'Component Style Name must be string',
+        componentDisplayName
+      );
+    }
+
     class StyledComponent extends React.Component {
       constructor(props, context) {
         super(props, context);
@@ -66,7 +91,7 @@ export default function connectStyle(componentStyleName, componentStyle) {
       }
     }
 
-    StyledComponent.displayName = `Styled(${getDisplayName(WrappedComponent)})`;
+    StyledComponent.displayName = `Styled(${componentDisplayName})`;
     StyledComponent.WrappedComponent = WrappedComponent;
     StyledComponent.contextTypes = {
       theme: ThemeShape,
