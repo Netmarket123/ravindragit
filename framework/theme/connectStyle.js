@@ -62,6 +62,15 @@ export default function connectStyle(componentStyleName, componentStyle) {
     }
 
     class StyledComponent extends React.Component {
+      static contextTypes = {
+        theme: ThemeShape,
+      };
+      static propTypes = {
+        style: PropTypes.object,
+      };
+      static displayName = `Styled(${componentDisplayName})`;
+      static WrappedComponent = WrappedComponent;
+
       constructor(props, context) {
         super(props, context);
         const theme = context.theme;
@@ -90,15 +99,6 @@ export default function connectStyle(componentStyleName, componentStyle) {
         return <WrappedComponent {...this.props} style={this.state.style} ref="wrappedInstance" />;
       }
     }
-
-    StyledComponent.displayName = `Styled(${componentDisplayName})`;
-    StyledComponent.WrappedComponent = WrappedComponent;
-    StyledComponent.contextTypes = {
-      theme: ThemeShape,
-    };
-    StyledComponent.propTypes = {
-      style: PropTypes.object,
-    };
 
     return hoistStatics(StyledComponent, WrappedComponent);
   };

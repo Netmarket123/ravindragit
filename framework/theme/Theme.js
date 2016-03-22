@@ -1,7 +1,4 @@
 import { PropTypes } from 'react-native';
-import {
-  mergeStyles,
-} from './StyleMerger';
 import includeStyles from './includeStyles';
 import * as _ from 'lodash';
 
