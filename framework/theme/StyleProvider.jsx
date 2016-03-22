@@ -1,5 +1,7 @@
 import React, { Children, PropTypes } from 'react-native';
 import { ThemeShape } from './Theme';
+import Theme from './Theme';
+import { connect } from 'react-redux';
 
 // Privates
 const providerThemeSymbol = Symbol('providerTheme');
@@ -8,10 +10,10 @@ const providerThemeSymbol = Symbol('providerTheme');
  *  Provides Theme instance trough context.
  *  Constructor props expect theme instance!
  */
-export default class StyleProvider extends React.Component {
+class StyleProvider extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this[providerThemeSymbol] = props.theme;
+    this[providerThemeSymbol] = new Theme(props.theme(props.themeVariables));
   }
   getChildContext() {
     return {
@@ -28,7 +30,16 @@ export default class StyleProvider extends React.Component {
 StyleProvider.propTypes = {
   theme: ThemeShape.isRequired,
   children: PropTypes.element.isRequired,
+  themeVariables: React.PropTypes.object,
 };
 StyleProvider.childContextTypes = {
   theme: ThemeShape.isRequired,
 };
+
+function mapStateToProps(state) {
+  return {
+    themeVariables: state.configuration.theme.variables,
+  };
+}
+
+export default connect(mapStateToProps)(StyleProvider);

@@ -2,7 +2,8 @@ import { PropTypes } from 'react-native';
 import {
   mergeStyles,
 } from './StyleMerger';
-import includeStyles from './StyleIncluder';
+import includeStyles from './includeStyles';
+import * as _ from 'lodash';
 
 // Privates
 const THEME_STYLE = Symbol('themeStyle');
@@ -50,7 +51,7 @@ export default class Theme {
       componentThemeStyle = this[CREATE_COMPONENT_THEME_STYLE](styleName, style);
     }
 
-    return mergeStyles(componentThemeStyle, customStyle);
+    return _.merge({}, componentThemeStyle, customStyle);
   }
 
   /**
@@ -68,10 +69,12 @@ export default class Theme {
    */
   [CREATE_COMPONENT_THEME_STYLE](styleName, style) {
     const componentIncludedStyle = includeStyles(style, this[THEME_STYLE]);
-    const componentThemeStyle = mergeStyles(componentIncludedStyle, this[THEME_STYLE][styleName]);
+    const componentThemeStyle = _.merge({}, componentIncludedStyle, this[THEME_STYLE][styleName]);
 
     // Merging only common style, not all theme style with component style
-    const themedComponentStyle = mergeStyles(this[THEME_STYLE], componentThemeStyle, true);
+    const themedComponentStyle = _.merge({},
+      _.pick(this[THEME_STYLE], _.keysIn(componentThemeStyle)),
+      componentThemeStyle);
 
     /**
      * This is static component style (static per styleName).
