@@ -7,7 +7,6 @@ import React, {
 
 import ViewPager from 'react-native-viewpager';
 import ShortcutsGrid from './ShortcutsGrid';
-import ShortcutsList from './ShortcutsList';
 import shortcutDataShape from './ShortcutDataShape';
 
 const propTypes = {
@@ -20,7 +19,6 @@ const propTypes = {
     rows: PropTypes.number,
   }),
   shortcutsData: PropTypes.arrayOf(PropTypes.shape(shortcutDataShape)),
-  layoutType: PropTypes.oneOf(['list', 'grid']),
 };
 
 const styles = StyleSheet.create({
@@ -45,11 +43,9 @@ function splitIntoPages(items, pageSize) {
   }, [[]]);
 }
 
-function getStyleForLayoutPosition(layoutPosition) {
+function getStyleForContainerLayoutPosition(layoutPosition) {
   return {
-    container: {
-      alignSelf: layoutPosition.verticalAlignment,
-    },
+    alignSelf: layoutPosition.verticalAlignment,
   };
 }
 
@@ -67,7 +63,7 @@ export default class PagedScroller extends Component {
     this.renderPage = this.renderPage.bind(this);
   }
 
-  renderGrid(data) {
+  renderPage(data) {
     return (
       <ShortcutsGrid gridItems={data}
         dimensions={this.props.dimensions}
@@ -76,26 +72,10 @@ export default class PagedScroller extends Component {
     );
   }
 
-  renderList(data) {
-    return (
-      <ShortcutsList
-        layoutPosition={this.props.layoutPosition}
-        shortcutsData={data}
-      />
-    );
-  }
-
-  renderPage(data) {
-    if (this.props.layoutType === 'grid') {
-      return this.renderGrid(data);
-    }
-
-    return this.renderList(data);
-  }
-
   render() {
+    const containerLayoutPosition = getStyleForContainerLayoutPosition(this.props.layoutPosition);
     return (
-      <View style={[styles.container, getStyleForLayoutPosition(this.props.layoutPosition).container]}>
+      <View style={[styles.container, containerLayoutPosition]}>
       <ViewPager
         dataSource={createPagingDataSource(this.props.shortcutsData, this.props.dimensions)}
         renderPage={this.renderPage}

@@ -6,7 +6,6 @@ import React, {
   Dimensions,
 } from 'react-native';
 
-import ShortcutsList from './ShortcutsList';
 import ShortcutsGrid from './ShortcutsGrid';
 import shortcutDataShape from './ShortcutDataShape';
 
@@ -16,6 +15,10 @@ const propTypes = {
     horizontalAlignment: PropTypes.string,
   }),
   shortcutsData: PropTypes.arrayOf(PropTypes.shape(shortcutDataShape)),
+  dimensions: PropTypes.shape({
+    cols: PropTypes.number,
+    rows: PropTypes.number,
+  }),
 };
 
 const { height } = Dimensions.get('window');
@@ -31,38 +34,23 @@ const styles = StyleSheet.create({
   },
 });
 
-function getStyleForLayoutPosition(layoutPosition) {
+function getStyleForContentLayoutPosition(layoutPosition) {
   return {
-    contentContainer: {
-      alignSelf: layoutPosition.verticalAlignment,
-    },
+    alignSelf: layoutPosition.verticalAlignment,
   };
 }
 
 export default class ContinuousScroller extends Component {
   render() {
-    if (this.props.layoutType === 'grid') {
-      return (
-      <ScrollView
-        style={styles.container}
-contentContainerStyle={[styles.contentContainer, getStyleForLayoutPosition(this.props.layoutPosition).contentContainer]}
->
-        <ShortcutsGrid gridItems={this.props.shortcutsData}
-          dimensions={this.props.dimensions}
-          layoutPosition={this.props.layoutPosition}
-        />
-      </ScrollView>
-      );
-    }
-
+    const contentContainerPosition = getStyleForContentLayoutPosition(this.props.layoutPosition);
     return (
       <ScrollView
         style={styles.container}
-contentContainerStyle={[styles.contentContainer, getStyleForLayoutPosition(this.props.layoutPosition).contentContainer]}
->
-        <ShortcutsList
+        contentContainerStyle={[styles.contentContainer, contentContainerPosition]}
+      >
+        <ShortcutsGrid gridItems={this.props.shortcutsData}
+          dimensions={this.props.dimensions}
           layoutPosition={this.props.layoutPosition}
-          shortcutsData={this.props.shortcutsData}
         />
       </ScrollView>
     );
