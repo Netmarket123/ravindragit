@@ -28,9 +28,6 @@ const styles = StyleSheet.create({
 function getStyleForLayoutPosition(layoutPosition) {
   return {
     list: {
-      alignSelf: layoutPosition.verticalAlignment,
-    },
-    contentContainer: {
       alignSelf: layoutPosition.horizontalAlignment,
     },
   };
@@ -50,7 +47,7 @@ export default class ShortcutsList extends Component {
     const layoutPositionStyle = getStyleForLayoutPosition(this.props.layoutPosition);
     return (
       <ListView style={[styles.list, layoutPositionStyle.list]}
-        contentContainerStyle={[styles.contentContainer, layoutPositionStyle.contentContainer]}
+        contentContainerStyle={styles.contentContainer}
         dataSource={createDataSourceFromData(this.props.shortcutsData)}
         renderRow={this.renderListItem}
       />

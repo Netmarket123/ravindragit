@@ -67,16 +67,16 @@ export default class PagedScroller extends Component {
     this.renderPage = this.renderPage.bind(this);
   }
 
-  renderPage(data) {
-    if (this.props.layoutType === 'grid') {
-      return (
-        <ShortcutsGrid gridItems={data}
-          dimensions={this.props.dimensions}
-          layoutPosition={this.props.layoutPosition}
-        />
-      );
-    }
+  renderGrid(data) {
+    return (
+      <ShortcutsGrid gridItems={data}
+        dimensions={this.props.dimensions}
+        layoutPosition={this.props.layoutPosition}
+      />
+    );
+  }
 
+  renderList(data) {
     return (
       <ShortcutsList
         layoutPosition={this.props.layoutPosition}
@@ -85,9 +85,17 @@ export default class PagedScroller extends Component {
     );
   }
 
+  renderPage(data) {
+    if (this.props.layoutType === 'grid') {
+      return this.renderGrid(data);
+    }
+
+    return this.renderList(data);
+  }
+
   render() {
     return (
-      <View style={[styles.container, getStyleForLayoutPosition(this.props).container]}>
+      <View style={[styles.container, getStyleForLayoutPosition(this.props.layoutPosition).container]}>
       <ViewPager
         dataSource={createPagingDataSource(this.props.shortcutsData, this.props.dimensions)}
         renderPage={this.renderPage}
