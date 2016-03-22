@@ -5,7 +5,7 @@ import React, {
   TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { connectStyle } from 'shoutem/theme/StyleConnector';
+import connectStyle from 'shoutem/theme/StyleConnector';
 
 import {
   navigateBack,
@@ -86,5 +86,5 @@ const style = {
 };
 
 export default connect()(
-  connectStyle(style)(NavigationBar)
+  connectStyle('dev.shoutem.NavigationBar', style)(NavigationBar)
 );
