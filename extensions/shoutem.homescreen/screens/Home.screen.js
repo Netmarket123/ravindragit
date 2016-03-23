@@ -143,10 +143,6 @@ class HomeScreenPropsCreator {
   getScrollType() {
     return this.configurationProvider.getScrollType();
   }
-
-  getLayoutType() {
-    return this.configurationProvider.getLayoutType();
-  }
 }
 
 function mapStateToProps(state) {
@@ -163,7 +159,6 @@ class Home extends Component {
           layoutPosition={propsCreator.getLayoutPosition()}
           shortcutsData={propsCreator.getShortcutsData()}
           dimensions={propsCreator.getLayoutDimensions()}
-          layoutType={propsCreator.getLayoutType()}
         />
       );
     }
@@ -173,7 +168,6 @@ class Home extends Component {
         layoutPosition={propsCreator.getLayoutPosition()}
         shortcutsData={propsCreator.getShortcutsData()}
         dimensions={propsCreator.getLayoutDimensions()}
-        layoutType={propsCreator.getLayoutType()}
       />
     );
   }
