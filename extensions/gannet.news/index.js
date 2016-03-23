@@ -9,3 +9,8 @@ export {
   gannettItems as mockedItems,
   customTheme as mockedTheme,
 };
+
+export const screens = {
+  GannettDetailsScreen,
+  GannettListScreen,
+};
