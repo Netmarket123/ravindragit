@@ -113,23 +113,23 @@ function assertNotEmpty(target, errorMessage) {
 }
 
 function assertExtensionsExist(extensions) {
-  assertNotEmpty(extensions, 'The app without any extensions cannot be created. ' +
-    'You must supply at least one extensions using the setExtensions method');
+  assertNotEmpty(extensions, `The app without any extensions cannot be created.
+    You must supply at least one extensions using the setExtensions method`);
 }
 
 function assertScreensExist(screens) {
-  assertNotEmpty(screens, 'The app without any screens cannot be created. ' +
-    'You must supply at least one screen using the setScreens method');
+  assertNotEmpty(screens, `The app without any screens cannot be created.
+    You must set at least one extension that exports screens`);
 }
 
 function assertReducersExist(reducers) {
-  assertNotEmpty(reducers, 'The app without any reducers cannot be created. ' +
-    'You must supply at least one extension that has a reducer defined.');
+  assertNotEmpty(reducers, `The app without any reducers cannot be created.
+    You must supply at least one extension that has a reducer defined.`);
 }
 
 function assertInitialRouteExists(initialRoute, screens) {
-  assertNotEmpty(initialRoute, 'The app without an initial route cannot be created. ' +
-    'You must define an initial route using the setInitialRoute method.');
+  assertNotEmpty(initialRoute, `The app without an initial route cannot be created.
+    You must define an initial route using the setInitialRoute method.`);
 
   if (!screens[initialRoute.screen]) {
     throw new Error('The initial route points to a screen that does not exist.');
@@ -206,7 +206,53 @@ function createApplicationStore(appContext) {
   return createStore(reducer, applyMiddleware(...middleware));
 }
 
-const appContextSymbol = Symbol('appContext');
+/**
+ * Extracts all of the screens from provided extension. This function will
+ * return an object that has React Component assigned to screen name
+ * prefixed with extension name e.g.
+ * {
+ *  extension1.screenName1: ScreenComponent1,
+ *  extension1.screenName2: ScreenComponent2,
+ *  ...
+ * }
+ * @param extension The extension installed in app,
+ * @param extensionName The name of installed extension
+ * @returns {*} The screens object.
+ */
+function extractExtensionScreens(extension, extensionName) {
+  let screens = {};
+
+  if (extension.screens) {
+    for (const screenName of Object.keys(extension.screens)) {
+      screens[`${extensionName}.${screenName}`] = extension.screens[screenName];
+    }
+  }
+
+  return screens;
+}
+
+/**
+ * Extracts all of the screens from provided extensions. This function will
+ * return an object that has React Component assigned to screen name
+ * prefixed with extension name e.g.
+ * {
+ *  extension1.screenName1: ScreenComponent1,
+ *  extension1.screenName2: ScreenComponent2,
+ *  extension2.screenName3: ScreenComponent3,
+ *  ...
+ * }
+ * @param appContext The context configured through the builder API
+ * @returns {*} The screens object.
+ */
+function getApplicationScreens(appContext) {
+  return Object.keys(appContext.extensions).reduce((prevResult, extensionName) => {
+    const extension = appContext.extensions[extensionName];
+    const extensionScreens = extractExtensionScreens(extension, extensionName);
+    return Object.assign(prevResult, extensionScreens);
+  }, {});
+}
+
+const APP_CONTEXT = Symbol('appContext');
 
 /**
  * Builds and initializes an App class that represents a root
@@ -217,7 +263,7 @@ const appContextSymbol = Symbol('appContext');
 export default class AppBuilder {
 
   constructor() {
-    this[appContextSymbol] = {
+    this[APP_CONTEXT] = {
       store: {},
       extensions: {},
       screens: {},
@@ -226,33 +272,30 @@ export default class AppBuilder {
   }
 
   setExtensions(extensions) {
-    this[appContextSymbol].extensions = Object.assign({}, extensions);
-    return this;
-  }
-
-  setScreens(screens) {
-    this[appContextSymbol].screens = Object.assign({}, screens);
+    this[APP_CONTEXT].extensions = Object.assign({}, extensions);
     return this;
   }
 
   setInitialRoute(route) {
-    this[appContextSymbol].initialRoute = Object.assign({}, route);
+    this[APP_CONTEXT].initialRoute = Object.assign({}, route);
     return this;
   }
 
   setNavigationBarComponent(component) {
-    this[appContextSymbol].navigationBarComponent = component;
+    this[APP_CONTEXT].navigationBarComponent = component;
     return this;
   }
 
   build() {
     // Capture the cloned appContext here, so that
     // each app gets its own context.
-    const appContext = Object.assign({}, this[appContextSymbol]);
+    const appContext = Object.assign({}, this[APP_CONTEXT]);
     assertExtensionsExist(appContext.extensions);
+    appContext.extensions = includeCoreExtension(appContext.extensions);
+
+    appContext.screens = getApplicationScreens(appContext);
     assertScreensExist(appContext.screens);
     assertInitialRouteExists(appContext.initialRoute, appContext.screens);
-    appContext.extensions = includeCoreExtension(appContext.extensions);
 
     appContext.store = createApplicationStore(appContext);
     return createApplication(appContext);

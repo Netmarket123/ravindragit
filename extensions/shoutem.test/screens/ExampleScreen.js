@@ -40,7 +40,7 @@ class ExampleScreen extends Component {
 
   navigateToScreen(screen, modal) {
     const { dispatch } = this.props;
-    const nextScreenName = `screen${screen}`;
+    const nextScreenName = `shoutem.test.screen${screen}`;
 
     let route = {
       screen: nextScreenName,

@@ -36,30 +36,32 @@ function emptyReducer() {
   return {};
 }
 
-function getDefaultExtensions() {
-  return {
-    default: {
-      reducer: emptyReducer,
-    },
-  };
-}
-
 function getDefaultScreens() {
   return {
     default: Screen,
   };
 }
 
+function getDefaultExtensions() {
+  return {
+    default: {
+      reducer: emptyReducer,
+      screens: {
+        default: Screen
+      }
+    },
+  };
+}
+
 function getDefaultInitialRoute() {
   return {
-    screen: 'default',
+    screen: 'default.default',
   };
 }
 
 function getDefaultBuilder() {
   return new AppBuilder()
     .setExtensions(getDefaultExtensions())
-    .setScreens(getDefaultScreens())
     .setInitialRoute(getDefaultInitialRoute());
 }
 
@@ -114,7 +116,6 @@ describe('AppBuilder', () => {
     it('does not create an app without any extensions', () => {
       const builder = new AppBuilder()
         .setExtensions({})
-        .setScreens(getDefaultScreens())
         .setInitialRoute(getDefaultInitialRoute());
 
       assert.throws(builder.build.bind(builder),
@@ -127,10 +128,18 @@ describe('AppBuilder', () => {
         .setExtensions({
           extension1: {
             reducer: emptyReducer,
+            screens: {
+              screen1: Screen,
+              screen2: Screen,
+              default: Screen,
+            }
           },
           extension2: {
             reducer: emptyReducer,
           },
+        })
+        .setInitialRoute({
+          screen: 'extension1.screen1'
         })
         .build();
 
@@ -141,19 +150,30 @@ describe('AppBuilder', () => {
   describe('(screens)', () => {
     it('does not create an app without any screens', () => {
       const builder = getDefaultBuilder()
-        .setScreens({});
+        .setExtensions({
+          extensionWithoutScreens: {
+            reducer: emptyReducer,
+          }
+        });
 
       assert.throws(builder.build.bind(builder), 'The app without any screens cannot be created.');
     });
 
     it('creates an app with multiple screens', () => {
       const App = getDefaultBuilder()
-        .setScreens({
-          screen1: Screen,
-          screen2: Screen,
-          screen3: Screen,
+        .setExtensions({
+          extension1: {
+            reducer: emptyReducer,
+            screens: {
+              screen1: Screen,
+              screen2: Screen,
+              default: Screen,
+            }
+          },
         })
-        .setInitialRoute({ screen: 'screen2' })
+        .setInitialRoute({
+          screen: 'extension1.default'
+        })
         .build();
 
       assertValidApp(App);
@@ -182,11 +202,8 @@ describe('AppBuilder', () => {
 
     it('creates a valid app with a valid initial route', () => {
       const App = getDefaultBuilder()
-        .setScreens({
-          screen1: Screen,
-        })
         .setInitialRoute({
-          screen: 'screen1',
+          screen: 'default.default',
         })
         .build();
 
@@ -205,7 +222,11 @@ describe('AppBuilder', () => {
         screen2: Screen,
         default: Screen,
       };
-      const App2 = builder.setScreens(screens).build();
+      const App2 = builder.setExtensions({
+        default: {
+          screens: screens,
+        }
+      }).build();
 
       assertValidApp(App1);
       assertValidApp(App2);
@@ -241,6 +262,11 @@ describe('AppBuilder', () => {
           reducer: emptyReducer,
         },
         extension2: {},
+        default: {
+          screens: {
+            default: Screen,
+          }
+        },
       };
       const App2 = builder.setExtensions(app2Extensions).build();
 
@@ -266,14 +292,18 @@ describe('AppBuilder', () => {
       const builder = getDefaultBuilder();
 
       const app1Screens = getDefaultScreens();
-      const App1 = builder.setScreens(app1Screens).build();
+      const App1 = builder.build();
 
       const app2Screens = {
         screen1: Screen,
         screen2: Screen,
         default: Screen,
       };
-      const App2 = builder.setScreens(app2Screens).build();
+      const App2 = builder.setExtensions({
+        default: {
+          screens: app2Screens,
+        },
+      }).build();
 
       assertValidApp(App1);
       assertValidApp(App2);
@@ -282,13 +312,13 @@ describe('AppBuilder', () => {
 
       assert.sameMembers(
         Object.keys(app1Instance.getScreens()),
-        Object.keys(app1Screens),
+        Object.keys(app1Screens).map((screenName) => { return `default.${screenName}` }),
         'The first app does not contain the expected screens'
       );
 
       assert.sameMembers(
         Object.keys(app2Instance.getScreens()),
-        Object.keys(app2Screens),
+        Object.keys(app2Screens).map((screenName) => { return `default.${screenName}` }),
         'The second app does not contain the expected screens'
       );
     });
@@ -301,14 +331,14 @@ describe('AppBuilder', () => {
     });
 
     it('creates a store initialized with multiple reducers', () => {
-      const extensions = {
+      const extensions = Object.assign(getDefaultExtensions(),{
         extension1: {
           reducer: emptyReducer,
         },
         extension2: {
           reducer: emptyReducer,
         },
-      };
+      });
 
       const App = getDefaultBuilder()
         .setExtensions(extensions)
@@ -326,7 +356,7 @@ describe('AppBuilder', () => {
           reducer: emptyReducer,
         },
       };
-      const extensions = Object.assign({},
+      const extensions = Object.assign(getDefaultExtensions(),
         extensionsWithReducers, {
           extension2: {},
         });
@@ -340,12 +370,17 @@ describe('AppBuilder', () => {
 
     it('creates an app without any reducers', () => {
       const extensions = {
-        extension1: {},
+        extension1: {
+          screens: {
+            default: Screen,
+          },
+        },
         extension2: {},
       };
 
       const App = getDefaultBuilder()
         .setExtensions(extensions)
+        .setInitialRoute({ screen: 'extension1.default', props: {} })
         .build();
 
       // None of the extensions have a reducer
@@ -377,7 +412,6 @@ describe('AppBuilder', () => {
     it('app screens cannot be modified', () => {
       const originalScreens = getDefaultScreens();
       const App = getDefaultBuilder()
-        .setScreens(originalScreens)
         .build();
 
       const appInstance = new App();
@@ -386,7 +420,7 @@ describe('AppBuilder', () => {
       screens = appInstance.getScreens();
 
       assert.sameMembers(
-        Object.keys(originalScreens),
+        Object.keys(originalScreens).map((screenName) => { return `default.${screenName}` }),
         Object.keys(screens),
         'The app screens were modified'
       );
@@ -397,9 +431,12 @@ describe('AppBuilder', () => {
     it('app calls appWillMount on an extension', () => {
       const appWillMountSpy = sinon.spy();
       const extensions = {
-        extension1: {
+        default: {
           reducer: emptyReducer,
           appWillMount: appWillMountSpy,
+          screens: {
+            default: Screen
+          },
         },
       };
 
@@ -415,9 +452,12 @@ describe('AppBuilder', () => {
     it('app calls appDidMount on an extension', () => {
       const appDidMountSpy = sinon.spy();
       const extensions = {
-        extension1: {
+        default: {
           reducer: emptyReducer,
           appDidMount: appDidMountSpy,
+          screens: {
+            default: Screen
+          },
         },
       };
 
@@ -433,9 +473,12 @@ describe('AppBuilder', () => {
     it('app calls appWillUnmount on an extension', () => {
       const appWillUnmountSpy = sinon.spy();
       const extensions = {
-        extension1: {
+        default: {
           reducer: emptyReducer,
           appWillUnmount: appWillUnmountSpy,
+          screens: {
+            default: Screen
+          },
         },
       };
 
@@ -454,11 +497,14 @@ describe('AppBuilder', () => {
       const appDidMountSpy = sinon.spy();
       const appWillUnmountSpy = sinon.spy();
       const extensions = {
-        extension1: {
+        default: {
           reducer: emptyReducer,
           appWillMount: appWillMountSpy,
           appDidMount: appDidMountSpy,
           appWillUnmount: appWillUnmountSpy,
+          screens: {
+            default: Screen
+          },
         },
       };
 
@@ -492,10 +538,13 @@ describe('AppBuilder', () => {
       const appDidMountSpy2 = sinon.spy();
 
       const extensions = {
-        extension1: {
+        default: {
           reducer: emptyReducer,
           appWillMount: appWillMountSpy1,
           appDidMount: appDidMountSpy1,
+          screens: {
+            default: Screen
+          },
         },
         extension2: {
           appDidMount: appDidMountSpy2,
