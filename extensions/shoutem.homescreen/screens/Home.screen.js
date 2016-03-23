@@ -151,20 +151,16 @@ function mapStateToProps(state) {
   };
 }
 
+function getScrollerComponentForType(type) {
+  return type === 'paged' ? PagedScroller : ContinuousScroller;
+}
+
 class Home extends Component {
   renderShortcuts(propsCreator) {
-    if (propsCreator.getScrollType() === 'continuous') {
-      return (
-        <ContinuousScroller
-          layoutPosition={propsCreator.getLayoutPosition()}
-          shortcutsData={propsCreator.getShortcutsData()}
-          dimensions={propsCreator.getLayoutDimensions()}
-        />
-      );
-    }
+    const ScrollerComponent = getScrollerComponentForType(propsCreator.getScrollType());
 
     return (
-      <PagedScroller
+      <ScrollerComponent
         layoutPosition={propsCreator.getLayoutPosition()}
         shortcutsData={propsCreator.getShortcutsData()}
         dimensions={propsCreator.getLayoutDimensions()}
