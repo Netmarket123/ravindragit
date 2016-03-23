@@ -13,6 +13,6 @@ describe('StyleProvider', () => {
   );
   const passedTheme = demo.find(StyleProviderTestComponent).nodes[0].getThemeStyle();
   it('provides a theme', () => {
-    assert.isTrue(passedTheme instanceof Theme, 'Theme should be available in context');
+    assert.isTrue(passedTheme instanceof Theme, 'theme not available in context');
   });
 });

@@ -19,12 +19,12 @@ describe('connectStyle', () => {
     assert.equal(
       passedStyle.testStyle.testProperty,
       TEST_PROPERTY,
-      'Theme property should be as defined at theme'
+      'style different then defined at theme'
     );
     assert.equal(
       passedStyle.testStyle.variableProperty,
       TEST_VARIABLE,
-      'Theme property should inherit value from passed variable (as defined at theme)'
+      'style different then variable value (as defined at theme)'
     );
   });
 });
