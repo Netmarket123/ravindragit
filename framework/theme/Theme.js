@@ -1,11 +1,11 @@
 import { PropTypes } from 'react-native';
 import resolveIncludes from './resolveIncludes';
+import mergeComponentAndThemeStyles from './mergeComponentAndThemeStyles';
 import * as _ from 'lodash';
 
 // Privates
 const THEME_STYLE = Symbol('themeStyle');
 const THEME_STYLE_CACHE = Symbol('themeCachedStyle');
-const CREATE_COMPONENT_THEME_STYLE = Symbol('createComponentThemeStyle');
 
 /**
  *  Theme holds application style.
@@ -41,7 +41,7 @@ export default class Theme {
    * @param passedCustomStyle -  custom style passed to component from parent component
    */
   resolveComponentStyle(componentStyleName, componentStyle, passedCustomStyle) {
-    const componentThemeStyle = this[CREATE_COMPONENT_THEME_STYLE](
+    const componentThemeStyle = this.createComponentThemeStyle(
       componentStyleName,
       componentStyle
     );
@@ -62,29 +62,25 @@ export default class Theme {
    * @param styleName - unique style name
    * @param style - base style for given styleName
    */
-  [CREATE_COMPONENT_THEME_STYLE](styleName, style) {
+  createComponentThemeStyle(styleName, style) {
     if (this[THEME_STYLE_CACHE][styleName]) {
       return this[THEME_STYLE_CACHE][styleName];
     }
 
     const componentIncludedStyle = resolveIncludes(style, this[THEME_STYLE]);
-    const componentThemeStyle = _.merge({}, componentIncludedStyle, this[THEME_STYLE][styleName]);
-
-    // Picking only required root theme style, used by component.
-    // We do not want to merge whole theme to component style.
-    const intersectedRootThemeStyle = _.pick(this[THEME_STYLE], _.keys(componentThemeStyle));
-
-    // Merging only common style, not all theme style with component style
-    const themedComponentStyle = _.merge({}, intersectedRootThemeStyle, componentThemeStyle);
 
     /**
      * This is static component style (static per styleName).
      * Every new component instance will reuse it when merging
      * with passed custom style.
      */
-    this[THEME_STYLE_CACHE][styleName] = themedComponentStyle;
+    this[THEME_STYLE_CACHE][styleName] = mergeComponentAndThemeStyles(
+      componentIncludedStyle,
+      this[THEME_STYLE][styleName],
+      this[THEME_STYLE]
+    );
 
-    return themedComponentStyle;
+    return this[THEME_STYLE_CACHE][styleName];
   }
 }
 

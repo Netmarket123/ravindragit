@@ -19,114 +19,80 @@ export default function resolveIncludes(target, base = {}) {
    */
 
   /**
-   * Merges required style names in given order.
-   * @param styleNamesToInclude - list of style names to be included (optional
-   * it can be single style name)
+   * Merges style from target and base.
+   * Target style overrides base.
+   * @param styleName - style name to include
    */
-  function include(styleNamesToInclude, processedStyles) {
-    if (!styleNamesToInclude) {
-      return {};
-    }
-    // eslint-disable-next-line
-    return Object.assign({}, ...getRequiredStyles(styleNamesToInclude, processedStyles));
-  }
+  function getStyle(styleName) {
+    const defaultStyle = {};
+    let style = defaultStyle;
 
-  /**
-   * Recursively iterates through given value keys searching for [INCLUDE].
-   * Steps into every object and repeat process; skips simple values (string, number, etc.)
-   * Include required style if any.
-   * @param value - object which requires styles
-   * @param processedStyles -
-   */
-  function resolveStyleIncludes(value, processedStyles) {
-    const styleNamesToInclude = value[INCLUDE];
-
-    if (!_.isPlainObject(value) && !styleNamesToInclude) {
-      return value;
-    }
-
-    // Todo(Braco): - cache resolved style includes for reuse when required again
-    const result = {
-      ...include(styleNamesToInclude, processedStyles),
-      ...value,
-    };
-    const keys = _.keys(value);
-
-    for (const key of keys) {
-      if (_.isPlainObject(result[key])) {
-        result[key] = resolveStyleIncludes(result[key], processedStyles);
+    const baseStyle = base[styleName];
+    if (baseStyle) {
+      if (baseStyle[INCLUDE]) {
+        throw Error(`Base style cannot have includes, unexpected include in ${styleName}.`);
       }
+      style = { ...baseStyle };
     }
 
-    return result;
-  }
-
-  /**
-   * Returns target and base root style if exists.
-   * Before returning any, resolves returning style [INCLUDE] (required style).
-   * @param styleName
-   */
-  function getStylesFromTargetAndBase(styleName, processedStyles) {
-    const targetAndBaseStyles = [];
-
-    if (processedStyles[styleName]) {
-      // TODO(Braco) - create style including stack?
-      throw Error(`Circular style including ${styleName}`);
-    }
-    // Idea behind passing processedStyle is to mutate it?
-    // eslint-disable-next-line
-    processedStyles[styleName] = true;
-
-
-    if (base[styleName]) {
-      targetAndBaseStyles.push(
-        resolveStyleIncludes(base[styleName], Object.keys(base[styleName]))
-      );
-    }
-    if (target[styleName]) {
-      targetAndBaseStyles.push(
-        resolveStyleIncludes(target[styleName], Object.keys(target[styleName]))
-      );
+    const targetStyle = target[styleName];
+    if (targetStyle) {
+      style = {
+        ...style,
+        ...targetStyle,
+      };
     }
 
-    // eslint-disable-next-line
-    processedStyles[styleName] = false;
-
-    if (targetAndBaseStyles.length === 0) {
+    if (style === defaultStyle) {
       console.warn(`Including unexisting style: ${styleName}`);
     }
 
-    return targetAndBaseStyles;
+    return style;
   }
 
-  function getStylesObject(stylesToInclude, styleNamesToInclude, processedStyles) {
-    return [
-      ...stylesToInclude,
-      ...getStylesFromTargetAndBase(styleNamesToInclude, processedStyles),
-    ];
-  }
-
-  /**
-   * Creates list of required styles object in given order.
-   * @param styleNamesToInclude
-   */
-  function getRequiredStyles(styleNamesToInclude, processedStyles) {
-    let stylesToInclude = [];
-
-    if (_.isString(styleNamesToInclude)) {
-      const styleName = styleNamesToInclude;
-      stylesToInclude = getStylesObject(stylesToInclude, styleName, processedStyles);
-    } else if (_.isArray(styleNamesToInclude)) {
-      _.forIn(styleNamesToInclude, (styleName) => {
-        stylesToInclude = getStylesObject(stylesToInclude, styleName, processedStyles);
-      });
-    } else {
-      // TODO(Braco): - print mixedStyleName and styleName
-      console.warn('Style include is empty or wrong format.');
+  // Includes all styles required by using the INCLUDE symbol
+  // on the styleNode object level, and recursively calls itself
+  // for all nested style objects. After calling this function, the
+  // styleNode object will be fully processed, i.e., all styles
+  // required by this object, and any of its children will be resolved.
+  function includeNodeStyles(styleNode, processingStyleNames) {
+    if (!_.isPlainObject(styleNode)) {
+      return styleNode;
     }
 
-    return stylesToInclude;
+    // objasni
+    const styleNamesToInclude = styleNode[INCLUDE];
+
+    let stylesToInclude = {};
+    if (styleNamesToInclude) {
+      if (!_.isArray(styleNamesToInclude)) {
+        throw Error('Include should be array');
+      }
+
+      for (const styleName of styleNamesToInclude) {
+        if (processingStyleNames.has(styleName)) {
+          throw Error(`Circular style include, including ${styleName}`);
+        }
+        processingStyleNames.add(styleName);
+        stylesToInclude = _.merge(
+          {}, stylesToInclude, includeNodeStyles(getStyle(styleName), processingStyleNames)
+        );
+        processingStyleNames.delete(styleName);
+      }
+    }
+
+    const resultingStyle = _.merge({}, stylesToInclude, styleNode);
+
+    for (const styleName of _.keys(resultingStyle)) {
+      resultingStyle[styleName] =
+        includeNodeStyles(resultingStyle[styleName], processingStyleNames);
+    }
+    return resultingStyle;
   }
 
-  return resolveStyleIncludes(target, {});
+  // A that holds all style names that are currently
+  // being processed. This is used to detect include
+  // cycles.
+  const processingStyleNames = new Set();
+  return includeNodeStyles(target, processingStyleNames);
 }
