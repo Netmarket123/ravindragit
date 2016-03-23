@@ -1,11 +1,10 @@
 import { PropTypes } from 'react-native';
-import includeStyles from './includeStyles';
+import resolveIncludes from './resolveIncludes';
 import * as _ from 'lodash';
 
 // Privates
 const THEME_STYLE = Symbol('themeStyle');
-const THEME_CACHED_STYLE = Symbol('themeCachedStyle');
-const GET_COMPONENT_THEME_STYLE = Symbol('getComponentThemeStyle');
+const THEME_STYLE_CACHE = Symbol('themeCachedStyle');
 const CREATE_COMPONENT_THEME_STYLE = Symbol('createComponentThemeStyle');
 
 /**
@@ -13,9 +12,9 @@ const CREATE_COMPONENT_THEME_STYLE = Symbol('createComponentThemeStyle');
  *  Provides method to resolve component style.
  *
  *  Terms:
- *  - Theme root style: first level style at theme; used to define general style
+ *  - Theme root style: is first level style at theme, also used to define general style
  *    together with screen style
- *    I.E:
+ *    e.g.:
  *      - base style (h1, baseFont, text)
  *      - theme component style ('dev.Ext.GridListItem')
  *      - screen style, specific case of "theme component style" ('dev.Ext.GannetListScreen')
@@ -25,8 +24,8 @@ const CREATE_COMPONENT_THEME_STYLE = Symbol('createComponentThemeStyle');
  */
 export default class Theme {
   constructor(themeStyle) {
-    this[THEME_STYLE] = includeStyles(themeStyle);
-    this[THEME_CACHED_STYLE] = {};
+    this[THEME_STYLE] = resolveIncludes(themeStyle);
+    this[THEME_STYLE_CACHE] = {};
   }
 
   /**
@@ -37,18 +36,17 @@ export default class Theme {
    * 1. Merge every static style of component
    * 2. Merge component static style with current implementation custom style
    *
-   * @param styleName
-   * @param style
-   * @param customStyle
+   * @param componentStyleName - unique component style name (usually same as component name)
+   * @param componentStyle - component base style, defined at component definition
+   * @param passedCustomStyle -  custom style passed to component from parent component
    */
-  resolveComponentStyle(styleName, style, customStyle) {
-    let componentThemeStyle = this[GET_COMPONENT_THEME_STYLE](styleName);
+  resolveComponentStyle(componentStyleName, componentStyle, passedCustomStyle) {
+    const componentThemeStyle = this[CREATE_COMPONENT_THEME_STYLE](
+      componentStyleName,
+      componentStyle
+    );
 
-    if (!componentThemeStyle) {
-      componentThemeStyle = this[CREATE_COMPONENT_THEME_STYLE](styleName, style);
-    }
-
-    return _.merge({}, componentThemeStyle, customStyle);
+    return _.merge({}, componentThemeStyle, passedCustomStyle);
   }
 
   /**
@@ -61,35 +59,32 @@ export default class Theme {
    * 3. Merge componentThemeStyle with theme root style
    * 4. Cache component static style
    *
-   * @param styleName
-   * @param style
+   * @param styleName - unique style name
+   * @param style - base style for given styleName
    */
   [CREATE_COMPONENT_THEME_STYLE](styleName, style) {
-    const componentIncludedStyle = includeStyles(style, this[THEME_STYLE]);
+    if (this[THEME_STYLE_CACHE][styleName]) {
+      return this[THEME_STYLE_CACHE][styleName];
+    }
+
+    const componentIncludedStyle = resolveIncludes(style, this[THEME_STYLE]);
     const componentThemeStyle = _.merge({}, componentIncludedStyle, this[THEME_STYLE][styleName]);
 
+    // Picking only required root theme style, used by component.
+    // We do not want to merge whole theme to component style.
+    const intersectedRootThemeStyle = _.pick(this[THEME_STYLE], _.keys(componentThemeStyle));
+
     // Merging only common style, not all theme style with component style
-    const themedComponentStyle = _.merge({},
-      _.pick(this[THEME_STYLE], _.keysIn(componentThemeStyle)),
-      componentThemeStyle);
+    const themedComponentStyle = _.merge({}, intersectedRootThemeStyle, componentThemeStyle);
 
     /**
      * This is static component style (static per styleName).
-     * On every new component use it will be reused when merging
-     * with custom component style.
+     * Every new component instance will reuse it when merging
+     * with passed custom style.
      */
-    this[THEME_CACHED_STYLE][styleName] = themedComponentStyle;
+    this[THEME_STYLE_CACHE][styleName] = themedComponentStyle;
 
     return themedComponentStyle;
-  }
-
-  /**
-   * Returns component cached style, if any.
-   * @param styleName
-   * @returns {*}
-   */
-  [GET_COMPONENT_THEME_STYLE](styleName) {
-    return this[THEME_CACHED_STYLE][styleName];
   }
 }
 

@@ -1,5 +1,5 @@
 import connectStyle from './connectStyle';
-import { INCLUDE } from './includeStyles';
+import { INCLUDE } from './resolveIncludes';
 import StyleProvider from './StyleProvider.jsx';
 import Theme, { ThemeShape } from './Theme';
 

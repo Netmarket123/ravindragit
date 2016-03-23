@@ -8,7 +8,7 @@ export const INCLUDE = Symbol('include');
  * @param target - styles object containing
  * @param base - additional style object from which target may include style
  */
-export default function includeStyles(target, base = {}) {
+export default function resolveIncludes(target, base = {}) {
   /**
    * Include process steps:
    * 1. Iterate through target object, check if property is object and if it has [INCLUDE]
@@ -50,7 +50,7 @@ export default function includeStyles(target, base = {}) {
       ...include(styleNamesToInclude, processedStyles),
       ...value,
     };
-    const keys = _.keysIn(value);
+    const keys = _.keys(value);
 
     for (const key of keys) {
       if (_.isPlainObject(result[key])) {
