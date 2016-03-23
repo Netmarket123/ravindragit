@@ -21,16 +21,19 @@ const propTypes = {
   }),
 };
 
-const { height } = Dimensions.get('window');
+/*
+*  TODO(Vladimir) - decide if these dimensions need to be provided
+*  dynamically based on the scroll direction
+*/
+const { height, width } = Dimensions.get('window');
 
+// Read window dimensions to set a fixed ScrollView size and enable scrolling
 const styles = StyleSheet.create({
   container: {
     height,
+    width,
     flex: 1,
     flexDirection: 'row',
-  },
-  contentContainer: {
-    flex: 1,
   },
 });
 
@@ -46,7 +49,8 @@ export default class ContinuousScroller extends Component {
     return (
       <ScrollView
         style={styles.container}
-        contentContainerStyle={[styles.contentContainer, contentContainerPosition]}
+        directionalLockEnabled
+        contentContainerStyle={contentContainerPosition}
       >
         <ShortcutsGrid gridItems={this.props.shortcutsData}
           dimensions={this.props.dimensions}

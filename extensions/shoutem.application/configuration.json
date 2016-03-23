@@ -56,8 +56,8 @@
                 "scalingStrategy": "horizontal",
                 "scrollType": "paged",
                 "layoutType": "grid",
-                "columnCount": 3,
-                "rowCount": 2,
+                "columnCount": 1,
+                "rowCount": 4,
                 "resizeWideScreenLayout": false,
                 "buttonLayout": {
                     "buttonSize": {
@@ -108,7 +108,7 @@
                     "width": 1080,
                     "height": 1920
                 },
-                "layoutPosition": "bottomCenter",
+                "layoutPosition": "topLeft",
                 "canRevert": false
             },
             "startPage": true,

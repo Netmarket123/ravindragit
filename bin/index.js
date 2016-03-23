@@ -5,6 +5,7 @@ import {
 import { AppBuilder } from 'shoutem';
 
 import { ExampleScreen } from 'shoutem.test';
+import { Home } from 'shoutem.homescreen';
 
 import { NavigationBar } from 'shoutem.ui';
 
@@ -13,7 +14,7 @@ const App = new AppBuilder()
     'shoutem.test': {},
   })
   .setScreens({
-    initialScreen: ExampleScreen,
+    initialScreen: Home,
     screen1: ExampleScreen,
     screen2: ExampleScreen,
     screen3: ExampleScreen,
