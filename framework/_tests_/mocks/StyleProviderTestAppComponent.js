@@ -10,6 +10,9 @@ import styleProviderTestReducer from './StyleProviderTestReducer';
 const store = createStore(styleProviderTestReducer);
 
 export default class StyleProviderTestAppComponent extends Component {
+  static propTypes = {
+    children: React.PropTypes.object,
+  }
   render() {
     return (
       <Provider store={store}>

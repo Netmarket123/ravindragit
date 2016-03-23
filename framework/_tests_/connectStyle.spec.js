@@ -6,7 +6,7 @@ import { TEST_VARIABLE } from './mocks/StyleProviderTestReducer';
 import StyleProviderTestAppComponent from './mocks/StyleProviderTestAppComponent';
 import ConnectStyleTestComponent from './mocks/ConnectStyleTestComponent';
 
-describe('StyleProvider', () => {
+describe('connectStyle', () => {
   const demo = mount(
     <StyleProviderTestAppComponent>
       <ConnectStyleTestComponent />
@@ -15,7 +15,7 @@ describe('StyleProvider', () => {
   const passedStyle = demo.find(ConnectStyleTestComponent)
     .nodes[0].refs.wrappedInstance.props.style;
 
-  it('gets proper theme style', () => {
+  it('provides proper style to component', () => {
     assert.equal(
       passedStyle.testStyle.testProperty,
       TEST_PROPERTY,

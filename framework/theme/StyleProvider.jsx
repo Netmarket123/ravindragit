@@ -1,5 +1,5 @@
 import React, { Children, PropTypes } from 'react-native';
-import { Theme, ThemeShape } from './index';
+import Theme, { ThemeShape } from './Theme';
 import { connect } from 'react-redux';
 
 // Privates
@@ -16,7 +16,7 @@ class StyleProvider extends React.Component {
     themeVariables: React.PropTypes.object,
   };
   static childContextTypes = {
-    theme: ThemeShape,
+    theme: ThemeShape.isRequired,
   };
   constructor(props, context) {
     super(props, context);

@@ -63,7 +63,7 @@ export default function connectStyle(componentStyleName, componentStyle) {
 
     class StyledComponent extends React.Component {
       static contextTypes = {
-        theme: ThemeShape,
+        theme: ThemeShape.isRequired,
       };
       static propTypes = {
         style: PropTypes.object,
