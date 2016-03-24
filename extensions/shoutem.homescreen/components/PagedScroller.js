@@ -14,9 +14,9 @@ const propTypes = {
     verticalAlignment: PropTypes.string,
     horizontalAlignment: PropTypes.string,
   }),
-  dimensions: React.PropTypes.shape({
-    cols: React.PropTypes.number,
-    rows: React.PropTypes.number,
+  dimensions: PropTypes.shape({
+    cols: PropTypes.number,
+    rows: PropTypes.number,
   }),
   shortcutsData: PropTypes.arrayOf(PropTypes.shape(shortcutDataShape)),
 };
@@ -43,11 +43,9 @@ function splitIntoPages(items, pageSize) {
   }, [[]]);
 }
 
-function getStyleForLayoutPosition(layoutPosition) {
+function getStyleForContainerLayoutPosition(layoutPosition) {
   return {
-    container: {
-      alignSelf: layoutPosition.verticalAlignment,
-    },
+    alignSelf: layoutPosition.verticalAlignment,
   };
 }
 
@@ -59,7 +57,7 @@ function createPagingDataSource(data, dimensions) {
   return pagerDs.cloneWithPages(pages);
 }
 
-export default class PagedShortcuts extends Component {
+export default class PagedScroller extends Component {
   constructor(props) {
     super(props);
     this.renderPage = this.renderPage.bind(this);
@@ -72,21 +70,20 @@ export default class PagedShortcuts extends Component {
         layoutPosition={this.props.layoutPosition}
       />
     );
-
-    // TODO:(Vladimir) - OR ShortcutsList
   }
 
   render() {
+    const containerLayoutPosition = getStyleForContainerLayoutPosition(this.props.layoutPosition);
     return (
-      <View style={[styles.container, getStyleForLayoutPosition(this.props).container]}>
-        <ViewPager
-          dataSource={createPagingDataSource(this.props.shortcutsData, this.props.dimensions)}
-          renderPage={this.renderPage}
-        />
+      <View style={[styles.container, containerLayoutPosition]}>
+      <ViewPager
+        dataSource={createPagingDataSource(this.props.shortcutsData, this.props.dimensions)}
+        renderPage={this.renderPage}
+      />
       </View>
     );
   }
 }
 
-PagedShortcuts.propTypes = propTypes;
+PagedScroller.propTypes = propTypes;
 

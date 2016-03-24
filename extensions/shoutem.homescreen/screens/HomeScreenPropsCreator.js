@@ -1,40 +1,5 @@
-import React, {
-  Component,
-  View,
-  StyleSheet,
-  Image,
-  PropTypes,
-  Dimensions,
-  PixelRatio,
-} from 'react-native';
-
-import { connect } from 'react-redux';
-import PagedShortcuts from '../components/PagedShortcuts.js';
-import ContinuousShortcuts from '../components/ContinuousShortcuts';
 import ConfigurationReader from '../ConfigurationReader';
-import { configuration as appConfiguration } from 'shoutem.application';
 import Scaler from '../Scaler';
-
-const propTypes = {
-  appState: PropTypes.shape({
-    'shoutem.core.configuration': PropTypes.object,
-  }),
-};
-
-const styles = StyleSheet.create({
-  backgroundImage: {
-    flex: 1,
-    alignSelf: 'stretch',
-    width: null,
-    height: null,
-  },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-    flexDirection: 'row',
-  },
-});
 
 const layoutAlignments = {
   topLeft: {
@@ -75,24 +40,12 @@ const layoutAlignments = {
   },
 };
 
-function getWindowDimensionsInPixels() {
-  const {
-      height,
-      width,
-    } = Dimensions.get('window');
-
-  return {
-    height: PixelRatio.getPixelSizeForLayoutSize(height),
-    width: PixelRatio.getPixelSizeForLayoutSize(width),
-  };
-}
-
-class HomeScreenPropsCreator {
-  constructor(configuration) {
+export default class HomeScreenPropsCreator {
+  constructor(configuration, windowDimensionsInPixels) {
     this.configurationProvider = new ConfigurationReader(configuration);
     this.scaler = new Scaler(
       this.configurationProvider.getScalingStrategy(),
-      getWindowDimensionsInPixels(),
+      windowDimensionsInPixels,
       this.configurationProvider.getLayoutDimension()
     );
   }
@@ -144,47 +97,3 @@ class HomeScreenPropsCreator {
     return this.configurationProvider.getScrollType();
   }
 }
-
-function mapStateToProps(state) {
-  return {
-    appState: { 'shoutem.core.configuration': appConfiguration, ...state },
-  };
-}
-
-class Home extends Component {
-  renderShortcuts(propsCreator) {
-    if (propsCreator.getScrollType() === 'continuous') {
-      return (
-        <ContinuousShortcuts
-          layoutPosition={propsCreator.getLayoutPosition()}
-          shortcutsData={propsCreator.getShortcutsData()}
-        />
-      );
-    }
-
-    return (
-      <PagedShortcuts
-        layoutPosition={propsCreator.getLayoutPosition()}
-        shortcutsData={propsCreator.getShortcutsData()}
-        dimensions={propsCreator.getLayoutDimensions()}
-      />
-    );
-  }
-
-  render() {
-    const { appState } = this.props;
-    const propsCreator = new HomeScreenPropsCreator(appState['shoutem.core.configuration']);
-
-    return (
-      <Image source={{ uri: propsCreator.getBackgroundImage() }} style={styles.backgroundImage}>
-        <View style={[styles.content, propsCreator.getLayoutMarginStyle()]}>
-          {this.renderShortcuts(propsCreator)}
-        </View>
-      </Image>
-    );
-  }
-}
-
-Home.propTypes = propTypes;
-
-export default connect(mapStateToProps)(Home);

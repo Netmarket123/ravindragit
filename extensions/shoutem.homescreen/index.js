@@ -1,5 +1,10 @@
-import Home from './screens/Home.screen';
+import Home from './screens/HomeScreen';
+
+const screens = {
+  home: Home,
+};
 
 export {
   Home,
+  screens,
 };
