@@ -82,6 +82,7 @@ export default function resolveIncludes(target, base = {}) {
     }
 
     const resultingStyle = _.merge({}, stylesToInclude, styleNode);
+    delete resultingStyle[INCLUDE];
 
     for (const styleName of _.keys(resultingStyle)) {
       resultingStyle[styleName] =

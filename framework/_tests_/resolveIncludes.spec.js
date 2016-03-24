@@ -340,5 +340,32 @@ describe('resolveIncludes', () => {
         });
       }, 'Include should be array');
     });
+    it('without error if include is "not"', () => {
+      const undefinedInclude = {
+        testInclude: {
+          [INCLUDE]: undefined,
+          test: 1,
+        },
+      };
+      const falseInclude = {
+        testInclude: {
+          [INCLUDE]: false,
+          test: 1,
+        },
+      };
+      delete undefinedInclude[INCLUDE];
+      delete falseInclude[INCLUDE];
+
+      assert.deepEqual(
+        resolveIncludes(undefinedInclude),
+        undefinedInclude,
+        'include not resolved properly'
+      );
+      assert.deepEqual(
+        resolveIncludes(falseInclude),
+        falseInclude,
+        'include not resolved properly'
+      );
+    });
   });
 });
