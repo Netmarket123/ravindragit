@@ -5,8 +5,7 @@ import React, {
   Dimensions,
   Animated,
 } from 'react-native';
-import connectStyle from 'shoutem/theme/StyleConnector';
-import { INCLUDE } from 'shoutem/theme/StyleIncluder';
+import { INCLUDE, connectStyle } from 'shoutem/theme';
 import * as _ from 'lodash';
 
 const CALCULATE_TOP_OFFSET = Symbol('createOffsetStyle');
@@ -18,6 +17,12 @@ const CREATE_STATE = Symbol('createState');
 const DEFAULT_BOTTON_CONTENT_OFFSET = 50;
 
 class GannettDetailsScreen extends React.Component {
+  static propTypes = {
+    item: React.PropTypes.object,
+    style: React.PropTypes.object,
+    bottomContentOffset: React.PropTypes.number,
+  };
+  
   constructor(props, context) {
     super(props, context);
     const bottomContentOffset = props.bottomContentOffset || DEFAULT_BOTTON_CONTENT_OFFSET;
@@ -109,12 +114,6 @@ class GannettDetailsScreen extends React.Component {
     );
   }
 }
-
-GannettDetailsScreen.propTypes = {
-  item: React.PropTypes.object,
-  style: React.PropTypes.object,
-  bottomContentOffset: React.PropTypes.number,
-};
 
 const style = {
   screen: {

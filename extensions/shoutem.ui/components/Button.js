@@ -7,7 +7,7 @@ import React, {
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import { connectStyle }from 'shoutem/theme';
+import { connectStyle } from 'shoutem/theme';
 
 export default class Button extends Component {
   static propTypes = {

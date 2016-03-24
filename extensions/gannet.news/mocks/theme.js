@@ -1,10 +1,6 @@
-import { INCLUDE } from 'shoutem/theme/StyleIncluder';
+import { INCLUDE } from 'shoutem/theme';
 
-const variables = {
-  ganetColor: '#961a2d',
-};
-
-export default {
+export default (variables) => ({
   baseFont: {
     color: '#454545',
   },
@@ -107,7 +103,7 @@ export default {
       buttonIcon: {
         color: 'white',
         fontSize: 24,
-      }
-    }
+      },
+    },
   },
-};
+});
