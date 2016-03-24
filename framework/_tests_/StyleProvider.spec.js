@@ -6,13 +6,14 @@ import StyleProviderTestAppComponent from './mocks/StyleProviderTestAppComponent
 import StyleProviderTestComponent from './mocks/StyleProviderTestComponent';
 
 describe('StyleProvider', () => {
-  const demo = mount(
-    <StyleProviderTestAppComponent>
-      <StyleProviderTestComponent />
-    </StyleProviderTestAppComponent>
-  );
-  const passedTheme = demo.find(StyleProviderTestComponent).nodes[0].getThemeStyle();
   it('provides a theme', () => {
+    const demo = mount(
+      <StyleProviderTestAppComponent>
+        <StyleProviderTestComponent />
+      </StyleProviderTestAppComponent>
+    );
+    const passedTheme = demo.find(StyleProviderTestComponent).nodes[0].getThemeStyle();
+
     assert.isTrue(passedTheme instanceof Theme, 'theme not available in context');
   });
 });

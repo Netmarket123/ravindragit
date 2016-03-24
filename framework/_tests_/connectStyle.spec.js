@@ -7,15 +7,15 @@ import StyleProviderTestAppComponent from './mocks/StyleProviderTestAppComponent
 import ConnectStyleTestComponent from './mocks/ConnectStyleTestComponent';
 
 describe('connectStyle', () => {
-  const demo = mount(
-    <StyleProviderTestAppComponent>
-      <ConnectStyleTestComponent />
-    </StyleProviderTestAppComponent>
-  );
-  const passedStyle = demo.find(ConnectStyleTestComponent)
-    .nodes[0].refs.wrappedInstance.props.style;
-
   it('provides proper style to component', () => {
+    const demo = mount(
+      <StyleProviderTestAppComponent>
+        <ConnectStyleTestComponent />
+      </StyleProviderTestAppComponent>
+    );
+    const passedStyle = demo.find(ConnectStyleTestComponent)
+      .nodes[0].refs.wrappedInstance.props.style;
+
     assert.equal(
       passedStyle.testStyle.testProperty,
       TEST_PROPERTY,
