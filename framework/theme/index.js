@@ -1,6 +1,6 @@
 import connectStyle from './connectStyle';
 import { INCLUDE } from './resolveIncludes';
-import StyleProvider from './StyleProvider.jsx';
+import StyleProvider from './StyleProvider';
 import Theme, { ThemeShape } from './Theme';
 
 export {
