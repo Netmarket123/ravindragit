@@ -47,8 +47,8 @@ function getDefaultExtensions() {
     default: {
       reducer: emptyReducer,
       screens: {
-        default: Screen
-      }
+        default: Screen,
+      },
     },
   };
 }
@@ -132,14 +132,14 @@ describe('AppBuilder', () => {
               screen1: Screen,
               screen2: Screen,
               default: Screen,
-            }
+            },
           },
           extension2: {
             reducer: emptyReducer,
           },
         })
         .setInitialRoute({
-          screen: 'extension1.screen1'
+          screen: 'extension1.screen1',
         })
         .build();
 
@@ -153,7 +153,7 @@ describe('AppBuilder', () => {
         .setExtensions({
           extensionWithoutScreens: {
             reducer: emptyReducer,
-          }
+          },
         });
 
       assert.throws(builder.build.bind(builder), 'The app without any screens cannot be created.');
@@ -168,11 +168,11 @@ describe('AppBuilder', () => {
               screen1: Screen,
               screen2: Screen,
               default: Screen,
-            }
+            },
           },
         })
         .setInitialRoute({
-          screen: 'extension1.default'
+          screen: 'extension1.default',
         })
         .build();
 
@@ -224,8 +224,8 @@ describe('AppBuilder', () => {
       };
       const App2 = builder.setExtensions({
         default: {
-          screens: screens,
-        }
+          screens,
+        },
       }).build();
 
       assertValidApp(App1);
@@ -265,7 +265,7 @@ describe('AppBuilder', () => {
         default: {
           screens: {
             default: Screen,
-          }
+          },
         },
       };
       const App2 = builder.setExtensions(app2Extensions).build();
@@ -312,14 +312,20 @@ describe('AppBuilder', () => {
 
       assert.sameMembers(
         Object.keys(app1Instance.getScreens()),
-        Object.keys(app1Screens).map((screenName) => { return `default.${screenName}` }),
+        Object.keys(app1Screens).map((screenName) => `default.${screenName}`),
         'The first app does not contain the expected screens'
       );
 
       assert.sameMembers(
         Object.keys(app2Instance.getScreens()),
-        Object.keys(app2Screens).map((screenName) => { return `default.${screenName}` }),
+        Object.keys(app2Screens).map((screenName) => `default.${screenName}`),
         'The second app does not contain the expected screens'
+      );
+
+      assert.notInclude(
+        Object.keys(app1Instance.getScreens()),
+        Object.keys(app2Screens).map((screenName) => `default.${screenName}`),
+        'The first app contains unexpected screens'
       );
     });
   });
@@ -331,7 +337,7 @@ describe('AppBuilder', () => {
     });
 
     it('creates a store initialized with multiple reducers', () => {
-      const extensions = Object.assign(getDefaultExtensions(),{
+      const extensions = Object.assign(getDefaultExtensions(), {
         extension1: {
           reducer: emptyReducer,
         },
@@ -420,7 +426,7 @@ describe('AppBuilder', () => {
       screens = appInstance.getScreens();
 
       assert.sameMembers(
-        Object.keys(originalScreens).map((screenName) => { return `default.${screenName}` }),
+        Object.keys(originalScreens).map((screenName) => `default.${screenName}`),
         Object.keys(screens),
         'The app screens were modified'
       );
@@ -435,7 +441,7 @@ describe('AppBuilder', () => {
           reducer: emptyReducer,
           appWillMount: appWillMountSpy,
           screens: {
-            default: Screen
+            default: Screen,
           },
         },
       };
@@ -456,7 +462,7 @@ describe('AppBuilder', () => {
           reducer: emptyReducer,
           appDidMount: appDidMountSpy,
           screens: {
-            default: Screen
+            default: Screen,
           },
         },
       };
@@ -477,7 +483,7 @@ describe('AppBuilder', () => {
           reducer: emptyReducer,
           appWillUnmount: appWillUnmountSpy,
           screens: {
-            default: Screen
+            default: Screen,
           },
         },
       };
@@ -503,7 +509,7 @@ describe('AppBuilder', () => {
           appDidMount: appDidMountSpy,
           appWillUnmount: appWillUnmountSpy,
           screens: {
-            default: Screen
+            default: Screen,
           },
         },
       };
@@ -543,7 +549,7 @@ describe('AppBuilder', () => {
           appWillMount: appWillMountSpy1,
           appDidMount: appDidMountSpy1,
           screens: {
-            default: Screen
+            default: Screen,
           },
         },
         extension2: {

@@ -220,7 +220,7 @@ function createApplicationStore(appContext) {
  * @returns {*} The screens object.
  */
 function extractExtensionScreens(extension, extensionName) {
-  let screens = {};
+  const screens = {};
 
   if (extension.screens) {
     for (const screenName of Object.keys(extension.screens)) {

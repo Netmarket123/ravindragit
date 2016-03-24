@@ -65,6 +65,7 @@ class ExampleScreen extends Component {
   render() {
     console.log('Screen render');
 
+    /* eslint react/jsx-no-bind: 0 */
     return (
       <View style={styles.content}>
         <Text>{this.props.message}</Text>
