@@ -6,11 +6,18 @@ import React, {
 
 import { connect } from 'react-redux';
 
-import connectStyle from 'shoutem/theme/StyleConnector';
+import { connectStyle } from 'shoutem/theme';
 import { LargeGridItem, MediumListItem } from 'shoutem.ui';
 import { navigateTo } from 'shoutem/navigation';
 
 class GannettListScreen extends React.Component {
+  static propTypes = {
+    items: React.PropTypes.array,
+    style: React.PropTypes.object,
+    featureFirst: React.PropTypes.bool,
+    dispatch: React.PropTypes.func,
+  };
+  
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -76,13 +83,6 @@ class GannettListScreen extends React.Component {
     );
   }
 }
-
-GannettListScreen.propTypes = {
-  items: React.PropTypes.array,
-  style: React.PropTypes.object,
-  featureFirst: React.PropTypes.bool,
-  dispatch: React.PropTypes.func,
-};
 
 const style = {
   screen: {},
