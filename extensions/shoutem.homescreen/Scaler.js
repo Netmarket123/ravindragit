@@ -6,6 +6,13 @@ function getScaledValue(value, ratio) {
   return Math.floor(value * ratio);
 }
 
+/**
+ * Scales all objects numerical values according to provided ratio
+ *
+ * @param object an object to be scaled
+ * @param ratio a ratio to with which the object values should be scaled with
+ * @returns {} the scaled object
+ */
 function getScaledObject(object, ratio) {
   const result = Object.assign({}, object);
 
@@ -18,22 +25,19 @@ function getScaledObject(object, ratio) {
   return result;
 }
 
-function getVerticalResizeRatio(windowDimensions, layoutDimensions) {
-  return windowDimensions.height / layoutDimensions.height;
-}
+function getResizeRatio(scalingStrategy, windowDimensions, layoutDimensions) {
+  if (scalingStrategy === 'vertical') {
+    return windowDimensions.height / layoutDimensions.height;
+  }
 
-function getHorizontalResizeRatio(windowDimensions, layoutDimensions) {
   return windowDimensions.width / layoutDimensions.width;
 }
 
-function getResizeRatio(scalingStrategy, windowDimensions, layoutDimensions) {
-  if (scalingStrategy === 'vertical') {
-    return getVerticalResizeRatio(windowDimensions, layoutDimensions);
-  }
-
-  return getHorizontalResizeRatio(windowDimensions, layoutDimensions);
-}
-
+/**
+ * Enables adjustment of component sizes based on relation between
+ * layout dimensions used when sizes were specified and the actual
+ * window dimensions.
+ */
 export default class Scaler {
   constructor(scalingStrategy, windowDimensionsInPixels, layoutDimension) {
     this.ratio = getResizeRatio(scalingStrategy, windowDimensionsInPixels, layoutDimension);
