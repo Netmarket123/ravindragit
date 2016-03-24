@@ -4,8 +4,10 @@ import React, {
   Text,
   TouchableOpacity,
 } from 'react-native';
+
+import Button from './Button';
 import { connect } from 'react-redux';
-import { connectStyle } from 'shoutem/theme/StyleConnector';
+import connectStyle from 'shoutem/theme/StyleConnector';
 
 import {
   navigateBack,
@@ -25,18 +27,15 @@ class NavigationBar extends React.Component {
   }
 
   render() {
-    const backButton = (
-      <TouchableOpacity onPress={this.navigateBack}>
-        <Text>Back</Text>
-      </TouchableOpacity>
-    );
-    const leftComponent = this.props.hasHistory && !this.props.leftComponent ? backButton
-      : this.props.leftComponent;
     const {
       style,
       centerComponent,
       rightComponent,
-    } = this.props;
+      } = this.props;
+
+    const backButton = (<Button icon={'arrow-back'} onPress={this.navigateBack} style={style.backButton} />);
+    const leftComponent = this.props.hasHistory && !this.props.leftComponent ? backButton
+      : this.props.leftComponent;
 
     return (
       <View style={style.container}>
@@ -82,9 +81,12 @@ const style = {
   },
   component: {
     height: 24,
+    marginBottom: -8,
+    alignSelf: 'flex-end',
   },
+  backButton: {},
 };
 
 export default connect()(
-  connectStyle(style)(NavigationBar)
+  connectStyle('shoutem.ui.NavigationBar', style)(NavigationBar)
 );
