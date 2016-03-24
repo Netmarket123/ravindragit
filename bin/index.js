@@ -10,6 +10,8 @@ import { NavigationBar } from 'shoutem.ui';
 
 import { GannettDetailsScreen, GannettListScreen, mockedItems } from 'gannet.news';
 
+import themeInit from './themeInit';
+
 const App = new AppBuilder()
   .setExtensions({
     'shoutem.test': {},
@@ -27,6 +29,7 @@ const App = new AppBuilder()
     },
   })
   .setNavigationBarComponent(NavigationBar)
+  .setThemeInit(themeInit)
   .build();
 
 // noinspection JSCheckFunctionSignatures

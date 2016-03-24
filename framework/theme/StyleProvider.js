@@ -9,9 +9,9 @@ const THEME = Symbol('theme');
  *  Provides Theme instance trough context.
  *  Constructor props expect theme instance!
  */
-class StyleProvider extends React.Component {
+export default class StyleProvider extends React.Component {
   static propTypes = {
-    getTheme: React.PropTypes.func,
+    themeInit: React.PropTypes.func,
     children: PropTypes.element.isRequired,
     themeVariables: React.PropTypes.object,
   };
@@ -20,11 +20,26 @@ class StyleProvider extends React.Component {
   };
   constructor(props, context) {
     super(props, context);
-    this[THEME] = new Theme(props.getTheme(props.themeVariables));
+    this.state = {
+      [THEME]: this.createState(),
+    }
+  }
+  createState() {
+    return new Theme(this.props.themeInit(this.props.themeVariables));
+  }
+  componentWillReceiveProps(nextProps) {
+    if (
+      nextProps.themeInit !== this.props.themeInit ||
+      nextProps.themeVariables !== this.props.themeVariables
+    ) {
+      this.setState(this.createState());
+      return true;
+    }
+    return false;
   }
   getChildContext() {
     return {
-      theme: this[THEME],
+      theme: this.state[THEME],
     };
   }
   render() {
@@ -33,11 +48,3 @@ class StyleProvider extends React.Component {
     return Children.only(children);
   }
 }
-
-function mapStateToProps(state) {
-  return {
-    themeVariables: state.configuration.theme.variables,
-  };
-}
-
-export default connect(mapStateToProps)(StyleProvider);

@@ -79,9 +79,21 @@ export default function connectStyle(componentStyleName, componentStyle) {
         };
       }
 
-      componentWillReceiveProps(nextProps) {
+      componentWillReceiveProps(nextProps, nextContext) {
         const theme = this.context.theme;
-        if (nextProps.style !== this.props.style) {
+        /**
+         * If component gets custom style from parent, whenever that style changes,
+         * component will resolve new style for it self.
+         * Also, if component gets custom style from parent, it will get new custom style whenever
+         * theme changes so it doesn't have to resolve it self style on Theme change.
+         *
+         * If component doesn't have custom style, when Theme changes,
+         * it will resolve new style for it self.
+         */
+        if (
+          (nextProps.style !== this.props.style) ||
+          (!nextProps.style && nextContext.theme !== theme)
+        ) {
           this.setState({
             style: theme.resolveComponentStyle(componentStyleName, componentStyle, nextProps.style),
           });
