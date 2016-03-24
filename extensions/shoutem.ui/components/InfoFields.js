@@ -4,9 +4,21 @@ import React, {
   Component,
   Image,
 } from 'react-native';
-import connectStyle from 'shoutem/theme/StyleConnector';
+import { connectStyle } from 'shoutem/theme';
 
+/**
+ * InfoFields is List component.
+ * Available props:
+ *  - infoFields: List<String> - string to be listed
+ *  - infoSeparator: Image - image between strings
+ */
 class InfoFields extends Component {
+  static propTypes = {
+    infoFields: React.PropTypes.array,
+    infoSeparator: React.PropTypes.any,
+    style: React.PropTypes.object,
+  };
+  
   render() {
     const infoFieldsComponents = [];
     const style = this.props.style;
@@ -17,9 +29,9 @@ class InfoFields extends Component {
             <Image
               style={style.infoSeparator}
               source={this.props.infoSeparator}
-              key={i * -1}
+              key={`separator${i}`}
             />
-          ); // key i * -1 ?
+          );
         }
         infoFieldsComponents.push(
           <Text
@@ -36,12 +48,6 @@ class InfoFields extends Component {
     return null;
   }
 }
-
-InfoFields.propTypes = {
-  infoFields: React.PropTypes.array,
-  infoSeparator: React.PropTypes.any,
-  style: React.PropTypes.object,
-};
 
 const style = {
   infoSeparator: {
