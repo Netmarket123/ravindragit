@@ -1,6 +1,5 @@
 import { assert } from 'chai';
 import Denormalizer from '../actions/Denormalizer';
-import sinon from 'sinon';
 
 describe('Denormalizer', () => {
   const testNormalizedData = [
@@ -33,6 +32,12 @@ describe('Denormalizer', () => {
       const denormalizedData = denormalizer.getDenormalizedItem({ type: 'type1', id: 3 });
       assert.deepEqual(denormalizedData, expectedDenormalizedData,
                        'denormalized data does not contain children');
+    });
+
+    xit('handles deeply nested references', () => {
+    });
+
+    xit('handles circular references', () => {
     });
   });
 });
