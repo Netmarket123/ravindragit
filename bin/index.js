@@ -4,23 +4,14 @@ import {
 
 import { AppBuilder } from 'shoutem';
 
-import { ExampleScreen } from 'shoutem.test';
-import { Home } from 'shoutem.homescreen';
-
 import { NavigationBar } from 'shoutem.ui';
 
+import extensions from './extensions.js';
+
 const App = new AppBuilder()
-  .setExtensions({
-    'shoutem.test': {},
-  })
-  .setScreens({
-    initialScreen: Home,
-    screen1: ExampleScreen,
-    screen2: ExampleScreen,
-    screen3: ExampleScreen,
-  })
+  .setExtensions(extensions)
   .setInitialRoute({
-    screen: 'initialScreen',
+    screen: 'shoutem.test.initialScreen',
     props: {
       message: 'The initial screen.',
     },
