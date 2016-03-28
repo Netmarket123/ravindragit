@@ -6,11 +6,14 @@ import { AppBuilder } from 'shoutem';
 
 import { ExampleScreen } from 'shoutem.test';
 
+import applicationExt from 'shoutem.application';
+
 import { NavigationBar } from 'shoutem.ui';
 
 const App = new AppBuilder()
   .setExtensions({
     'shoutem.test': {},
+    'shoutem.application': applicationExt,
   })
   .setScreens({
     initialScreen: ExampleScreen,
