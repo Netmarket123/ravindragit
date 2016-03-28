@@ -9,10 +9,11 @@ import thunk from 'redux-thunk';
 import { ScreenNavigator, ROOT_NAVIGATOR_NAME } from './navigation';
 import coreExtensions from './coreExtensions';
 import devEnvironment from './devEnvironment';
+import { ID as applicationExtID } from 'shoutem.application';
 
 import StyleProvider from './theme/StyleProvider';
 const ConnectedStyleProvider = connect(state => ({
-  themeVariables: state['shoutem.application'].configuration.theme.variables,
+  themeVariables: state[applicationExtID].configuration.theme.variables,
 }))(StyleProvider);
 
 
