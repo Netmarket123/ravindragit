@@ -17,8 +17,5 @@ export {
   configuration,
   setConfiguration,
   updateConfiguration,
-};
-
-export default {
   reducer,
 };
