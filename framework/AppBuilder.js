@@ -12,7 +12,7 @@ import devEnvironment from './devEnvironment';
 
 import StyleProvider from './theme/StyleProvider';
 const ConnectedStyleProvider = connect(state => ({
-  themeVariables: state.configuration.theme.variables,
+  themeVariables: state['shoutem.application'].configuration.theme.variables,
 }))(StyleProvider);
 
 
@@ -93,9 +93,7 @@ function createApplication(appContext) {
         />
       );
 
-      /**
-       * themeVariables are passed with connect to StyleProvider
-       */
+      // themeVariables are passed with connect to StyleProvider
       return (
         <Provider store={appContext.store}>
           <ConnectedStyleProvider themeInit={appContext.themeInit}>

@@ -6,6 +6,8 @@ import { AppBuilder } from 'shoutem';
 
 import { NavigationBar } from 'shoutem.ui';
 
+import { mockedItems } from 'gannet.news';
+
 import themeInit from './themeInit';
 
 import extensions from './extensions.js';
@@ -15,6 +17,7 @@ const App = new AppBuilder()
   .setInitialRoute({
     screen: 'shoutem.test.initialScreen',
     props: {
+      message: 'This is initial screen',
       items: mockedItems,
     },
   })
