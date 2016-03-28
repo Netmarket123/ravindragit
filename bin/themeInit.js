@@ -17,6 +17,11 @@ export default (variables) => ({
     alignItems: 'stretch',
     flex: 1,
   },
+  'shoutem.test.ExampleScreen': {
+    button: {
+      backgroundColor: 'red',
+    },
+  },
   'dev.ext.LargeGridItem': {
     h1: {
     },
