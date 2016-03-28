@@ -8,7 +8,6 @@ import thunk from 'redux-thunk';
 
 import { ScreenNavigator, ROOT_NAVIGATOR_NAME } from './navigation';
 import coreExtensions from './coreExtensions';
-import devEnvironment from './devEnvironment';
 
 /**
  * Calls the lifecycle function with the given name on all
@@ -152,6 +151,28 @@ function includeCoreExtension(appExtensions) {
 }
 
 /**
+ * Helper function for extraction of registered type from extensions
+ * returns an object where keys are names of all registered object types
+ * @param extensions {Object} The extensions registered through App builder API
+ * @param objectType {String} what to extract from extensions
+ * @returns {Object}
+ */
+function extractObjectFromExtensions(extensions, objectType) {
+  return Object.keys(extensions).reduce((prevResult, key) => {
+    const extension = extensions[key];
+    let result = prevResult;
+    if (extension[objectType]) {
+      result = {
+        ...prevResult,
+        [key]: extension[objectType],
+      };
+    }
+
+    return result;
+  }, {});
+}
+
+/**
  * Extracts all of the reducers from extensions. This function will
  * return an object that is compatible with the combineReducers from
  * redux. It will return an object that has a reducer function assigned
@@ -165,18 +186,18 @@ function includeCoreExtension(appExtensions) {
  * @returns {*} The extension reducers object.
  */
 function extractExtensionReducers(extensions) {
-  return Object.keys(extensions).reduce((prevResult, key) => {
-    const extension = extensions[key];
-    let result = prevResult;
-    if (extension.reducer) {
-      result = {
-        ...prevResult,
-        [key]: extension.reducer,
-      };
-    }
+  return extractObjectFromExtensions(extensions, 'reducer');
+}
 
-    return result;
-  }, {});
+/**
+ * Extracts all middleware registered by extensions. This function will
+ * return an array that is compatible with the applyMiddleware from redux.
+ * @param extensions  The extensions configured through the builder API.
+ * @returns {Array} The array of all middlewares provided by extensions.
+ */
+function extractExtensionMiddleware(extensions) {
+  const middleware = extractObjectFromExtensions(extensions, 'middleware');
+  return Object.keys(middleware).map(key => middleware[key]);
 }
 
 /**
@@ -199,9 +220,7 @@ function createApplicationStore(appContext) {
   const reducer = combineReducers(extensionReducers);
   let middleware = [thunk];
 
-  if (process.env.NODE_ENV === 'development') {
-    middleware = middleware.concat(devEnvironment.getReduxMiddleware());
-  }
+  middleware = middleware.concat(extractExtensionMiddleware(appContext.extensions));
 
   return createStore(reducer, applyMiddleware(...middleware));
 }
