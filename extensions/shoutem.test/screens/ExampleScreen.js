@@ -40,7 +40,7 @@ class ExampleScreen extends Component {
 
   navigateToScreen(screen, modal) {
     const { dispatch } = this.props;
-    const nextScreenName = `screen${screen}`;
+    const nextScreenName = `shoutem.test.screen${screen}`;
 
     let route = {
       screen: nextScreenName,
@@ -65,6 +65,7 @@ class ExampleScreen extends Component {
   render() {
     console.log('Screen render');
 
+    /* eslint react/jsx-no-bind: 0 */
     return (
       <View style={styles.content}>
         <Text>{this.props.message}</Text>

@@ -4,26 +4,16 @@ import {
 
 import { AppBuilder } from 'shoutem';
 
-import { ExampleScreen } from 'shoutem.test';
-
 import { NavigationBar } from 'shoutem.ui';
-
-import { GannettDetailsScreen, GannettListScreen, mockedItems } from 'gannet.news';
 
 import themeInit from './themeInit';
 
+import extensions from './extensions.js';
+
 const App = new AppBuilder()
-  .setExtensions({
-    'shoutem.test': {},
-  })
-  .setScreens({
-    initialScreen: GannettListScreen,
-    newsDetails: GannettDetailsScreen,
-    screen2: ExampleScreen,
-    screen3: ExampleScreen,
-  })
+  .setExtensions(extensions)
   .setInitialRoute({
-    screen: 'initialScreen',
+    screen: 'shoutem.test.initialScreen',
     props: {
       items: mockedItems,
     },
