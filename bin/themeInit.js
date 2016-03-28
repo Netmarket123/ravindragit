@@ -19,7 +19,7 @@ export default (variables) => ({
   },
   'shoutem.test.ExampleScreen': {
     button: {
-      backgroundColor: 'red',
+      backgroundColor: variables.testColor,
     },
   },
   'dev.ext.LargeGridItem': {
