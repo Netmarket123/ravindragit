@@ -1,6 +1,6 @@
 export default class HomeScreenSettingsReader {
   constructor(settings) {
-    this.settings = settings.homeScreen;
+    this.settings = settings;
   }
 
   getLayoutDimension() {

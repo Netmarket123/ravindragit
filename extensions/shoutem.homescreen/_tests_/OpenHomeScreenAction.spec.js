@@ -5,7 +5,7 @@ import layout from './test_data/test-layout';
 import children from './test_data/test-children';
 import shortcutsData from './test_data/shortcut-data';
 
-describe('openHomeScreenActionCreator', () => {
+describe('openHomeScreenAction', () => {
   const expectedLayout = layout;
   const expectedScreenName = 'shoutem.homeScreen.HomeScreen';
   const testState = shortcutsData;
@@ -29,8 +29,8 @@ describe('openHomeScreenActionCreator', () => {
     assert.equal(callParams.screen, expectedScreenName);
   });
 
-  it('calls navigateTo with correct layout in props', () => {
-    assert.deepEqual(callParams.props.layout, expectedLayout);
+  it('calls navigateTo with correct layout in settings', () => {
+    assert.deepEqual(callParams.props.settings.layout, expectedLayout);
   });
 
   const shortcuts = callParams.props.shortcuts;

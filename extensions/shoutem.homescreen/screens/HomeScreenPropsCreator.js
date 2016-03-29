@@ -41,8 +41,8 @@ const layoutAlignments = {
 };
 
 export default class HomeScreenPropsCreator {
-  constructor(configuration, windowDimensionsInPixels) {
-    this.settingsProvider = new HomeScreenSettingsReader(configuration);
+  constructor(settings, windowDimensionsInPixels) {
+    this.settingsProvider = new HomeScreenSettingsReader(settings);
     this.scaler = new Scaler(
       this.settingsProvider.getScalingStrategy(),
       windowDimensionsInPixels,
