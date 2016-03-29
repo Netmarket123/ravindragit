@@ -1,4 +1,8 @@
 import {
+  Navigator,
+} from 'react-native';
+
+import {
   navigateTo,
 } from 'shoutem/navigation';
 
