@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import createOpenHomeScreenAction from '../actions/OpenHomeScreenAction';
+import createOpenHomeScreenAction from '../actions';
 import sinon from 'sinon';
 import layout from './test_data/test-layout';
 import children from './test_data/test-children';

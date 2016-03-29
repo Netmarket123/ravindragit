@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import Denormalizer from '../actions/Denormalizer';
+import Denormalizer from '../Denormalizer';
 
 describe('Denormalizer', () => {
   const testNormalizedData = [

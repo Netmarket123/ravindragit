@@ -1,5 +1,5 @@
 import Home from './screens/HomeScreen';
-import createOpenHomeScreenAction from './actions/OpenHomeScreenAction';
+import createOpenHomeScreenAction from './actions';
 import { navigateTo } from 'shoutem/navigation';
 
 const openHomeScreen = createOpenHomeScreenAction(navigateTo);
