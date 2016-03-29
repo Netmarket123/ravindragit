@@ -7,6 +7,8 @@ import React, {
   PropTypes,
 } from 'react-native';
 
+import { connect } from 'react-redux';
+import { actions } from 'shoutem.application';
 import shortcutDataShape from './ShortcutDataShape';
 
 const propTypes = {
@@ -51,7 +53,15 @@ export function generateStyle(configuration) {
   };
 }
 
-export default class Shortcut extends Component {
+class Shortcut extends Component {
+  navigateToScreen(screen) {
+    const { dispatch } = this.props;
+
+    return () => {
+      dispatch(actions.executeShortcut(screen.shortcutData));
+    };
+  }
+
   render() {
     const { shortcut, buttonIcon } = generateStyle(this.props.shortcutData.config);
     const { uri, highlightedUri } = this.props.shortcutData;
@@ -63,7 +73,7 @@ export default class Shortcut extends Component {
             style={[styles.buttonIcon, buttonIcon, styles.hiddenIcon]}
             resizeMode={Image.resizeMode.stretch}
           />
-          <TouchableOpacity activeOpacity={0}>
+          <TouchableOpacity activeOpacity={0} onPress={this.navigateToScreen(this.props)}>
             <Image
               source={this.props.shortcutData}
               source={{ uri: highlightedUri }}
@@ -77,3 +87,5 @@ export default class Shortcut extends Component {
 }
 
 Shortcut.propTypes = propTypes;
+
+export default connect()(Shortcut);

@@ -1,4 +1,3 @@
-import HomeScreenSettingsReader from '../HomeScreenSettingsReader';
 import Scaler from '../Scaler';
 
 const layoutAlignments = {
@@ -41,8 +40,8 @@ const layoutAlignments = {
 };
 
 export default class HomeScreenPropsCreator {
-  constructor(settings, windowDimensionsInPixels) {
-    this.settingsProvider = new HomeScreenSettingsReader(settings);
+  constructor(settingsReader, windowDimensionsInPixels) {
+    this.settingsProvider = settingsReader;
     this.scaler = new Scaler(
       this.settingsProvider.getScalingStrategy(),
       windowDimensionsInPixels,
@@ -58,10 +57,14 @@ export default class HomeScreenPropsCreator {
     };
   }
 
-  getShortcutsData() {
-    return this.settingsProvider.getShortcuts().map(shortcut => ({
-      uri: shortcut.buttonImageUrl,
-      highlightedUri: shortcut.buttonImageHighlightedUrl,
+  getShortcutsData(shortcuts) {
+    return shortcuts.map(shortcut => ({
+      uri: shortcut.iconUrl,
+      highlightedUri: shortcut.highlightedIconUrl || shortcut.iconUrl,
+      action: shortcut.action,
+      canonicalName: shortcut.canonicalName,
+      settings: shortcut.settings,
+      children: shortcut.children,
       config: this.getButtonConfiguration(),
     }));
   }

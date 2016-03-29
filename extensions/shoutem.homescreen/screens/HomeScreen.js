@@ -10,6 +10,7 @@ import React, {
 
 import PagedScroller from '../components/PagedScroller';
 import ContinuousScroller from '../components/ContinuousScroller';
+import HomeScreenSettingsReader from '../HomeScreenSettingsReader';
 import PropsCreator from './HomeScreenPropsCreator';
 
 const propTypes = {
@@ -50,13 +51,13 @@ function getScrollerComponentForType(type) {
 }
 
 export default class HomeScreen extends Component {
-  renderShortcuts(propsCreator) {
+  renderShortcuts(propsCreator, shortcuts) {
     const ScrollerComponent = getScrollerComponentForType(propsCreator.getScrollType());
 
     return (
       <ScrollerComponent
         layoutPosition={propsCreator.getLayoutPosition()}
-        shortcutsData={propsCreator.getShortcutsData()}
+        shortcutsData={propsCreator.getShortcutsData(shortcuts)}
         dimensions={propsCreator.getLayoutDimensions()}
       />
     );
@@ -64,12 +65,13 @@ export default class HomeScreen extends Component {
 
   render() {
     const { settings, shortcuts } = this.props;
-    const propsCreator = new PropsCreator(settings, getWindowDimensionsInPixels());
+    const settingsReader = new HomeScreenSettingsReader(settings);
+    const propsCreator = new PropsCreator(settingsReader, getWindowDimensionsInPixels());
 
     return (
       <Image source={{ uri: propsCreator.getBackgroundImage() }} style={styles.backgroundImage}>
         <View style={[styles.content, propsCreator.getLayoutMarginStyle()]}>
-          {this.renderShortcuts(propsCreator)}
+          {this.renderShortcuts(propsCreator, shortcuts)}
         </View>
       </Image>
     );
