@@ -27,10 +27,6 @@ export function configurationReducer(state = {}, action) {
  */
 export default function configurationReducerCreator(defaultConfiguration = {}) {
   return function reducer(state = defaultConfiguration, action) {
-    if (!action.configuration && !action.configurationUpdates) {
-      return state;
-    }
-
     return configurationReducer(state, action);
   };
 }

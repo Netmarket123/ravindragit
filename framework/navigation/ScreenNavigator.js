@@ -35,6 +35,7 @@ export class ScreenNavigator extends Component {
     this.captureNavigatorRef = this.captureNavigatorRef.bind(this);
     this.setNavigationBarState = this.setNavigationBarState.bind(this);
 
+    this.initialRoute = props.initialRoute;
     this.navBarManager = props.hasOwnNavigationBar ? new NavigationBarStateManager()
       : this.context.parentNavigator.navBarManager;
   }
@@ -50,7 +51,11 @@ export class ScreenNavigator extends Component {
       return;
     }
 
-    this.performNavigationAction(nextProps.action);
+    if (!this.initialRoute && nextProps.action.route) {
+      this.initialRoute = nextProps.action.route;
+    } else {
+      this.performNavigationAction(nextProps.action);
+    }
   }
 
   shouldComponentUpdate(nextProps) {
@@ -82,6 +87,7 @@ export class ScreenNavigator extends Component {
      */
   performNavigationAction(action) {
     const navigator = this.navigator;
+    const { name } = this.props;
     switch (action.type) {
       case NAVIGATE_TO: {
         navigator.push(action.route);
@@ -101,7 +107,7 @@ export class ScreenNavigator extends Component {
 
     // We should end up here only if we successfully performed
     // a navigation action.
-    this.props.navigationActionPerformed(action, navigator.getCurrentRoutes(), this.props.name);
+    this.props.navigationActionPerformed(action, navigator && navigator.getCurrentRoutes(), name);
   }
 
   beforeRouteChange(route) {
@@ -145,15 +151,17 @@ export class ScreenNavigator extends Component {
 
   render() {
     console.log('Screen navigator render');
-    return (
+    const navigatorComponent = this.initialRoute ? (
       <Navigator ref={this.captureNavigatorRef}
-        initialRoute={this.props.initialRoute}
+        initialRoute={this.initialRoute}
         configureScene={this.configureScene}
         renderScene={this.renderScene}
         navigationBar={this.renderNavigationBar(navigator)}
         onWillFocus={this.beforeRouteChange}
       />
-    );
+    ) : null;
+
+    return navigatorComponent;
   }
 }
 
@@ -171,7 +179,7 @@ ScreenNavigator.propTypes = {
     screen: React.PropTypes.string.isRequired,
     props: React.PropTypes.object,
     sceneConfig: React.PropTypes.object,
-  }).isRequired,
+  }),
 
   /**
    * The action that will be triggered after each
