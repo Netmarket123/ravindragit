@@ -8,11 +8,13 @@ export default {
   getReduxMiddleware() {
     const middleware = [];
 
-    const createLogger = require('redux-logger');
-    const logger = createLogger({
-      collapsed: true,
-    });
-    middleware.push(logger);
+    if (process.env.NODE_ENV === 'development') {
+      const createLogger = require('redux-logger');
+      const logger = createLogger({
+        collapsed: true,
+      });
+      middleware.push(logger);
+    }
 
     return middleware;
   },
