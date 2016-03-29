@@ -6,22 +6,20 @@ export {
   actions,
 };
 
-let appActions = {};
+const appActions = {};
 
-export function appWillMount(appContext) {
-  const extensions = appContext.extensions;
-  appActions = Object.keys(extensions).reduce((prevResult, key) => {
-    const extension = extensions[key];
-    let result = prevResult;
+export function appWillMount(app) {
+  const extensions = app.getExtensions();
+  Object.keys(extensions).forEach(extensionName => {
+    const extension = extensions[extensionName];
     if (extension.actions) {
-      result = {
-        ...prevResult,
-        [key]: extension.actions,
-      };
+      Object.keys(extension.actions).forEach(actionName => {
+        const action = extension.actions[actionName];
+        const key = `${extensionName}.${actionName}`;
+        appActions[key] = action;
+      });
     }
-
-    return result;
-  }, {});
+  });
 }
 
 export const middleware = [

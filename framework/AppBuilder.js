@@ -197,7 +197,7 @@ function extractExtensionReducers(extensions) {
  */
 function extractExtensionMiddleware(extensions) {
   const middleware = extractObjectFromExtensions(extensions, 'middleware');
-  return Object.keys(middleware).map(key => middleware[key]);
+  return Object.keys(middleware).reduce((prevResult, key) => prevResult.concat(middleware[key]), []);
 }
 
 /**
