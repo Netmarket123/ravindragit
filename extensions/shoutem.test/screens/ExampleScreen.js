@@ -4,14 +4,14 @@ import React, {
   View,
   Text,
   TouchableOpacity,
-  Navigator,
 } from 'react-native';
 import { connect } from 'react-redux';
 
 import {
-  navigateTo,
   navigateBack,
 } from 'shoutem/navigation';
+
+import { actions } from 'shoutem.application';
 
 const styles = StyleSheet.create({
   content: {
@@ -40,21 +40,16 @@ class ExampleScreen extends Component {
 
   navigateToScreen(screen, modal) {
     const { dispatch } = this.props;
-    const nextScreenName = `shoutem.test.screen${screen}`;
-
-    let route = {
-      screen: nextScreenName,
-      props: {
-        message: `Screen: ${screen}`,
+    const { executeShortcut } = actions;
+    const shortcut = {
+      settings: {
+        screen,
+        modal,
       },
+      action: 'shoutem.test.openExampleScreen',
     };
 
-    if (modal) {
-      route = Object.assign(route, {
-        sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
-      });
-    }
-    dispatch(navigateTo(route));
+    dispatch(executeShortcut(shortcut));
   }
 
   navigateBack() {

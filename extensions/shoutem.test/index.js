@@ -1,4 +1,5 @@
 import ExampleScreen from './screens/ExampleScreen';
+import * as actions from './actions.js';
 
 const screens = {
   initialScreen: ExampleScreen,
@@ -10,4 +11,5 @@ const screens = {
 export {
   ExampleScreen,
   screens,
+  actions,
 };
