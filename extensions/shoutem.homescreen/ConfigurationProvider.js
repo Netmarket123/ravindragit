@@ -1,5 +1,5 @@
-import { settings } from 'shoutem.application';
-import HomeScreenSettingsReader from './HomeScreenSettingsReader';
+import { oldConfiguration as configuration } from 'shoutem.application';
+import ConfigurationReader from './ConfigurationReader';
 
 const settingsReader = new HomeScreenSettingsReader(settings);
 

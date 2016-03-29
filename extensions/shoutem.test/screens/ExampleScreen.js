@@ -34,7 +34,7 @@ class ExampleScreen extends Component {
     super(props);
 
     props.setNavBarProps({
-      centerComponent: <Text>{this.props.message}</Text>,
+      centerComponent: <Text>{props.message}</Text>,
     });
   }
 
@@ -42,11 +42,16 @@ class ExampleScreen extends Component {
     const { dispatch } = this.props;
     const { executeShortcut } = actions;
     const shortcut = {
-      settings: {
-        screen,
-        modal,
+      attributes: {
+        settings: {
+          screen,
+          modal,
+        },
+        action: 'shoutem.test.openExampleScreen',
       },
-      action: 'shoutem.test.openExampleScreen',
+      relationships: {
+
+      },
     };
 
     dispatch(executeShortcut(shortcut));
@@ -63,6 +68,7 @@ class ExampleScreen extends Component {
     /* eslint react/jsx-no-bind: 0 */
     return (
       <View style={styles.content}>
+        <Text>{this.props.configuration.data.attributes.name}</Text>
         <Text>{this.props.message}</Text>
         <TouchableOpacity
           style={styles.button}
@@ -108,5 +114,11 @@ ExampleScreen.propTypes = {
   message: React.PropTypes.string,
   dispatch: React.PropTypes.func,
   setNavBarProps: React.PropTypes.func,
+  configuration: React.PropTypes.object,
 };
-export default connect()(ExampleScreen);
+function mapStateToProps(state) {
+  return {
+    configuration: state['shoutem.application'].configuration,
+  };
+}
+export default connect(mapStateToProps)(ExampleScreen);

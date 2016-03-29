@@ -1,244 +1,271 @@
 {
-    "application": {
-        "name": "Restaurants App",
-        "id": 423423
+  "data": {
+    "type": "shoutem.core.configuration",
+    "id": "2222",
+    "attributes": {
+      "name": "Restaurants App"
     },
-    "extensions": [],
-    "navigation": [
-        {
-            "id": 343,
-            "title": "Home Screen",
-            "screen": "john.SMExt.Home",
-            "navigation": [
-                {
-                    "id": 12,
-                    "title": "Schools District 1",
-                    "screen": "john.SMExt.SchoolsList",
-                    "props": {
-                        "district": 33330
-                    }
-                },
-                {
-                    "id": 13,
-                    "title": "Schools District 2",
-                    "screen": "john.SMExt.SchoolsList",
-                    "props": {
-                        "district": 33331
-                    }
-                }
-            ]
-        }
-    ],
-    "screens": [
-        {
-            "type": "john.RestaurantsExt.RestaurantsList",
-            "component": "extensions/john.RestaurantsExt/screens/RestaurantsList.js",
-            "authenticationRealm": "Shoutem",
-            "paymentRealm": "None",
-            "settings": {
-                "showOnlyOpenRestaurants": true
+    "relationships": {
+      "theme": {
+        "data": [
+          {
+            "variables": {
             }
+          }
+        ]
+      },
+      "extensions": {
+        "data": [
+          {
+            "type": "shoutem.core.extensions",
+            "id": "shoutem.homescreen"
+          },
+          {
+            "type": "shoutem.core.extensions",
+            "id": "shoutem.test"
+          }
+        ]
+      },
+      "navigation": {
+        "data": [
+          {
+            "type": "shoutem.core.shortcuts",
+            "id": "56eec50fa4ae9db8126a20cf"
+          }
+        ]
+      },
+      "screens": {
+        "data": [
+          {
+            "type": "shoutem.core.screens",
+            "id": "56ef1d5d41845ce006ed637b"
+          },
+          {
+            "type": "shoutem.core.screens",
+            "id": "56ef1d7141845ce006ed637c"
+          }
+        ]
+      }
+    }
+  },
+  "included": [
+    {
+      "type": "shoutem.core.extensions",
+      "id": "shoutem.events",
+      "attributes": {
+        "location": {
+          "server": {
+            "url": "http://static.shoutem.com/extensions/shoutem.events/1.0/server"
+          },
+          "app": {
+            "type": "zip",
+            "package": "http://static.shoutem.com/extensions/shoutem.events/1.0/app.zip"
+          }
+        },
+        "settings": {
+          "enableSharing": true
         }
-    ],
-    "skin": {
-        "colors": {},
-        "icons": {}
+      }
     },
-    "pages": [
-        {
-            "id": "51836ABC-6489-43CD-8132-53EA8BB51C20",
-            "type": "HomePage",
+    {
+      "type": "shoutem.core.extensions",
+      "id": "shoutem.places",
+      "attributes": {
+        "location": {
+          "server": {
+            "url": "http://static.shoutem.com/extensions/shoutem.places/1.0/server"
+          },
+          "app": {
+            "type": "zip",
+            "package": "http://static.shoutem.com/extensions/shoutem.places/1.0/app.zip"
+          }
+        },
+        "settings": {
+          "enableSharing": true
+        }
+      }
+    },
+    {
+      "type": "shoutem.core.shortcuts",
+      "id": "56efcdf9f3973a4609a7a918",
+      "attributes": {
+        "canonicalName": "shoutem.places.OpenPlacesList",
+        "title": "Places",
+        "iconUrl": "http://static.shoutem.com/icons/places.png",
+        "action": "shoutem.places.OpenPlacesList",
+        "settings": {
+          "key": "value"
+        },
+        "children": []
+      }
+    },
+    {
+      "type": "shoutem.core.shortcuts",
+      "id": "56efccadf3973a4609a7a917",
+      "attributes": {
+        "canonicalName": "shoutem.places.OpenPlacesList",
+        "title": "Places",
+        "iconUrl": "http://static.shoutem.com/icons/places.png",
+        "action": "shoutem.places.OpenPlacesList",
+        "settings": {
+          "homeScreen": {
+            "buttonImages": {
+              "normal": "http://static.shoutem.com/...",
+              "highlighted": "http://static.shoutem.com/icons/someIcon.png"
+            }
+          }
+        }
+      },
+      "relationships": {
+        "children": {
+          "data": [
+            {
+              "type": "shoutem.core.shortcuts",
+              "id": "56efcdf9f3973a4609a7a918"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "shoutem.core.shortcuts",
+      "id": "56eee2709fc1f8ed12b4cb72",
+      "attributes": {
+        "canonicalName": "shoutem.places.OpenPlacesList",
+        "title": "Places",
+        "iconUrl": "http://static.shoutem.com/icons/places.png",
+        "action": "shoutem.places.OpenPlacesList",
+        "settings": {
+          "homeScreen": {
+            "buttonImages": {
+              "normal": "http://static.shoutem.com/...",
+              "highlighted": "http://static.shoutem.com/icons/someIcon.png"
+            }
+          }
+        }
+      },
+      "relationships": {
+        "children": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "shoutem.core.shortcuts",
+      "id": "56eec50fa4ae9db8126a20cf",
+      "attributes": {
+        "canonicalName": "shoutem.homescreen",
+        "title": "Home",
+        "iconUrl": "http://static.shoutem.com/icons/home.png",
+        "action": "shoutem.test.openExampleScreen",
+        "settings": {
+          "screen": 1,
+          "homeScreen": {
             "layout": {
-                "name": "Grid3x2",
-                "current": true,
-                "showPageIndicator": true,
-                "scrollDirection": "horizontal",
-                "scalingStrategy": "horizontal",
-                "scrollType": "paged",
-                "layoutType": "grid",
-                "columnCount": 1,
-                "rowCount": 4,
-                "resizeWideScreenLayout": false,
-                "buttonLayout": {
-                    "buttonSize": {
-                        "width": 330,
-                        "height": 330
-                    },
-                    "buttonIconSize": {
-                        "width": 200,
-                        "height": 200
-                    },
-                    "buttonStyle": "custom",
-                    "iconAlignment": "middleCenter",
-                    "iconSize": "large",
-                    "iconOffset": {
-                        "x": 0,
-                        "y": 0
-                    },
-                    "textAlignment": "topCenter",
-                    "textPositionRelativeToIcon": "below",
-                    "buttonTextFontSize": 32,
-                    "buttonTextFontFamilyName": "Arial",
-                    "buttonTextFontStyle": 0,
-                    "textOffset": {
-                        "x": 0,
-                        "y": 0
-                    },
-                    "verticalText": false,
-                    "backgroundImageUri": null,
-                    "backgroundHighlightedImageUri": null,
-                    "showIcon": true,
-                    "showText": true,
-                    "margin": {
-                        "top": 10,
-                        "left": 10,
-                        "bottom": 10,
-                        "right": 10
-                    }
+              "name": "Grid3x2",
+              "current": true,
+              "showPageIndicator": true,
+              "scrollDirection": "horizontal",
+              "scalingStrategy": "horizontal",
+              "scrollType": "paged",
+              "layoutType": "grid",
+              "columnCount": 3,
+              "rowCount": 2,
+              "resizeWideScreenLayout": false,
+              "buttonLayout": {
+                "buttonSize": {
+                  "width": 330,
+                  "height": 330
                 },
+                "buttonIconSize": {
+                  "width": 200,
+                  "height": 200
+                },
+                "buttonStyle": "custom",
+                "iconAlignment": "middleCenter",
+                "iconSize": "large",
+                "iconOffset": {
+                  "x": 0,
+                  "y": 0
+                },
+                "textAlignment": "topCenter",
+                "textPositionRelativeToIcon": "below",
+                "buttonTextFontSize": 32,
+                "buttonTextFontFamilyName": "Arial",
+                "buttonTextFontStyle": 0,
+                "textOffset": {
+                  "x": 0,
+                  "y": 0
+                },
+                "verticalText": false,
+                "backgroundImageUri": null,
+                "backgroundHighlightedImageUri": null,
+                "showIcon": true,
+                "showText": true,
                 "margin": {
-                    "top": 10,
-                    "left": 10,
-                    "bottom": 20,
-                    "right": 10
-                },
-                "version": 2,
-                "custom": true,
-                "resolution": {
-                    "width": 1080,
-                    "height": 1920
-                },
-                "layoutPosition": "topLeft",
-                "canRevert": false
+                  "top": 10,
+                  "left": 10,
+                  "bottom": 10,
+                  "right": 10
+                }
+              },
+              "margin": {
+                "top": 10,
+                "left": 10,
+                "bottom": 20,
+                "right": 10
+              },
+              "version": 2,
+              "custom": true,
+              "resolution": {
+                "width": 1080,
+                "height": 1920
+              },
+              "layoutPosition": "bottomCenter",
+              "canRevert": false
             },
-            "startPage": true,
             "backgroundImageAspectRatio": "wide",
             "backgroundImageUrl": "http://s3.amazonaws.com/kanta/apps/165592476/682842/image/iPhone/yA4yS-LggkebT_z5vCm-lA@2x.png",
-            "backgroundImageWideUrl": "http://s3.amazonaws.com/kanta/apps/166686575/755459/image/iPhone/XetITVSB9UO6E7UY5hWrxw@2x.png",
-            "defaultShortcutOpened": "3488005",
-            "showPageIndicator": false,
-            "scrollDirection": "horizontal",
-            "scrollType": "paged",
-            "rowCount": 2,
-            "columnCount": 3,
-            "boundingBox": {
-                "origin": {
-                    "x": 1,
-                    "y": 57
-                },
-                "size": {
-                    "width": 97,
-                    "height": 36
-                }
-            },
-            "shortcutImageWidth": 195,
-            "shortcutImageHeight": 195,
-            "slideInMenuEnabled": false,
-            "dataSource": {
-                "id": "FE419A1E-1A37-482B-BCAC-A9E44A56E747",
-                "type": "InlineDataSource",
-                "locationRequired": false,
-                "title": null,
-                "showFeedSubtitles": false,
-                "data": [
-                    {
-                        "id": "3488005",
-                        "type": "Shortcut",
-                        "title": "EVENTS",
-                        "index": 0,
-                        "action": {
-                            "type": "OpenPageAction",
-                            "parameters": {
-                                "activeTab": "Tab:Term:000000000002250750"
-                            },
-                            "page": {
-                                "$ref": "TabbedPage:Node:3488005:Term:2250749"
-                            }
-                        },
-                        "buttonImageUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488005&timestamp=635932174426170000&custom_layout=true&highlighted=false&version=58",
-                        "buttonImageHighlightedUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488005&timestamp=635932174426170000&custom_layout=true&highlighted=true&version=58"
-                    },
-                    {
-                        "id": "3488006",
-                        "type": "Shortcut",
-                        "title": "PLACES",
-                        "index": 1,
-                        "action": {
-                            "type": "OpenPageAction",
-                            "parameters": {},
-                            "page": {
-                                "$ref": "TabbedPage:ContentMenuItem:000000000003488006"
-                            }
-                        },
-                        "buttonImageUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488006&timestamp=635932174426170000&custom_layout=true&highlighted=false&version=58",
-                        "buttonImageHighlightedUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488006&timestamp=635932174426170000&custom_layout=true&highlighted=true&version=58"
-                    },
-                    {
-                        "id": "3488008",
-                        "type": "Shortcut",
-                        "title": "DEALS",
-                        "index": 2,
-                        "action": {
-                            "type": "OpenPageAction",
-                            "parameters": {
-                                "activeTab": "Tab:Term:000000000002250766"
-                            },
-                            "page": {
-                                "$ref": "TabbedPage:Node:3488008:Term:2250765"
-                            }
-                        },
-                        "buttonImageUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488008&timestamp=635932174426170000&custom_layout=true&highlighted=false&version=58",
-                        "buttonImageHighlightedUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488008&timestamp=635932174426170000&custom_layout=true&highlighted=true&version=58"
-                    },
-                    {
-                        "id": "3488009",
-                        "type": "Shortcut",
-                        "title": "MEDIA",
-                        "index": 3,
-                        "action": {
-                            "type": "OpenPageAction",
-                            "parameters": {},
-                            "page": {
-                                "$ref": "TabbedPage:ContentMenuItem:000000000003488009"
-                            }
-                        },
-                        "buttonImageUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488009&timestamp=635932174426170000&custom_layout=true&highlighted=false&version=58",
-                        "buttonImageHighlightedUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488009&timestamp=635932174426170000&custom_layout=true&highlighted=true&version=58"
-                    },
-                    {
-                        "id": "3488012",
-                        "type": "Shortcut",
-                        "title": "ABOUT US",
-                        "index": 4,
-                        "action": {
-                            "type": "OpenPageAction",
-                            "parameters": {
-                                "itemId": 103989
-                            },
-                            "page": {
-                                "$ref": "38AE908F-68A2-4E12-A120-9B2CACF1A25E:103989"
-                            }
-                        },
-                        "buttonImageUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488012&timestamp=635932174426170000&custom_layout=true&highlighted=false&version=58",
-                        "buttonImageHighlightedUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488012&timestamp=635932174426170000&custom_layout=true&highlighted=true&version=58"
-                    },
-                    {
-                        "id": "3488013",
-                        "type": "Shortcut",
-                        "title": "CHECK–IN",
-                        "index": 5,
-                        "action": {
-                            "type": "OpenPageAction",
-                            "parameters": {},
-                            "page": {
-                                "$ref": "APP:ListPage:PublicTimeline"
-                            }
-                        },
-                        "buttonImageUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488013&timestamp=635932174426170000&custom_layout=true&highlighted=false&version=58",
-                        "buttonImageHighlightedUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488013&timestamp=635932174426170000&custom_layout=true&highlighted=true&version=58"
-                    }
-                ]
-            }
+            "backgroundImageWideUrl": "http://s3.amazonaws.com/kanta/apps/166686575/755459/image/iPhone/XetITVSB9UO6E7UY5hWrxw@2x.png"
+          }
         }
-    ]
+      },
+      "relationships": {
+        "children": {
+          "data": [
+            {
+              "type": "shoutem.core.shortcuts",
+              "id": "56eee2709fc1f8ed12b4cb72"
+            },
+            {
+              "type": "shoutem.core.shortcuts",
+              "id": "56efccadf3973a4609a7a917"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "shoutem.core.screens",
+      "id": "56ef1d5d41845ce006ed637b",
+      "attributes": {
+        "canonicalName": "shoutem.places.PlacesList",
+        "canonicalType": "shoutem.places.PlacesList",
+        "settings": {
+          "layout": "x"
+        }
+      }
+    },
+    {
+      "type": "shoutem.core.screens",
+      "id": "56ef1d7141845ce006ed637c",
+      "attributes": {
+        "canonicalName": "shoutem.places.PlaceDetails",
+        "canonicalType": "shoutem.places.PlaceDetails",
+        "settings": {
+          "layout": "x"
+        }
+      }
+    }
+  ]
 }
