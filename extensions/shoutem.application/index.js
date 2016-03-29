@@ -1,14 +1,28 @@
 import configuration from './configuration';
-import * as actions from './actions';
 import { createExecuteShortcutMiddleware } from './middleware';
-export {
-  configuration,
-  actions,
+import { combineReducers } from 'redux';
+import configurationReducerCreator, {
+  setConfiguration,
+  updateConfiguration,
+  updateConfigurationProperty,
+  executeShortcut,
+} from './actions';
+
+const actions = {
+  setConfiguration,
+  updateConfiguration,
+  updateConfigurationProperty,
+  executeShortcut,
 };
+
+// create reducer with wanted default configuration
+const reducer = combineReducers({
+  configuration: configurationReducerCreator(configuration),
+});
 
 const appActions = {};
 
-export function appWillMount(app) {
+function appWillMount(app) {
   const extensions = app.getExtensions();
   Object.keys(extensions).forEach(extensionName => {
     const extension = extensions[extensionName];
@@ -22,6 +36,14 @@ export function appWillMount(app) {
   });
 }
 
-export const middleware = [
+const middleware = [
   createExecuteShortcutMiddleware(appActions),
 ];
+
+export {
+  configuration,
+  actions,
+  reducer,
+  middleware,
+  appWillMount,
+};
