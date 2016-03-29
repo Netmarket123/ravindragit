@@ -12,13 +12,12 @@ describe('openHomeScreenAction', () => {
   const testSettings = {
     homeScreen: {
       layout,
-      children,
     },
   };
 
   const navigateToSpy = sinon.spy();
   const openHomeScreenAction = createOpenHomeScreenAction(navigateToSpy);
-  openHomeScreenAction(testSettings, testState);
+  openHomeScreenAction(testSettings, children, testState);
   const callParams = navigateToSpy.getCall(0).args[0];
 
   it('calls navigateTo', () => {

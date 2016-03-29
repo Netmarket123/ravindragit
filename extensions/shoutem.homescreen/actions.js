@@ -1,10 +1,8 @@
 import Denormalizer from './Denormalizer';
 
 export default function createOpenHomeScreenAction(navigateTo) {
-  return (settings, state) => {
+  return (settings, children, state) => {
     const homeScreen = settings.homeScreen;
-    const children = settings.homeScreen.children;
-
     const denormalizer = new Denormalizer(state);
     const shortcuts = children.map(denormalizer.getDenormalizedItem);
 
