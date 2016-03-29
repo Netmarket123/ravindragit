@@ -1,4 +1,4 @@
-import ConfigurationReader from '../ConfigurationReader';
+import HomeScreenSettingsReader from '../HomeScreenSettingsReader';
 import Scaler from '../Scaler';
 
 const layoutAlignments = {
@@ -42,24 +42,24 @@ const layoutAlignments = {
 
 export default class HomeScreenPropsCreator {
   constructor(configuration, windowDimensionsInPixels) {
-    this.configurationProvider = new ConfigurationReader(configuration);
+    this.settingsProvider = new HomeScreenSettingsReader(configuration);
     this.scaler = new Scaler(
-      this.configurationProvider.getScalingStrategy(),
+      this.settingsProvider.getScalingStrategy(),
       windowDimensionsInPixels,
-      this.configurationProvider.getLayoutDimension()
+      this.settingsProvider.getLayoutDimension()
     );
   }
 
   getButtonConfiguration() {
     return {
-      size: this.scaler.scale(this.configurationProvider.getButtonSize()),
-      iconSize: this.scaler.scale(this.configurationProvider.getButtonIconSize()),
-      margin: this.scaler.scale(this.configurationProvider.getButtonMargin()),
+      size: this.scaler.scale(this.settingsProvider.getButtonSize()),
+      iconSize: this.scaler.scale(this.settingsProvider.getButtonIconSize()),
+      margin: this.scaler.scale(this.settingsProvider.getButtonMargin()),
     };
   }
 
   getShortcutsData() {
-    return this.configurationProvider.getShortcuts().map(shortcut => ({
+    return this.settingsProvider.getShortcuts().map(shortcut => ({
       uri: shortcut.buttonImageUrl,
       highlightedUri: shortcut.buttonImageHighlightedUrl,
       config: this.getButtonConfiguration(),
@@ -68,22 +68,22 @@ export default class HomeScreenPropsCreator {
 
   getLayoutDimensions() {
     return {
-      rows: this.configurationProvider.getRowCount(),
-      cols: this.configurationProvider.getColumnCount(),
+      rows: this.settingsProvider.getRowCount(),
+      cols: this.settingsProvider.getColumnCount(),
     };
   }
 
   getBackgroundImage() {
-    return this.configurationProvider.getHomeScreenBackgroundImageWide() ||
-      this.configurationProvider.getHomeScreenBackgroundImage();
+    return this.settingsProvider.getHomeScreenBackgroundImageWide() ||
+      this.settingsProvider.getHomeScreenBackgroundImage();
   }
 
   getLayoutPosition() {
-    return layoutAlignments[this.configurationProvider.getLayoutPosition()];
+    return layoutAlignments[this.settingsProvider.getLayoutPosition()];
   }
 
   getLayoutMarginStyle() {
-    const margin = this.configurationProvider.getLayoutMargin();
+    const margin = this.settingsProvider.getLayoutMargin();
 
     return this.scaler.scale({
       marginTop: margin.top,
@@ -94,6 +94,6 @@ export default class HomeScreenPropsCreator {
   }
 
   getScrollType() {
-    return this.configurationProvider.getScrollType();
+    return this.settingsProvider.getScrollType();
   }
 }

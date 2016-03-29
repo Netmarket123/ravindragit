@@ -1,190 +1,81 @@
 import { assert } from 'chai';
 
-import ConfigurationReader from '../ConfigurationReader';
+import HomeScreenSettingsReader from '../HomeScreenSettingsReader';
 
-const testConfiguration = {
-  pages: [
-    {
-      type: 'HomePage',
-      layout: {
-        name: 'Grid3x2',
-        current: true,
-        showPageIndicator: true,
-        scrollDirection: 'horizontal',
-        scalingStrategy: 'horizontal',
-        scrollType: 'paged',
-        layoutType: 'grid',
-        columnCount: 3,
-        rowCount: 2,
-        resizeWideScreenLayout: false,
-        buttonLayout: {
-          buttonSize: {
-            width: 330,
-            height: 330,
-          },
-          buttonIconSize: {
-            width: 200,
-            height: 200,
-          },
-          buttonStyle: 'custom',
-          iconAlignment: 'middleCenter',
-          iconSize: 'large',
-          iconOffset: {
-            x: 0,
-            y: 0,
-          },
-          textAlignment: 'topLeft',
-          textPositionRelativeToIcon: 'below',
-          buttonTextFontSize: 36,
-          buttonTextFontFamilyName: 'Arial',
-          buttonTextFontStyle: 0,
-          textOffset: {
-            x: 0,
-            y: 0,
-          },
-          verticalText: false,
-          backgroundImageUri: null,
-          backgroundHighlightedImageUri: null,
-          showIcon: true,
-          showText: true,
-          margin: {
-            top: 10,
-            left: 10,
-            bottom: 10,
-            right: 10,
-          },
+const testSettings = {
+  homeScreen: {
+    layout: {
+      name: 'Grid3x2',
+      current: true,
+      showPageIndicator: true,
+      scrollDirection: 'horizontal',
+      scalingStrategy: 'horizontal',
+      scrollType: 'paged',
+      layoutType: 'grid',
+      columnCount: 3,
+      rowCount: 2,
+      resizeWideScreenLayout: false,
+      buttonLayout: {
+        buttonSize: {
+          width: 330,
+          height: 330,
         },
+        buttonIconSize: {
+          width: 200,
+          height: 200,
+        },
+        buttonStyle: 'custom',
+        iconAlignment: 'middleCenter',
+        iconSize: 'large',
+        iconOffset: {
+          x: 0,
+          y: 0,
+        },
+        textAlignment: 'topLeft',
+        textPositionRelativeToIcon: 'below',
+        buttonTextFontSize: 36,
+        buttonTextFontFamilyName: 'Arial',
+        buttonTextFontStyle: 0,
+        textOffset: {
+          x: 0,
+          y: 0,
+        },
+        verticalText: false,
+        backgroundImageUri: null,
+        backgroundHighlightedImageUri: null,
+        showIcon: true,
+        showText: true,
         margin: {
           top: 10,
           left: 10,
-          bottom: 20,
+          bottom: 10,
           right: 10,
         },
-        version: 2,
-        custom: false,
-        resolution: {
-          width: 1080,
-          height: 1920,
-        },
-        layoutPosition: 'bottomCenter',
-        canRevert: false,
       },
-      dataSource: {
-        id: 'C57A6CA3-FC93-445B-BE5D-37E1C0257BD8',
-        type: 'InlineDataSource',
-        locationRequired: false,
-        title: null,
-        showFeedSubtitles: false,
-        data: [
-          {
-            id: '3487864',
-            type: 'Shortcut',
-            title: 'EVENTS',
-            index: 0,
-            action: {
-              type: 'OpenPageAction',
-              parameters: {
-                activeTab: 'Tab:Term:000000000002250571',
-              },
-              page: {
-                $ref: 'TabbedPage:Node:3487864:Term:2250570',
-              },
-            },
-            buttonImageUrl: 'http://api.aperfector.com/api/applications/home_view/button?configuration_id=836424&button_id=3487864&timestamp=635925227258330000&custom_layout=true&highlighted=false&version=58',
-            buttonImageHighlightedUrl: 'http://api.aperfector.com/api/applications/home_view/button?configuration_id=836424&button_id=3487864&timestamp=635925227258330000&custom_layout=true&highlighted=true&version=58',
-          },
-          {
-            id: '3487865',
-            type: 'Shortcut',
-            title: 'PLACES',
-            index: 1,
-            action: {
-              type: 'OpenPageAction',
-              parameters: {},
-              page: {
-                $ref: 'TabbedPage:ContentMenuItem:000000000003487865',
-              },
-            },
-            buttonImageUrl: 'http://api.aperfector.com/api/applications/home_view/button?configuration_id=836424&button_id=3487865&timestamp=635925227258330000&custom_layout=true&highlighted=false&version=58',
-            buttonImageHighlightedUrl: 'http://api.aperfector.com/api/applications/home_view/button?configuration_id=836424&button_id=3487865&timestamp=635925227258330000&custom_layout=true&highlighted=true&version=58',
-          },
-          {
-            id: '3487867',
-            type: 'Shortcut',
-            title: 'DEALS',
-            index: 2,
-            action: {
-              type: 'OpenPageAction',
-              parameters: {
-                activeTab: 'Tab:Term:000000000002250587',
-              },
-              page: {
-                $ref: 'TabbedPage:Node:3487867:Term:2250586',
-              },
-            },
-            buttonImageUrl: 'http://api.aperfector.com/api/applications/home_view/button?configuration_id=836424&button_id=3487867&timestamp=635925227258330000&custom_layout=true&highlighted=false&version=58',
-            buttonImageHighlightedUrl: 'http://api.aperfector.com/api/applications/home_view/button?configuration_id=836424&button_id=3487867&timestamp=635925227258330000&custom_layout=true&highlighted=true&version=58',
-          },
-          {
-            id: '3487868',
-            type: 'Shortcut',
-            title: 'MEDIA',
-            index: 3,
-            action: {
-              type: 'OpenPageAction',
-              parameters: {},
-              page: {
-                $ref: 'TabbedPage:ContentMenuItem:000000000003487868',
-              },
-            },
-            buttonImageUrl: 'http://api.aperfector.com/api/applications/home_view/button?configuration_id=836424&button_id=3487868&timestamp=635925227258330000&custom_layout=true&highlighted=false&version=58',
-            buttonImageHighlightedUrl: 'http://api.aperfector.com/api/applications/home_view/button?configuration_id=836424&button_id=3487868&timestamp=635925227258330000&custom_layout=true&highlighted=true&version=58',
-          },
-          {
-            id: '3487871',
-            type: 'Shortcut',
-            title: 'ABOUT US',
-            index: 4,
-            action: {
-              type: 'OpenPageAction',
-              parameters: {
-                itemId: 103981,
-              },
-              page: {
-                $ref: '38AE908F-68A2-4E12-A120-9B2CACF1A25E:103981',
-              },
-            },
-            buttonImageUrl: 'http://api.aperfector.com/api/applications/home_view/button?configuration_id=836424&button_id=3487871&timestamp=635925227258330000&custom_layout=true&highlighted=false&version=58',
-            buttonImageHighlightedUrl: 'http://api.aperfector.com/api/applications/home_view/button?configuration_id=836424&button_id=3487871&timestamp=635925227258330000&custom_layout=true&highlighted=true&version=58',
-          },
-          {
-            id: '3487872',
-            type: 'Shortcut',
-            title: 'CHECK–IN',
-            index: 5,
-            action: {
-              type: 'OpenPageAction',
-              parameters: {},
-              page: {
-                $ref: 'APP:ListPage:PublicTimeline',
-              },
-            },
-            buttonImageUrl: 'http://api.aperfector.com/api/applications/home_view/button?configuration_id=836424&button_id=3487872&timestamp=635925227258330000&custom_layout=true&highlighted=false&version=58',
-            buttonImageHighlightedUrl: 'http://api.aperfector.com/api/applications/home_view/button?configuration_id=836424&button_id=3487872&timestamp=635925227258330000&custom_layout=true&highlighted=true&version=58',
-          },
-        ],
+      margin: {
+        top: 10,
+        left: 10,
+        bottom: 20,
+        right: 10,
       },
-      backgroundImageUrl: 'http://s3.amazonaws.com/kanta/apps/165592476/682842/image/iPhone/yA4yS-LggkebT_z5vCm-lA@2x.png',
-      backgroundImageWideUrl: 'http://s3.amazonaws.com/kanta/apps/166686575/755459/image/iPhone/XetITVSB9UO6E7UY5hWrxw@2x.png',
+      version: 2,
+      custom: false,
+      resolution: {
+        width: 1080,
+        height: 1920,
+      },
+      layoutPosition: 'bottomCenter',
+      canRevert: false,
     },
-  ],
+    backgroundImageUrl: 'http://s3.amazonaws.com/kanta/apps/165592476/682842/image/iPhone/yA4yS-LggkebT_z5vCm-lA@2x.png',
+    backgroundImageWideUrl: 'http://s3.amazonaws.com/kanta/apps/166686575/755459/image/iPhone/XetITVSB9UO6E7UY5hWrxw@2x.png',
+  },
 };
 
-
-describe('ConfigurationReader', () => {
+describe('HomeScreenSettingsReader', () => {
   let reader;
 
-  beforeEach(() => reader = new ConfigurationReader(testConfiguration));
+  beforeEach(() => reader = new HomeScreenSettingsReader(testSettings));
 
   describe('getLayoutDimension', () => {
     it('returns the layout dimension', () => {
@@ -254,15 +145,6 @@ describe('ConfigurationReader', () => {
       const actualRowCount = reader.getRowCount();
       const expectedRowCount = 2;
       assert.deepEqual(actualRowCount, expectedRowCount, 'rows count is not correct');
-    });
-  });
-
-  describe('getShortcuts', () => {
-    it('returns all the shortcuts', () => {
-      const shortcuts = reader.getShortcuts();
-      const actualShortcutsSize = shortcuts.length;
-      const expectedShortcutsSize = 6;
-      assert.deepEqual(actualShortcutsSize, expectedShortcutsSize, 'shortcuts size is not correct');
     });
   });
 

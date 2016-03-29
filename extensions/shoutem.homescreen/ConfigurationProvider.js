@@ -1,6 +1,6 @@
-import { configuration } from 'shoutem.application';
-import ConfigurationReader from './ConfigurationReader';
+import { settings } from 'shoutem.application';
+import HomeScreenSettingsReader from './HomeScreenSettingsReader';
 
-const configurationReader = new ConfigurationReader(configuration);
+const settingsReader = new HomeScreenSettingsReader(settings);
 
-export default (configurationReader);
+export default (settingsReader);
