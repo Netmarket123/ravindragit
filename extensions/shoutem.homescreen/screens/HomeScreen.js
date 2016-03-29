@@ -64,10 +64,11 @@ export default class HomeScreen extends Component {
   }
 
   render() {
-    const { settings, shortcuts } = this.props;
+    const { settings, shortcuts, setNavBarProps } = this.props;
     const settingsReader = new HomeScreenSettingsReader(settings);
     const propsCreator = new PropsCreator(settingsReader, getWindowDimensionsInPixels());
 
+    setNavBarProps({});
     return (
       <Image source={{ uri: propsCreator.getBackgroundImage() }} style={styles.backgroundImage}>
         <View style={[styles.content, propsCreator.getLayoutMarginStyle()]}>

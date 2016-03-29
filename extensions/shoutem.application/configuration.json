@@ -89,31 +89,25 @@
       "type": "shoutem.core.shortcuts",
       "id": "56efcdf9f3973a4609a7a918",
       "attributes": {
-        "canonicalName": "shoutem.places.OpenPlacesList",
+        "canonicalName": "shoutem.test.openExampleScreen",
         "title": "Places",
-        "iconUrl": "http://static.shoutem.com/icons/places.png",
-        "action": "shoutem.places.OpenPlacesList",
+        "iconUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488005&timestamp=635932174426170000&custom_layout=true&highlighted=false&version=58",
+        "action": "shoutem.test.openExampleScreen",
         "settings": {
-          "key": "value"
-        },
-        "children": []
+          "screen": 2
+        }
       }
     },
     {
       "type": "shoutem.core.shortcuts",
       "id": "56efccadf3973a4609a7a917",
       "attributes": {
-        "canonicalName": "shoutem.places.OpenPlacesList",
+        "canonicalName": "shoutem.test.openExampleScreen",
         "title": "Places",
-        "iconUrl": "http://static.shoutem.com/icons/places.png",
-        "action": "shoutem.places.OpenPlacesList",
+        "iconUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488006&timestamp=635932174426170000&custom_layout=true&highlighted=false&version=58",
+        "action": "shoutem.test.openExampleScreen",
         "settings": {
-          "homeScreen": {
-            "buttonImages": {
-              "normal": "http://static.shoutem.com/...",
-              "highlighted": "http://static.shoutem.com/icons/someIcon.png"
-            }
-          }
+          "screen": 2
         }
       },
       "relationships": {
@@ -133,15 +127,10 @@
       "attributes": {
         "canonicalName": "shoutem.places.OpenPlacesList",
         "title": "Places",
-        "iconUrl": "http://static.shoutem.com/icons/places.png",
-        "action": "shoutem.places.OpenPlacesList",
+        "iconUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488005&timestamp=635932174426170000&custom_layout=true&highlighted=false&version=58",
+        "action": "shoutem.test.openExampleScreen",
         "settings": {
-          "homeScreen": {
-            "buttonImages": {
-              "normal": "http://static.shoutem.com/...",
-              "highlighted": "http://static.shoutem.com/icons/someIcon.png"
-            }
-          }
+          "screen": 1
         }
       },
       "relationships": {
@@ -156,8 +145,8 @@
       "attributes": {
         "canonicalName": "shoutem.homescreen",
         "title": "Home",
-        "iconUrl": "http://static.shoutem.com/icons/home.png",
-        "action": "shoutem.test.openExampleScreen",
+        "iconUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488005&timestamp=635932174426170000&custom_layout=true&highlighted=false&version=58",
+        "action": "shoutem.homescreen.openHomeScreen",
         "settings": {
           "screen": 1,
           "homeScreen": {
@@ -167,7 +156,7 @@
               "showPageIndicator": true,
               "scrollDirection": "horizontal",
               "scalingStrategy": "horizontal",
-              "scrollType": "paged",
+              "scrollType": "continuous",
               "layoutType": "grid",
               "columnCount": 3,
               "rowCount": 2,
@@ -235,11 +224,11 @@
           "data": [
             {
               "type": "shoutem.core.shortcuts",
-              "id": "56eee2709fc1f8ed12b4cb72"
+              "id": "56efccadf3973a4609a7a917"
             },
             {
               "type": "shoutem.core.shortcuts",
-              "id": "56efccadf3973a4609a7a917"
+              "id": "56eee2709fc1f8ed12b4cb72"
             }
           ]
         }
