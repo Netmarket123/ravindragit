@@ -109,6 +109,7 @@ ExampleScreen.propTypes = {
   message: React.PropTypes.string,
   dispatch: React.PropTypes.func,
   setNavBarProps: React.PropTypes.func,
+  configuration: React.PropTypes.object,
 };
 function mapStateToProps(state) {
   return {
