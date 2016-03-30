@@ -51,6 +51,7 @@ export class ScreenNavigator extends Component {
       return;
     }
 
+    // set initial route if this is first executed action with route
     if (!this.initialRoute && nextProps.action.route) {
       this.initialRoute = nextProps.action.route;
     } else {
@@ -107,7 +108,7 @@ export class ScreenNavigator extends Component {
 
     // We should end up here only if we successfully performed
     // a navigation action.
-    this.props.navigationActionPerformed(action, navigator && navigator.getCurrentRoutes(), name);
+    this.props.navigationActionPerformed(action, navigator.getCurrentRoutes(), name);
   }
 
   beforeRouteChange(route) {

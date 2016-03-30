@@ -1,4 +1,5 @@
 export function getFirstShortcut(configuration) {
+  // TODO(Ivan): Change this function when configuration will be saved denormalized
   const firstShortcut = configuration.data.relationships.navigation.data.find(navigationItem =>
     navigationItem.type === 'shoutem.core.shortcuts'
   );

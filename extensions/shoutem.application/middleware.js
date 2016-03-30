@@ -5,13 +5,14 @@ export function createExecuteShortcutMiddleware(actions) {
     }
 
     const { settings, children } = action.shortcut;
-    const shortcutAction = actions[action.shortcut.action];
+    const newAction = action.shortcut.action;
+    const shortcutAction = actions[newAction];
 
     if (typeof shortcutAction === 'function') {
       return next(shortcutAction(settings, children, store.getState()));
     }
 
-    throw new Error(`Shortcut you tried to execute has no valid action (${attributes.action}),
+    throw new Error(`Shortcut you tried to execute has no valid action (${newAction}),
   or you tried to execute shortcut before appDidMount. Check exports of your extension.`);
   };
 }
