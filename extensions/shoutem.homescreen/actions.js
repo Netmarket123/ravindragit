@@ -7,13 +7,13 @@ export default function createOpenHomeScreenAction(navigateTo) {
     const shortcuts = children.map(denormalizer.getDenormalizedItem);
 
     const route = {
-      screen: 'shoutem.homeScreen.HomeScreen',
+      screen: 'shoutem.homescreen.HomeScreen',
       props: {
         settings: homeScreen,
         shortcuts,
       },
     };
 
-    navigateTo(route);
+    return navigateTo(route);
   };
 }

@@ -5,7 +5,7 @@ import { navigateTo } from 'shoutem/navigation';
 const openHomeScreen = createOpenHomeScreenAction(navigateTo);
 
 const screens = {
-  home: Home,
+  HomeScreen: Home,
 };
 
 const actions = {
