@@ -3,7 +3,12 @@ export function getFirstShortcut(configuration) {
     navigationItem.type === 'shoutem.core.shortcuts'
   );
 
-  return configuration.included.find(item =>
+  const firstShortcutItem = configuration.included.find(item =>
     item.type === firstShortcut.type && item.id === firstShortcut.id
   );
+
+  return {
+    ...firstShortcutItem.attributes,
+    children: firstShortcutItem.relationships.children.data,
+  };
 }

@@ -1,14 +1,14 @@
 export function createExecuteShortcutMiddleware(actions) {
   return store => next => action => {
-    if (!action.shortcut || !action.shortcut.attributes.action) {
+    if (!action.shortcut || !action.shortcut.action) {
       return next(action);
     }
 
-    const { attributes, relationships } = action.shortcut;
-    const shortcutAction = actions[attributes.action];
+    const { settings, children } = action.shortcut;
+    const shortcutAction = actions[action.shortcut.action];
 
     if (typeof shortcutAction === 'function') {
-      return next(shortcutAction(attributes.settings, relationships.children, store.getState()));
+      return next(shortcutAction(settings, children, store.getState()));
     }
 
     throw new Error(`Shortcut you tried to execute has no valid action (${attributes.action}),
