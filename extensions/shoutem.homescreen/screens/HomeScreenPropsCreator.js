@@ -57,18 +57,6 @@ export default class HomeScreenPropsCreator {
     };
   }
 
-  getShortcutsData(shortcuts) {
-    return shortcuts.map(shortcut => ({
-      uri: shortcut.iconUrl,
-      highlightedUri: shortcut.highlightedIconUrl || shortcut.iconUrl,
-      action: shortcut.action,
-      canonicalName: shortcut.canonicalName,
-      settings: shortcut.settings,
-      children: shortcut.children,
-      config: this.getButtonConfiguration(),
-    }));
-  }
-
   getLayoutDimensions() {
     return {
       rows: this.settingsProvider.getRowCount(),

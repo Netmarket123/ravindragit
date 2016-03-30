@@ -57,7 +57,8 @@ export default class HomeScreen extends Component {
     return (
       <ScrollerComponent
         layoutPosition={propsCreator.getLayoutPosition()}
-        shortcutsData={propsCreator.getShortcutsData(shortcuts)}
+        shortcutsData={shortcuts}
+        buttonConfig={propsCreator.getButtonConfiguration()}
         dimensions={propsCreator.getLayoutDimensions()}
       />
     );

@@ -68,6 +68,7 @@ export default class PagedScroller extends Component {
       <ShortcutsGrid gridItems={data}
         dimensions={this.props.dimensions}
         layoutPosition={this.props.layoutPosition}
+        buttonConfig={this.props.buttonConfig}
       />
     );
   }

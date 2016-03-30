@@ -54,29 +54,31 @@ export function generateStyle(configuration) {
 }
 
 class Shortcut extends Component {
-  navigateToScreen(screen) {
-    const { dispatch } = this.props;
+  constructor(props) {
+    super(props);
+    this.execute = this.execute.bind(this);
+  }
 
-    return () => {
-      dispatch(actions.executeShortcut(screen.shortcutData));
-    };
+  execute() {
+    const { dispatch, shortcutData } = this.props;
+    dispatch(actions.executeShortcut(shortcutData));
   }
 
   render() {
-    const { shortcut, buttonIcon } = generateStyle(this.props.shortcutData.config);
-    const { uri, highlightedUri } = this.props.shortcutData;
+    const { shortcut, buttonIcon } = generateStyle(this.props.buttonConfig);
+    const { iconUrl, highlightedIconUrl } = this.props.shortcutData;
 
     return (
         <View style={[styles.shortcut, shortcut]}>
           <Image
-            source={{ uri }}
+            source={{ uri: iconUrl }}
             style={[styles.buttonIcon, buttonIcon, styles.hiddenIcon]}
             resizeMode={Image.resizeMode.stretch}
           />
-          <TouchableOpacity activeOpacity={0} onPress={this.navigateToScreen(this.props)}>
+          <TouchableOpacity activeOpacity={0} onPress={this.execute}>
             <Image
               source={this.props.shortcutData}
-              source={{ uri: highlightedUri }}
+              source={{ uri: highlightedIconUrl || iconUrl }}
               style={[styles.buttonIcon, buttonIcon]}
               resizeMode={Image.resizeMode.stretch}
             />

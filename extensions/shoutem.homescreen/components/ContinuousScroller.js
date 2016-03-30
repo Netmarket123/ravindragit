@@ -55,6 +55,7 @@ export default class ContinuousScroller extends Component {
         <ShortcutsGrid gridItems={this.props.shortcutsData}
           dimensions={this.props.dimensions}
           layoutPosition={this.props.layoutPosition}
+          buttonConfig={this.props.buttonConfig}
         />
       </ScrollView>
     );

@@ -65,10 +65,11 @@ export default class ShortcutsGrid extends Component {
   constructor(props) {
     super(props);
     this.renderRow = this.renderRow.bind(this);
+    this.renderListItem = this.renderListItem.bind(this);
   }
 
   renderListItem(data) {
-    return <Shortcut shortcutData={data} />;
+    return <Shortcut shortcutData={data} buttonConfig={this.props.buttonConfig} />;
   }
 
   renderRow(dataSource, key) {
