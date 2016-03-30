@@ -64,7 +64,7 @@ class ExampleScreen extends Component {
     /* eslint react/jsx-no-bind: 0 */
     return (
       <View style={styles.content}>
-        <Text>{this.props.configuration.data.attributes.name}</Text>
+        <Text>{this.props.configuration.name}</Text>
         <Text>{this.props.message}</Text>
         <TouchableOpacity
           style={styles.button}
