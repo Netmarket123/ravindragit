@@ -21,12 +21,56 @@ export function configurationReducer(state = {}, action) {
   }
 }
 
+function getIncludedItemByTypeAndId(included, id, type) {
+  return included.find(item => item.id === id && item.type === type);
+}
+
+function denormalizeConfiguration(normalizedConfiguration) {
+  const relations = normalizedConfiguration.data.relationships;
+  const included = normalizedConfiguration.included;
+
+  if (!relations) {
+    console.warn('Trying to denormalize not normalized configuration!');
+    return normalizedConfiguration;
+  }
+
+  if (!included || included.length < 1) {
+    throw Error('Included items not provided!');
+  }
+
+  const { id, type } = normalizedConfiguration.data;
+  const denormalizedConfiguration = {
+    id,
+    type,
+    ...normalizedConfiguration.data.attributes,
+  };
+
+  _.forEach(relations, (item, name) => {
+    if (item.data.length > 0) {
+      const relationsData = item.data;
+      denormalizedConfiguration[name] = [];
+      for (const itemInfo of relationsData) {
+        const itemData = getIncludedItemByTypeAndId(included, itemInfo.id, itemInfo.type);
+        if (itemData) {
+          denormalizedConfiguration[name].push(itemData);
+        } else {
+          console.warn(`Required include not found at given configuration,
+              searched for: ${itemInfo.id} type of ${itemInfo.type}`);
+        }
+      }
+    }
+  });
+
+  return denormalizedConfiguration;
+}
+
 /**
  * Creates configuration reducer for given default configuration.
  * @param defaultConfiguration {Object} configuration provided by shoutem.application
  */
 export default function configurationReducerCreator(defaultConfiguration = {}) {
-  return function reducer(state = defaultConfiguration, action) {
+  const denormalizedConfiguration = denormalizeConfiguration(defaultConfiguration);
+  return function reducer(state = denormalizedConfiguration, action) {
     return configurationReducer(state, action);
   };
 }
