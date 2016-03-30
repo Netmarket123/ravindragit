@@ -42,7 +42,9 @@ function appWillMount(app) {
 }
 
 function appDidMount(app) {
-  const firstShortcut = getFirstShortcut(configuration);
+  const store = app.getStore();
+  const configurationFromState = store.getState()['shoutem.application'].configuration;
+  const firstShortcut = getFirstShortcut(configurationFromState);
   app.getStore().dispatch(executeShortcut(firstShortcut));
 }
 
