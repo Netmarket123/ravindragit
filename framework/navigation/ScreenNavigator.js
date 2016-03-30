@@ -26,8 +26,6 @@ export class ScreenNavigator extends Component {
   constructor(props, context) {
     super(props, context);
 
-    console.log('Screen navigator constructor');
-
     this.renderScene = this.renderScene.bind(this);
     this.configureScene = this.configureScene.bind(this);
     this.renderNavigationBar = this.renderNavigationBar.bind(this);
@@ -36,7 +34,7 @@ export class ScreenNavigator extends Component {
     this.setNavigationBarState = this.setNavigationBarState.bind(this);
 
     this.initialRoute = props.initialRoute;
-    this.navBarManager = props.hasOwnNavigationBar ? new NavigationBarStateManager()
+    this.navBarManager = props.navigationBarComponent ? new NavigationBarStateManager()
       : this.context.parentNavigator.navBarManager;
   }
 
@@ -127,7 +125,7 @@ export class ScreenNavigator extends Component {
     // Navigation bar should attach itself to the
     // navigation bar manager.
     let navigationBarContainer;
-    if (this.props.hasOwnNavigationBar) {
+    if (this.props.navigationBarComponent) {
       navigationBarContainer = (
         <NavigationBarContainer
           manager={this.navBarManager}
@@ -151,7 +149,6 @@ export class ScreenNavigator extends Component {
   }
 
   render() {
-    console.log('Screen navigator render');
     const navigatorComponent = this.initialRoute ? (
       <Navigator ref={this.captureNavigatorRef}
         initialRoute={this.initialRoute}
@@ -189,14 +186,8 @@ ScreenNavigator.propTypes = {
   navigationActionPerformed: React.PropTypes.func.isRequired,
 
   /**
-   * If set to true navigator will set its own instance of,
-   * NavigationBarManager, otherwise it will inherit
-   * one from parent navigator
-   */
-  hasOwnNavigationBar: React.PropTypes.bool,
-
-  /**
-   * React component that will be used for navigation bar
+   * React component that will be used for navigation bar,
+   * if not set, it will inherit navigation bar of parent navigator
    */
   navigationBarComponent: React.PropTypes.func,
 };

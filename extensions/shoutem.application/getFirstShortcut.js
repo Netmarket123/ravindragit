@@ -7,9 +7,14 @@ export function getFirstShortcut(configuration) {
   const firstShortcutItem = configuration.included.find(item =>
     item.type === firstShortcut.type && item.id === firstShortcut.id
   );
+  let children = [];
+  if (firstShortcutItem.relationships) {
+    children = firstShortcutItem.relationships.children ?
+      firstShortcutItem.relationships.children.data : [];
+  }
 
   return {
     ...firstShortcutItem.attributes,
-    children: firstShortcutItem.relationships.children.data,
+    children,
   };
 }

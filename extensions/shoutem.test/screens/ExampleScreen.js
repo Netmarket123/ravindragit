@@ -42,16 +42,12 @@ class ExampleScreen extends Component {
     const { dispatch } = this.props;
     const { executeShortcut } = actions;
     const shortcut = {
-      attributes: {
-        settings: {
-          screen,
-          modal,
-        },
-        action: 'shoutem.test.openExampleScreen',
+      settings: {
+        screen,
+        modal,
       },
-      relationships: {
-
-      },
+      action: 'shoutem.test.openExampleScreen',
+      children: [],
     };
 
     dispatch(executeShortcut(shortcut));
