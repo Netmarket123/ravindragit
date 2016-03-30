@@ -10,9 +10,14 @@ import { ScreenNavigator, ROOT_NAVIGATOR_NAME } from './navigation';
 import coreExtensions from './coreExtensions';
 
 import StyleProvider from './theme/StyleProvider';
-const ConnectedStyleProvider = connect(state => ({
-  themeVariables: state['shoutem.application'].configuration.theme.variables,
-}))(StyleProvider);
+const ConnectedStyleProvider = connect(state => {
+  const themeVariables = state['shoutem.application'] ?
+    state['shoutem.application'].configuration.theme.variables : {};
+
+  return {
+    themeVariables,
+  };
+})(StyleProvider);
 
 /**
  * Calls the lifecycle function with the given name on all
@@ -83,13 +88,13 @@ function createApplication(appContext) {
 
     render() {
       const content = this.props.children || (
-        <ScreenNavigator
-          name={ROOT_NAVIGATOR_NAME}
-          initialRoute={appContext.initialRoute}
-          hasOwnNavigationBar
-          navigationBarComponent={appContext.navigationBarComponent}
-        />
-      );
+          <ScreenNavigator
+            name={ROOT_NAVIGATOR_NAME}
+            initialRoute={appContext.initialRoute}
+            hasOwnNavigationBar
+            navigationBarComponent={appContext.navigationBarComponent}
+          />
+        );
 
       // themeVariables are passed with connect to StyleProvider
       return (

@@ -10,6 +10,8 @@ import { shallow, mount } from 'enzyme';
 
 import AppBuilder from '../AppBuilder.js';
 
+import themeInit from './mocks/ThemeTest';
+
 /**
  * A simple component that will serve as a screen
  * in the tests.
@@ -61,6 +63,7 @@ function getDefaultInitialRoute() {
 
 function getDefaultBuilder() {
   return new AppBuilder()
+    .setThemeInit(themeInit)
     .setExtensions(getDefaultExtensions())
     .setInitialRoute(getDefaultInitialRoute());
 }

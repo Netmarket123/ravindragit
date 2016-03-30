@@ -2,8 +2,7 @@ import React from 'react-native';
 import { assert } from 'chai';
 import { mount } from 'enzyme';
 import { TEST_PROPERTY } from './mocks/ThemeTest';
-import { TEST_VARIABLE } from './mocks/StyleProviderTestReducer';
-import StyleProviderTestAppComponent from './mocks/StyleProviderTestAppComponent';
+import StyleProviderTestAppComponent, { TEST_VARIABLE } from './mocks/StyleProviderTestAppComponent';
 import ConnectStyleTestComponent from './mocks/ConnectStyleTestComponent';
 
 describe('connectStyle', () => {

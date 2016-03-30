@@ -3,23 +3,23 @@ import React, {
 } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import testTheme from './ThemeTest';
+import themeInit from './ThemeTest';
 import { StyleProvider } from '../../theme';
-import styleProviderTestReducer from './StyleProviderTestReducer';
 
-const store = createStore(styleProviderTestReducer);
+export const TEST_VARIABLE = 5;
 
 export default class StyleProviderTestAppComponent extends Component {
   static propTypes = {
     children: React.PropTypes.object,
   }
   render() {
+    const themeVariables =  {
+      testVariable: TEST_VARIABLE,
+    };
     return (
-      <Provider store={store}>
-        <StyleProvider getTheme={testTheme}>
+        <StyleProvider themeInit={themeInit} themeVariables={themeVariables}>
           {this.props.children}
         </StyleProvider>
-      </Provider>
     );
   }
 }
