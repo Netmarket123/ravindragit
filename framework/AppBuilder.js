@@ -11,7 +11,9 @@ import coreExtensions from './coreExtensions';
 
 import StyleProvider from './theme/StyleProvider';
 const ConnectedStyleProvider = connect(state => {
-  const themeVariables = state['shoutem.application'] ?
+  const shoutemAppState = state['shoutem.application'];
+  const themeVariables =
+    shoutemAppState && shoutemAppState.configuration && shoutemAppState.configuration.theme ?
     state['shoutem.application'].configuration.theme.variables : {};
 
   return {
