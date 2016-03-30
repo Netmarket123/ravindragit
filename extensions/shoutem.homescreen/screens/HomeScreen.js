@@ -12,11 +12,15 @@ import PagedScroller from '../components/PagedScroller';
 import ContinuousScroller from '../components/ContinuousScroller';
 import HomeScreenSettingsReader from '../HomeScreenSettingsReader';
 import PropsCreator from './HomeScreenPropsCreator';
+import shortcutDataShape from '../components/ShortcutDataShape';
 
 const propTypes = {
   appState: PropTypes.shape({
     'shoutem.core.configuration': PropTypes.object,
   }),
+  setNavBarProps: PropTypes.func.isRequired,
+  shortcuts: PropTypes.arrayOf(PropTypes.shape(shortcutDataShape)),
+  settings: PropTypes.object.isRequired,
 };
 
 const styles = StyleSheet.create({

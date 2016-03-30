@@ -39,6 +39,11 @@ const layoutAlignments = {
   },
 };
 
+/**
+ * Creates props for the Home Screen component using the
+ * settings provided by the settingsProvider and Scaler which
+ * modifies all sizes in those settings
+ */
 export default class HomeScreenPropsCreator {
   constructor(settingsReader, windowDimensionsInPixels) {
     this.settingsProvider = settingsReader;

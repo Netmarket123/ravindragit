@@ -1,3 +1,7 @@
+/**
+ * Reads all necessary parameters from the home screen settings
+ * as provided by the configuration
+ */
 export default class HomeScreenSettingsReader {
   constructor(settings) {
     this.settings = settings;

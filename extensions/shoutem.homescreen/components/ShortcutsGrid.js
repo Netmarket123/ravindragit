@@ -3,20 +3,23 @@ import React, {
   StyleSheet,
   View,
   ListView,
+  PropTypes,
 } from 'react-native';
 
 import Shortcut from './Shortcut';
+import buttonConfigShape from './ButtonConfigShape';
 
 const propTypes = {
-  layoutPosition: React.PropTypes.shape({
-    verticalAlignment: React.PropTypes.string,
-    horizontalAlignment: React.PropTypes.string,
+  layoutPosition: PropTypes.shape({
+    verticalAlignment: PropTypes.string,
+    horizontalAlignment: PropTypes.string,
   }),
-  dimensions: React.PropTypes.shape({
-    cols: React.PropTypes.number,
-    rows: React.PropTypes.number,
+  buttonConfig: PropTypes.shape(buttonConfigShape),
+  dimensions: PropTypes.shape({
+    cols: PropTypes.number,
+    rows: PropTypes.number,
   }),
-  gridItems: React.PropTypes.array,
+  gridItems: PropTypes.array,
 };
 
 const styles = StyleSheet.create({

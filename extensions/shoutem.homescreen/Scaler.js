@@ -47,6 +47,12 @@ export default class Scaler {
     return this.ratio;
   }
 
+  /**
+   * Scales all the numeric first-level values of a value object according to
+   * the calculated scale ratio
+   * @param value an object to be scaled
+   * @returns {*} the scaled value
+   */
   scale(value) {
     return getScaledObject(value, this.ratio);
   }

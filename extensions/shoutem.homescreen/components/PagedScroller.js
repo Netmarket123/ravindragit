@@ -8,17 +8,19 @@ import React, {
 import ViewPager from 'react-native-viewpager';
 import ShortcutsGrid from './ShortcutsGrid';
 import shortcutDataShape from './ShortcutDataShape';
+import buttonConfigShape from './ButtonConfigShape';
 
 const propTypes = {
   layoutPosition: PropTypes.shape({
     verticalAlignment: PropTypes.string,
     horizontalAlignment: PropTypes.string,
   }),
+  shortcutsData: PropTypes.arrayOf(PropTypes.shape(shortcutDataShape)),
+  buttonConfig: PropTypes.shape(buttonConfigShape),
   dimensions: PropTypes.shape({
     cols: PropTypes.number,
     rows: PropTypes.number,
   }),
-  shortcutsData: PropTypes.arrayOf(PropTypes.shape(shortcutDataShape)),
 };
 
 const styles = StyleSheet.create({

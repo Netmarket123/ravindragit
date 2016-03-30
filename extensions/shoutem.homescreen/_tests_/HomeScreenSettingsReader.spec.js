@@ -87,7 +87,7 @@ describe('HomeScreenSettingsReader', () => {
     it('returns the grid dimension', () => {
       const actualDimension = reader.getGridDimension();
       const expectedDimension = { cols: 3, rows: 2 };
-      assert.deepEqual(actualDimension, expectedDimension, 'grid dimensions is not correct');
+      assert.deepEqual(actualDimension, expectedDimension, 'grid dimensions are not correct');
     });
   });
 

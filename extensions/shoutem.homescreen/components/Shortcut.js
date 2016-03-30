@@ -10,9 +10,12 @@ import React, {
 import { connect } from 'react-redux';
 import { actions } from 'shoutem.application';
 import shortcutDataShape from './ShortcutDataShape';
+import buttonConfigShape from './ButtonConfigShape';
 
 const propTypes = {
   shortcutData: PropTypes.shape(shortcutDataShape),
+  buttonConfig: PropTypes.shape(buttonConfigShape),
+  dispatch: PropTypes.func.isRequired,
 };
 
 const defaultStyles = {
