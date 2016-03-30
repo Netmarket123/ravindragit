@@ -1,15 +1,16 @@
 import * as _ from 'lodash';
 
-const SET_CONFIGURATION = 'shoutem.configuration.configuration.SET';
-const UPDATE_CONFIGURATION = 'shoutem.configuration.configuration.UPDATE';
-const PATCH_CONFIGURATION = 'shoutem.configuration.configuration.PATCH';
+export const SET_CONFIGURATION = 'shoutem.configuration.configuration.SET';
+export const UPDATE_CONFIGURATION = 'shoutem.configuration.configuration.UPDATE';
+export const PATCH_CONFIGURATION = 'shoutem.configuration.configuration.PATCH';
+export const EXECUTE_SHORTCUT = 'shoutem.application.EXECUTE_SHORTCUT';
 
 export function configurationReducer(state = {}, action) {
   switch (action.type) {
     case SET_CONFIGURATION:
       return action.configuration;
     case UPDATE_CONFIGURATION:
-      return _.assign({}, state, action.configurationUpdates);
+      return Object.assign({}, state, action.configurationUpdates);
     case PATCH_CONFIGURATION:
       // TODO(Braco) - are going to update specific subtree without sending whole tree? (variables)
       // Updates given node and subtree of existing configuration.
@@ -22,7 +23,7 @@ export function configurationReducer(state = {}, action) {
 
 /**
  * Creates configuration reducer for given default configuration.
- * @param defaultConfiguration
+ * @param defaultConfiguration {Object} configuration provided by shoutem.application
  */
 export default function configurationReducerCreator(defaultConfiguration = {}) {
   return function reducer(state = defaultConfiguration, action) {
@@ -40,23 +41,44 @@ export function setConfiguration(configuration) {
     configuration,
   };
 }
-/**
- * Property name is optional parameter which can be used to
- * format configurationUpdates into proper shape for update.
- * Depending on propertyName configurationUpdate can be object
- * of single configuration property, or object containing
- * configuration node with updates.
- * @param configurationUpdates
- * @param propertyName
- */
-export function updateConfiguration(configurationUpdates, propertyName) {
-  // formattedConfigurationUpdate shape
-  // { ...propertiesToUpdate: { ...updates } }
-  const formattedConfigurationUpdates = propertyName ?
-  { [propertyName]: configurationUpdates } : configurationUpdates;
 
+/**
+ * Creates a redux action of type UPDATE_CONFIGURATION with provided configuration updates
+ * configurationUpdates is an object containing
+ * configuration node with updates.
+ * @param configurationUpdates {Object} containing updates that should be applied to configuration
+ * @return {Object} a redux action with type UPDATE_CONFIGURATION
+ */
+export function updateConfiguration(configurationUpdates) {
   return {
     type: UPDATE_CONFIGURATION,
-    configurationUpdates: formattedConfigurationUpdates,
+    configurationUpdates,
+  };
+}
+
+/**
+ * Creates a redux action of type UPDATE_CONFIGURATION with provided updates for certain property
+ * @param propertyName {String} name of property to be updated in configuration
+ * @param value {any} new value for the property defined by propertyName
+ * @return {Object} a redux action with type UPDATE_CONFIGURATION
+ */
+export function updateConfigurationProperty(propertyName, value) {
+  const configurationUpdates = { [propertyName]: value };
+  return {
+    type: UPDATE_CONFIGURATION,
+    configurationUpdates,
+  };
+}
+
+/**
+ * Creates a redux action that is used to execute shortcuts provided by configuration
+ * @param shortcut {Object} Shortcut object containing action to execute, and settings
+ * that should be provided to an action
+ * @returns {{type: string, shortcut: *}} a redux action with type EXECUTE_SHORTCUT
+ */
+export function executeShortcut(shortcut) {
+  return {
+    type: EXECUTE_SHORTCUT,
+    shortcut,
   };
 }

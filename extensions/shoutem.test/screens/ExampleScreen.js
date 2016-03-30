@@ -4,15 +4,31 @@ import React, {
   View,
   Text,
   TouchableOpacity,
-  Navigator,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { connectStyle } from 'shoutem/theme';
 
 import {
-  navigateTo,
   navigateBack,
 } from 'shoutem/navigation';
+
+import { actions } from 'shoutem.application';
+
+const style = {
+  content: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  button: {
+    width: 150,
+    height: 50,
+    backgroundColor: 'gray',
+    marginTop: 5,
+    padding: 15,
+  },
+};
 
 class ExampleScreen extends Component {
   static propTypes = {
@@ -20,7 +36,7 @@ class ExampleScreen extends Component {
     dispatch: React.PropTypes.func,
     setNavBarProps: React.PropTypes.func,
   };
-  
+
   constructor(props) {
     super(props);
 
@@ -31,21 +47,16 @@ class ExampleScreen extends Component {
 
   navigateToScreen(screen, modal) {
     const { dispatch } = this.props;
-    const nextScreenName = `shoutem.test.screen${screen}`;
-
-    let route = {
-      screen: nextScreenName,
-      props: {
-        message: `Screen: ${screen}`,
+    const { executeShortcut } = actions;
+    const shortcut = {
+      settings: {
+        screen,
+        modal,
       },
+      action: 'shoutem.test.openExampleScreen',
     };
 
-    if (modal) {
-      route = Object.assign(route, {
-        sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
-      });
-    }
-    dispatch(navigateTo(route));
+    dispatch(executeShortcut(shortcut));
   }
 
   navigateBack() {
@@ -103,22 +114,6 @@ class ExampleScreen extends Component {
     );
   }
 }
-
-const style = {
-  content: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  button: {
-    width: 150,
-    height: 50,
-    backgroundColor: 'gray',
-    marginTop: 5,
-    padding: 15,
-  },
-};
 
 function mapStateToProps(state) {
   return {
