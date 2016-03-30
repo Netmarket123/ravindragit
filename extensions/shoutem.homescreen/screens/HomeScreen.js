@@ -54,7 +54,12 @@ function getScrollerComponentForType(type) {
   return type === 'paged' ? PagedScroller : ContinuousScroller;
 }
 
+
 export default class HomeScreen extends Component {
+  hideNavigationBar() {
+    this.props.setNavBarProps({});
+  }
+
   renderShortcuts(propsCreator, shortcuts) {
     const ScrollerComponent = getScrollerComponentForType(propsCreator.getScrollType());
 
@@ -69,11 +74,12 @@ export default class HomeScreen extends Component {
   }
 
   render() {
-    const { settings, shortcuts, setNavBarProps } = this.props;
+    const { settings, shortcuts } = this.props;
     const settingsReader = new HomeScreenSettingsReader(settings);
     const propsCreator = new PropsCreator(settingsReader, getWindowDimensionsInPixels());
 
-    setNavBarProps({});
+    this.hideNavigationBar();
+
     return (
       <Image source={{ uri: propsCreator.getBackgroundImage() }} style={styles.backgroundImage}>
         <View style={[styles.content, propsCreator.getLayoutMarginStyle()]}>
