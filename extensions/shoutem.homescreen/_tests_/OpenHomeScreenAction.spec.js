@@ -6,9 +6,13 @@ import children from './test_data/test-children';
 import shortcutsData from './test_data/shortcut-data';
 
 describe('openHomeScreenAction', () => {
-  const expectedLayout = layout;
-  const expectedScreenName = 'shoutem.homeScreen.HomeScreen';
-  const testState = shortcutsData;
+  const testState = {
+    'shoutem.application': {
+      configuration: {
+        included: shortcutsData,
+      },
+    },
+  };
   const testSettings = {
     homeScreen: {
       layout,
@@ -25,10 +29,12 @@ describe('openHomeScreenAction', () => {
   });
 
   it('calls navigateTo with correct screen name', () => {
+    const expectedScreenName = 'shoutem.homescreen.HomeScreen';
     assert.equal(callParams.screen, expectedScreenName);
   });
 
   it('calls navigateTo with correct layout in settings', () => {
+    const expectedLayout = layout;
     assert.deepEqual(callParams.props.settings.layout, expectedLayout);
   });
 
