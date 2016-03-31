@@ -10,7 +10,7 @@ const unzip = require('unzip2');
 const getLocalExtensions = require('./getLocalExtensions');
 const _ = require('lodash');
 
-function installLocalExtension(extension) {
+function installLocalExtension(extension, clearAfterInstall) {
   const packageName = extension.id;
   const packagePath = extension.path;
   const nodeModules = 'node_modules';
@@ -19,7 +19,11 @@ function installLocalExtension(extension) {
   shelljs.exec(`npm install file:${packagePath}`);
   rimraf(path.join(installedExtensionPath, nodeModules), () => {
     console.log(`${packageName} installed`);
+    if (clearAfterInstall) {
+      rimraf(packagePath, () => console.log(`delete ${packagePath}`));
+    }
   });
+  return Promise.resolve(extension);
 }
 
 function downloadZipExtension(extension, destinationFolder) {
@@ -40,14 +44,18 @@ function downloadZipExtension(extension, destinationFolder) {
 
 function getUnzippedExtension(extension) {
   return new Promise(resolve => {
-    downloadZipExtension(extension, '../extensions')
+    downloadZipExtension(extension, './temp')
       .then((extensionPath) => {
         const readStream = fs.createReadStream(extensionPath + '.zip');
-        readStream.pipe(unzip.Extract({ path: extensionPath }));
-        readStream.on('close', () => {
-          const zipExtension = getLocalExtensions([extensionPath])[0];
-          resolve(zipExtension);
-        });
+        readStream.pipe(
+          unzip.Extract({ path: extensionPath })
+            .on('close', () => {
+              readStream.close();
+              rimraf(extensionPath + '.zip', () => console.log('delete zip'));
+              const zipExtension = getLocalExtensions([extensionPath])[0];
+              resolve(zipExtension);
+            })
+        );
       });
   });
 }
@@ -55,13 +63,12 @@ function getUnzippedExtension(extension) {
 function installNpmExtension(extension) {
   console.log(`installing ${extension.id}`);
   shelljs.exec(`npm install ${extension.id}`);
+  return Promise.resolve(extension);
 }
 
 function installZipExtension(extension) {
   return getUnzippedExtension(extension)
-    .then((zipExtension) => {
-      installLocalExtension(zipExtension);
-    });
+    .then((zipExtension) => installLocalExtension(zipExtension, 'clearAfterInstall'));
 }
 
 const extensionInstaller = {
@@ -97,8 +104,9 @@ class ExtensionsInstaller {
   }
 
   installExtensions() {
+    const installPromises = [];
     this.localExtensions.forEach((extension) => {
-      installLocalExtension(extension);
+      installPromises.push(installLocalExtension(extension));
     });
 
     const child = spawn('node', ['./build-script/watchLocalExtensions'], {
@@ -109,15 +117,16 @@ class ExtensionsInstaller {
 
     this.extensionsToInstall.forEach((extension) => {
       const extensionType = _.get(extension, 'attributes.location.app.type');
-      extensionInstaller[extensionType](extension);
+      installPromises.push(extensionInstaller[extensionType](extension));
     });
+
+    return Promise.all(installPromises);
   }
 
-  createExtensionsJs() {
-    const extensions = this.localExtensions.concat(this.extensionsToInstall);
+  createExtensionsJs(installedExtensions) {
     const extensionsMapping = [];
 
-    extensions.forEach((extension) => {
+    installedExtensions.forEach((extension) => {
       extensionsMapping.push(`'${extension.id}' : require('${extension.id}')`);
     });
 

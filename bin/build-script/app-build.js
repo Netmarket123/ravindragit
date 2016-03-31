@@ -83,15 +83,17 @@ class AppBuild {
       extensionsJsPath
     );
 
-    extensionsInstaller.installExtensions();
-    console.log('tu sam');
-    return extensionsInstaller.createExtensionsJs();
+    return extensionsInstaller.installExtensions()
+      .then((installedExtensions) => {
+        extensionsInstaller.createExtensionsJs(installedExtensions);
+      });
   }
 
   run() {
     console.log(`starting build for app ${this.appId}`);
     this.downloadConfiguration()
       .then(() => this.prepareExtensions())
+    // this.prepareExtensions()
       .then(() => console.log('build finished'))
       .catch((e) => console.log(e));
   }
