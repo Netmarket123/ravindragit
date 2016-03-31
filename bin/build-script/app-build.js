@@ -5,6 +5,11 @@ const fs = require('fs');
 const path = require('path');
 const getLocalExtensions = require('./getLocalExtensions');
 const ExtensionsInstaller = require('./extensions-installer.js');
+const _ = require('lodash');
+
+function getExtensionsFromConfigurations(configuration) {
+  return _.filter(configuration.included, { type: 'shoutem.core.extensions' });
+}
 
 /**
  * AppBuild builds application by running build steps
@@ -25,8 +30,12 @@ class AppBuild {
   }
 
   getConfigurationUrl() {
-    // TODO(Ivan): change this with /apps/1/configuration when api will be available
-    return '';
+    return `/v1/apps/${this.appId}/configuration`;
+  }
+
+  getAuthorizationToken() {
+    // TODO(Ivan): add real jwt token when authorization api available
+    return this.jwt;
   }
 
   downloadConfiguration() {
@@ -34,7 +43,14 @@ class AppBuild {
     const configurationFile = fs.createWriteStream(this.configurationFilePath);
     return new Promise((resolve, reject) => {
       let responseSent = false; // flag to make sure that response is sent only once.
-      http.get(this.getConfigurationUrl(), response => {
+      http.get({
+        path: this.getConfigurationUrl(),
+        host: this.serverApiEndpoint,
+        headers: {
+          Authorization: this.getAuthorizationToken(),
+          Accept: 'application/vnd.api+json',
+        },
+      }, response => {
         response.pipe(configurationFile);
         configurationFile.on('finish', () => {
           configurationFile.close(() => {
@@ -58,25 +74,28 @@ class AppBuild {
 
   prepareExtensions() {
     this.configuration = this.getConfiguration(this.configurationFilePath);
-    const extensions = this.configuration.extensions;
+    const extensions = getExtensionsFromConfigurations(this.configuration);
     const localExtensions = getLocalExtensions(this.workingDirectories);
     const extensionsJsPath = this.extensionsJsPath;
     const extensionsInstaller = new ExtensionsInstaller(
       localExtensions,
       extensions,
       extensionsJsPath
-     );
-    extensionsInstaller.installExtensions();
-    return extensionsInstaller.createExtensionsJs();
+    );
+
+    return extensionsInstaller.installExtensions()
+      .then((installedExtensions) => {
+        extensionsInstaller.createExtensionsJs(installedExtensions);
+      });
   }
 
   run() {
     console.log(`starting build for app ${this.appId}`);
-    // TO DO(Ivan) add this.downloadConfiguration() as first step when
-    // configuration api is available
-    this.prepareExtensions()
-    .then(() => console.log('build finished'))
-    .catch((e) => console.log(e));
+    this.downloadConfiguration()
+      .then(() => this.prepareExtensions())
+    // this.prepareExtensions()
+      .then(() => console.log('build finished'))
+      .catch((e) => console.log(e));
   }
 }
 

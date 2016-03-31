@@ -16,7 +16,8 @@
     "react-native-code-push": "^1.7.3-beta",
     "react-redux": "^4.4.0",
     "redux": "^3.3.1",
-    "redux-thunk": "^1.0.3"
+    "redux-thunk": "^1.0.3",
+    "unzip2": "^0.2.5"
   },
   "devDependencies": {
     "redux-logger": "^2.6.1"
