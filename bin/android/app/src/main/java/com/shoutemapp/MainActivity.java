@@ -1,6 +1,7 @@
 package com.shoutemapp;
 
 import com.facebook.react.ReactActivity;
+import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.microsoft.codepush.react.CodePush;
@@ -39,7 +40,8 @@ public class MainActivity extends ReactActivity {
         this.codePush = new CodePush(codePushAppKey, this, BuildConfig.DEBUG);
 
         return Arrays.<ReactPackage>asList(
-                new MainReactPackage(), this.codePush.getReactPackage());
+                new MainReactPackage(),
+        new VectorIconsPackage(), this.codePush.getReactPackage());
     }
 
     @Override

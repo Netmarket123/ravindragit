@@ -11,9 +11,9 @@ import extensions from './extensions.js';
 const App = new AppBuilder()
   .setExtensions(extensions)
   .setInitialRoute({
-    screen: 'shoutem.test.initialScreen',
+    screen: 'gannet.news.GannettListScreen',
     props: {
-      message: 'The initial screen.',
+      items: extensions['gannet.news'].mockedItems,
     },
   })
   .setNavigationBarComponent(NavigationBar)
