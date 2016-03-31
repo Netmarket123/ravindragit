@@ -1,16 +1,6 @@
 import _ from 'lodash';
 
 /**
- * Extracts all values from object keys and merges them into a new object
- *
- * @param object
- * @returns {object} - an object containing all object's values
- */
-function extractValuesFromObject(object) {
-  return _.reduce(object, (acc, val) => Object.assign({}, acc, val), {});
-}
-
-/**
  * Returns provided data in denormalized form
  */
 export default class Denormalizer {
@@ -39,10 +29,11 @@ export default class Denormalizer {
 
     const { attributes, relationships } = normalizedItem;
 
-    const extractedRelationshipData = _.map(relationships, (value, key) => ({
+    const extractedRelationshipData = _.reduce(relationships, (result, value, key) => ({
+      ...result,
       [key]: value.data.map(this.getDenormalizedItem),
-    }));
+    }), {});
 
-    return Object.assign({}, attributes, extractValuesFromObject(extractedRelationshipData));
+    return Object.assign({}, attributes, extractedRelationshipData);
   }
 }
