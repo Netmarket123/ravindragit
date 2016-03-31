@@ -9,8 +9,8 @@
       "theme": {
         "data": [
           {
-            "variables": {
-            }
+            "type": "shoutem.core.theme",
+            "id": "shoutem.theme"
           }
         ]
       },
@@ -64,6 +64,15 @@
         },
         "settings": {
           "enableSharing": true
+        }
+      }
+    },
+    {
+      "type": "shoutem.core.theme",
+      "id": "2",
+      "attributes": {
+        "variables": {
+         "testVariable": "red"
         }
       }
     },
