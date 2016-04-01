@@ -85,7 +85,6 @@ export default {
     items: {
       rightExtra: {
         fontSize: 12,
-        textDecorationLine: 'line-through',
         color: '#888',
       },
       itemDescription: {
@@ -99,6 +98,13 @@ export default {
       },
     },
   },
+  'dev.ext.GannettDetailsScreen': {
+    title: {
+      fontSize: 30,
+      lineHeight: 30,
+      color: '#fff',
+    },
+  },
   'shoutem.ui.NavigationBar': {
     container: {
       backgroundColor: variables.ganetColor,
@@ -107,7 +113,7 @@ export default {
       buttonIcon: {
         color: 'white',
         fontSize: 24,
-      }
-    }
+      },
+    },
   },
 };

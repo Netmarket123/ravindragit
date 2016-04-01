@@ -13,7 +13,6 @@ const App = new AppBuilder()
   .setInitialRoute({
     screen: 'gannet.news.GannettListScreen',
     props: {
-      items: extensions['gannet.news'].mockedItems,
     },
   })
   .setNavigationBarComponent(NavigationBar)
