@@ -94,9 +94,9 @@ class AppBuild {
     console.time('build time');
     console.log(`starting build for app ${this.appId}`);
     shelljs.exec('npm install');
-    // this.downloadConfiguration()
-    //   .then(() => this.prepareExtensions())
-    this.prepareExtensions()
+    this.downloadConfiguration()
+      .then(() => this.prepareExtensions())
+    // this.prepareExtensions()
       .then(() => {
         shelljs.exec('npm install');
         console.timeEnd('build time');

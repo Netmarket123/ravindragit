@@ -121,7 +121,6 @@ const style = {
     position: 'relative',
   },
   title: {
-    [INCLUDE]: ['h1'],
     color: 'black',
     paddingBottom: 20,
     position: 'absolute',

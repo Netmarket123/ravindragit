@@ -1,5 +1,5 @@
 {
-    "appId": 690,
+    "appId": 167875042,
     "serverApiEndpoint": "apps.aperfector.com",
     "jwt": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkMGYxOGYzMy04MzI1LTQxOTUtYmMwNi1jMmYxOWE0Y2RhOTciLCJpc3MiOiJzaG91dGVtIiwic3ViIjoidXNlcjoxIiwidXNyIjoic3NhcnVuaWNAZ21haWwuY29tIiwiaWF0IjoxNDU4MzA3NjYxLCJybG0iOiJhcHAtYnVpbGRlciIsImFjbCI6eyJ1c2VyOjEvKiI6WyJyZWFkIiwid3JpdGUiXX0sInZzaSI6eyJ0eXAiOiJ2IiwidiI6MH19.fZk_KPQtkKkiTht5LrJJpreLBJddbxdHPWX2p5lIfs4",
     "debug": true,
@@ -8,8 +8,7 @@
     "workingDirectories": [
       "../extensions/shoutem.application",
       "../extensions/shoutem.ui",
-      "../extensions/shoutem.codepush",
-      "../extensions/gannet.news"
+      "../extensions/shoutem.codepush"
     ],
     "extensionsJsPath": "./extensions.js"
 }
