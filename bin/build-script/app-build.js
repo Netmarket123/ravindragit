@@ -3,6 +3,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const shelljs = require('shelljs');
 const getLocalExtensions = require('./getLocalExtensions');
 const ExtensionsInstaller = require('./extensions-installer.js');
 const _ = require('lodash');
@@ -90,11 +91,15 @@ class AppBuild {
   }
 
   run() {
+    console.time('build time');
     console.log(`starting build for app ${this.appId}`);
+    shelljs.exec('npm install --production');
     this.downloadConfiguration()
       .then(() => this.prepareExtensions())
     // this.prepareExtensions()
-      .then(() => console.log('build finished'))
+      .then(() => {
+        console.timeEnd('build time');
+      })
       .catch((e) => console.log(e));
   }
 }

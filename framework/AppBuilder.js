@@ -124,15 +124,6 @@ function assertReducersExist(reducers) {
     You must supply at least one extension that has a reducer defined.`);
 }
 
-function assertInitialRouteExists(initialRoute, screens) {
-  assertNotEmpty(initialRoute, `The app without an initial route cannot be created.
-    You must define an initial route using the setInitialRoute method.`);
-
-  if (!screens[initialRoute.screen]) {
-    throw new Error('The initial route points to a screen that does not exist.');
-  }
-}
-
 /**
  * Adds a core extension to the app extensions configured
  * through the builder API. This extension needs to be included
@@ -313,7 +304,6 @@ export default class AppBuilder {
 
     appContext.screens = getApplicationScreens(appContext);
     assertScreensExist(appContext.screens);
-    assertInitialRouteExists(appContext.initialRoute, appContext.screens);
 
     appContext.store = createApplicationStore(appContext);
     return createApplication(appContext);

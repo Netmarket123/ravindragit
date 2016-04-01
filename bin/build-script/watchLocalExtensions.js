@@ -16,13 +16,15 @@ localExtensions.forEach((extension) => {
   watch(packagePath, (filename) => {
     const localPath = filename.split(packagePath).pop();
     const destination = path.join(installedExtensionPath, localPath);
-    console.log(`Copying ${filename} to ${destination}`);
-    fsExtra.copy(filename, destination, (error) => {
-      if (error) {
-        console.error(error);
-      }
+    if (filename !== nodeModules) {
+      console.log(`Copying ${filename} to ${destination}`);
+      fsExtra.copy(filename, destination, (error) => {
+        if (error) {
+          console.error(error);
+        }
 
-      return;
-    });
+        return;
+      });
+    }
   });
 });

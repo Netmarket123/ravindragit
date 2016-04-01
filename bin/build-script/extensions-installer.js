@@ -1,7 +1,7 @@
 'use strict';
 
 const path = require('path');
-const http = require('http');
+const http = require('https');
 const shelljs = require('shelljs');
 const fs = require('fs');
 const rimraf = require('rimraf');
@@ -16,7 +16,7 @@ function installLocalExtension(extension, clearAfterInstall) {
   const nodeModules = 'node_modules';
   const installedExtensionPath = path.join(nodeModules, packageName);
   console.log(`Installing ${packageName}`);
-  shelljs.exec(`npm install file:${packagePath}`);
+  shelljs.exec(`npm install ${packagePath}`);
   rimraf(path.join(installedExtensionPath, nodeModules), () => {
     console.log(`${packageName} installed`);
     if (clearAfterInstall) {
@@ -44,7 +44,7 @@ function downloadZipExtension(extension, destinationFolder) {
 
 function getUnzippedExtension(extension) {
   return new Promise(resolve => {
-    downloadZipExtension(extension, './temp')
+    downloadZipExtension(extension, '../extensions/')
       .then((extensionPath) => {
         const readStream = fs.createReadStream(extensionPath + '.zip');
         readStream.pipe(
@@ -108,12 +108,6 @@ class ExtensionsInstaller {
     this.localExtensions.forEach((extension) => {
       installPromises.push(installLocalExtension(extension));
     });
-
-    const child = spawn('node', ['./build-script/watchLocalExtensions'], {
-      detached: true,
-      stdio: 'ignore',
-    });
-    child.unref();
 
     this.extensionsToInstall.forEach((extension) => {
       const extensionType = _.get(extension, 'attributes.location.app.type');
