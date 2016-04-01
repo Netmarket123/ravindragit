@@ -5,7 +5,6 @@ const http = require('https');
 const shelljs = require('shelljs');
 const fs = require('fs');
 const rimraf = require('rimraf');
-const spawn = require('child_process').spawn;
 const unzip = require('unzip2');
 const getLocalExtensions = require('./getLocalExtensions');
 const _ = require('lodash');

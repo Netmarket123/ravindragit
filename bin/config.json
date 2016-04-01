@@ -8,7 +8,8 @@
     "workingDirectories": [
       "../extensions/shoutem.application",
       "../extensions/shoutem.ui",
-      "../extensions/shoutem.codepush"
+      "../extensions/shoutem.codepush",
+      "../extensions/gannet.news"
     ],
     "extensionsJsPath": "./extensions.js"
 }

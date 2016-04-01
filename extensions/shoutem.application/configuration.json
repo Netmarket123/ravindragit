@@ -42,7 +42,7 @@
       "type": "shoutem.core.shortcuts",
       "id": "56fe30cb2a54015d09a0e289",
       "attributes": {
-        "canonicalName": "shoutem.test.openExampleScreen",
+        "canonicalName": "gannet.news.openExampleScreen",
         "title": "Svejedno",
         "iconUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488005&timestamp=635932174426170000&custom_layout=true&highlighted=false&version=58",
         "action": "shoutem.homescreen.openExampleScreen",
@@ -172,7 +172,7 @@
           },
           {
             "type": "shoutem.core.extensions",
-            "id": "shoutem.test"
+            "id": "shoutem.example.ExampleScreen"
           }
         ]
       },
