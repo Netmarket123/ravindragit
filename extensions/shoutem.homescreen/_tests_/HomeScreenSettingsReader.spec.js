@@ -130,22 +130,6 @@ describe('HomeScreenSettingsReader', () => {
     });
   });
 
-  describe('getColumnCount', () => {
-    it('returns the number of columns ', () => {
-      const actualColumnCount = reader.getColumnCount();
-      const expectedColumnCount = 3;
-      assert.deepEqual(actualColumnCount, expectedColumnCount, 'column count is not correct');
-    });
-  });
-
-  describe('getRowCount', () => {
-    it('returns the number of rows ', () => {
-      const actualRowCount = reader.getRowCount();
-      const expectedRowCount = 2;
-      assert.deepEqual(actualRowCount, expectedRowCount, 'rows count is not correct');
-    });
-  });
-
   describe('getHomeScreenBackgroundImage', () => {
     it('returns the home screen background image', () => {
       const actualImage = reader.getHomeScreenBackgroundImage();

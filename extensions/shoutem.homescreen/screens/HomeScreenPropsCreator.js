@@ -63,10 +63,7 @@ export default class HomeScreenPropsCreator {
   }
 
   getLayoutDimensions() {
-    return {
-      rows: this.settingsProvider.getRowCount(),
-      cols: this.settingsProvider.getColumnCount(),
-    };
+    return this.settingsProvider.getGridDimension();
   }
 
   getBackgroundImage() {
