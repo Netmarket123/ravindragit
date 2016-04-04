@@ -8,7 +8,7 @@ const config = require('../config.json');
 
 const localExtensions = getLocalExtensions(config.workingDirectories);
 localExtensions.forEach((extension) => {
-  const packageName = extension.name;
+  const packageName = extension.id;
   const packagePath = extension.path;
   const nodeModules = 'node_modules';
   const installedExtensionPath = path.join(nodeModules, packageName);
@@ -16,13 +16,15 @@ localExtensions.forEach((extension) => {
   watch(packagePath, (filename) => {
     const localPath = filename.split(packagePath).pop();
     const destination = path.join(installedExtensionPath, localPath);
-    console.log(`Copying ${filename} to ${destination}`);
-    fsExtra.copy(filename, destination, (error) => {
-      if (error) {
-        console.error(error);
-      }
+    if (filename !== nodeModules) {
+      console.log(`Copying ${filename} to ${destination}`);
+      fsExtra.copy(filename, destination, (error) => {
+        if (error) {
+          console.error(error);
+        }
 
-      return;
-    });
+        return;
+      });
+    }
   });
 });

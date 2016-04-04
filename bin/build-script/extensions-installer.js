@@ -1,11 +1,10 @@
 'use strict';
 
 const path = require('path');
-const http = require('http');
+const http = require('https');
 const shelljs = require('shelljs');
 const fs = require('fs');
 const rimraf = require('rimraf');
-const spawn = require('child_process').spawn;
 const unzip = require('unzip2');
 const getLocalExtensions = require('./getLocalExtensions');
 const _ = require('lodash');
@@ -16,7 +15,7 @@ function installLocalExtension(extension, clearAfterInstall) {
   const nodeModules = 'node_modules';
   const installedExtensionPath = path.join(nodeModules, packageName);
   console.log(`Installing ${packageName}`);
-  shelljs.exec(`npm install file:${packagePath}`);
+  shelljs.exec(`npm install ${packagePath}`);
   rimraf(path.join(installedExtensionPath, nodeModules), () => {
     console.log(`${packageName} installed`);
     if (clearAfterInstall) {
@@ -26,9 +25,13 @@ function installLocalExtension(extension, clearAfterInstall) {
   return Promise.resolve(extension);
 }
 
+function appendZipExtensionTo(filePath) {
+  return `${filePath}.zip`;
+}
+
 function downloadZipExtension(extension, destinationFolder) {
   const extensionPath = path.join(destinationFolder, extension.id);
-  const extensionWriteStream = fs.createWriteStream(extensionPath + '.zip');
+  const extensionWriteStream = fs.createWriteStream(appendZipExtensionTo(extensionPath));
   const extensionZipUrl = _.get(extension, 'attributes.location.app.package');
   return new Promise((resolve, reject) => {
     http.get(extensionZipUrl, response => {
@@ -46,12 +49,14 @@ function getUnzippedExtension(extension) {
   return new Promise(resolve => {
     downloadZipExtension(extension, './temp')
       .then((extensionPath) => {
-        const readStream = fs.createReadStream(extensionPath + '.zip');
+        const readStream = fs.createReadStream(appendZipExtensionTo(extensionPath));
         readStream.pipe(
-          unzip.Extract({ path: extensionPath })
+          unzip.Extract({ path: extensionPath }) // eslint-disable-line new-cap
             .on('close', () => {
               readStream.close();
-              rimraf(extensionPath + '.zip', () => console.log('delete zip'));
+              rimraf(appendZipExtensionTo(extensionPath), () => {
+                console.log(`delete zip: ${appendZipExtensionTo(extensionPath)}`);
+              });
               const zipExtension = getLocalExtensions([extensionPath])[0];
               resolve(zipExtension);
             })
@@ -109,12 +114,6 @@ class ExtensionsInstaller {
       installPromises.push(installLocalExtension(extension));
     });
 
-    const child = spawn('node', ['./build-script/watchLocalExtensions'], {
-      detached: true,
-      stdio: 'ignore',
-    });
-    child.unref();
-
     this.extensionsToInstall.forEach((extension) => {
       const extensionType = _.get(extension, 'attributes.location.app.type');
       installPromises.push(extensionInstaller[extensionType](extension));
@@ -127,11 +126,11 @@ class ExtensionsInstaller {
     const extensionsMapping = [];
 
     installedExtensions.forEach((extension) => {
-      extensionsMapping.push(`'${extension.id}' : require('${extension.id}')`);
+      extensionsMapping.push(`'${extension.id}': require('${extension.id}')`);
     });
 
-    const extensionsString = extensionsMapping.join(',\n\t');
-    const data = `export default {\n\t${extensionsString}\n}`;
+    const extensionsString = extensionsMapping.join(',\n  ');
+    const data = `export default {\n  ${extensionsString},\n};`;
 
     console.time('create extensions.js');
     return new Promise((resolve, reject) => {

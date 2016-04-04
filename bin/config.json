@@ -1,13 +1,14 @@
 {
-    "appId": 1,
+    "appId": 167875047,
     "serverApiEndpoint": "apps.aperfector.com",
     "jwt": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkMGYxOGYzMy04MzI1LTQxOTUtYmMwNi1jMmYxOWE0Y2RhOTciLCJpc3MiOiJzaG91dGVtIiwic3ViIjoidXNlcjoxIiwidXNyIjoic3NhcnVuaWNAZ21haWwuY29tIiwiaWF0IjoxNDU4MzA3NjYxLCJybG0iOiJhcHAtYnVpbGRlciIsImFjbCI6eyJ1c2VyOjEvKiI6WyJyZWFkIiwid3JpdGUiXX0sInZzaSI6eyJ0eXAiOiJ2IiwidiI6MH19.fZk_KPQtkKkiTht5LrJJpreLBJddbxdHPWX2p5lIfs4",
     "debug": true,
     "designMode": true,
     "configurationFilePath": "../extensions/shoutem.application/configuration.json",
     "workingDirectories": [
-      "../framework",
-      "../extensions/*"
+      "../extensions/shoutem.application",
+      "../extensions/shoutem.codepush",
+      "../extensions/shoutem.ui"
     ],
     "extensionsJsPath": "./extensions.js"
 }
