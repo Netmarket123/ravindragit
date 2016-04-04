@@ -12,6 +12,10 @@ export default {
       const createLogger = require('redux-logger');
       const logger = createLogger({
         collapsed: true,
+        actionTransformer: (action) => ({
+          ...action,
+          type: String(action.type),
+        }),
       });
       middleware.push(logger);
     }
