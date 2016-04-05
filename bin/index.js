@@ -16,12 +16,6 @@ function renderNavigationBar(navBarProps) {
 
 const App = new AppBuilder()
   .setExtensions(extensions)
-  .setInitialRoute({
-    screen: 'shoutem.test.initialScreen',
-    props: {
-      message: 'The initial screen.',
-    },
-  })
   .setRenderNavigationBar(renderNavigationBar)
   .build();
 
