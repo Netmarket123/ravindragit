@@ -21,6 +21,12 @@ class Screen extends Component {
   }
 }
 
+class NavBar extends Component {
+  render() {
+    return <Text>Nav Bar</Text>;
+  }
+}
+
 Screen.propTypes = {
   message: React.PropTypes.string,
 };
@@ -62,7 +68,7 @@ function getDefaultInitialRoute() {
 function getDefaultBuilder() {
   return new AppBuilder()
     .setExtensions(getDefaultExtensions())
-    .setInitialRoute(getDefaultInitialRoute());
+    .setNavigationBarComponent(NavBar);
 }
 
 function buildDefaultApp() {
@@ -181,14 +187,6 @@ describe('AppBuilder', () => {
   });
 
   describe('(routing)', () => {
-    it('does not create an app without an initial route', () => {
-      const builder = getDefaultBuilder().setInitialRoute({});
-
-      assert.throws(builder.build.bind(builder),
-        'The app without an initial route cannot be created.'
-      );
-    });
-
     it('does not create an app with an invalid initial route', () => {
       const builder = getDefaultBuilder()
         .setInitialRoute({
