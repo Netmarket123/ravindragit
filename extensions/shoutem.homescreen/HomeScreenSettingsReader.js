@@ -11,6 +11,7 @@ export default class HomeScreenSettingsReader {
    * Reads layout width and height layout in pixels from settings
    *
    * @returns {*} - an object containing width and height in pixels
+   *              - eg. {width: 1080, height: 1920}
    */
   getLayoutDimension() {
     return {
@@ -23,6 +24,7 @@ export default class HomeScreenSettingsReader {
    * Reads number of rows and columns from settings
    *
    * @returns {*} - an object containing number of rows and columns
+   *              - eg. {cols: 2, rows: 3}
    */
   getGridDimension() {
     return {
@@ -48,6 +50,7 @@ export default class HomeScreenSettingsReader {
    * Reads button size from the settings
    *
    * @returns {} - an object containing button width and height
+   *             - eg. {width: 330, height: 330}
    */
   getButtonSize() {
     return this.settings.layout.buttonLayout.buttonSize;
@@ -57,6 +60,7 @@ export default class HomeScreenSettingsReader {
    * Reads the button icon size from the settings
    *
    * @returns {} - an object containing button icon width and height
+   *             - eg. {width: 220, height: 220}
    */
   getButtonIconSize() {
     return this.settings.layout.buttonLayout.buttonIconSize;
@@ -66,6 +70,7 @@ export default class HomeScreenSettingsReader {
    * Reads the button margin size from the settings
    *
    * @returns {} - an object containing button margin width and height
+   *             - eg. {top: 10, left: 10, bottom: 20, right: 10}
    */
   getButtonMargin() {
     return this.settings.layout.buttonLayout.margin;
@@ -122,6 +127,7 @@ export default class HomeScreenSettingsReader {
    * Reads the layout margin size from the settings
    *
    * @returns {} - an object containing layout margin width and height
+   *             - eg. {top: 10, left: 10, bottom: 20, right: 10}
    */
   getLayoutMargin() {
     return this.settings.layout.margin;
