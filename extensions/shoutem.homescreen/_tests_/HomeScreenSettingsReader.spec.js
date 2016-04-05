@@ -139,7 +139,7 @@ describe('HomeScreenSettingsReader', () => {
   });
 
   describe('getHomeScreenBackgroundImageWide', () => {
-    it('returns the home screen background image', () => {
+    it('returns the wide home screen background image', () => {
       const actualImage = reader.getHomeScreenBackgroundImageWide();
       const expectedImage = 'http://s3.amazonaws.com/kanta/apps/166686575/755459/image/iPhone/XetITVSB9UO6E7UY5hWrxw@2x.png';
       assert.deepEqual(actualImage, expectedImage, 'image is not correct');

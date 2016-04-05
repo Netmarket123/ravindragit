@@ -17,6 +17,7 @@ export default function createOpenHomeScreenAction(navigateTo) {
    */
   return (settings, children, state) => {
     const homeScreen = settings.homeScreen;
+    // TODO(Vladimir) - change after merge to develop. Expect normalized configuration.
     const denormalizer = new Denormalizer(state['shoutem.application'].configuration.included);
     const shortcuts = children.map(denormalizer.getDenormalizedItem);
 

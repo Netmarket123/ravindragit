@@ -18,7 +18,7 @@ const propTypes = {
   appState: PropTypes.shape({
     'shoutem.core.configuration': PropTypes.object,
   }),
-  setNavBarProps: PropTypes.func.isRequired,
+  setNavBarProps: PropTypes.func,
   shortcuts: PropTypes.arrayOf(PropTypes.shape(shortcutDataShape)),
   settings: PropTypes.object.isRequired,
 };
@@ -50,7 +50,7 @@ function getWindowDimensionsInPixels() {
   };
 }
 
-function getScrollerComponentForType(type) {
+function getScrollerComponentForScrollType(type) {
   return type === 'paged' ? PagedScroller : ContinuousScroller;
 }
 
@@ -61,7 +61,7 @@ export default class HomeScreen extends Component {
   }
 
   renderShortcuts(propsCreator, shortcuts) {
-    const ScrollerComponent = getScrollerComponentForType(propsCreator.getScrollType());
+    const ScrollerComponent = getScrollerComponentForScrollType(propsCreator.getScrollType());
 
     return (
       <ScrollerComponent
