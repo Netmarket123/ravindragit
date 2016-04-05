@@ -3,20 +3,23 @@ import React, {
   StyleSheet,
   View,
   ListView,
+  PropTypes,
 } from 'react-native';
 
 import Shortcut from './Shortcut';
+import buttonConfigShape from './ButtonConfigShape';
 
 const propTypes = {
-  layoutPosition: React.PropTypes.shape({
-    verticalAlignment: React.PropTypes.string,
-    horizontalAlignment: React.PropTypes.string,
+  layoutPosition: PropTypes.shape({
+    verticalAlignment: PropTypes.string,
+    horizontalAlignment: PropTypes.string,
   }),
-  dimensions: React.PropTypes.shape({
-    cols: React.PropTypes.number,
-    rows: React.PropTypes.number,
+  buttonConfig: PropTypes.shape(buttonConfigShape),
+  dimensions: PropTypes.shape({
+    cols: PropTypes.number,
+    rows: PropTypes.number,
   }),
-  gridItems: React.PropTypes.array,
+  gridItems: PropTypes.array,
 };
 
 const styles = StyleSheet.create({
@@ -54,35 +57,29 @@ function getStyleForLayoutPosition(layoutPosition) {
   };
 }
 
+function createDataSourcesFromData(data, nCols) {
+  const rows = splitIntoPages(data, nCols);
+  const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+
+  return rows.map((row) => ds.cloneWithRows(row));
+}
+
 export default class ShortcutsGrid extends Component {
   constructor(props) {
     super(props);
-    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-
-    const gridItems = this.props.gridItems;
-    const nCols = this.props.dimensions.cols;
-    const rows = splitIntoPages(gridItems, nCols);
-
-    this.state = {
-      dataSources: rows.map((row) => ds.cloneWithRows(row)),
-      dimensions: this.props.dimensions,
-      style: getStyleForLayoutPosition(this.props.layoutPosition),
-    };
-
-    if (this.state.dimensions.cols === 1) {
-      this.state.style.row.flexDirection = 'column';
-    }
-
     this.renderRow = this.renderRow.bind(this);
+    this.renderListItem = this.renderListItem.bind(this);
   }
 
   renderListItem(data) {
-    return <Shortcut shortcutData={data} />;
+    return <Shortcut shortcutData={data} buttonConfig={this.props.buttonConfig} />;
   }
 
   renderRow(dataSource, key) {
+    const layoutStyle = getStyleForLayoutPosition(this.props.layoutPosition);
+
     return (
-      <ListView contentContainerStyle={[styles.row, this.state.style.row]}
+      <ListView contentContainerStyle={[styles.row, layoutStyle.row]}
         dataSource={dataSource}
         renderRow={this.renderListItem}
         key={key}
@@ -91,9 +88,13 @@ export default class ShortcutsGrid extends Component {
   }
 
   render() {
+    const { gridItems, dimensions, layoutPosition } = this.props;
+    const dataSources = createDataSourcesFromData(gridItems, dimensions.cols);
+    const layoutStyle = getStyleForLayoutPosition(layoutPosition);
+
     return (
-      <View style={[styles.container, this.state.style.container]}>
-        {this.state.dataSources.map(this.renderRow)}
+      <View style={[styles.container, layoutStyle.container]}>
+        {dataSources.map(this.renderRow)}
       </View>
     );
   }
