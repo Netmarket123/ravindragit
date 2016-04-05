@@ -27,7 +27,7 @@ export function configurationReducer(state = {}, action) {
  * @param defaultConfiguration {Object} configuration provided by shoutem.application
  */
 export default function configurationReducerCreator(defaultConfiguration = {}) {
-  const denormalizer = new ObjectDenormalizer(defaultConfiguration).getDenormalizedData();
+  const denormalizer = new ObjectDenormalizer(defaultConfiguration);
   return function reducer(state = denormalizer.getDenormalizedData(), action) {
     return configurationReducer(state, action);
   };
