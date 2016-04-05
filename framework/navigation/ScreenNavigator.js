@@ -49,7 +49,7 @@ export class ScreenNavigator extends Component {
       return;
     }
 
-    // set initial route if this is first executed action with route
+    // Set initial route if this is first executed action with route
     if (!this.initialRoute && nextProps.action.route) {
       this.initialRoute = nextProps.action.route;
     } else {
@@ -83,10 +83,9 @@ export class ScreenNavigator extends Component {
    * action is performed, to sync the redux state
    * with the components state.
    * @param action The navigation action to perform.
-     */
+   */
   performNavigationAction(action) {
     const navigator = this.navigator;
-    const { name } = this.props;
     switch (action.type) {
       case NAVIGATE_TO: {
         navigator.push(action.route);
@@ -106,6 +105,7 @@ export class ScreenNavigator extends Component {
 
     // We should end up here only if we successfully performed
     // a navigation action.
+    const { name } = this.props;
     this.props.navigationActionPerformed(action, navigator.getCurrentRoutes(), name);
   }
 

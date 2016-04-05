@@ -313,7 +313,9 @@ export default class AppBuilder {
 
     appContext.screens = getApplicationScreens(appContext);
     assertScreensExist(appContext.screens);
-    assertInitialRouteExists(appContext.initialRoute, appContext.screens);
+    if (Object.keys(appContext.initialRoute).length) {
+      assertInitialRouteExists(appContext.initialRoute, appContext.screens);
+    }
 
     appContext.store = createApplicationStore(appContext);
     return createApplication(appContext);
