@@ -1,5 +1,4 @@
 import configuration from './configuration';
-import oldConfiguration from './oldconfiguration';
 
 import { createExecuteShortcutMiddleware } from './middleware';
 
@@ -41,11 +40,15 @@ function appWillMount(app) {
   });
 }
 
-function appDidMount(app) {
+function openInitialScreen(app) {
   const store = app.getStore();
   const configurationFromState = store.getState()['shoutem.application'].configuration;
   const firstShortcut = getFirstShortcut(configurationFromState);
   app.getStore().dispatch(executeShortcut(firstShortcut));
+}
+
+function appDidMount(app) {
+  openInitialScreen(app);
 }
 
 
@@ -55,7 +58,6 @@ const middleware = [
 
 export {
   configuration,
-  oldConfiguration,
   actions,
   reducer,
   middleware,
