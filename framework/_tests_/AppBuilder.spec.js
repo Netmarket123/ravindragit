@@ -21,7 +21,7 @@ class Screen extends Component {
   }
 }
 
-class NavBar extends Component {
+class NavBar extends Component { // eslint-disable-line react/no-multi-comp
   render() {
     return <Text>Nav Bar</Text>;
   }
