@@ -125,11 +125,11 @@ export class ScreenNavigator extends Component {
     // Navigation bar should attach itself to the
     // navigation bar manager.
     let navigationBarContainer;
-    if (this.props.navigationBarComponent) {
+    if (this.props.renderNavigationBar) {
       navigationBarContainer = (
         <NavigationBarContainer
           manager={this.navBarManager}
-          navigationBarComponent={this.props.navigationBarComponent}
+          navigationBarComponent={this.props.renderNavigationBar}
         />
       );
     }
@@ -154,7 +154,7 @@ export class ScreenNavigator extends Component {
         initialRoute={this.initialRoute}
         configureScene={this.configureScene}
         renderScene={this.renderScene}
-        navigationBar={this.renderNavigationBar(navigator)}
+        navigationBar={this.renderNavigationBar()}
         onWillFocus={this.beforeRouteChange}
       />
     ) : null;
@@ -186,10 +186,10 @@ ScreenNavigator.propTypes = {
   navigationActionPerformed: React.PropTypes.func.isRequired,
 
   /**
-   * React component that will be used for navigation bar,
+   * Function that takes props and render React Component that is used as navigation bar
    * if not set, it will inherit navigation bar of parent navigator
    */
-  navigationBarComponent: React.PropTypes.func,
+  renderNavigationBar: React.PropTypes.func,
 };
 
 ScreenNavigator.contextTypes = {

@@ -19,18 +19,17 @@ export default class NavigationBarContainer extends Component {
   }
 
   render() {
-    const NavigationBar = this.props.navigationBarComponent;
     // navigationBar could take advantage over this to show back button
     const hasHistory = this.props.manager.routeStates.size > 1;
     // send only props that are set by new screen
     const navBarProps = _.pick(this.state, Object.keys(this.newState));
     return (
-      <NavigationBar {...navBarProps} hasHistory={hasHistory} />
+      this.props.renderNavigationBar({ ...navBarProps, hasHistory })
     );
   }
 }
 
 NavigationBarContainer.propTypes = {
   manager: React.PropTypes.object.isRequired,
-  navigationBarComponent: React.PropTypes.func,
+  renderNavigationBar: React.PropTypes.func,
 };
