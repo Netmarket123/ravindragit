@@ -2,5 +2,8 @@
   "name": "shoutem.application",
   "version": "0.0.1",
   "private": true,
-  "main": "index.js"
+  "main": "index.js",
+  "dependencies": {
+    "denormalizer": "git+ssh://git@bitbucket.com/fiveminutes/denormalizer.git#develop"
+  }
 }

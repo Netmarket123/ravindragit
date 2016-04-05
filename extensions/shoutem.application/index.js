@@ -1,5 +1,4 @@
 import configuration from './configuration';
-import oldConfiguration from './oldconfiguration';
 
 import { createExecuteShortcutMiddleware } from './middleware';
 
@@ -55,7 +54,6 @@ const middleware = [
 
 export {
   configuration,
-  oldConfiguration,
   actions,
   reducer,
   middleware,
