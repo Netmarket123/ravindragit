@@ -34,7 +34,7 @@ export class ScreenNavigator extends Component {
     this.setNavigationBarState = this.setNavigationBarState.bind(this);
 
     this.initialRoute = props.initialRoute;
-    this.navBarManager = props.navigationBarComponent ? new NavigationBarStateManager()
+    this.navBarManager = props.renderNavigationBar ? new NavigationBarStateManager()
       : this.context.parentNavigator.navBarManager;
   }
 
