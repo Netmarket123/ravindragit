@@ -1,6 +1,5 @@
 import GannettListScreen from './screens/GanetListScreen';
 import GannettDetailsScreen from './screens/GannettDetailsScreen';
-import gannettItems from './mocks/ganetItems';
 import customTheme from './mocks/theme';
 import { jsonApiMiddleware, storage, collection } from 'redux-json-api';
 import { apiMiddleware } from 'redux-api-middleware';
