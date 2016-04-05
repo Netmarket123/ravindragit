@@ -34,7 +34,7 @@ class ExampleScreen extends Component {
     super(props);
 
     props.setNavBarProps({
-      centerComponent: <Text>{this.props.message}</Text>,
+      centerComponent: <Text>{props.message}</Text>,
     });
   }
 
@@ -47,6 +47,7 @@ class ExampleScreen extends Component {
         modal,
       },
       action: 'shoutem.test.openExampleScreen',
+      children: [],
     };
 
     dispatch(executeShortcut(shortcut));
@@ -63,7 +64,7 @@ class ExampleScreen extends Component {
     /* eslint react/jsx-no-bind: 0 */
     return (
       <View style={styles.content}>
-        <Text>{this.props.configuration.application.name}</Text>
+        <Text>{this.props.configuration.name}</Text>
         <Text>{this.props.message}</Text>
         <TouchableOpacity
           style={styles.button}

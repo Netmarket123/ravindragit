@@ -25,7 +25,7 @@ class AppBuild {
   }
 
   getConfigurationUrl() {
-    // TODO(Ivan): change this with /apps/1/assets/app/configuration when api will be available
+    // TODO(Ivan): change this with /apps/1/configuration when api will be available
     return '';
   }
 

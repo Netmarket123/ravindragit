@@ -80,8 +80,6 @@ function createApplication(appContext) {
       const content = this.props.children || (
         <ScreenNavigator
           name={ROOT_NAVIGATOR_NAME}
-          initialRoute={appContext.initialRoute}
-          hasOwnNavigationBar
           navigationBarComponent={appContext.navigationBarComponent}
         />
       );
