@@ -6,11 +6,11 @@
       "name": "Restaurants App"
     },
     "relationships": {
-      "theme": {
+      "themes": {
         "data": [
           {
             "type": "shoutem.core.theme",
-            "id": "shoutem.theme"
+            "id": "shoutem.theme.default"
           }
         ]
       },
@@ -69,10 +69,11 @@
     },
     {
       "type": "shoutem.core.theme",
-      "id": "2",
+      "id": "shoutem.theme.default",
       "attributes": {
         "variables": {
-         "testVariable": "red"
+         "testColor": "red",
+         "ganetColor": "961a2d"
         }
       }
     },
