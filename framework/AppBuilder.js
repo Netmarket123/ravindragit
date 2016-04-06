@@ -90,15 +90,11 @@ function createApplication(appContext) {
 
     render() {
       const content = this.props.children || (
-          <ScreenNavigator
-            name={ROOT_NAVIGATOR_NAME}
-            initialRoute={appContext.initialRoute}
-            hasOwnNavigationBar
-            navigationBarComponent={appContext.navigationBarComponent}
-          />
-        );
-
-      // themeVariables are passed with connect to StyleProvider
+        <ScreenNavigator
+          name={ROOT_NAVIGATOR_NAME}
+          navigationBarComponent={appContext.navigationBarComponent}
+        />
+      );
       return (
         <Provider store={appContext.store}>
           <ConnectedStyleProvider themeInit={appContext.themeInit}>
@@ -350,7 +346,9 @@ export default class AppBuilder {
 
     appContext.screens = getApplicationScreens(appContext);
     assertScreensExist(appContext.screens);
-    assertInitialRouteExists(appContext.initialRoute, appContext.screens);
+    if (Object.keys(appContext.initialRoute).length) {
+      assertInitialRouteExists(appContext.initialRoute, appContext.screens);
+    }
 
     assertThemeInitExist(appContext.themeInit);
 

@@ -1,12 +1,16 @@
 import configuration from './configuration';
+
 import { createExecuteShortcutMiddleware } from './middleware';
+
 import { combineReducers } from 'redux';
+
 import configurationReducerCreator, {
   setConfiguration,
   updateConfiguration,
   updateConfigurationProperty,
   executeShortcut,
 } from './actions';
+import { getFirstShortcut } from './getFirstShortcut';
 
 const actions = {
   setConfiguration,
@@ -36,6 +40,18 @@ function appWillMount(app) {
   });
 }
 
+function openInitialScreen(app) {
+  const store = app.getStore();
+  const configurationFromState = store.getState()['shoutem.application'].configuration;
+  const firstShortcut = getFirstShortcut(configurationFromState);
+  app.getStore().dispatch(executeShortcut(firstShortcut));
+}
+
+function appDidMount(app) {
+  openInitialScreen(app);
+}
+
+
 const middleware = [
   createExecuteShortcutMiddleware(appActions),
 ];
@@ -46,4 +62,5 @@ export {
   reducer,
   middleware,
   appWillMount,
+  appDidMount,
 };

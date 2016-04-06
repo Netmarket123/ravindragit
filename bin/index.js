@@ -14,13 +14,6 @@ import extensions from './extensions.js';
 
 const App = new AppBuilder()
   .setExtensions(extensions)
-  .setInitialRoute({
-    screen: 'shoutem.test.initialScreen',
-    props: {
-      message: 'This is initial screen',
-      items: mockedItems,
-    },
-  })
   .setNavigationBarComponent(NavigationBar)
   .setThemeInit(themeInit)
   .build();
