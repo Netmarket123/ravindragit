@@ -7,7 +7,8 @@ import React, {
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { find } from 'redux-json-api';
-import connectStyle from 'shoutem/theme/StyleConnector';
+
+import { connectStyle } from 'shoutem/theme';
 import { LargeGridItem, MediumListItem } from 'shoutem.ui';
 import { navigateTo } from 'shoutem/navigation';
 
@@ -20,6 +21,13 @@ function formatDate(dateString) {
 }
 
 class GannettListScreen extends React.Component {
+  static propTypes = {
+    items: React.PropTypes.array,
+    style: React.PropTypes.object,
+    featureFirst: React.PropTypes.bool,
+    dispatch: React.PropTypes.func,
+  };
+
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -86,15 +94,6 @@ class GannettListScreen extends React.Component {
     );
   }
 }
-
-GannettListScreen.propTypes = {
-  setNavBarProps: React.PropTypes.func,
-  getGannetNews: React.PropTypes.func,
-  navigateToRoute: React.PropTypes.func,
-  news: React.PropTypes.array,
-  style: React.PropTypes.object,
-  featureFirst: React.PropTypes.bool,
-};
 
 const style = {
   screen: {},

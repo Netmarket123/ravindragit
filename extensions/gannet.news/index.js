@@ -14,7 +14,6 @@ const reducer = combineReducers({
 export {
   GannettListScreen,
   GannettDetailsScreen,
-  gannettItems as mockedItems,
   customTheme as mockedTheme,
   reducer,
 };

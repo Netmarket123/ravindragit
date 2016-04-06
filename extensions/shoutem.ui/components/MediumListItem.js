@@ -5,10 +5,34 @@ import React, {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import connectStyle from 'shoutem/theme/StyleConnector';
+import { connectStyle } from 'shoutem/theme';
 import Button from './Button';
 
+/**
+ * Used to show single list item.
+ * Contains description, image, leftExtra, rightExtra, extraSeparator & button.
+ * Available properties:
+ *  - id: Number
+ *  - description: String
+ *  - leftExtra: String
+ *  - rightExtra: String
+ *  - image: Image
+ *  - extrasSeparatorImage: Image
+ *  - buttonIcon: Image
+ */
 class MediumListItem extends Component {
+  static propTypes = {
+    style: React.PropTypes.object,
+    id: React.PropTypes.number,
+    description: React.PropTypes.string,
+    leftExtra: React.PropTypes.string,
+    rightExtra: React.PropTypes.string,
+    image: React.PropTypes.any,
+    extrasSeparatorImage: React.PropTypes.any,
+    buttonIcon: React.PropTypes.any,
+    onPress: React.PropTypes.func,
+  };
+
   render() {
     const {
       style,
@@ -50,17 +74,6 @@ class MediumListItem extends Component {
     );
   }
 }
-
-MediumListItem.propTypes = {
-  style: React.PropTypes.object,
-  id: React.PropTypes.number,
-  description: React.PropTypes.string,
-  leftExtra: React.PropTypes.string,
-  rightExtra: React.PropTypes.string,
-  image: React.PropTypes.any,
-  extrasSeparatorImage: React.PropTypes.any,
-  buttonIcon: React.PropTypes.any,
-};
 
 const style = {
   container: {
@@ -108,7 +121,7 @@ const style = {
     fontSize: 15,
   },
   mediumListItemButton: {
-    buttonContainer: {
+    button: {
       alignSelf: 'stretch',
     },
   },

@@ -2,12 +2,11 @@ import { INCLUDE } from 'shoutem/theme';
 
 export default (variables) => ({
   baseFont: {
-    color: '#454545',
+    color: '#fff',
   },
   h1: {
-    fontSize: 20,
-    color: '#fff',
-    lineHeight: 20,
+    [INCLUDE]: ['baseFont'],
+    fontSize: 25,
   },
   list: {
     position: 'relative',
@@ -18,10 +17,15 @@ export default (variables) => ({
     alignItems: 'stretch',
     flex: 1,
   },
+  'shoutem.test.ExampleScreen': {
+    button: {
+      backgroundColor: variables.testColor,
+    },
+  },
   'dev.ext.LargeGridItem': {
     h1: {
     },
-    button: {
+    bottomButton: {
       buttonText: {
       },
     },
@@ -66,9 +70,6 @@ export default (variables) => ({
     },
   },
   'dev.ext.GannettListScreen': {
-    screen: {
-      marginTop: 70,
-    },
     featuredItem: {
       container: {
         padding: 30,
@@ -81,6 +82,7 @@ export default (variables) => ({
     items: {
       rightExtra: {
         fontSize: 12,
+        textDecorationLine: 'line-through',
         color: '#888',
       },
       itemDescription: {
@@ -91,24 +93,6 @@ export default (variables) => ({
         opacity: 0.8,
         marginTop: 3,
         marginHorizontal: 10,
-      },
-    },
-  },
-  'dev.ext.GannettDetailsScreen': {
-    title: {
-      fontSize: 30,
-      lineHeight: 30,
-      color: '#fff',
-    },
-  },
-  'shoutem.ui.NavigationBar': {
-    container: {
-      backgroundColor: variables.ganetColor,
-    },
-    backButton: {
-      buttonIcon: {
-        color: 'white',
-        fontSize: 24,
       },
     },
   },

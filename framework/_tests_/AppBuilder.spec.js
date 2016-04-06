@@ -7,8 +7,11 @@ import { connect } from 'react-redux';
 import { assert } from 'chai';
 import sinon from 'sinon';
 import { shallow, mount } from 'enzyme';
+import StyleProvider from '../theme/StyleProvider';
 
 import AppBuilder from '../AppBuilder.js';
+
+import themeInit from './mocks/ThemeTest';
 
 /**
  * A simple component that will serve as a screen
@@ -18,6 +21,12 @@ class Screen extends Component {
   render() {
     const message = this.props.message || 'This is a screen!';
     return (<Text>{message}</Text>);
+  }
+}
+
+class NavBar extends Component { // eslint-disable-line react/no-multi-comp
+  render() {
+    return <Text>Nav Bar</Text>;
   }
 }
 
@@ -61,8 +70,9 @@ function getDefaultInitialRoute() {
 
 function getDefaultBuilder() {
   return new AppBuilder()
+    .setThemeInit(themeInit)
     .setExtensions(getDefaultExtensions())
-    .setInitialRoute(getDefaultInitialRoute());
+    .setNavigationBarComponent(NavBar);
 }
 
 function buildDefaultApp() {
@@ -181,14 +191,6 @@ describe('AppBuilder', () => {
   });
 
   describe('(routing)', () => {
-    it('does not create an app without an initial route', () => {
-      const builder = getDefaultBuilder().setInitialRoute({});
-
-      assert.throws(builder.build.bind(builder),
-        'The app without an initial route cannot be created.'
-      );
-    });
-
     it('does not create an app with an invalid initial route', () => {
       const builder = getDefaultBuilder()
         .setInitialRoute({
@@ -564,6 +566,49 @@ describe('AppBuilder', () => {
       assert.isTrue(appWillMountSpy1.called, 'addWillMount for extension 1 not called');
       assert.isTrue(appDidMountSpy1.called, 'addDidMount for extension 1 not called');
       assert.isTrue(appDidMountSpy2.called, 'addDidMount for extension 2 not called');
+    });
+  });
+
+  describe('(theme)', () => {
+    it('throws error if themeInit not set', () => {
+      assert.throws(() => {
+        const App = new AppBuilder()
+          .setExtensions(getDefaultExtensions())
+          .setInitialRoute(getDefaultInitialRoute())
+          .setExtensions(getDefaultExtensions())
+          .build();
+        mount(<App />);
+      }, 'The app without an theme initial function cannot be created');
+    });
+    it('provides theme variables to StyleProvider', () => {
+      const configurationMock = {
+        configuration: {
+          theme: {
+            variables: {
+              test: 5,
+            },
+          },
+        },
+      };
+      const extensions = {
+        'shoutem.application': {
+          reducer: (state = configurationMock) => state,
+          screens: {
+            default: Screen,
+          },
+        },
+      };
+      const App = getDefaultBuilder()
+        .setExtensions(extensions)
+        .setInitialRoute({
+          screen: 'shoutem.application.default',
+        })
+        .build();
+      const wrapper = mount(<App />);
+      assert.deepEqual(
+        wrapper.find(StyleProvider).nodes[0].props.themeVariables,
+        configurationMock.configuration.theme.variables
+      );
     });
   });
 });

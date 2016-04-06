@@ -3,19 +3,24 @@ import React, {
   View,
   Text,
   Component,
-  Image,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import connectStyle from 'shoutem/theme/StyleConnector';
+import { connectStyle } from 'shoutem/theme';
 
 export default class Button extends Component {
+  static propTypes = {
+    icon: React.PropTypes.any,
+    text: React.PropTypes.string,
+    style: React.PropTypes.object,
+  };
+
   render() {
     const style = this.props.style;
     let buttonImage = null;
     if (this.props.icon) {
-      buttonImage = <Icon name={this.props.icon} style={style.buttonIcon} />;
+      buttonImage = <Icon name={this.props.icon} style={style.buttonIcon}/>;
     }
     const buttonText = this.props.text ?
       <Text style={style.buttonText}>{this.props.text}</Text> : null;
@@ -23,7 +28,11 @@ export default class Button extends Component {
       return null;
     }
     return (
-      <TouchableOpacity style={style.buttonContainer} underlayColor={'transparent'} onPress={this.props.onPress}>
+      <TouchableOpacity
+        style={style.buttonContainer}
+        underlayColor={style.buttonActive.backgroundColor}
+        onPress={this.props.onPress}
+      >
         <View style={style.button}>
           {buttonImage}
           {buttonText}
@@ -33,12 +42,6 @@ export default class Button extends Component {
   }
 }
 
-Button.propTypes = {
-  icon: React.PropTypes.any,
-  text: React.PropTypes.string,
-  style: React.PropTypes.object,
-};
-
 const style = {
   buttonContainer: {
     alignItems: 'center',
@@ -47,6 +50,9 @@ const style = {
   button: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  buttonActive: {
+    backgroundColor: '#ccc',
   },
   buttonIcon: {},
   buttonText: {},

@@ -5,14 +5,44 @@ import React, {
 } from 'react-native';
 import InfoFields from './InfoFields';
 import Button from './Button';
-import connectStyle from 'shoutem/theme/StyleConnector';
-import { INCLUDE } from 'shoutem/theme/StyleIncluder';
+import { connectStyle, INCLUDE } from 'shoutem/theme';
 
+/**
+ * LargeGridItem is single list item.
+ * Used to show single item in large grid box.
+ * Contains, headline, topLabel, bottomLabel, infoFields, bottomButton and backgroundImage.
+ * Available properties:
+ *  - headline: String
+ *  - bottomButtonText: String
+ *  - bottomButtonIcon: Image
+ *  - topLabelText: String
+ *  - bottomLabelText: String
+ *  - backgroundImage: Image
+ *  - infoSeparator: Image
+ *  - infoFields: List<String>
+ */
 class LargeGridItem extends React.Component {
+  static propTypes = {
+    bottomButtonText: React.PropTypes.any,
+    bottomButtonIcon: React.PropTypes.string,
+    topLabel: React.PropTypes.any,
+    bottomLabel: React.PropTypes.string,
+    backgroundImage: React.PropTypes.any,
+    infoSeparator: React.PropTypes.any,
+    style: React.PropTypes.object,
+    infoFields: React.PropTypes.array,
+    headline: React.PropTypes.string,
+  };
+
   render() {
-    const { style, topLabel, bottomLabel } = this.props;
-    const topLabelComp = topLabel ? <Text style={style.topLabel}>{topLabel}</Text> : null;
-    const botLabelComp = bottomLabel ? <Text style={style.bottomLabel}>{bottomLabel}</Text> : null;
+    const { style, topLabelText, bottomLabelText } = this.props;
+
+    const topLabelComp = topLabelText ?
+      <Text style={style.topLabel}>{topLabelText}</Text> : null;
+
+    const bottomLabelComp = bottomLabelText ?
+      <Text style={style.bottomLabel}>{bottomLabelText}</Text> : null;
+
     return (
       <View style={style.container}>
         <Image
@@ -27,7 +57,7 @@ class LargeGridItem extends React.Component {
               infoSeparator={this.props.infoSeparator}
               style={style.infoFields}
             />
-            {botLabelComp}
+            {bottomLabelComp}
             <Button
               text={this.props.bottomButtonText}
               icon={this.props.bottomButtonIcon}
@@ -39,18 +69,6 @@ class LargeGridItem extends React.Component {
     );
   }
 }
-
-LargeGridItem.propTypes = {
-  bottomButtonText: React.PropTypes.any,
-  bottomButtonIcon: React.PropTypes.string,
-  topLabel: React.PropTypes.any,
-  bottomLabel: React.PropTypes.string,
-  backgroundImage: React.PropTypes.any,
-  infoSeparator: React.PropTypes.any,
-  style: React.PropTypes.object,
-  infoFields: React.PropTypes.array,
-  headline: React.PropTypes.string,
-};
 
 const style = {
   backgroundImage: {

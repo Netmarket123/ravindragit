@@ -7,7 +7,7 @@ import React, {
 
 import Button from './Button';
 import { connect } from 'react-redux';
-import connectStyle from 'shoutem/theme/StyleConnector';
+import { connectStyle } from 'shoutem/theme';
 
 import {
   navigateBack,
@@ -33,7 +33,9 @@ class NavigationBar extends React.Component {
       rightComponent,
       } = this.props;
 
-    const backButton = (<Button icon={'arrow-back'} onPress={this.navigateBack} style={style.backButton} />);
+    const backButton = (
+      <Button icon={'arrow-back'} onPress={this.navigateBack} style={style.backButton} />
+    );
     const leftComponent = this.props.hasHistory && !this.props.leftComponent ? backButton
       : this.props.leftComponent;
 

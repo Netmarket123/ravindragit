@@ -6,6 +6,7 @@ import React, {
   TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
+import { connectStyle } from 'shoutem/theme';
 
 import {
   navigateBack,
@@ -13,7 +14,7 @@ import {
 
 import { actions } from 'shoutem.application';
 
-const styles = StyleSheet.create({
+const style = {
   content: {
     flex: 1,
     flexDirection: 'column',
@@ -27,14 +28,20 @@ const styles = StyleSheet.create({
     marginTop: 5,
     padding: 15,
   },
-});
+};
 
 class ExampleScreen extends Component {
+  static propTypes = {
+    message: React.PropTypes.string,
+    dispatch: React.PropTypes.func,
+    setNavBarProps: React.PropTypes.func,
+  };
+
   constructor(props) {
     super(props);
 
     props.setNavBarProps({
-      centerComponent: <Text>{this.props.message}</Text>,
+      centerComponent: <Text>{props.message}</Text>,
     });
   }
 
@@ -47,6 +54,7 @@ class ExampleScreen extends Component {
         modal,
       },
       action: 'shoutem.test.openExampleScreen',
+      children: [],
     };
 
     dispatch(executeShortcut(shortcut));
@@ -60,37 +68,39 @@ class ExampleScreen extends Component {
   render() {
     console.log('Screen render');
 
+    const style = this.props.style;
+
     /* eslint react/jsx-no-bind: 0 */
     return (
-      <View style={styles.content}>
-        <Text>{this.props.configuration.application.name}</Text>
+      <View style={style.content}>
+        <Text>{this.props.configuration.name}</Text>
         <Text>{this.props.message}</Text>
         <TouchableOpacity
-          style={styles.button}
+          style={style.button}
           onPress={() => this.navigateBack()}
         >
           <Text>Back</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.button}
+          style={style.button}
           onPress={() => this.navigateToScreen(1)}
         >
           <Text>Screen 1</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.button}
+          style={style.button}
           onPress={() => this.navigateToScreen(2)}
         >
           <Text>Screen 2</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.button}
+          style={style.button}
           onPress={() => this.navigateToScreen(3, true)}
         >
           <Text>Screen 3</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.button}
+          style={style.button}
           onPress={() => this.props.setNavBarProps({
             centerComponent: <Text>Plavi ekran iliti screen</Text>,
             rightComponent: <Text>Desno</Text>,
@@ -105,15 +115,13 @@ class ExampleScreen extends Component {
     );
   }
 }
-ExampleScreen.propTypes = {
-  message: React.PropTypes.string,
-  dispatch: React.PropTypes.func,
-  setNavBarProps: React.PropTypes.func,
-  configuration: React.PropTypes.object,
-};
+
 function mapStateToProps(state) {
   return {
     configuration: state['shoutem.application'].configuration,
   };
 }
-export default connect(mapStateToProps)(ExampleScreen);
+
+export default connect(mapStateToProps)(
+  connectStyle('shoutem.test.ExampleScreen', style)(ExampleScreen)
+);
