@@ -72,7 +72,7 @@ class ExampleScreen extends Component {
 
     /* eslint react/jsx-no-bind: 0 */
     return (
-      <View style={styles.content}>
+      <View style={style.content}>
         <Text>{this.props.configuration.name}</Text>
         <Text>{this.props.message}</Text>
         <TouchableOpacity
