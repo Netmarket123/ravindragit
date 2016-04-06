@@ -4,6 +4,6 @@
   "private": true,
   "main": "index.js",
   "dependencies": {
-    "denormalizer": "git+ssh://git@bitbucket.com/fiveminutes/denormalizer.git#develop"
+    "denormalizer": "git+ssh://git@bitbucket.com/fiveminutes/denormalizer.git#v1.0.0"
   }
 }
