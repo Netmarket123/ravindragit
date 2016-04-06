@@ -10,6 +10,7 @@ import {
   NAVIGATE_BACK,
 
   navigationActionPerformed,
+  navigateBack,
 } from './actions';
 
 import NavigationBarStateManager from './NavigationBarStateManager';
@@ -29,7 +30,7 @@ export class ScreenNavigator extends Component {
     this.renderScene = this.renderScene.bind(this);
     this.configureScene = this.configureScene.bind(this);
     this.renderNavigationBar = this.renderNavigationBar.bind(this);
-    this.beforeRouteChange = this.beforeRouteChange.bind(this);
+    this.onRouteChange = this.onRouteChange.bind(this);
     this.captureNavigatorRef = this.captureNavigatorRef.bind(this);
     this.setNavigationBarState = this.setNavigationBarState.bind(this);
 
@@ -109,7 +110,7 @@ export class ScreenNavigator extends Component {
     this.props.navigationActionPerformed(action, navigator.getCurrentRoutes(), name);
   }
 
-  beforeRouteChange(route) {
+  onRouteChange(route) {
     this.navBarManager.onRouteChange(route);
   }
 
@@ -122,14 +123,17 @@ export class ScreenNavigator extends Component {
   }
 
   renderNavigationBar() {
-    // Navigation bar should attach itself to the
-    // navigation bar manager.
+    // Navigation bar container should attach itself to the
+    // navigation bar manager and call renderNavigationBar with
+    // props passed by current screen when navigation bar manager
+    // changes its state
     let navigationBarContainer;
     if (this.props.renderNavigationBar) {
       navigationBarContainer = (
         <NavigationBarContainer
           manager={this.navBarManager}
-          navigationBarComponent={this.props.renderNavigationBar}
+          renderNavigationBar={this.props.renderNavigationBar}
+          navigateBack={this.props.navigateBack}
         />
       );
     }
@@ -155,7 +159,7 @@ export class ScreenNavigator extends Component {
         configureScene={this.configureScene}
         renderScene={this.renderScene}
         navigationBar={this.renderNavigationBar()}
-        onWillFocus={this.beforeRouteChange}
+        onWillFocus={this.onRouteChange}
       />
     ) : null;
 
@@ -186,6 +190,12 @@ ScreenNavigator.propTypes = {
   navigationActionPerformed: React.PropTypes.func.isRequired,
 
   /**
+   * The action that will be passed to NavigationBar
+   * to be used for navigate back
+   */
+  navigateBack: React.PropTypes.func.isRequired,
+
+  /**
    * Function that takes props and render React Component that is used as navigation bar
    * if not set, it will inherit navigation bar of parent navigator
    */
@@ -197,7 +207,7 @@ ScreenNavigator.contextTypes = {
 };
 
 ScreenNavigator.childContextTypes = {
-  parentNavigator: React.PropTypes.object,
+  parentNavigator: React.PropTypes.instanceOf(ScreenNavigator),
 };
 
 // Connect to the redux state
@@ -211,7 +221,10 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ navigationActionPerformed }, dispatch);
+  return bindActionCreators({
+    navigationActionPerformed,
+    navigateBack,
+  }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScreenNavigator);
