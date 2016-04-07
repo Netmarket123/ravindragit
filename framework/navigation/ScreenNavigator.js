@@ -64,6 +64,10 @@ export class ScreenNavigator extends Component {
     return !!nextProps.action;
   }
 
+  onRouteChange(route) {
+    this.navBarManager.onRouteChange(route);
+  }
+
   getCurrentRoute() {
     const navigator = this.navigator;
     if (navigator) {
@@ -108,10 +112,6 @@ export class ScreenNavigator extends Component {
     // a navigation action.
     const { name } = this.props;
     this.props.navigationActionPerformed(action, navigator.getCurrentRoutes(), name);
-  }
-
-  onRouteChange(route) {
-    this.navBarManager.onRouteChange(route);
   }
 
   captureNavigatorRef(navigator) {
