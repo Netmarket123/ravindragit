@@ -35,7 +35,7 @@ describe('NavigationBarStateManager', () => {
     });
   });
 
-  it('could delete route state', () => {
+  it('deletes route state', () => {
     const navBarManager = new NavigationBarStateManager();
     const route = { screenName: 'ExampleScreen', props: { a: 1, b: 2 } };
     const state = { a: 'state' };

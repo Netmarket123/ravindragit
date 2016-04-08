@@ -10,6 +10,7 @@ import {
   NAVIGATE_BACK,
 
   navigationActionPerformed,
+  navigateBack,
 } from './actions';
 
 import NavigationBarStateManager from './NavigationBarStateManager';
@@ -29,12 +30,12 @@ export class ScreenNavigator extends Component {
     this.renderScene = this.renderScene.bind(this);
     this.configureScene = this.configureScene.bind(this);
     this.renderNavigationBar = this.renderNavigationBar.bind(this);
-    this.beforeRouteChange = this.beforeRouteChange.bind(this);
+    this.onRouteChange = this.onRouteChange.bind(this);
     this.captureNavigatorRef = this.captureNavigatorRef.bind(this);
     this.setNavigationBarState = this.setNavigationBarState.bind(this);
 
     this.initialRoute = props.initialRoute;
-    this.navBarManager = props.navigationBarComponent ? new NavigationBarStateManager()
+    this.navBarManager = props.renderNavigationBar ? new NavigationBarStateManager()
       : this.context.parentNavigator.navBarManager;
   }
 
@@ -61,6 +62,10 @@ export class ScreenNavigator extends Component {
     // We should re-render only if there is a
     // pending navigation action available.
     return !!nextProps.action;
+  }
+
+  onRouteChange(route) {
+    this.navBarManager.onRouteChange(route);
   }
 
   getCurrentRoute() {
@@ -109,10 +114,6 @@ export class ScreenNavigator extends Component {
     this.props.navigationActionPerformed(action, navigator.getCurrentRoutes(), name);
   }
 
-  beforeRouteChange(route) {
-    this.navBarManager.onRouteChange(route);
-  }
-
   captureNavigatorRef(navigator) {
     this.navigator = navigator;
   }
@@ -122,14 +123,17 @@ export class ScreenNavigator extends Component {
   }
 
   renderNavigationBar() {
-    // Navigation bar should attach itself to the
-    // navigation bar manager.
+    // Navigation bar container should attach itself to the
+    // navigation bar manager and call renderNavigationBar with
+    // props passed by current screen when navigation bar manager
+    // changes its state
     let navigationBarContainer;
-    if (this.props.navigationBarComponent) {
+    if (this.props.renderNavigationBar) {
       navigationBarContainer = (
         <NavigationBarContainer
           manager={this.navBarManager}
-          navigationBarComponent={this.props.navigationBarComponent}
+          renderNavigationBar={this.props.renderNavigationBar}
+          navigateBack={this.props.navigateBack}
         />
       );
     }
@@ -154,8 +158,8 @@ export class ScreenNavigator extends Component {
         initialRoute={this.initialRoute}
         configureScene={this.configureScene}
         renderScene={this.renderScene}
-        navigationBar={this.renderNavigationBar(navigator)}
-        onWillFocus={this.beforeRouteChange}
+        navigationBar={this.renderNavigationBar()}
+        onWillFocus={this.onRouteChange}
       />
     ) : null;
 
@@ -186,10 +190,16 @@ ScreenNavigator.propTypes = {
   navigationActionPerformed: React.PropTypes.func.isRequired,
 
   /**
-   * React component that will be used for navigation bar,
+   * The action that will be passed to NavigationBar
+   * to be used for navigate back
+   */
+  navigateBack: React.PropTypes.func.isRequired,
+
+  /**
+   * Function that takes props and render React Component that is used as navigation bar
    * if not set, it will inherit navigation bar of parent navigator
    */
-  navigationBarComponent: React.PropTypes.func,
+  renderNavigationBar: React.PropTypes.func,
 };
 
 ScreenNavigator.contextTypes = {
@@ -197,7 +207,7 @@ ScreenNavigator.contextTypes = {
 };
 
 ScreenNavigator.childContextTypes = {
-  parentNavigator: React.PropTypes.object,
+  parentNavigator: React.PropTypes.instanceOf(ScreenNavigator),
 };
 
 // Connect to the redux state
@@ -211,7 +221,10 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ navigationActionPerformed }, dispatch);
+  return bindActionCreators({
+    navigationActionPerformed,
+    navigateBack,
+  }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScreenNavigator);

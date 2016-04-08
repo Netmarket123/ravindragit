@@ -5,25 +5,22 @@ import React, {
   TouchableOpacity,
 } from 'react-native';
 
-import Button from './Button';
-import { connect } from 'react-redux';
 import { connectStyle } from 'shoutem/theme';
-
-import {
-  navigateBack,
-} from 'shoutem/navigation';
-
 
 class NavigationBar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.navigateBack = this.navigateBack.bind(this);
+    this.renderBackButton = this.renderBackButton.bind(this);
   }
 
-  navigateBack() {
-    const { dispatch } = this.props;
-    dispatch(navigateBack());
+  renderBackButton() {
+    const { hasHistory, navigateBack } = this.props;
+    const backButton = hasHistory ? (<TouchableOpacity onPress={navigateBack}>
+      <Text>Back</Text>
+    </TouchableOpacity>) : null;
+
+    return backButton;
   }
 
   render() {
@@ -33,11 +30,7 @@ class NavigationBar extends React.Component {
       rightComponent,
       } = this.props;
 
-    const backButton = (
-      <Button icon={'arrow-back'} onPress={this.navigateBack} style={style.backButton} />
-    );
-    const leftComponent = this.props.hasHistory && !this.props.leftComponent ? backButton
-      : this.props.leftComponent;
+    const leftComponent = this.props.leftComponent || this.renderBackButton();
 
     return (
       <View style={style.container}>
@@ -59,7 +52,7 @@ NavigationBar.propTypes = {
   rightComponent: React.PropTypes.object,
   style: React.PropTypes.object,
   hasHistory: React.PropTypes.bool,
-  dispatch: React.PropTypes.func,
+  navigateBack: React.PropTypes.func,
 };
 
 const style = {
@@ -89,6 +82,4 @@ const style = {
   backButton: {},
 };
 
-export default connect()(
-  connectStyle('shoutem.ui.NavigationBar', style)(NavigationBar)
-);
+export default connectStyle('shoutem.ui.NavigationBar', style)(NavigationBar);

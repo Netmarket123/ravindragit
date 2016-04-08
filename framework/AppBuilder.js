@@ -92,7 +92,7 @@ function createApplication(appContext) {
       const content = this.props.children || (
         <ScreenNavigator
           name={ROOT_NAVIGATOR_NAME}
-          navigationBarComponent={appContext.navigationBarComponent}
+          renderNavigationBar={appContext.renderNavigationBar}
         />
       );
       return (
@@ -320,8 +320,8 @@ export default class AppBuilder {
     return this;
   }
 
-  setNavigationBarComponent(component) {
-    this[APP_CONTEXT].navigationBarComponent = component;
+  setRenderNavigationBar(renderFunction) {
+    this[APP_CONTEXT].renderNavigationBar = renderFunction;
     return this;
   }
 
