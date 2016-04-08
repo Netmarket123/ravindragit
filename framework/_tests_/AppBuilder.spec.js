@@ -579,7 +579,6 @@ describe('AppBuilder', () => {
         const App = new AppBuilder()
           .setExtensions(getDefaultExtensions())
           .setInitialRoute(getDefaultInitialRoute())
-          .setExtensions(getDefaultExtensions())
           .build();
         mount(<App />);
       }, 'The app without an theme initial function cannot be created');
@@ -587,11 +586,13 @@ describe('AppBuilder', () => {
     it('provides theme variables to StyleProvider', () => {
       const configurationMock = {
         configuration: {
-          theme: {
-            variables: {
-              test: 5,
+          themes: [
+            {
+              variables: {
+                test: 5,
+              },
             },
-          },
+          ],
         },
       };
       const extensions = {
@@ -611,7 +612,7 @@ describe('AppBuilder', () => {
       const wrapper = mount(<App />);
       assert.deepEqual(
         wrapper.find(StyleProvider).nodes[0].props.themeVariables,
-        configurationMock.configuration.theme.variables
+        configurationMock.configuration.themes[0].variables
       );
     });
   });
