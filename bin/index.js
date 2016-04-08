@@ -10,12 +10,6 @@ import extensions from './extensions.js';
 
 const App = new AppBuilder()
   .setExtensions(extensions)
-  .setInitialRoute({
-    screen: 'shoutem.test.initialScreen',
-    props: {
-      message: 'The initial screen.',
-    },
-  })
   .setNavigationBarComponent(NavigationBar)
   .build();
 

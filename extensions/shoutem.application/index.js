@@ -1,14 +1,32 @@
 import configuration from './configuration';
-import * as actions from './actions';
+
 import { createExecuteShortcutMiddleware } from './middleware';
-export {
-  configuration,
-  actions,
+
+import { combineReducers } from 'redux';
+
+import configurationReducerCreator, {
+  setConfiguration,
+  updateConfiguration,
+  updateConfigurationProperty,
+  executeShortcut,
+} from './actions';
+import { getFirstShortcut } from './getFirstShortcut';
+
+const actions = {
+  setConfiguration,
+  updateConfiguration,
+  updateConfigurationProperty,
+  executeShortcut,
 };
+
+// create reducer with wanted default configuration
+const reducer = combineReducers({
+  configuration: configurationReducerCreator(configuration),
+});
 
 const appActions = {};
 
-export function appWillMount(app) {
+function appWillMount(app) {
   const extensions = app.getExtensions();
   Object.keys(extensions).forEach(extensionName => {
     const extension = extensions[extensionName];
@@ -22,6 +40,27 @@ export function appWillMount(app) {
   });
 }
 
-export const middleware = [
+function openInitialScreen(app) {
+  const store = app.getStore();
+  const configurationFromState = store.getState()['shoutem.application'].configuration;
+  const firstShortcut = getFirstShortcut(configurationFromState);
+  app.getStore().dispatch(executeShortcut(firstShortcut));
+}
+
+function appDidMount(app) {
+  openInitialScreen(app);
+}
+
+
+const middleware = [
   createExecuteShortcutMiddleware(appActions),
 ];
+
+export {
+  configuration,
+  actions,
+  reducer,
+  middleware,
+  appWillMount,
+  appDidMount,
+};

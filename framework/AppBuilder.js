@@ -80,8 +80,6 @@ function createApplication(appContext) {
       const content = this.props.children || (
         <ScreenNavigator
           name={ROOT_NAVIGATOR_NAME}
-          initialRoute={appContext.initialRoute}
-          hasOwnNavigationBar
           navigationBarComponent={appContext.navigationBarComponent}
         />
       );
@@ -315,7 +313,9 @@ export default class AppBuilder {
 
     appContext.screens = getApplicationScreens(appContext);
     assertScreensExist(appContext.screens);
-    assertInitialRouteExists(appContext.initialRoute, appContext.screens);
+    if (Object.keys(appContext.initialRoute).length) {
+      assertInitialRouteExists(appContext.initialRoute, appContext.screens);
+    }
 
     appContext.store = createApplicationStore(appContext);
     return createApplication(appContext);

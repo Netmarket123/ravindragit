@@ -26,8 +26,6 @@ export class ScreenNavigator extends Component {
   constructor(props, context) {
     super(props, context);
 
-    console.log('Screen navigator constructor');
-
     this.renderScene = this.renderScene.bind(this);
     this.configureScene = this.configureScene.bind(this);
     this.renderNavigationBar = this.renderNavigationBar.bind(this);
@@ -35,7 +33,8 @@ export class ScreenNavigator extends Component {
     this.captureNavigatorRef = this.captureNavigatorRef.bind(this);
     this.setNavigationBarState = this.setNavigationBarState.bind(this);
 
-    this.navBarManager = props.hasOwnNavigationBar ? new NavigationBarStateManager()
+    this.initialRoute = props.initialRoute;
+    this.navBarManager = props.navigationBarComponent ? new NavigationBarStateManager()
       : this.context.parentNavigator.navBarManager;
   }
 
@@ -50,7 +49,12 @@ export class ScreenNavigator extends Component {
       return;
     }
 
-    this.performNavigationAction(nextProps.action);
+    // Set initial route if this is first executed action with route
+    if (!this.initialRoute && nextProps.action.route) {
+      this.initialRoute = nextProps.action.route;
+    } else {
+      this.performNavigationAction(nextProps.action);
+    }
   }
 
   shouldComponentUpdate(nextProps) {
@@ -79,7 +83,7 @@ export class ScreenNavigator extends Component {
    * action is performed, to sync the redux state
    * with the components state.
    * @param action The navigation action to perform.
-     */
+   */
   performNavigationAction(action) {
     const navigator = this.navigator;
     switch (action.type) {
@@ -101,7 +105,8 @@ export class ScreenNavigator extends Component {
 
     // We should end up here only if we successfully performed
     // a navigation action.
-    this.props.navigationActionPerformed(action, navigator.getCurrentRoutes(), this.props.name);
+    const { name } = this.props;
+    this.props.navigationActionPerformed(action, navigator.getCurrentRoutes(), name);
   }
 
   beforeRouteChange(route) {
@@ -120,7 +125,7 @@ export class ScreenNavigator extends Component {
     // Navigation bar should attach itself to the
     // navigation bar manager.
     let navigationBarContainer;
-    if (this.props.hasOwnNavigationBar) {
+    if (this.props.navigationBarComponent) {
       navigationBarContainer = (
         <NavigationBarContainer
           manager={this.navBarManager}
@@ -144,16 +149,17 @@ export class ScreenNavigator extends Component {
   }
 
   render() {
-    console.log('Screen navigator render');
-    return (
+    const navigatorComponent = this.initialRoute ? (
       <Navigator ref={this.captureNavigatorRef}
-        initialRoute={this.props.initialRoute}
+        initialRoute={this.initialRoute}
         configureScene={this.configureScene}
         renderScene={this.renderScene}
         navigationBar={this.renderNavigationBar(navigator)}
         onWillFocus={this.beforeRouteChange}
       />
-    );
+    ) : null;
+
+    return navigatorComponent;
   }
 }
 
@@ -171,7 +177,7 @@ ScreenNavigator.propTypes = {
     screen: React.PropTypes.string.isRequired,
     props: React.PropTypes.object,
     sceneConfig: React.PropTypes.object,
-  }).isRequired,
+  }),
 
   /**
    * The action that will be triggered after each
@@ -180,14 +186,8 @@ ScreenNavigator.propTypes = {
   navigationActionPerformed: React.PropTypes.func.isRequired,
 
   /**
-   * If set to true navigator will set its own instance of,
-   * NavigationBarManager, otherwise it will inherit
-   * one from parent navigator
-   */
-  hasOwnNavigationBar: React.PropTypes.bool,
-
-  /**
-   * React component that will be used for navigation bar
+   * React component that will be used for navigation bar,
+   * if not set, it will inherit navigation bar of parent navigator
    */
   navigationBarComponent: React.PropTypes.func,
 };
