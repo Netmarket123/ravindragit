@@ -26,7 +26,7 @@ function getLocalExtensions(workingDirectories) {
           if (packageStat && packageStat.isFile()) {
             const packageName = require(path.join('..', packageJson)).name;
             results.push({
-              name: packageName,
+              id: packageName,
               path: packagePath,
             });
           }
