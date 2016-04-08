@@ -62,6 +62,10 @@ function getDefaultExtensions() {
   };
 }
 
+function getDefaultRenderNavigationBar() {
+  return <NavBar />;
+}
+
 function getDefaultInitialRoute() {
   return {
     screen: 'default.default',
@@ -72,7 +76,7 @@ function getDefaultBuilder() {
   return new AppBuilder()
     .setThemeInit(themeInit)
     .setExtensions(getDefaultExtensions())
-    .setNavigationBarComponent(NavBar);
+    .setRenderNavigationBar(getDefaultRenderNavigationBar);
 }
 
 function buildDefaultApp() {
