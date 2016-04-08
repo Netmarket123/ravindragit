@@ -36,21 +36,20 @@ export default class NavigationBarStateManager {
   }
 
   triggerStateChangeListener(oldState, newState) {
-    console.log('triggerStateChange');
     const listener = this.stateChangeListener;
     if (!listener) {
       return;
     }
 
+    // we need to defer it until new screen is rendered.
     _.defer(() => {
-      console.log('triggered');
-      listener(Object.assign({}, oldState), Object.assign({}, newState));
+      listener(_.assign({}, oldState), _.assign({}, newState));
     });
   }
 
   setState(state) {
     const oldState = this.state;
-    const newState = Object.assign({}, state);
+    const newState = _.assign({}, state);
 
     this.state = newState;
     const route = this.currentRoute;

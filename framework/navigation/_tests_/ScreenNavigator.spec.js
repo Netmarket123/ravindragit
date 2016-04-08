@@ -43,6 +43,10 @@ class NavigationBarMock extends Component {
   }
 }
 
+function getDefaultRenderNavigationBar() {
+  return <NavigationBarMock />;
+}
+
 function renderNavigator() {
   const props = {
     name: 'testNavigator',
@@ -57,8 +61,7 @@ function renderNavigator() {
       name={props.name}
       initialRoute={props.initialRoute}
       navigationActionPerformed={props.navigationActionPerformed}
-      hasOwnNavigationBar
-      navigationBarComponent={NavigationBarMock}
+      renderNavigationBar={getDefaultRenderNavigationBar}
     />
   ));
 

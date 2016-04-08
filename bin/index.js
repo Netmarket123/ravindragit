@@ -1,4 +1,4 @@
-import {
+import React, {
   AppRegistry,
 } from 'react-native';
 
@@ -8,9 +8,15 @@ import { NavigationBar } from 'shoutem.ui';
 
 import extensions from './extensions.js';
 
+function renderNavigationBar(navBarProps) {
+  return (
+    <NavigationBar props={navBarProps} />
+  );
+}
+
 const App = new AppBuilder()
   .setExtensions(extensions)
-  .setNavigationBarComponent(NavigationBar)
+  .setRenderNavigationBar(renderNavigationBar)
   .build();
 
 // noinspection JSCheckFunctionSignatures

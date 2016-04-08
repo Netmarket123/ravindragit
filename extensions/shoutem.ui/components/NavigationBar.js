@@ -5,11 +5,6 @@ import React, {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import { connect } from 'react-redux';
-
-import {
-  navigateBack,
-} from 'shoutem/navigation';
 
 const styles = StyleSheet.create({
   backgroundImage: {
@@ -39,20 +34,20 @@ class NavigationBar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.navigateBack = this.navigateBack.bind(this);
+    this.renderBackButton = this.renderBackButton.bind(this);
   }
 
-  navigateBack() {
-    const { dispatch } = this.props;
-    dispatch(navigateBack());
+  renderBackButton() {
+    const { hasHistory, navigateBack } = this.props;
+    const backButton = hasHistory ? (<TouchableOpacity onPress={navigateBack}>
+      <Text>Back</Text>
+    </TouchableOpacity>) : null;
+
+    return backButton;
   }
 
   render() {
-    const backButton = (<TouchableOpacity onPress={this.navigateBack}>
-      <Text>Back</Text>
-    </TouchableOpacity>);
-    const leftComponent = this.props.hasHistory && !this.props.leftComponent ? backButton
-      : this.props.leftComponent;
+    const leftComponent = this.props.leftComponent || this.renderBackButton;
     const centerComponent = this.props.centerComponent;
     const rightComponent = this.props.rightComponent;
 
@@ -76,7 +71,7 @@ NavigationBar.propTypes = {
   rightComponent: React.PropTypes.object,
   style: React.PropTypes.object,
   hasHistory: React.PropTypes.bool,
-  dispatch: React.PropTypes.func,
+  navigateBack: React.PropTypes.func,
 };
 
-export default connect()(NavigationBar);
+export default NavigationBar;
