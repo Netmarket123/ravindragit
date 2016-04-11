@@ -18,9 +18,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
-
-  #ifdef DEBUG
+  #if debug
   /**
+   * Loading JavaScript code - uncomment the one you want.
+   *
+   * OPTION 1
    * Load from development server. Start the server from the repository root:
    *
    * $ npm start
@@ -34,7 +36,8 @@
     jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.bundle?platform=ios&dev=true"];
   #else
   /**
-   * configures the app to always load the most recent version of its JS bundle.
+   * OPTION 2
+   * Configures the app to always load the most recent version of its JS bundle.
    * On the first launch, this will correspond to the file that was compiled
    * with the app. However, after an update has been pushed via CodePush, this
    * will return the location of the most recently installed update.
