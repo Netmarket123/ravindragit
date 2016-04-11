@@ -6,6 +6,8 @@
     "designMode": true,
     "configurationFilePath": "../extensions/shoutem.application/configuration.json",
     "workingDirectories": [
+      "../extensions/shoutem.tet",
+      "../extensions/shoutem.homescreen",
       "../extensions/shoutem.application",
       "../extensions/shoutem.codepush",
       "../extensions/shoutem.ui"

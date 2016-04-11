@@ -6,11 +6,11 @@
       "name": "Restaurants App"
     },
     "relationships": {
-      "theme": {
+      "themes": {
         "data": [
           {
             "type": "shoutem.core.theme",
-            "id": "shoutem.theme"
+            "id": "shoutem.theme.default"
           }
         ]
       },
@@ -50,47 +50,12 @@
   },
   "included": [
     {
-      "type": "shoutem.core.extensions",
-      "id": "shoutem.events",
-      "attributes": {
-        "location": {
-          "server": {
-            "url": "http://static.shoutem.com/extensions/shoutem.events/1.0/server"
-          },
-          "app": {
-            "type": "zip",
-            "package": "http://static.shoutem.com/extensions/shoutem.events/1.0/app.zip"
-          }
-        },
-        "settings": {
-          "enableSharing": true
-        }
-      }
-    },
-    {
       "type": "shoutem.core.theme",
-      "id": "2",
+      "id": "shoutem.theme.default",
       "attributes": {
         "variables": {
-         "testVariable": "red"
-        }
-      }
-    },
-    {
-      "type": "shoutem.core.extensions",
-      "id": "shoutem.places",
-      "attributes": {
-        "location": {
-          "server": {
-            "url": "http://static.shoutem.com/extensions/shoutem.places/1.0/server"
-          },
-          "app": {
-            "type": "zip",
-            "package": "http://static.shoutem.com/extensions/shoutem.places/1.0/app.zip"
-          }
-        },
-        "settings": {
-          "enableSharing": true
+         "testColor": "red",
+         "ganetColor": "961a2d"
         }
       }
     },

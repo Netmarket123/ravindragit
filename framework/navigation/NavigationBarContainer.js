@@ -11,6 +11,7 @@ export default class NavigationBarContainer extends Component {
 
     props.manager.setStateChangeListener(this.onStateChange);
     this.newState = {};
+    this.state = {};
   }
 
   onStateChange(oldState, newState) {

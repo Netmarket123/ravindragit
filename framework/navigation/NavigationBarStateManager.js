@@ -14,7 +14,7 @@ export default class NavigationBarStateManager {
     this.currentRoute = route;
 
     const state = this.routeStates.get(route);
-    if (state) {
+    if (true) {
       // Restore the navigation bar props that
       // are linked to the next route, if they exist.
       // This is necessary so that the navigation bar

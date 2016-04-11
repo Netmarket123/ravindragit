@@ -6,6 +6,9 @@ import { AppBuilder } from 'shoutem';
 
 import { NavigationBar } from 'shoutem.ui';
 
+
+import themeInit from './themeInit';
+
 import extensions from './extensions.js';
 
 function renderNavigationBar(navBarProps) {
@@ -16,6 +19,7 @@ function renderNavigationBar(navBarProps) {
 
 const App = new AppBuilder()
   .setExtensions(extensions)
+  .setThemeInit(themeInit)
   .setRenderNavigationBar(renderNavigationBar)
   .build();
 

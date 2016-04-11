@@ -3,11 +3,23 @@ import React, {
 } from 'react-native';
 
 import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
+import { Provider, connect } from 'react-redux';
 import thunk from 'redux-thunk';
 
 import { ScreenNavigator, ROOT_NAVIGATOR_NAME } from './navigation';
 import coreExtensions from './coreExtensions';
+
+import StyleProvider from './theme/StyleProvider';
+const ConnectedStyleProvider = connect(state => {
+  const shoutemAppState = state['shoutem.application'];
+  const themeVariables =
+    shoutemAppState && shoutemAppState.configuration && shoutemAppState.configuration.themes ?
+    state['shoutem.application'].configuration.themes[0].variables : { variables: {} };
+
+  return {
+    themeVariables,
+  };
+})(StyleProvider);
 
 /**
  * Calls the lifecycle function with the given name on all
@@ -83,10 +95,11 @@ function createApplication(appContext) {
           renderNavigationBar={appContext.renderNavigationBar}
         />
       );
-
       return (
         <Provider store={appContext.store}>
+          <ConnectedStyleProvider themeInit={appContext.themeInit}>
             {content}
+          </ConnectedStyleProvider>
         </Provider>
       );
     }
@@ -130,6 +143,13 @@ function assertInitialRouteExists(initialRoute, screens) {
 
   if (!screens[initialRoute.screen]) {
     throw new Error('The initial route points to a screen that does not exist.');
+  }
+}
+
+function assertThemeInitExist(themeInit) {
+  if (!themeInit || (themeInit && typeof themeInit !== 'function')) {
+    throw Error('The app without an theme initial function cannot be created, ' +
+      'ThemeInit doesn\'t exists or is wrong type, it must be function!');
   }
 }
 
@@ -286,6 +306,7 @@ export default class AppBuilder {
       extensions: {},
       screens: {},
       initialRoute: {},
+      themeInit: null,
     };
   }
 
@@ -304,10 +325,22 @@ export default class AppBuilder {
     return this;
   }
 
+  setThemeInit(themeInit) {
+    this[APP_CONTEXT].themeInit = themeInit;
+    return this;
+  }
+
+  /**
+   * Save only static content in app context, do not resolve dynamic content
+   * which depends on state or it can be changed without new configuration.
+   * We want everything to propagate through components properties and
+   * automatically refreshes on update.
+   */
   build() {
     // Capture the cloned appContext here, so that
     // each app gets its own context.
     const appContext = Object.assign({}, this[APP_CONTEXT]);
+
     assertExtensionsExist(appContext.extensions);
     appContext.extensions = includeCoreExtension(appContext.extensions);
 
@@ -317,7 +350,10 @@ export default class AppBuilder {
       assertInitialRouteExists(appContext.initialRoute, appContext.screens);
     }
 
+    assertThemeInitExist(appContext.themeInit);
+
     appContext.store = createApplicationStore(appContext);
+
     return createApplication(appContext);
   }
 }
