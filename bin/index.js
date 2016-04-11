@@ -12,7 +12,7 @@ import extensions from './extensions.js';
 
 function renderNavigationBar(navBarProps) {
   return (
-    <NavigationBar props={navBarProps} />
+    <NavigationBar {...navBarProps} />
   );
 }
 

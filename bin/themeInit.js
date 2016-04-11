@@ -17,17 +17,20 @@ export default (variables) => ({
     alignItems: 'stretch',
     flex: 1,
   },
+  'shoutem.ui.NavigationBar': {
+    container: {
+      backgroundColor: '#ccc',
+    },
+  },
   'shoutem.test.ExampleScreen': {
     button: {
       backgroundColor: variables.testColor,
     },
   },
   'dev.ext.LargeGridItem': {
-    h1: {
-    },
+    h1: {},
     bottomButton: {
-      buttonText: {
-      },
+      buttonText: {},
     },
   },
   'dev.ext.ListScreen': {
@@ -85,8 +88,7 @@ export default (variables) => ({
         textDecorationLine: 'line-through',
         color: '#888',
       },
-      itemDescription: {
-      },
+      itemDescription: {},
       extrasSeparator: {
         height: 3,
         width: 3,

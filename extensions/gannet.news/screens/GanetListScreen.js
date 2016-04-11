@@ -25,6 +25,7 @@ class GannettListScreen extends React.Component {
     items: React.PropTypes.array,
     style: React.PropTypes.object,
     dispatch: React.PropTypes.func,
+    setNavBarProps: React.PropTypes.func,
   };
 
   constructor(props, context) {
@@ -71,7 +72,7 @@ class GannettListScreen extends React.Component {
   }
 
   componentDidMount() {
-    const navBarTtile = <Text style={this.props.style.h1}>News</Text>;
+    const navBarTtile = <Text>News</Text>;
     this.props.setNavBarProps({
       centerComponent: navBarTtile,
     });
