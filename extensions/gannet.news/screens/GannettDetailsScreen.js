@@ -86,20 +86,20 @@ class GannettDetailsScreen extends React.Component {
     return (
       <View key="details" style={[style.details, this.state.detailsStyle]}>
         <View style={style.titleContainer}>
-          <Text style={style.title}>{item.description}</Text>
+          <Text style={style.title}>{item.title}</Text>
         </View>
-        <Text>{item.details}</Text>
+        <Text>{item.body.replace(/<\/?[^>]+(>|$)/g, '')}</Text>
       </View>
     );
   }
 
   render() {
-    const { style, item, setNavBarProps, } = this.props;
+    const { style, item } = this.props;
 
     return (
       <View style={style.screen}>
         <Animated.Image
-          source={item.image}
+          source={{ uri: item.image_url }}
           style={this.state.headerStyle}
         />
         <ScrollView

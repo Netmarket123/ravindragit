@@ -1,0 +1,17 @@
+{
+    "title": "Gannet News Extension",
+    "canonicalName": "gannet.news",
+    "version": "0.0.1",
+    "description": "Gannet News Extension",
+    "shortcuts": [
+        {
+            "canonicalName": "gannet.news.openExampleScreen",
+            "action": "gannet.news.openExampleScreen",
+            "settings": {}
+        }
+    ],
+    "settingsPage": {},
+    "screens": [
+        {}
+    ]
+}

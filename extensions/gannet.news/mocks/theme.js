@@ -81,7 +81,6 @@ export default (variables) => ({
     items: {
       rightExtra: {
         fontSize: 12,
-        textDecorationLine: 'line-through',
         color: '#888',
       },
       itemDescription: {
@@ -93,6 +92,13 @@ export default (variables) => ({
         marginTop: 3,
         marginHorizontal: 10,
       },
+    },
+  },
+  'dev.ext.GannettDetailsScreen': {
+    title: {
+      fontSize: 30,
+      lineHeight: 30,
+      color: '#fff',
     },
   },
   'shoutem.ui.NavigationBar': {
