@@ -24,7 +24,6 @@ class GannettListScreen extends React.Component {
   static propTypes = {
     items: React.PropTypes.array,
     style: React.PropTypes.object,
-    featureFirst: React.PropTypes.bool,
     dispatch: React.PropTypes.func,
   };
 
@@ -36,20 +35,17 @@ class GannettListScreen extends React.Component {
     this.thisRenderRow = this.renderRow.bind(this);
     this.openDetailsScreen = this.openDetailsScreen.bind(this);
     props.getGannetNews();
+    this.dataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
   }
 
   openDetailsScreen(item) {
     const { navigateToRoute } = this.props;
     const route = { screen: 'gannet.news.GannettDetailsScreen', props: { item } };
-
     navigateToRoute(route);
   }
 
   renderRow(item) {
-    const { featureFirst } = this.props;
-    this.listCounter += 1;
-
-    if (featureFirst && this.listCounter === 1) {
+    if (item.featured) {
       return (
         <LargeGridItem
           backgroundImage={item.image}
@@ -74,15 +70,16 @@ class GannettListScreen extends React.Component {
     );
   }
 
-  render() {
-    const { style, news: items } = this.props;
-    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-    const dataSourceItems = ds.cloneWithRows(items);
-    const navBarTtile = <Text style={style.h1}>News</Text>;
-    this.listCounter = 0;
+  componentDidMount() {
+    const navBarTtile = <Text style={this.props.style.h1}>News</Text>;
     this.props.setNavBarProps({
       centerComponent: navBarTtile,
     });
+  }
+  render() {
+    const { style, news: items } = this.props;
+    const dataSourceItems = this.dataSource.cloneWithRows(items);
+
     return (
       <View style={style.screen}>
         <ListView
@@ -103,28 +100,41 @@ const style = {
   items: {},
 };
 
-function mapStateToProps(state) {
-  const news = state['gannet.news'].news;
+function fetchLatestNewsFromState(state) {
+  const news = state['gannet.news'].news; // storage
   const latestNews = [];
+
+  // latestNews = collection
   state['gannet.news'].latestNews.forEach(id => {
     const singleNews = news[id];
     if (singleNews) {
       latestNews.push(singleNews);
     }
   });
+
+  return latestNews;
+}
+
+function mapStateToProps(state) {
   return {
-    news: latestNews,
+    news: fetchLatestNewsFromState(state),
   };
+}
+
+function findGannettNews() {
+  return find(
+    {
+      endpoint: 'http://gannett.getsandbox.com/gannett/news',
+      headers: { 'Content-Type': 'application/json' },
+    },
+    'gannett.news',
+    'latestNews'
+  );
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getGannetNews: bindActionCreators(() => find(
-      'http://gannett.getsandbox.com/gannett/news',
-      { 'Content-type': 'application/json' },
-      'gannett.news',
-      'latestNews'
-    ), dispatch),
+    getGannetNews: bindActionCreators(findGannettNews, dispatch),
     navigateToRoute: bindActionCreators(navigateTo, dispatch),
   };
 }

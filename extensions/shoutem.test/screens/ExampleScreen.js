@@ -28,6 +28,11 @@ const style = {
     marginTop: 5,
     padding: 15,
   },
+  gannettButton: {
+    textAlign: 'center',
+    color: 'white',
+    flex: 1,
+  },
 };
 
 class ExampleScreen extends Component {
@@ -54,6 +59,17 @@ class ExampleScreen extends Component {
         modal,
       },
       action: 'shoutem.test.openExampleScreen',
+      children: [],
+    };
+
+    dispatch(executeShortcut(shortcut));
+  }
+
+  openGannettListScreen() {
+    const { dispatch } = this.props;
+    const { executeShortcut } = actions;
+    const shortcut = {
+      action: 'gannet.news.openListScreen',
       children: [],
     };
 
@@ -109,7 +125,13 @@ class ExampleScreen extends Component {
             },
           })}
         >
-          <Text>Screen 3</Text>
+          <Text>Screen 3 - v2</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={style.button}
+          onPress={() => this.openGannettListScreen()}
+        >
+          <Text style={style.gannettButton}>Gannett list screen</Text>
         </TouchableOpacity>
       </View>
     );
