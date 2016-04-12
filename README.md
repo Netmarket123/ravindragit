@@ -25,13 +25,31 @@ Todo - note which shoutem cli command is used to setup test environment
 
 ## React Native upgrade steps
 1. Update npm
+
+    ```brew upgrade npm```
+
 2. Globally update react-native-cli with npm
-3. Change react-native version into project package.json  (and extensions) but do not do npm install
-4. Install/update react (required by react-native -v  > 0.21)
-5. Do npm install in /bin
+
+    ```npm install -g react-native-cli```
+
+3. Change react-native version into project package.json (and extensions)
+4. Change react-native-codepush version in both /bin and extensions.codepush package.json
+
+5. Install new dependencies in /bin folder
+
+    ```npm install```
+
 6. Exec react-native upgrade, go file by file diff
-7. Run rnpm link
-8. Update react-native-codepush
-9. Exec watchman watch-del-all in /bin
-10. Run iOS/Android project
-11. It works out of the box -_-
+
+    ```react-native upgrade```
+
+7. Link dependencies 
+
+    ```rnpm link```
+
+8. Clear packager cache in /bin
+
+    ```watchman watch-del-all```
+
+9. Run iOS/Android project
+10. Works out of the box -_-
