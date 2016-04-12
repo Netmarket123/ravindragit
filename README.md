@@ -22,3 +22,15 @@ Mocha (test framework), Chai (assertion lib) and Enzyme (utility for react) are 
 Note: if you have problem with running a test, first check if react-native-mock can be updated to newer version.
 
 Todo - note which shoutem cli command is used to setup test environment
+
+## React Native upgrade steps
+1. Update npm
+2. Globally update react-native-cli with npm
+3. Change react-native version into project package.json  (and extensions) but do not do npm install
+4. Install/update react (required by react-native -v  > 0.21)
+5. Do npm install in /bin
+6. Exec react-native upgrade, go file by file diff
+7. Update react-native-codepush
+8. Exec watchman watch-del-all in /bin
+9. Run iOS/Android project
+10. It works out of the box -_-
