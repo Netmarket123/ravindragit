@@ -30,7 +30,8 @@ Todo - note which shoutem cli command is used to setup test environment
 4. Install/update react (required by react-native -v  > 0.21)
 5. Do npm install in /bin
 6. Exec react-native upgrade, go file by file diff
-7. Update react-native-codepush
-8. Exec watchman watch-del-all in /bin
-9. Run iOS/Android project
-10. It works out of the box -_-
+7. Run rnpm link
+8. Update react-native-codepush
+9. Exec watchman watch-del-all in /bin
+10. Run iOS/Android project
+11. It works out of the box -_-

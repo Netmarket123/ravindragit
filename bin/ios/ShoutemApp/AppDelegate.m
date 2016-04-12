@@ -44,8 +44,9 @@
    *
    * NOTE: app's JS bundle must be named main.jsbundle
    */
+
+    jsCodeLocation = [CodePush bundleURL];
   #endif
-    // jsCodeLocation = [CodePush bundleURL];
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"ShoutemApp"
