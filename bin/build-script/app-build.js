@@ -100,6 +100,10 @@ class AppBuild {
       .then(() => {
         shelljs.exec('npm install');
         console.timeEnd('build time');
+
+        console.log('deleting .babelrc files from bin/node_modules');
+        shelljs.exec("find ./node_modules -d 2 -name '*.babelrc' -delete");
+        console.log('done deleting .babelrc files');
       })
       .catch((e) => console.log(e));
   }
