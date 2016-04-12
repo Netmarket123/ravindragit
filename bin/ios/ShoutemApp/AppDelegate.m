@@ -18,7 +18,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
-
+  #ifdef DEBUG
   /**
    * Loading JavaScript code - uncomment the one you want.
    *
@@ -34,6 +34,7 @@
    */
 
     jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.bundle?platform=ios&dev=true"];
+  #else
   /**
    * OPTION 2
    * Configures the app to always load the most recent version of its JS bundle.
@@ -43,7 +44,7 @@
    *
    * NOTE: app's JS bundle must be named main.jsbundle
    */
-
+  #endif
     // jsCodeLocation = [CodePush bundleURL];
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
