@@ -1,16 +1,23 @@
 package com.shoutemapp;
 
+import android.net.Uri;
+import android.os.Bundle;
+
 import com.facebook.react.ReactActivity;
-import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.microsoft.codepush.react.CodePush;
+import com.oblador.vectoricons.VectorIconsPackage;
 
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 public class MainActivity extends ReactActivity {
     private CodePush codePush;
+    private Bundle initialProps;
+
     /**
      * Returns the name of the main component registered from JavaScript.
      * This is used to schedule rendering of the component.
@@ -60,5 +67,35 @@ public class MainActivity extends ReactActivity {
         }
 
         return this.codePush.getBundleUrl("index.android.bundle");
+    }
+
+    /**
+     * Put deepLink and deepLinkPath to initial props of the root component
+     *
+     * TODO(Vladimir) - determine if necessary and remove if not
+     * @return initialProps
+     */
+    @Nullable
+    @Override
+    protected Bundle getLaunchOptions() {
+        return initialProps;
+    }
+
+    /**
+     * Get deep link from intent that started the activity and save it to
+     * initialProps
+     *
+     * TODO(Vladimir) - determine if necessary and remove if not
+     * @param savedInstanceState
+     */
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        Uri uri = getIntent().getData();
+        if (uri != null) {
+            initialProps = new Bundle();
+            initialProps.putString("deepLink", uri.toString());
+            initialProps.putString("deepLinkPath", uri.getPath());
+        }
+        super.onCreate(savedInstanceState);
     }
 }
