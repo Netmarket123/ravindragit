@@ -9,23 +9,16 @@ export const INCLUDE = Symbol('include');
  */
 // eslint-disable-next-line consistent-return
 function handleIncludeSymbol(objVal, srcVal) {
-  const objValUndefined = _.isUndefined(objVal);
-  const newObjVal = objValUndefined ? {} : objVal;
+  const newObjVal = objVal;
   let include;
 
   if (srcVal && srcVal[INCLUDE]) {
-    if (!newObjVal[INCLUDE]) {
-      include = srcVal[INCLUDE];
-    } else if (newObjVal[INCLUDE]) {
-      include = [...newObjVal[INCLUDE], ...srcVal[INCLUDE]];
-    } else {
-      // is this possible at all ?
-      console.warn('Merging wrong types?');
-    }
+    include = newObjVal && newObjVal[INCLUDE] ?
+      [...newObjVal[INCLUDE], ...srcVal[INCLUDE]] : srcVal[INCLUDE];
   }
 
   // if objVal doesn't exists create new from source if INCLUDE exists
-  if (objValUndefined && include) {
+  if (_.isUndefined(newObjVal) && include) {
     return {
       ...srcVal,
       [INCLUDE]: include,
