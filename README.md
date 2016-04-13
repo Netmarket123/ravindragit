@@ -7,7 +7,7 @@ Shoutem React Native App
 ### Linting [eslint](http://eslint.org/)
 Setup linting environment
 
-```npm install -g eslint-config-airbnb eslint-plugin-react eslint babel-preset```
+```npm install -g eslint-config-airbnb eslint-plugin-react eslint babel-eslint```
 
 Run lint from root project folder
 

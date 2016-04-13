@@ -2,8 +2,6 @@ package com.shoutemapp;
 
 import com.facebook.react.ReactActivity;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.microsoft.codepush.react.CodePushReactPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.microsoft.codepush.react.CodePush;
@@ -35,18 +33,15 @@ public class MainActivity extends ReactActivity {
    * A list of packages used by the app. If the app uses additional views
    * or modules besides the default ones, add more packages here.
    */
-    @Override
-    protected List<ReactPackage> getPackages() {
-        String codePushAppKey = BuildConfig.CODE_PUSH_APP_KEY;
+   @Override
+   protected List<ReactPackage> getPackages() {
+       String codePushAppKey = BuildConfig.CODE_PUSH_APP_KEY;
 
-        this.codePush = new CodePush(codePushAppKey, this, BuildConfig.DEBUG);
+       this.codePush = new CodePush(codePushAppKey, this, BuildConfig.DEBUG);
 
-        return Arrays.<ReactPackage>asList(
-                new MainReactPackage(),
-            new VectorIconsPackage(),
-            new CodePushReactPackage(),
-        new VectorIconsPackage(), this.codePush.getReactPackage());
-    }
+       return Arrays.<ReactPackage>asList(
+               new MainReactPackage(), new VectorIconsPackage(), this.codePush);
+   }
 
     @Override
     protected String getJSMainModuleName() {
