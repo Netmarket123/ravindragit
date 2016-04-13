@@ -3,26 +3,50 @@
 const path = require('path');
 const http = require('https');
 const shelljs = require('shelljs');
-const fs = require('fs');
+const fs = require('fs-extra');
 const rimraf = require('rimraf');
 const unzip = require('unzip2');
 const getLocalExtensions = require('./getLocalExtensions');
 const _ = require('lodash');
+const shoutemDependencies = require('../package.json').dependencies;
+
+const dependenciesSet = new Set();
+
+function getDependencyKey(packageName, version) {
+  return `${packageName}@${version}`;
+}
+
+function addDependenciesToSet(dependencies, set) {
+  _.forEach(dependencies, (version, name) => {
+    set.add(getDependencyKey(name, version));
+  });
+}
+
+function deleteDependenciesFromSet(dependencies, set) {
+  _.forEach(dependencies, (version, name) => {
+    set.delete(getDependencyKey(name, version));
+  });
+}
 
 function installLocalExtension(extension, clearAfterInstall) {
   const packageName = extension.id;
   const packagePath = extension.path;
   const nodeModules = 'node_modules';
   const installedExtensionPath = path.join(nodeModules, packageName);
+
+  addDependenciesToSet(extension.dependencies, dependenciesSet);
   console.log(`Installing ${packageName}`);
-  shelljs.exec(`npm install ${packagePath}`);
-  rimraf(path.join(installedExtensionPath, nodeModules), () => {
-    console.log(`${packageName} installed`);
-    if (clearAfterInstall) {
-      rimraf(packagePath, () => console.log(`delete ${packagePath}`));
-    }
+  return new Promise((resolve) => {
+    fs.copy(packagePath, installedExtensionPath, () => {
+      rimraf(path.join(installedExtensionPath, nodeModules), () => {
+        console.log(`${packageName} installed`);
+        if (clearAfterInstall) {
+          rimraf(packagePath, () => console.log(`delete ${packagePath}`));
+        }
+        resolve(extension);
+      });
+    });
   });
-  return Promise.resolve(extension);
 }
 
 function appendZipExtensionTo(filePath) {
@@ -65,9 +89,13 @@ function getUnzippedExtension(extension) {
   });
 }
 
+function npmInstall(packageName) {
+  shelljs.exec(`npm install ${packageName}`);
+}
+
 function installNpmExtension(extension) {
   console.log(`installing ${extension.id}`);
-  shelljs.exec(`npm install ${extension.id}`);
+  npmInstall(extension.id);
   return Promise.resolve(extension);
 }
 
@@ -96,8 +124,8 @@ class ExtensionsInstaller {
     this.extensionsToInstall = [];
 
     if (extensions) {
-      extensions.forEach((extension) => {
-        const notAvailableLocally = localExtensions.some((localExtension) =>
+      _.forEach(extensions, (extension) => {
+        const notAvailableLocally = _.some(localExtensions, (localExtension) =>
           localExtension.id !== extension.id
         ) || localExtensions.length <= 0;
 
@@ -117,6 +145,12 @@ class ExtensionsInstaller {
     this.extensionsToInstall.forEach((extension) => {
       const extensionType = _.get(extension, 'attributes.location.app.type');
       installPromises.push(extensionInstaller[extensionType](extension));
+    });
+
+    deleteDependenciesFromSet(shoutemDependencies, dependenciesSet);
+
+    dependenciesSet.forEach((dependency) => {
+      npmInstall(dependency);
     });
 
     return Promise.all(installPromises);
