@@ -3,6 +3,43 @@ import * as _ from 'lodash';
 export const INCLUDE = Symbol('include');
 
 /**
+ * Customizer function for lodash mergeWith which handle INCLUDE symbol.
+ * Lodash merge/mergeWith functions doesn't merge symbols
+ * and we use INCLUDE symbol to define which style we want to include.
+ */
+// eslint-disable-next-line consistent-return
+function handleIncludeSymbol(objVal, srcVal) {
+  const objValUndefined = _.isUndefined(objVal);
+  const newObjVal = objValUndefined ? {} : objVal;
+  let include;
+
+  if (srcVal && srcVal[INCLUDE]) {
+    if (!newObjVal[INCLUDE]) {
+      include = srcVal[INCLUDE];
+    } else if (newObjVal[INCLUDE]) {
+      include = [...newObjVal[INCLUDE], ...srcVal[INCLUDE]];
+    } else {
+      // is this possible at all ?
+      console.warn('Merging wrong types?');
+    }
+  }
+
+  // if objVal doesn't exists create new from source if INCLUDE exists
+  if (objValUndefined && include) {
+    return {
+      ...srcVal,
+      [INCLUDE]: include,
+    };
+  }
+
+  // otherwise let lodash default merge (return undefined)
+  // and add INCLUDE to objVal if any in srcVal
+  if (_.isPlainObject(newObjVal) && include) {
+    newObjVal[INCLUDE] = include;
+  }
+}
+
+/**
  * Recursively include required target styles from target and base root.
  *
  * @param target - styles object containing
@@ -60,7 +97,7 @@ export default function resolveIncludes(target, base = {}) {
       return styleNode;
     }
 
-    // objasni
+    // Style names which current style node want to include
     const styleNamesToInclude = styleNode[INCLUDE];
 
     let stylesToInclude = {};
@@ -74,14 +111,17 @@ export default function resolveIncludes(target, base = {}) {
           throw Error(`Circular style include, including ${styleName}`);
         }
         processingStyleNames.add(styleName);
-        stylesToInclude = _.merge(
-          {}, stylesToInclude, includeNodeStyles(getStyle(styleName), processingStyleNames)
+        stylesToInclude = _.mergeWith(
+          {},
+          stylesToInclude,
+          includeNodeStyles(getStyle(styleName), processingStyleNames),
+          handleIncludeSymbol
         );
         processingStyleNames.delete(styleName);
       }
     }
 
-    const resultingStyle = _.merge({}, stylesToInclude, styleNode);
+    const resultingStyle = _.mergeWith({}, stylesToInclude, styleNode, handleIncludeSymbol);
     delete resultingStyle[INCLUDE];
 
     for (const styleName of _.keys(resultingStyle)) {
