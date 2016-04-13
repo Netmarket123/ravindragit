@@ -18,7 +18,7 @@ class InfoFields extends Component {
     infoSeparator: React.PropTypes.any,
     style: React.PropTypes.object,
   };
-  
+
   render() {
     const infoFieldsComponents = [];
     const style = this.props.style;

@@ -1,6 +1,5 @@
 import React, { Children, PropTypes } from 'react-native';
 import Theme, { ThemeShape } from './Theme';
-import { connect } from 'react-redux';
 
 // Privates
 const THEME = Symbol('theme');
@@ -22,10 +21,12 @@ export default class StyleProvider extends React.Component {
     super(props, context);
     this.state = {
       [THEME]: this.createState(),
-    }
+    };
   }
-  createState() {
-    return new Theme(this.props.themeInit(this.props.themeVariables));
+  getChildContext() {
+    return {
+      theme: this.state[THEME],
+    };
   }
   componentWillReceiveProps(nextProps) {
     if (
@@ -37,10 +38,8 @@ export default class StyleProvider extends React.Component {
     }
     return false;
   }
-  getChildContext() {
-    return {
-      theme: this.state[THEME],
-    };
+  createState() {
+    return new Theme(this.props.themeInit(this.props.themeVariables));
   }
   render() {
     const { children } = this.props;
