@@ -4,7 +4,8 @@
   "private": true,
   "main": "index.js",
   "dependencies": {
-    "react-native": "0.19.0",
+    "react": "^0.14.5",
+    "react-native": "^0.23.1",
     "react-native-viewpager": "^0.2.1"
   },
   "devDependencies": {

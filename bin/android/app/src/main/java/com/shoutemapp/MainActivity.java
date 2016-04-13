@@ -33,16 +33,15 @@ public class MainActivity extends ReactActivity {
    * A list of packages used by the app. If the app uses additional views
    * or modules besides the default ones, add more packages here.
    */
-    @Override
-    protected List<ReactPackage> getPackages() {
-        String codePushAppKey = BuildConfig.CODE_PUSH_APP_KEY;
+   @Override
+   protected List<ReactPackage> getPackages() {
+       String codePushAppKey = BuildConfig.CODE_PUSH_APP_KEY;
 
-        this.codePush = new CodePush(codePushAppKey, this, BuildConfig.DEBUG);
+       this.codePush = new CodePush(codePushAppKey, this, BuildConfig.DEBUG);
 
-        return Arrays.<ReactPackage>asList(
-                new MainReactPackage(),
-        new VectorIconsPackage(), this.codePush.getReactPackage());
-    }
+       return Arrays.<ReactPackage>asList(
+               new MainReactPackage(), new VectorIconsPackage(), this.codePush);
+   }
 
     @Override
     protected String getJSMainModuleName() {

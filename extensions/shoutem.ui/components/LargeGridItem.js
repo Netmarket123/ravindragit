@@ -25,8 +25,8 @@ class LargeGridItem extends React.Component {
   static propTypes = {
     bottomButtonText: React.PropTypes.any,
     bottomButtonIcon: React.PropTypes.string,
-    topLabel: React.PropTypes.any,
-    bottomLabel: React.PropTypes.string,
+    topLabelText: React.PropTypes.any,
+    bottomLabelText: React.PropTypes.string,
     backgroundImage: React.PropTypes.any,
     infoSeparator: React.PropTypes.any,
     style: React.PropTypes.object,
