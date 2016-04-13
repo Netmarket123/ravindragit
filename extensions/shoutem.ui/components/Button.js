@@ -14,13 +14,14 @@ export default class Button extends Component {
     icon: React.PropTypes.any,
     text: React.PropTypes.string,
     style: React.PropTypes.object,
+    onPress: React.PropTypes.func,
   };
 
   render() {
     const style = this.props.style;
     let buttonImage = null;
     if (this.props.icon) {
-      buttonImage = <Icon name={this.props.icon} style={style.buttonIcon}/>;
+      buttonImage = <Icon name={this.props.icon} style={style.buttonIcon} />;
     }
     const buttonText = this.props.text ?
       <Text style={style.buttonText}>{this.props.text}</Text> : null;

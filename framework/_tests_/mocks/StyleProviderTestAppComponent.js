@@ -1,8 +1,6 @@
 import React, {
   Component,
 } from 'react-native';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
 import themeInit from './ThemeTest';
 import { StyleProvider } from '../../theme';
 
@@ -13,7 +11,7 @@ export default class StyleProviderTestAppComponent extends Component {
     children: React.PropTypes.object,
   }
   render() {
-    const themeVariables =  {
+    const themeVariables = {
       testVariable: TEST_VARIABLE,
     };
     return (

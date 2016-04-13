@@ -14,7 +14,7 @@ const CREATE_HEADER_STYLE = Symbol('createHeaderStyle');
 const GET_SCROLL_HANDLE = Symbol('getScrollHandle');
 const RENDER_DETAILS = Symbol('renderDetails');
 const CREATE_STATE = Symbol('createState');
-const DEFAULT_BOTTON_CONTENT_OFFSET = 50;
+const DEFAULT_BOTTOM_CONTENT_OFFSET = 50;
 
 class GannettDetailsScreen extends React.Component {
   static propTypes = {
@@ -22,10 +22,10 @@ class GannettDetailsScreen extends React.Component {
     style: React.PropTypes.object,
     bottomContentOffset: React.PropTypes.number,
   };
-  
+
   constructor(props, context) {
     super(props, context);
-    const bottomContentOffset = props.bottomContentOffset || DEFAULT_BOTTON_CONTENT_OFFSET;
+    const bottomContentOffset = props.bottomContentOffset || DEFAULT_BOTTOM_CONTENT_OFFSET;
 
     this.state = this[CREATE_STATE](bottomContentOffset);
 

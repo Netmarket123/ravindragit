@@ -4,8 +4,14 @@ Shoutem React Native App
 ## Code style
 [Five JavaScript Syle Guide](https://github.com/5minutes/javascript)
 
-### linting
-use [eslint](http://eslint.org/)
+### Linting [eslint](http://eslint.org/)
+Setup linting environment
+
+```npm install -g eslint-config-airbnb eslint-plugin-react eslint babel-preset```
+
+Run lint from root project folder
+
+```eslint .```
 
 ## Testing
 Mocha (test framework), Chai (assertion lib) and Enzyme (utility for react) are used for unit testing.
