@@ -7,46 +7,40 @@ import React, {
 
 import { connectStyle } from 'shoutem/theme';
 
-class NavigationBar extends React.Component {
-  constructor(props) {
-    super(props);
+function navigationBarBackButton(hasHistory, navigateBack) {
+  const backButton = hasHistory ? (<TouchableOpacity onPress={navigateBack}>
+    <Text>Back</Text>
+  </TouchableOpacity>) : null;
 
-    this.renderBackButton = this.renderBackButton.bind(this);
-  }
+  return backButton;
+}
 
-  renderBackButton() {
-    const { hasHistory, navigateBack } = this.props;
-    const backButton = hasHistory ? (<TouchableOpacity onPress={navigateBack}>
-      <Text>Back</Text>
-    </TouchableOpacity>) : null;
+function NavigationBar({
+  style,
+  centerComponent,
+  rightComponent,
+  navigateBack,
+  hasHistory,
+  backgroundImage,
+  leftComponent: leftComponentProp,
+}) {
+  const leftComponent = leftComponentProp || navigationBarBackButton(hasHistory, navigateBack);
 
-    return backButton;
-  }
-
-  render() {
-    const {
-      style,
-      centerComponent,
-      rightComponent,
-      } = this.props;
-
-    const leftComponent = this.props.leftComponent || this.renderBackButton();
-
-    return (
-      <View style={style.container}>
-        <Image source={this.backgroundImage} style={style.backgroundImage}>
-          <View style={style.componentsContainer}>
-            <View style={style.component}>{leftComponent}</View>
-            <View style={style.component}>{centerComponent}</View>
-            <View style={style.component}>{rightComponent}</View>
-          </View>
-        </Image>
-      </View>
-    );
-  }
+  return (
+    <View style={style.container}>
+      <Image source={backgroundImage} style={style.backgroundImage}>
+        <View style={style.componentsContainer}>
+          <View style={style.component}>{leftComponent}</View>
+          <View style={style.component}>{centerComponent}</View>
+          <View style={style.component}>{rightComponent}</View>
+        </View>
+      </Image>
+    </View>
+  );
 }
 
 NavigationBar.propTypes = {
+  backgroundImage: React.PropTypes.any,
   leftComponent: React.PropTypes.object,
   centerComponent: React.PropTypes.object,
   rightComponent: React.PropTypes.object,

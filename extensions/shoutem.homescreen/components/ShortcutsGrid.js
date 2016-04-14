@@ -1,5 +1,4 @@
 import React, {
-  Component,
   StyleSheet,
   View,
   ListView,
@@ -64,40 +63,36 @@ function createDataSourcesFromData(data, nCols) {
   return rows.map((row) => ds.cloneWithRows(row));
 }
 
-export default class ShortcutsGrid extends Component {
-  constructor(props) {
-    super(props);
-    this.renderRow = this.renderRow.bind(this);
-    this.renderListItem = this.renderListItem.bind(this);
+export default function ShortcutsGrid({
+  layoutPosition,
+  buttonConfig,
+  gridItems,
+  dimensions,
+}) {
+  function renderListItem(data) {
+    return <Shortcut shortcutData={data} buttonConfig={buttonConfig} />;
   }
 
-  renderListItem(data) {
-    return <Shortcut shortcutData={data} buttonConfig={this.props.buttonConfig} />;
-  }
-
-  renderRow(dataSource, key) {
-    const layoutStyle = getStyleForLayoutPosition(this.props.layoutPosition);
+  function renderRow(dataSource, key) {
+    const layoutStyle = getStyleForLayoutPosition(layoutPosition);
 
     return (
       <ListView contentContainerStyle={[styles.row, layoutStyle.row]}
         dataSource={dataSource}
-        renderRow={this.renderListItem}
+        renderRow={renderListItem}
         key={key}
       />
     );
   }
 
-  render() {
-    const { gridItems, dimensions, layoutPosition } = this.props;
-    const dataSources = createDataSourcesFromData(gridItems, dimensions.cols);
-    const layoutStyle = getStyleForLayoutPosition(layoutPosition);
+  const dataSources = createDataSourcesFromData(gridItems, dimensions.cols);
+  const layoutStyle = getStyleForLayoutPosition(layoutPosition);
 
-    return (
-      <View style={[styles.container, layoutStyle.container]}>
-        {dataSources.map(this.renderRow)}
-      </View>
-    );
-  }
+  return (
+    <View style={[styles.container, layoutStyle.container]}>
+      {dataSources.map(renderRow)}
+    </View>
+  );
 }
 
 ShortcutsGrid.propTypes = propTypes;

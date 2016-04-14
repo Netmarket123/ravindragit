@@ -1,5 +1,4 @@
 import React, {
-  Component,
   PropTypes,
   ScrollView,
   StyleSheet,
@@ -24,9 +23,9 @@ const propTypes = {
 };
 
 /*
-*  TODO(Vladimir) - decide if these dimensions need to be provided
-*  dynamically based on the scroll direction
-*/
+ *  TODO(Vladimir) - decide if these dimensions need to be provided
+ *  dynamically based on the scroll direction
+ */
 const { height, width } = Dimensions.get('window');
 
 // Read window dimensions to set a fixed ScrollView size and enable scrolling
@@ -45,23 +44,26 @@ function getStyleForContentLayoutPosition(layoutPosition) {
   };
 }
 
-export default class ContinuousScroller extends Component {
-  render() {
-    const contentContainerPosition = getStyleForContentLayoutPosition(this.props.layoutPosition);
-    return (
-      <ScrollView
-        style={styles.container}
-        directionalLockEnabled
-        contentContainerStyle={contentContainerPosition}
-      >
-        <ShortcutsGrid gridItems={this.props.shortcutsData}
-          dimensions={this.props.dimensions}
-          layoutPosition={this.props.layoutPosition}
-          buttonConfig={this.props.buttonConfig}
-        />
-      </ScrollView>
-    );
-  }
+export default function ContinuousScroller({
+  shortcutsData,
+  layoutPosition,
+  dimensions,
+  buttonConfig,
+}) {
+  const contentContainerPosition = getStyleForContentLayoutPosition(layoutPosition);
+  return (
+    <ScrollView
+      style={styles.container}
+      directionalLockEnabled
+      contentContainerStyle={contentContainerPosition}
+    >
+      <ShortcutsGrid gridItems={shortcutsData}
+        dimensions={dimensions}
+        layoutPosition={layoutPosition}
+        buttonConfig={buttonConfig}
+      />
+    </ScrollView>
+  );
 }
 
 ContinuousScroller.propTypes = propTypes;

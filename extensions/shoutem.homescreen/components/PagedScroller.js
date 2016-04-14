@@ -1,5 +1,4 @@
 import React, {
-  Component,
   View,
   StyleSheet,
   PropTypes,
@@ -59,33 +58,31 @@ function createPagingDataSource(data, dimensions) {
   return pagerDs.cloneWithPages(pages);
 }
 
-export default class PagedScroller extends Component {
-  constructor(props) {
-    super(props);
-    this.renderPage = this.renderPage.bind(this);
-  }
-
-  renderPage(data) {
+export default function PagedScroller({
+  layoutPosition,
+  shortcutsData,
+  buttonConfig,
+  dimensions,
+}) {
+  function renderPage(data) {
     return (
       <ShortcutsGrid gridItems={data}
-        dimensions={this.props.dimensions}
-        layoutPosition={this.props.layoutPosition}
-        buttonConfig={this.props.buttonConfig}
+        dimensions={dimensions}
+        layoutPosition={layoutPosition}
+        buttonConfig={buttonConfig}
       />
     );
   }
 
-  render() {
-    const containerLayoutPosition = getStyleForContainerLayoutPosition(this.props.layoutPosition);
-    return (
-      <View style={[styles.container, containerLayoutPosition]}>
-      <ViewPager
-        dataSource={createPagingDataSource(this.props.shortcutsData, this.props.dimensions)}
-        renderPage={this.renderPage}
-      />
-      </View>
-    );
-  }
+  const containerLayoutPosition = getStyleForContainerLayoutPosition(layoutPosition);
+  return (
+    <View style={[styles.container, containerLayoutPosition]}>
+    <ViewPager
+      dataSource={createPagingDataSource(shortcutsData, dimensions)}
+      renderPage={renderPage}
+    />
+    </View>
+  );
 }
 
 PagedScroller.propTypes = propTypes;

@@ -20,83 +20,79 @@ function formatDate(dateString) {
   return `${date.getDay()}.${(date.getMonth() + 1)}.${date.getFullYear()}`;
 }
 
-class GannettListScreen extends React.Component {
-  static propTypes = {
-    news: React.PropTypes.array,
-    style: React.PropTypes.object,
-    dispatch: React.PropTypes.func,
-    setNavBarProps: React.PropTypes.func,
-    getGannetNews: React.PropTypes.func,
-    navigateToRoute: React.PropTypes.func,
-  };
 
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      extrasSeparator: require('../assets/circle_grey.png'),
-    };
-    this.thisRenderRow = this.renderRow.bind(this);
-    this.openDetailsScreen = this.openDetailsScreen.bind(this);
-    props.getGannetNews();
-    this.dataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-    this.openDetailsScreen.bind(this);
-  }
-
-  componentDidMount() {
-    const navBarTitle = <Text>News</Text>;
-    this.props.setNavBarProps({
-      centerComponent: navBarTitle,
-    });
-  }
-
-  openDetailsScreen(item) {
-    const { navigateToRoute } = this.props;
-    const route = { screen: 'gannet.news.GannettDetailsScreen', props: { item } };
-    navigateToRoute(route);
-  }
-
-  renderRow(item) {
-    if (item.featured) {
-      return (
-        <LargeGridItem
-          backgroundImage={item.image}
-          headline={item.description.toUpperCase()}
-          infoFields={[item.source, item.date]}
-          style={this.props.style.featuredItem}
-        />
-      );
-    }
-
+function renderRow(item, style, extrasSeparator, onPress) {
+  if (item.featured) {
     return (
-      <MediumListItem
-        description={item.title}
-        image={{ uri: item.image_url }}
-        extrasSeparatorImage={this.state.extrasSeparator}
-        leftExtra={item.author}
-        rightExtra={formatDate(item.published_at)}
-        id={item.id}
-        style={this.props.style.items}
-        onPressItem={item}
-        onPressMethod={this.openDetailsScreen}
+      <LargeGridItem
+        backgroundImage={item.image}
+        headline={item.description.toUpperCase()}
+        infoFields={[item.source, item.date]}
+        style={style.featuredItem}
       />
     );
   }
 
-  render() {
-    const { style, news: items } = this.props;
-    const dataSourceItems = this.dataSource.cloneWithRows(items);
-
-    return (
-      <View style={style.screen}>
-        <ListView
-          style={style.list}
-          dataSource={dataSourceItems}
-          renderRow={this.thisRenderRow}
-        />
-      </View>
-    );
-  }
+  return (
+    <MediumListItem
+      description={item.title}
+      image={{ uri: item.image_url }}
+      extrasSeparatorImage={extrasSeparator}
+      leftExtra={item.author}
+      rightExtra={formatDate(item.published_at)}
+      id={item.id}
+      style={style.items}
+      onPressItem={item}
+      onPressMethod={onPress}
+    />
+  );
 }
+
+function GannettListScreen({
+  news,
+  style,
+  setNavBarProps,
+  getGannetNews,
+  navigateToRoute,
+}) {
+  const extrasSeparator = require('../assets/circle_grey.png');
+  const dataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+  const dataSourceItems = dataSource.cloneWithRows(news);
+
+  const navBarTitle = <Text>News</Text>;
+  setNavBarProps({
+    centerComponent: navBarTitle,
+  });
+
+  getGannetNews();
+
+  function openDetailsScreen(item) {
+    const route = { screen: 'gannet.news.GannettDetailsScreen', props: { item } };
+    navigateToRoute(route);
+  }
+
+  function renderGannetListRow(item) {
+    renderRow(item, style, extrasSeparator, openDetailsScreen);
+  }
+
+  return (
+    <View style={style.screen}>
+      <ListView
+        style={style.list}
+        dataSource={dataSourceItems}
+        renderRow={renderGannetListRow}
+      />
+    </View>
+  );
+}
+
+GannettListScreen.propTypes = {
+  news: React.PropTypes.array,
+  style: React.PropTypes.object,
+  setNavBarProps: React.PropTypes.func,
+  getGannetNews: React.PropTypes.func,
+  navigateToRoute: React.PropTypes.func,
+};
 
 const style = {
   screen: {},

@@ -1,4 +1,4 @@
-import React, { View, Component } from 'react-native';
+import React, { View } from 'react-native';
 
 import { assert } from 'chai';
 import sinon from 'sinon';
@@ -35,12 +35,10 @@ class RNNavigatorMock {
   }
 }
 
-class NavigationBarMock extends Component {
-  render() {
-    return (
-      <View />
-    );
-  }
+function NavigationBarMock() {
+  return (
+    <View />
+  );
 }
 
 function getDefaultRenderNavigationBar() {

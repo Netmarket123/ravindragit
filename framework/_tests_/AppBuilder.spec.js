@@ -1,5 +1,4 @@
 import React, {
-  Component,
   Text,
 } from 'react-native';
 import { connect } from 'react-redux';
@@ -17,17 +16,13 @@ import themeInit from './mocks/ThemeTest';
  * A simple component that will serve as a screen
  * in the tests.
  */
-class Screen extends Component {
-  render() {
-    const message = this.props.message || 'This is a screen!';
-    return (<Text>{message}</Text>);
-  }
+function Screen({ message: messageProp }) {
+  const message = messageProp || 'This is a screen!';
+  return (<Text>{message}</Text>);
 }
 
-class NavBar extends Component { // eslint-disable-line react/no-multi-comp
-  render() {
-    return <Text>Nav Bar</Text>;
-  }
+function NavBar() { // eslint-disable-line react/no-multi-comp
+  return <Text>Nav Bar</Text>;
 }
 
 Screen.propTypes = {

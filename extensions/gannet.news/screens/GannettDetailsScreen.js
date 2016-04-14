@@ -8,112 +8,87 @@ import React, {
 import { INCLUDE, connectStyle } from 'shoutem/theme';
 import * as _ from 'lodash';
 
-const CALCULATE_TOP_OFFSET = Symbol('createOffsetStyle');
-const CREATE_DETAILS_STYLE = Symbol('createDetailsStyle');
-const CREATE_HEADER_STYLE = Symbol('createHeaderStyle');
-const GET_SCROLL_HANDLE = Symbol('getScrollHandle');
-const RENDER_DETAILS = Symbol('renderDetails');
-const CREATE_STATE = Symbol('createState');
 const DEFAULT_BOTTOM_CONTENT_OFFSET = 50;
 
-class GannettDetailsScreen extends React.Component {
-  static propTypes = {
-    item: React.PropTypes.object,
-    style: React.PropTypes.object,
-    bottomContentOffset: React.PropTypes.number,
-  };
-
-  constructor(props, context) {
-    super(props, context);
-    const bottomContentOffset = props.bottomContentOffset || DEFAULT_BOTTOM_CONTENT_OFFSET;
-
-    this.state = this[CREATE_STATE](bottomContentOffset);
-
-    this[GET_SCROLL_HANDLE] = this[GET_SCROLL_HANDLE].bind(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.bottomContentOffset !== this.props.bottomContentOffset) {
-      this.setState(this[CREATE_STATE](nextProps.bottomContentOffset));
-    }
-    return true;
-  }
-
-  [CREATE_STATE](bottomContentOffset) {
-    const scrollY = new Animated.Value(0);
-    const detailsTopOffset = this[CALCULATE_TOP_OFFSET](bottomContentOffset);
-
-    return {
-      detailsTopOffset,
-      scrollY,
-      headerStyle: this[CREATE_HEADER_STYLE](scrollY, detailsTopOffset),
-      detailsStyle: this[CREATE_DETAILS_STYLE](detailsTopOffset),
-    };
-  }
-
-  [CALCULATE_TOP_OFFSET](offset) {
-    return Dimensions.get('window').height - offset;
-  }
-
-  [CREATE_DETAILS_STYLE](topOffset) {
-    return {
-      marginTop: topOffset,
-    };
-  }
-
-  [CREATE_HEADER_STYLE](animatedValue, headerHeight) {
-    return _.merge({}, this.props.style.header, {
-      transform: [
-        {
-          translateY: animatedValue.interpolate({
-            inputRange: [-headerHeight, 0, headerHeight],
-            outputRange: [headerHeight / 2, 0, -headerHeight / 3],
-          }),
-        },
-      ],
-    });
-  }
-
-  [GET_SCROLL_HANDLE]() {
-    return Animated.event(
-      [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }]
-    );
-  }
-
-  [RENDER_DETAILS](item) {
-    const style = this.props.style;
-
-    return (
-      <View key="details" style={[style.details, this.state.detailsStyle]}>
-        <View style={style.titleContainer}>
-          <Text style={style.title}>{item.title}</Text>
-        </View>
-        <Text>{item.body.replace(/<\/?[^>]+(>|$)/g, '')}</Text>
-      </View>
-    );
-  }
-
-  render() {
-    const { style, item } = this.props;
-
-    return (
-      <View style={style.screen}>
-        <Animated.Image
-          source={{ uri: item.image_url }}
-          style={this.state.headerStyle}
-        />
-        <ScrollView
-          automaticallyAdjustContentInsets={false}
-          style={style.container}
-          scrollEventThrottle={16}
-          onScroll={this[GET_SCROLL_HANDLE]()}
-        >
-          {this[RENDER_DETAILS](item)}
-        </ScrollView>
-      </View>
-    );
-  }
+function createOffsetStyle(offset) {
+  return Dimensions.get('window').height - offset;
 }
+
+function createDetailsStyle(topOffset) {
+  return {
+    marginTop: topOffset,
+  };
+}
+
+function createAnimatedHeaderStyle(headerStyle, animatedValue, headerHeight) {
+  return _.merge({}, headerStyle, {
+    transform: [
+      {
+        translateY: animatedValue.interpolate({
+          inputRange: [-headerHeight, 0, headerHeight],
+          outputRange: [headerHeight / 2, 0, -headerHeight / 3],
+        }),
+      },
+    ],
+  });
+}
+
+function getScrollHandle(scrollY) {
+  return Animated.event(
+    [{ nativeEvent: { contentOffset: { y: scrollY } } }]
+  );
+}
+
+function Details({ item, style }) {
+  return (
+    <View key="details" style={style}>
+      <View style={style.titleContainer}>
+        <Text style={style.title}>{item.title}</Text>
+      </View>
+      <Text>{item.body.replace(/<\/?[^>]+(>|$)/g, '')}</Text>
+    </View>
+  );
+}
+
+Details.propTypes = {
+  item: React.PropTypes.object,
+  style: React.PropTypes.object,
+};
+
+function GannettDetailsScreen({
+  item,
+  style,
+  bottomContentOffset: bottomContentOffsetProp,
+}) {
+  const bottomContentOffset = bottomContentOffsetProp || DEFAULT_BOTTOM_CONTENT_OFFSET;
+  const scrollY = new Animated.Value(0);
+  const detailsTopOffset = createOffsetStyle(bottomContentOffset);
+  const headerStyle = createAnimatedHeaderStyle(style.header, scrollY, detailsTopOffset);
+  const detailsStyle = createDetailsStyle(detailsTopOffset);
+
+  return (
+    <View style={style.screen}>
+      <Animated.Image
+        source={{ uri: item.image_url }}
+        style={headerStyle}
+      />
+      <ScrollView
+        automaticallyAdjustContentInsets={false}
+        style={style.container}
+        scrollEventThrottle={16}
+        onScroll={getScrollHandle(scrollY)}
+      >
+        <Details item={item} style={[style.details, detailsStyle]} />
+      </ScrollView>
+    </View>
+  );
+}
+
+GannettDetailsScreen.propTypes = {
+  item: React.PropTypes.object,
+  style: React.PropTypes.object,
+  bottomContentOffset: React.PropTypes.number,
+};
 
 const style = {
   screen: {
