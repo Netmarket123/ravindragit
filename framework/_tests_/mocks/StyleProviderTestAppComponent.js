@@ -4,13 +4,13 @@ import { StyleProvider } from '../../theme';
 
 export const TEST_VARIABLE = 5;
 
-export default function StyleProviderTestAppComponent() {
+export default function StyleProviderTestAppComponent({ children }) {
   const themeVariables = {
     testVariable: TEST_VARIABLE,
   };
   return (
     <StyleProvider themeInit={themeInit} themeVariables={themeVariables}>
-      {this.props.children}
+      {children}
     </StyleProvider>
   );
 }
