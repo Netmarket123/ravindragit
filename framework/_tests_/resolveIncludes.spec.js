@@ -40,6 +40,58 @@ describe('resolveIncludes', () => {
       );
     });
 
+    it('includes nested includes', () => {
+      const target = {
+        firstInclude: {
+          [INCLUDE]: ['firstIncludeNumber'],
+        },
+        secondInclude: {
+          color: 'red',
+          [INCLUDE]: ['secondIncludeNumber'],
+        },
+        includingStyle: {
+          [INCLUDE]: ['firstInclude', 'secondInclude'],
+        },
+        firstIncludeNumber: {
+          number: 2,
+        },
+        secondIncludeNumber: {
+          number: 3,
+        },
+      };
+      const expectedResolvedStyle = {
+        firstInclude: {
+          number: 2,
+        },
+        secondInclude: {
+          color: 'red',
+          number: 3,
+        },
+        includingStyle: {
+          number: 3,
+          color: 'red',
+        },
+        firstIncludeNumber: {
+          number: 2,
+        },
+        secondIncludeNumber: {
+          number: 3,
+        },
+      };
+      const includedStyle = resolveIncludes(target);
+
+      assert.equal(
+        includedStyle.includingStyle.number,
+        target.secondIncludeNumber.number,
+        'style not included properly'
+      );
+      assert.deepEqual(
+        includedStyle,
+        expectedResolvedStyle,
+        'style not resolved properly'
+      );
+    });
+
     it('target style overrides it self properly', () => {
       const target = {
         numberInclude: {
