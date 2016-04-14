@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const shelljs = require('shelljs');
 const getLocalExtensions = require('./getLocalExtensions');
+const rimraf = require('rimraf');
 const ExtensionsInstaller = require('./extensions-installer.js');
 const _ = require('lodash');
 
@@ -73,6 +74,14 @@ class AppBuild {
     return require(path.join('..', assetsPath));
   }
 
+  removeBabelrcFiles() {
+    console.time('removing .babelrc files');
+
+    rimraf.sync('./node_modules/*/.babelrc');
+
+    console.timeEnd('removing .babelrc files');
+  }
+
   prepareExtensions() {
     this.configuration = this.getConfiguration(this.configurationFilePath);
     const extensions = getExtensionsFromConfigurations(this.configuration);
@@ -101,6 +110,7 @@ class AppBuild {
         shelljs.exec('npm install');
         console.timeEnd('build time');
       })
+      .then(() => this.removeBabelrcFiles())
       .catch((e) => console.log(e));
   }
 }
