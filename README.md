@@ -13,6 +13,10 @@ Run lint from root project folder
 
 ```eslint .```
 
+## Writing a component
+
+Component can be __stateless__ or __class__. Use class components only when you really need component lifecycle!
+
 ## Testing
 Mocha (test framework), Chai (assertion lib) and Enzyme (utility for react) are used for unit testing.
 
