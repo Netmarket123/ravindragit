@@ -8,7 +8,7 @@ export const INCLUDE = Symbol('include');
  * and we use INCLUDE symbol to define which style we want to include.
  */
 // eslint-disable-next-line consistent-return
-function handleIncludeSymbol(objVal, srcVal) {
+function includeSymbolMergeHandler(objVal, srcVal) {
   const newObjVal = objVal;
   let include;
 
@@ -108,13 +108,13 @@ export default function resolveIncludes(target, base = {}) {
           {},
           stylesToInclude,
           includeNodeStyles(getStyle(styleName), processingStyleNames),
-          handleIncludeSymbol
+          includeSymbolMergeHandler
         );
         processingStyleNames.delete(styleName);
       }
     }
 
-    const resultingStyle = _.mergeWith({}, stylesToInclude, styleNode, handleIncludeSymbol);
+    const resultingStyle = _.mergeWith({}, stylesToInclude, styleNode, includeSymbolMergeHandler);
     delete resultingStyle[INCLUDE];
 
     for (const styleName of _.keys(resultingStyle)) {
