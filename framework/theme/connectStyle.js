@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react-native';
+import React, { PropTypes, Component } from 'react-native';
 import hoistStatics from 'hoist-non-react-statics';
 import { ThemeShape } from './Theme';
 import * as _ from 'lodash';
@@ -35,12 +35,17 @@ function throwConnectStyleError(errorText, componentDisplayName) {
  * @returns {StyledComponent}
  */
 export default function connectStyle(componentStyleName, componentStyle) {
-  function getDisplayName(WrappedComponent) {
+  function getComponentDisplayName(WrappedComponent) {
     return WrappedComponent.displayName || WrappedComponent.name || 'Component';
+  }
+  function isComponentReferenceable(WrappedComponent) {
+    // stateless function components can't be referenced
+    // only Component instance can
+    return WrappedComponent.prototype instanceof Component;
   }
 
   return function wrapWithStyledComponent(WrappedComponent) {
-    const componentDisplayName = getDisplayName(WrappedComponent);
+    const componentDisplayName = getComponentDisplayName(WrappedComponent);
 
     if (!_.isPlainObject(componentStyle)) {
       throwConnectStyleError(
@@ -77,6 +82,9 @@ export default function connectStyle(componentStyleName, componentStyle) {
         this.state = {
           style: theme.resolveComponentStyle(componentStyleName, componentStyle, props.style),
         };
+        if (isComponentReferenceable(WrappedComponent)) {
+          this.state.ref = 'wrappedInstance';
+        }
       }
 
       componentWillReceiveProps(nextProps, nextContext) {
@@ -108,7 +116,7 @@ export default function connectStyle(componentStyleName, componentStyle) {
          * have to think about it or define this option when connecting style.
          * Redux connect requires option "withRef" to be able to get component ref.
          */
-        return <WrappedComponent {...this.props} style={this.state.style} ref="wrappedInstance" />;
+        return <WrappedComponent {...this.props} {...this.state} />;
       }
     }
 
