@@ -2,7 +2,7 @@
 
 const path = require('path');
 const http = require('https');
-const shelljs = require('shelljs');
+const npm = require('npm/lib/npm.js');
 const fs = require('fs-extra');
 const rimraf = require('rimraf');
 const unzip = require('unzip2');
@@ -90,7 +90,9 @@ function getUnzippedExtension(extension) {
 }
 
 function npmInstall(packageName) {
-  shelljs.exec(`npm install ${packageName}`);
+  return new Promise((resolve) => {
+    npm.commands.install([`${packageName}`], () => { resolve(); });
+  });
 }
 
 function installNpmExtension(extension) {
@@ -137,30 +139,39 @@ class ExtensionsInstaller {
   }
 
   installExtensions() {
-    const installPromises = [];
-    this.localExtensions.forEach((extension) => {
-      installPromises.push(installLocalExtension(extension));
+    return new Promise((resolve) => {
+      npm.load({}, () => {
+        const installPromises = [];
+        this.localExtensions.forEach((extension) => {
+          installPromises.push(installLocalExtension(extension));
+        });
+
+        this.extensionsToInstall.forEach((extension) => {
+          const extensionType = _.get(extension, 'attributes.location.app.type');
+          installPromises.push(extensionInstaller[extensionType](extension));
+        });
+
+        deleteDependenciesFromSet(shoutemDependencies, dependenciesSet);
+
+        const dependenciesArray = [];
+        dependenciesSet.forEach((dependency) => {
+          dependenciesArray.push(dependency);
+        });
+
+        installPromises.push(npmInstall(dependenciesArray.join(' ')));
+
+        return resolve(Promise.all(installPromises));
+      });
     });
-
-    this.extensionsToInstall.forEach((extension) => {
-      const extensionType = _.get(extension, 'attributes.location.app.type');
-      installPromises.push(extensionInstaller[extensionType](extension));
-    });
-
-    deleteDependenciesFromSet(shoutemDependencies, dependenciesSet);
-
-    dependenciesSet.forEach((dependency) => {
-      npmInstall(dependency);
-    });
-
-    return Promise.all(installPromises);
   }
 
   createExtensionsJs(installedExtensions) {
     const extensionsMapping = [];
 
     installedExtensions.forEach((extension) => {
-      extensionsMapping.push(`'${extension.id}': require('${extension.id}')`);
+      if (extension) {
+        extensionsMapping.push(`'${extension.id}': require('${extension.id}')`);
+      }
     });
 
     const extensionsString = extensionsMapping.join(',\n  ');

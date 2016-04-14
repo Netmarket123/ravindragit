@@ -4,6 +4,6 @@
   "private": true,
   "main": "index.js",
   "dependencies": {
-    "redux-json-api": "git+ssh://git@bitbucket.com/fiveminutes/redux-json-api.git#feature/test-lib-install"
+    "redux-json-api": "git+ssh://git@bitbucket.com/fiveminutes/redux-json-api.git"
   }
 }
