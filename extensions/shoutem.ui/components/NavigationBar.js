@@ -8,9 +8,14 @@ import React, {
 import { connectStyle } from 'shoutem/theme';
 
 function navigationBarBackButton(hasHistory, navigateBack) {
-  const backButton = hasHistory ? (<TouchableOpacity onPress={navigateBack}>
-    <Text>Back</Text>
-  </TouchableOpacity>) : null;
+  const backButton = hasHistory ? (
+    // onPress sets `event` as first param, which leads to ignoring default navigateBack
+    // first argument (navigator) so we have to wrap navigateBack into function to leave first
+    // argument empty, default
+    <TouchableOpacity onPress={() => navigateBack()}>
+      <Text>Back</Text>
+    </TouchableOpacity>
+  ) : null;
 
   return backButton;
 }
@@ -40,7 +45,7 @@ function NavigationBar({
 }
 
 NavigationBar.propTypes = {
-  backgroundImage: React.PropTypes.any,
+  backgroundImage: Image.propTypes.source,
   leftComponent: React.PropTypes.object,
   centerComponent: React.PropTypes.object,
   rightComponent: React.PropTypes.object,
