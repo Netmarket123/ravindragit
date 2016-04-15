@@ -83,7 +83,7 @@ class AppBuild {
       extensionsJsPath
     );
 
-    return extensionsInstaller.installExtensions()
+    return extensionsInstaller.installExtensions(this.production)
       .then((installedExtensions) => {
         extensionsInstaller.createExtensionsJs(installedExtensions);
       });
@@ -98,7 +98,10 @@ class AppBuild {
       .then(() => {
         console.timeEnd('build time');
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        process.exit(1);
+      });
   }
 }
 

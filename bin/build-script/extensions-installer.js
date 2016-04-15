@@ -90,15 +90,24 @@ function getUnzippedExtension(extension) {
 }
 
 function npmInstall(packageName) {
-  return new Promise((resolve) => {
-    npm.commands.install([`${packageName}`], () => { resolve(); });
+  console.log(`Installing ${packageName}`);
+  return new Promise((resolve, reject) => {
+    npm.commands.install([`${packageName}`], (error) => {
+      if (error) {
+        reject(error);
+      }
+      console.log(`${packageName} installed`);
+      resolve();
+    });
   });
 }
 
 function installNpmExtension(extension) {
-  console.log(`installing ${extension.id}`);
-  npmInstall(extension.id);
-  return Promise.resolve(extension);
+  return new Promise((resolve) => {
+    npmInstall(extension.id).then(() => {
+      resolve(extension);
+    });
+  });
 }
 
 function installZipExtension(extension) {
@@ -138,9 +147,12 @@ class ExtensionsInstaller {
     }
   }
 
-  installExtensions() {
+  installExtensions(productionEnv) {
     return new Promise((resolve) => {
-      npm.load({}, () => {
+      npm.load({
+        'production': productionEnv, // eslint-disable-line quote-props
+        'cache-min': 999999,
+      }, () => {
         const installPromises = [];
         this.localExtensions.forEach((extension) => {
           installPromises.push(installLocalExtension(extension));
@@ -158,6 +170,7 @@ class ExtensionsInstaller {
           dependenciesArray.push(dependency);
         });
 
+        console.log('Installing dependencies');
         installPromises.push(npmInstall(dependenciesArray.join(' ')));
 
         return resolve(Promise.all(installPromises));
