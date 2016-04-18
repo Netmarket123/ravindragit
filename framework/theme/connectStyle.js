@@ -116,7 +116,19 @@ export default function connectStyle(componentStyleName, componentStyle) {
          * have to think about it or define this option when connecting style.
          * Redux connect requires option "withRef" to be able to get component ref.
          */
-        return <WrappedComponent {...this.props} {...this.state} />;
+
+        // if component has ref it is a class component and it can be initialised with JSX
+        if (this.state.ref) {
+          return <WrappedComponent {...this.props} {...this.state} />;
+        }
+
+        // otherwise initialize function component as function for case it returns null
+        // https://github.com/facebook/react/issues/4599
+        // eslint-disable-next-line new-cap
+        return WrappedComponent({
+          ...this.props,
+          ...this.state,
+        });
       }
     }
 
