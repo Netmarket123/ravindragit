@@ -16,7 +16,7 @@ import com.android.build.OutputFile
  *   bundleAssetName: "index.android.bundle",
  *
  *   // the entry file for bundle generation
- *   entryFile: "index.js",
+ *   entryFile: "index.android.js",
  *
  *   // whether to bundle JS and assets in debug mode
  *   bundleInDebug: false,
@@ -66,7 +66,7 @@ import com.android.build.OutputFile
 */
 
 project.ext.react = [
-    entryFile: "index.js"
+    entryFile: "index.android.js"
 ]
 
 apply from: "shoutem.gradle"
