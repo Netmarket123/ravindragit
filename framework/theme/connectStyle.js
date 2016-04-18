@@ -38,10 +38,13 @@ export default function connectStyle(componentStyleName, componentStyle) {
   function getComponentDisplayName(WrappedComponent) {
     return WrappedComponent.displayName || WrappedComponent.name || 'Component';
   }
+  function isClassComponent(WrappedComponent) {
+    return WrappedComponent.prototype instanceof Component;
+  }
   function isComponentReferenceable(WrappedComponent) {
     // stateless function components can't be referenced
     // only Component instance can
-    return WrappedComponent.prototype instanceof Component;
+    return isClassComponent(WrappedComponent);
   }
 
   return function wrapWithStyledComponent(WrappedComponent) {
@@ -118,7 +121,7 @@ export default function connectStyle(componentStyleName, componentStyle) {
          */
 
         // if component has ref it is a class component and it can be initialised with JSX
-        if (this.state.ref) {
+        if (isClassComponent(WrappedComponent)) {
           return <WrappedComponent {...this.props} {...this.state} />;
         }
 
