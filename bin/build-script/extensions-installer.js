@@ -12,19 +12,19 @@ const shoutemDependencies = require('../package.json').dependencies;
 
 const dependenciesSet = new Set();
 
-function getDependencyKey(packageName, version) {
+function getDependencyDescriptor(packageName, version) {
   return `${packageName}@${version}`;
 }
 
 function addDependenciesToSet(dependencies, set) {
   _.forEach(dependencies, (version, name) => {
-    set.add(getDependencyKey(name, version));
+    set.add(getDependencyDescriptor(name, version));
   });
 }
 
 function deleteDependenciesFromSet(dependencies, set) {
   _.forEach(dependencies, (version, name) => {
-    set.delete(getDependencyKey(name, version));
+    set.delete(getDependencyDescriptor(name, version));
   });
 }
 
@@ -153,26 +153,23 @@ class ExtensionsInstaller {
         'production': productionEnv, // eslint-disable-line quote-props
         'cache-min': 999999,
       }, () => {
-        const installPromises = [];
-        this.localExtensions.forEach((extension) => {
-          installPromises.push(installLocalExtension(extension));
+        const localExtensionsInstallPromises = this.localExtensions.map((extension) => {
+          return installLocalExtension(extension);
         });
-
-        this.extensionsToInstall.forEach((extension) => {
-          const extensionType = _.get(extension, 'attributes.location.app.type');
-          installPromises.push(extensionInstaller[extensionType](extension));
+        const remoteExtensionsInstallPromises = this.extensionsToInstall.map((extension) => {
+          extensionInstaller[_.get(extension, 'attributes.location.app.type')];
         });
 
         deleteDependenciesFromSet(shoutemDependencies, dependenciesSet);
-
-        const dependenciesArray = [];
-        dependenciesSet.forEach((dependency) => {
-          dependenciesArray.push(dependency);
-        });
-
+        const dependenciesArray = [...dependenciesSet];
         console.log('Installing dependencies');
-        installPromises.push(npmInstall(dependenciesArray.join(' ')));
+        const dependenciesInstallPromise = npmInstall(dependenciesArray.join(' '));
 
+        const installPromises = [
+          ...localExtensionsInstallPromises,
+          ...remoteExtensionsInstallPromises,
+          dependenciesInstallPromise
+        ];
         return resolve(Promise.all(installPromises));
       });
     });
