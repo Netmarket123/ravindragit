@@ -8,6 +8,7 @@
     "watch": "node ./build-script/watchLocalExtensions.js"
   },
   "dependencies": {
+    "code-push": "^1.8.0-beta",
     "command-line-args": "^2.1.6",
     "fs-extra": "^0.26.5",
     "glob": "^7.0.3",
