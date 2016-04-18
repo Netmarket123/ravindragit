@@ -2,11 +2,12 @@ import React, {
   View,
   ListView,
   Text,
+  Component,
 } from 'react-native';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { find } from 'redux-json-api';
+import { find } from 'redux-api-state';
 
 import { connectStyle } from 'shoutem/theme';
 import { LargeGridItem, MediumListItem } from 'shoutem.ui';
@@ -48,49 +49,56 @@ function renderRow(item, style, extrasSeparator, onPress) {
   );
 }
 
-function GannettListScreen({
-  news,
-  style,
-  setNavBarProps,
-  getGannetNews,
-  navigateToRoute,
-}) {
-  const extrasSeparator = require('../assets/circle_grey.png');
-  const dataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-  const dataSourceItems = dataSource.cloneWithRows(news);
+const dataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
-  const navBarTitle = <Text>News</Text>;
-  setNavBarProps({
-    centerComponent: navBarTitle,
-  });
-
-  getGannetNews();
-
-  function openDetailsScreen(item) {
-    const route = { screen: 'gannet.news.GannettDetailsScreen', props: { item } };
-    navigateToRoute(route);
+class GannettListScreen extends Component {
+  constructor(props, context) {
+    super(props, context);
+    props.getGannetNews();
   }
 
-  function renderGannetListRow(item) {
-    renderRow(item, style, extrasSeparator, openDetailsScreen);
-  }
+  render() {
+    const {
+      news,
+      style,
+      setNavBarProps,
+      navigateToRoute,
+    } = this.props;
+    const extrasSeparator = require('../assets/circle_grey.png');
+    const dataSourceItems = dataSource.cloneWithRows(news);
 
-  return (
-    <View style={style.screen}>
-      <ListView
-        style={style.list}
-        dataSource={dataSourceItems}
-        renderRow={renderGannetListRow}
-      />
-    </View>
-  );
+    const navBarTitle = <Text>News</Text>;
+    setNavBarProps({
+      centerComponent: navBarTitle,
+    });
+
+    function openDetailsScreen(item) {
+      const route = { screen: 'gannet.news.GannettDetailsScreen', props: { item } };
+      navigateToRoute(route);
+    }
+
+    function renderGannetListRow(item) {
+      return renderRow(item, style, extrasSeparator, openDetailsScreen);
+    }
+
+    return (
+      <View style={style.screen}>
+        <ListView
+          style={style.list}
+          dataSource={dataSourceItems}
+          renderRow={renderGannetListRow}
+          enableEmptySections
+        />
+      </View>
+    );
+  }
 }
 
 GannettListScreen.propTypes = {
+  getGannetNews: React.PropTypes.func,
   news: React.PropTypes.array,
   style: React.PropTypes.object,
   setNavBarProps: React.PropTypes.func,
-  getGannetNews: React.PropTypes.func,
   navigateToRoute: React.PropTypes.func,
 };
 

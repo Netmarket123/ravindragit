@@ -67,10 +67,10 @@ function LargeGridItem({
 LargeGridItem.propTypes = {
   bottomButtonText: React.PropTypes.any,
   bottomButtonIcon: React.PropTypes.string,
-  topLabelText: React.PropTypes.any,
+  topLabelText: React.PropTypes.string,
   bottomLabelText: React.PropTypes.string,
-  backgroundImage: React.PropTypes.any,
-  infoSeparator: React.PropTypes.any,
+  backgroundImage: Image.propTypes.source,
+  infoSeparator: Image.propTypes.source,
   style: React.PropTypes.object,
   infoFields: React.PropTypes.array,
   headline: React.PropTypes.string,

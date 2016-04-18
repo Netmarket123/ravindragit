@@ -16,9 +16,8 @@ import themeInit from './mocks/ThemeTest';
  * A simple component that will serve as a screen
  * in the tests.
  */
-function Screen({ message: messageProp }) {
-  const message = messageProp || 'This is a screen!';
-  return (<Text>{message}</Text>);
+function Screen({ message }) {
+  return <Text>{message || 'This is a screen!'}</Text>;
 }
 
 function NavBar() { // eslint-disable-line react/no-multi-comp

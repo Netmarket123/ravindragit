@@ -50,8 +50,8 @@ function MediumListItem({
   }
 
   return (
-    <TouchableOpacity onPress={onPress}>
-      <View style={style.container} key={id}>
+    <TouchableOpacity onPress={onPress} key={id}>
+      <View style={style.container}>
         <Image style={style.itemImage} source={image} />
         <View style={style.itemInfo}>
           <Text style={[style.baseFont, style.itemDescription]}>
@@ -71,12 +71,12 @@ function MediumListItem({
 
 MediumListItem.propTypes = {
   style: React.PropTypes.object,
-  id: React.PropTypes.number,
+  id: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
   description: React.PropTypes.string,
   leftExtra: React.PropTypes.string,
   rightExtra: React.PropTypes.string,
-  image: React.PropTypes.any,
-  extrasSeparatorImage: React.PropTypes.any,
+  image: Image.propTypes.source,
+  extrasSeparatorImage: Image.propTypes.source,
   buttonIcon: React.PropTypes.any,
   onPressItem: React.PropTypes.any,
   onPressMethod: React.PropTypes.func,
