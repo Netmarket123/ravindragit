@@ -153,11 +153,12 @@ class ExtensionsInstaller {
         'production': productionEnv, // eslint-disable-line quote-props
         'cache-min': 999999,
       }, () => {
-        const localExtensionsInstallPromises = this.localExtensions.map((extension) => {
-          return installLocalExtension(extension);
-        });
+        const localExtensionsInstallPromises = this.localExtensions.map((extension) =>
+          installLocalExtension(extension)
+        );
         const remoteExtensionsInstallPromises = this.extensionsToInstall.map((extension) => {
-          extensionInstaller[_.get(extension, 'attributes.location.app.type')];
+          const extensionType = _.get(extension, 'attributes.location.app.type');
+          return extensionInstaller[extensionType](extension);
         });
 
         deleteDependenciesFromSet(shoutemDependencies, dependenciesSet);
@@ -168,7 +169,7 @@ class ExtensionsInstaller {
         const installPromises = [
           ...localExtensionsInstallPromises,
           ...remoteExtensionsInstallPromises,
-          dependenciesInstallPromise
+          dependenciesInstallPromise,
         ];
         return resolve(Promise.all(installPromises));
       });
