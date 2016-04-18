@@ -3,7 +3,6 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const shelljs = require('shelljs');
 const getLocalExtensions = require('./getLocalExtensions');
 const rimraf = require('rimraf');
 const ExtensionsInstaller = require('./extensions-installer.js');
@@ -93,7 +92,7 @@ class AppBuild {
       extensionsJsPath
     );
 
-    return extensionsInstaller.installExtensions()
+    return extensionsInstaller.installExtensions(this.production)
       .then((installedExtensions) => {
         extensionsInstaller.createExtensionsJs(installedExtensions);
       });
@@ -102,16 +101,17 @@ class AppBuild {
   run() {
     console.time('build time');
     console.log(`starting build for app ${this.appId}`);
-    shelljs.exec('npm install');
     // this.downloadConfiguration()
     //   .then(() => this.prepareExtensions())
     this.prepareExtensions()
       .then(() => {
-        shelljs.exec('npm install');
         console.timeEnd('build time');
       })
       .then(() => this.removeBabelrcFiles())
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        process.exit(1);
+      });
   }
 }
 
