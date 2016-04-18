@@ -6,14 +6,7 @@
   "plugins": [
     "react-native"
   ],
-  "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true,
-      "experimentalObjectRestSpread": true
-    }
-  },
+  "parser": "babel-eslint",
   "rules": {
     "no-empty-label": 0,
     "no-console": 0,

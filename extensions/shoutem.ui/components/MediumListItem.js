@@ -30,8 +30,27 @@ class MediumListItem extends Component {
     image: React.PropTypes.any,
     extrasSeparatorImage: React.PropTypes.any,
     buttonIcon: React.PropTypes.any,
-    onPress: React.PropTypes.func,
+    onPressItem: React.PropTypes.any,
+    onPressMethod: React.PropTypes.func,
   };
+
+  constructor(props, context) {
+    super(props, context);
+    this.onPress = this.onPress.bind(this);
+  }
+
+  onPress() {
+    const {
+      onPressMethod,
+      onPressItem,
+    } = this.props;
+
+    if (!onPressMethod) {
+      return;
+    }
+
+    onPressMethod(onPressItem);
+  }
 
   render() {
     const {
@@ -43,7 +62,6 @@ class MediumListItem extends Component {
       image,
       extrasSeparatorImage,
       buttonIcon,
-      onPress,
     } = this.props;
     let separatorImage = null;
     if (extrasSeparatorImage) {
@@ -55,7 +73,7 @@ class MediumListItem extends Component {
       );
     }
     return (
-      <TouchableOpacity onPress={onPress}>
+      <TouchableOpacity onPress={this.onPress}>
         <View style={style.container} key={id}>
           <Image style={style.itemImage} source={image} />
           <View style={style.itemInfo}>

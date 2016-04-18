@@ -22,10 +22,12 @@ function formatDate(dateString) {
 
 class GannettListScreen extends React.Component {
   static propTypes = {
-    items: React.PropTypes.array,
+    news: React.PropTypes.array,
     style: React.PropTypes.object,
     dispatch: React.PropTypes.func,
     setNavBarProps: React.PropTypes.func,
+    getGannetNews: React.PropTypes.func,
+    navigateToRoute: React.PropTypes.func,
   };
 
   constructor(props, context) {
@@ -37,6 +39,14 @@ class GannettListScreen extends React.Component {
     this.openDetailsScreen = this.openDetailsScreen.bind(this);
     props.getGannetNews();
     this.dataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+    this.openDetailsScreen.bind(this);
+  }
+
+  componentDidMount() {
+    const navBarTitle = <Text>News</Text>;
+    this.props.setNavBarProps({
+      centerComponent: navBarTitle,
+    });
   }
 
   openDetailsScreen(item) {
@@ -66,17 +76,12 @@ class GannettListScreen extends React.Component {
         rightExtra={formatDate(item.published_at)}
         id={item.id}
         style={this.props.style.items}
-        onPress={() => { this.openDetailsScreen(item) }}
+        onPressItem={item}
+        onPressMethod={this.openDetailsScreen}
       />
     );
   }
 
-  componentDidMount() {
-    const navBarTtile = <Text>News</Text>;
-    this.props.setNavBarProps({
-      centerComponent: navBarTtile,
-    });
-  }
   render() {
     const { style, news: items } = this.props;
     const dataSourceItems = this.dataSource.cloneWithRows(items);

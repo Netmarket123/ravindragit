@@ -4,7 +4,8 @@
   "description": "ShoutEm test extesnion",
   "main": "index.js",
   "dependencies": {
-    "react-native": "^0.19.0",
+    "react": "^0.14.5",
+    "react-native": "^0.23.1",
     "react-redux": "^4.4.0",
     "redux": "^3.3.1"
   },

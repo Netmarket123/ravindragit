@@ -1,5 +1,4 @@
 import React, {
-  StyleSheet,
   Component,
   View,
   Text,
@@ -14,7 +13,7 @@ import {
 
 import { actions } from 'shoutem.application';
 
-const style = {
+const styles = {
   content: {
     flex: 1,
     flexDirection: 'column',
@@ -37,6 +36,8 @@ const style = {
 
 class ExampleScreen extends Component {
   static propTypes = {
+    style: React.PropTypes.object,
+    configuration: React.PropTypes.object,
     message: React.PropTypes.string,
     dispatch: React.PropTypes.func,
     setNavBarProps: React.PropTypes.func,
@@ -145,5 +146,5 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(
-  connectStyle('shoutem.test.ExampleScreen', style)(ExampleScreen)
+  connectStyle('shoutem.test.ExampleScreen', styles)(ExampleScreen)
 );
