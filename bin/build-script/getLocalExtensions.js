@@ -25,9 +25,11 @@ function getLocalExtensions(workingDirectories) {
 
           if (packageStat && packageStat.isFile()) {
             const packageName = require(path.join('..', packageJson)).name;
+            const packageDependecies = require(path.join('..', packageJson)).dependencies;
             results.push({
               id: packageName,
               path: packagePath,
+              dependencies: packageDependecies,
             });
           }
         } catch (e) {
