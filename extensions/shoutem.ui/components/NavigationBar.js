@@ -7,46 +7,45 @@ import React, {
 
 import { connectStyle } from 'shoutem/theme';
 
-class NavigationBar extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.renderBackButton = this.renderBackButton.bind(this);
-  }
-
-  renderBackButton() {
-    const { hasHistory, navigateBack } = this.props;
-    const backButton = hasHistory ? (<TouchableOpacity onPress={navigateBack}>
+function navigationBarBackButton(hasHistory, navigateBack) {
+  const backButton = hasHistory ? (
+    // onPress sets `event` as first param, which leads to ignoring default navigateBack
+    // first argument (navigator) so we have to wrap navigateBack into function to leave first
+    // argument empty, default
+    <TouchableOpacity onPress={() => navigateBack()}>
       <Text>Back</Text>
-    </TouchableOpacity>) : null;
+    </TouchableOpacity>
+  ) : null;
 
-    return backButton;
-  }
+  return backButton;
+}
 
-  render() {
-    const {
-      style,
-      centerComponent,
-      rightComponent,
-      } = this.props;
+function NavigationBar({
+  style,
+  centerComponent,
+  rightComponent,
+  navigateBack,
+  hasHistory,
+  backgroundImage,
+  leftComponent: leftComponentProp,
+}) {
+  const leftComponent = leftComponentProp || navigationBarBackButton(hasHistory, navigateBack);
 
-    const leftComponent = this.props.leftComponent || this.renderBackButton();
-
-    return (
-      <View style={style.container}>
-        <Image source={this.backgroundImage} style={style.backgroundImage}>
-          <View style={style.componentsContainer}>
-            <View style={style.component}>{leftComponent}</View>
-            <View style={style.component}>{centerComponent}</View>
-            <View style={style.component}>{rightComponent}</View>
-          </View>
-        </Image>
-      </View>
-    );
-  }
+  return (
+    <View style={style.container}>
+      <Image source={backgroundImage} style={style.backgroundImage}>
+        <View style={style.componentsContainer}>
+          <View style={style.component}>{leftComponent}</View>
+          <View style={style.component}>{centerComponent}</View>
+          <View style={style.component}>{rightComponent}</View>
+        </View>
+      </Image>
+    </View>
+  );
 }
 
 NavigationBar.propTypes = {
+  backgroundImage: Image.propTypes.source,
   leftComponent: React.PropTypes.object,
   centerComponent: React.PropTypes.object,
   rightComponent: React.PropTypes.object,

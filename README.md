@@ -2,7 +2,7 @@
 Shoutem React Native App
 
 ## Code style
-[Five JavaScript Syle Guide](https://github.com/5minutes/javascript)
+[Five JavaScript Style Guide](https://github.com/5minutes/javascript)
 
 ### Linting [eslint](http://eslint.org/)
 Setup linting environment
@@ -12,6 +12,16 @@ Setup linting environment
 Run lint from root project folder
 
 ```eslint .```
+
+## Writing a component
+
+Component can be __stateless__ or __class__. Use class components only when you really need component lifecycle!
+Most common case when you use component lifecycle is when you want to prevent component new render 
+with `shouldComponentUpdate`, if component `props` haven't actually changed. Important is to know that components
+connected to `redux store` with `redux connect` doesn't need to check props received from store, 
+that does `redux connect` out of the box.
+
+TODO(Braco) - example
 
 ## Testing
 Mocha (test framework), Chai (assertion lib) and Enzyme (utility for react) are used for unit testing.

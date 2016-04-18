@@ -21,54 +21,60 @@ import { connectStyle, INCLUDE } from 'shoutem/theme';
  *  - infoSeparator: Image
  *  - infoFields: List<String>
  */
-class LargeGridItem extends React.Component {
-  static propTypes = {
-    bottomButtonText: React.PropTypes.any,
-    bottomButtonIcon: React.PropTypes.string,
-    topLabelText: React.PropTypes.any,
-    bottomLabelText: React.PropTypes.string,
-    backgroundImage: React.PropTypes.any,
-    infoSeparator: React.PropTypes.any,
-    style: React.PropTypes.object,
-    infoFields: React.PropTypes.array,
-    headline: React.PropTypes.string,
-  };
+function LargeGridItem({
+  style,
+  topLabelText,
+  bottomLabelText,
+  backgroundImage,
+  infoFields,
+  infoSeparator,
+  bottomButtonText,
+  bottomButtonIcon,
+  headline,
+}) {
+  const topLabelComp = topLabelText ?
+    <Text style={style.topLabel}>{topLabelText}</Text> : null;
 
-  render() {
-    const { style, topLabelText, bottomLabelText } = this.props;
+  const bottomLabelComp = bottomLabelText ?
+    <Text style={style.bottomLabel}>{bottomLabelText}</Text> : null;
 
-    const topLabelComp = topLabelText ?
-      <Text style={style.topLabel}>{topLabelText}</Text> : null;
-
-    const bottomLabelComp = bottomLabelText ?
-      <Text style={style.bottomLabel}>{bottomLabelText}</Text> : null;
-
-    return (
-      <View style={style.container}>
-        <Image
-          style={style.backgroundImage}
-          source={this.props.backgroundImage}
-        >
-          <View style={style.imageOverlay}>
-            {topLabelComp}
-            <Text style={style.headline}>{this.props.headline}</Text>
-            <InfoFields
-              infoFields={this.props.infoFields}
-              infoSeparator={this.props.infoSeparator}
-              style={style.infoFields}
-            />
-            {bottomLabelComp}
-            <Button
-              text={this.props.bottomButtonText}
-              icon={this.props.bottomButtonIcon}
-              style={style.button}
-            />
-          </View>
-        </Image>
-      </View>
-    );
-  }
+  return (
+    <View style={style.container}>
+      <Image
+        style={style.backgroundImage}
+        source={backgroundImage}
+      >
+        <View style={style.imageOverlay}>
+          {topLabelComp}
+          <Text style={style.headline}>{headline}</Text>
+          <InfoFields
+            infoFields={infoFields}
+            infoSeparator={infoSeparator}
+            style={style.infoFields}
+          />
+          {bottomLabelComp}
+          <Button
+            text={bottomButtonText}
+            icon={bottomButtonIcon}
+            style={style.button}
+          />
+        </View>
+      </Image>
+    </View>
+  );
 }
+
+LargeGridItem.propTypes = {
+  bottomButtonText: React.PropTypes.any,
+  bottomButtonIcon: React.PropTypes.string,
+  topLabelText: React.PropTypes.string,
+  bottomLabelText: React.PropTypes.string,
+  backgroundImage: Image.propTypes.source,
+  infoSeparator: Image.propTypes.source,
+  style: React.PropTypes.object,
+  infoFields: React.PropTypes.array,
+  headline: React.PropTypes.string,
+};
 
 const style = {
   backgroundImage: {

@@ -1,7 +1,6 @@
 import React, {
   View,
   Text,
-  Component,
   Image,
 } from 'react-native';
 import { connectStyle } from 'shoutem/theme';
@@ -12,42 +11,42 @@ import { connectStyle } from 'shoutem/theme';
  *  - infoFields: List<String> - string to be listed
  *  - infoSeparator: Image - image between strings
  */
-class InfoFields extends Component {
-  static propTypes = {
-    infoFields: React.PropTypes.array,
-    infoSeparator: React.PropTypes.any,
-    style: React.PropTypes.object,
-  };
-
-  render() {
-    const infoFieldsComponents = [];
-    const style = this.props.style;
-    if (this.props.infoFields && this.props.infoFields.length > 0) {
-      this.props.infoFields.forEach((info, i) => {
-        if (i > 0) {
-          infoFieldsComponents.push(
-            <Image
-              style={style.infoSeparator}
-              source={this.props.infoSeparator}
-              key={`separator${i}`}
-            />
-          );
-        }
+function InfoFields({
+  infoFields,
+  infoSeparator,
+  style,
+}) {
+  const infoFieldsComponents = [];
+  if (infoFields && infoFields.length > 0) {
+    infoFields.forEach((info, i) => {
+      if (i > 0) {
         infoFieldsComponents.push(
-          <Text
-            style={style.infoText}
-            key={i}
-          >
-            {info}
-          </Text>
+          <Image
+            style={style.infoSeparator}
+            source={infoSeparator}
+            key={`separator${i}`}
+          />
         );
-      });
-      return <View style={style.info}>{infoFieldsComponents}</View>;
-    }
-
-    return null;
+      }
+      infoFieldsComponents.push(
+        <Text
+          style={style.infoText}
+          key={i}
+        >
+          {info}
+        </Text>
+      );
+    });
+    return <View style={style.info}>{infoFieldsComponents}</View>;
   }
+  return null;
 }
+
+InfoFields.propTypes = {
+  infoFields: React.PropTypes.array,
+  infoSeparator: React.PropTypes.any,
+  style: React.PropTypes.object,
+};
 
 const style = {
   infoSeparator: {

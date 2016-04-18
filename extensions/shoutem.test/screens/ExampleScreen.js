@@ -1,5 +1,4 @@
 import React, {
-  Component,
   View,
   Text,
   TouchableOpacity,
@@ -34,25 +33,18 @@ const styles = {
   },
 };
 
-class ExampleScreen extends Component {
-  static propTypes = {
-    style: React.PropTypes.object,
-    configuration: React.PropTypes.object,
-    message: React.PropTypes.string,
-    dispatch: React.PropTypes.func,
-    setNavBarProps: React.PropTypes.func,
-  };
+function ExampleScreen({
+  style,
+  configuration,
+  message,
+  dispatch,
+  setNavBarProps,
+}) {
+  setNavBarProps({
+    centerComponent: <Text>{message}</Text>,
+  });
 
-  constructor(props) {
-    super(props);
-
-    props.setNavBarProps({
-      centerComponent: <Text>{props.message}</Text>,
-    });
-  }
-
-  navigateToScreen(screen, modal) {
-    const { dispatch } = this.props;
+  function navigateToScreen(screen, modal) {
     const { executeShortcut } = actions;
     const shortcut = {
       settings: {
@@ -66,8 +58,7 @@ class ExampleScreen extends Component {
     dispatch(executeShortcut(shortcut));
   }
 
-  openGannettListScreen() {
-    const { dispatch } = this.props;
+  function openGannettListScreen() {
     const { executeShortcut } = actions;
     const shortcut = {
       action: 'gannet.news.openListScreen',
@@ -77,67 +68,70 @@ class ExampleScreen extends Component {
     dispatch(executeShortcut(shortcut));
   }
 
-  navigateBack() {
-    const { dispatch } = this.props;
+  function goBack() {
     dispatch(navigateBack());
   }
 
-  render() {
-    console.log('Screen render');
+  console.log('Screen render');
 
-    const style = this.props.style;
-
-    /* eslint react/jsx-no-bind: 0 */
-    return (
-      <View style={style.content}>
-        <Text>{this.props.configuration.name}</Text>
-        <Text>{this.props.message}</Text>
-        <TouchableOpacity
-          style={style.button}
-          onPress={() => this.navigateBack()}
-        >
-          <Text>Back</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={style.button}
-          onPress={() => this.navigateToScreen(1)}
-        >
-          <Text>Screen 1</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={style.button}
-          onPress={() => this.navigateToScreen(2)}
-        >
-          <Text>Screen 2</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={style.button}
-          onPress={() => this.navigateToScreen(3, true)}
-        >
-          <Text>Screen 3</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={style.button}
-          onPress={() => this.props.setNavBarProps({
-            centerComponent: <Text>Plavi ekran iliti screen</Text>,
-            rightComponent: <Text>Desno</Text>,
-            style: {
-              backgroundColor: 'blue',
-            },
-          })}
-        >
-          <Text>Screen 3 - v2</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={style.button}
-          onPress={() => this.openGannettListScreen()}
-        >
-          <Text style={style.gannettButton}>Gannett list screen</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
+  /* eslint react/jsx-no-bind: 0 */
+  return (
+    <View style={style.content}>
+      <Text>{configuration.name}</Text>
+      <Text>{message}</Text>
+      <TouchableOpacity
+        style={style.button}
+        onPress={() => goBack()}
+      >
+        <Text>Back</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={style.button}
+        onPress={() => navigateToScreen(1)}
+      >
+        <Text>Screen 1</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={style.button}
+        onPress={() => navigateToScreen(2)}
+      >
+        <Text>Screen 2</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={style.button}
+        onPress={() => navigateToScreen(3, true)}
+      >
+        <Text>Screen 3</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={style.button}
+        onPress={() => setNavBarProps({
+          centerComponent: <Text>Plavi ekran iliti screen</Text>,
+          rightComponent: <Text>Desno</Text>,
+          style: {
+            backgroundColor: 'blue',
+          },
+        })}
+      >
+        <Text>Screen 3 - v2</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={style.button}
+        onPress={openGannettListScreen}
+      >
+        <Text style={style.gannettButton}>Gannett list screen</Text>
+      </TouchableOpacity>
+    </View>
+  );
 }
+
+ExampleScreen.propTypes = {
+  style: React.PropTypes.object,
+  configuration: React.PropTypes.object,
+  message: React.PropTypes.string,
+  dispatch: React.PropTypes.func,
+  setNavBarProps: React.PropTypes.func,
+};
 
 function mapStateToProps(state) {
   return {

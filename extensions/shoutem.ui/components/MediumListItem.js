@@ -1,7 +1,6 @@
 import React, {
   View,
   Text,
-  Component,
   Image,
   TouchableOpacity,
 } from 'react-native';
@@ -20,31 +19,29 @@ import Button from './Button';
  *  - extrasSeparatorImage: Image
  *  - buttonIcon: Image
  */
-class MediumListItem extends Component {
-  static propTypes = {
-    style: React.PropTypes.object,
-    id: React.PropTypes.number,
-    description: React.PropTypes.string,
-    leftExtra: React.PropTypes.string,
-    rightExtra: React.PropTypes.string,
-    image: React.PropTypes.any,
-    extrasSeparatorImage: React.PropTypes.any,
-    buttonIcon: React.PropTypes.any,
-    onPressItem: React.PropTypes.any,
-    onPressMethod: React.PropTypes.func,
-  };
-
-  constructor(props, context) {
-    super(props, context);
-    this.onPress = this.onPress.bind(this);
+function MediumListItem({
+  style,
+  id,
+  description,
+  leftExtra,
+  rightExtra,
+  image,
+  extrasSeparatorImage,
+  buttonIcon,
+  onPressItem,
+  onPressMethod,
+}) {
+  let separatorImage = null;
+  if (extrasSeparatorImage) {
+    separatorImage = (
+      <Image
+        style={style.extrasSeparator}
+        source={extrasSeparatorImage}
+      />
+    );
   }
 
-  onPress() {
-    const {
-      onPressMethod,
-      onPressItem,
-    } = this.props;
-
+  function onPress() {
     if (!onPressMethod) {
       return;
     }
@@ -52,46 +49,38 @@ class MediumListItem extends Component {
     onPressMethod(onPressItem);
   }
 
-  render() {
-    const {
-      style,
-      id,
-      description,
-      leftExtra,
-      rightExtra,
-      image,
-      extrasSeparatorImage,
-      buttonIcon,
-    } = this.props;
-    let separatorImage = null;
-    if (extrasSeparatorImage) {
-      separatorImage = (
-        <Image
-          style={style.extrasSeparator}
-          source={extrasSeparatorImage}
-        />
-      );
-    }
-    return (
-      <TouchableOpacity onPress={this.onPress}>
-        <View style={style.container} key={id}>
-          <Image style={style.itemImage} source={image} />
-          <View style={style.itemInfo}>
-            <Text style={[style.baseFont, style.itemDescription]}>
-              {description}
-            </Text>
-            <View style={style.itemExtras}>
-              <Text style={[style.baseFont, style.leftExtra]}>{leftExtra}</Text>
-              {separatorImage}
-              <Text style={style.rightExtra}>{rightExtra}</Text>
-            </View>
+  return (
+    <TouchableOpacity onPress={onPress} key={id}>
+      <View style={style.container}>
+        <Image style={style.itemImage} source={image} />
+        <View style={style.itemInfo}>
+          <Text style={[style.baseFont, style.itemDescription]}>
+            {description}
+          </Text>
+          <View style={style.itemExtras}>
+            <Text style={[style.baseFont, style.leftExtra]}>{leftExtra}</Text>
+            {separatorImage}
+            <Text style={style.rightExtra}>{rightExtra}</Text>
           </View>
-          <Button style={style.mediumListItemButton} icon={buttonIcon} />
         </View>
-      </TouchableOpacity>
-    );
-  }
+        <Button style={style.mediumListItemButton} icon={buttonIcon} />
+      </View>
+    </TouchableOpacity>
+  );
 }
+
+MediumListItem.propTypes = {
+  style: React.PropTypes.object,
+  id: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
+  description: React.PropTypes.string,
+  leftExtra: React.PropTypes.string,
+  rightExtra: React.PropTypes.string,
+  image: Image.propTypes.source,
+  extrasSeparatorImage: Image.propTypes.source,
+  buttonIcon: React.PropTypes.any,
+  onPressItem: React.PropTypes.any,
+  onPressMethod: React.PropTypes.func,
+};
 
 const style = {
   container: {

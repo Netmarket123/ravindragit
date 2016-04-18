@@ -10,7 +10,8 @@
       "../extensions/shoutem.homescreen",
       "../extensions/shoutem.application",
       "../extensions/shoutem.codepush",
-      "../extensions/shoutem.ui"
+      "../extensions/shoutem.ui",
+      "../extensions/gannet.news"
     ],
     "extensionsJsPath": "./extensions.js"
 }
