@@ -34,11 +34,6 @@ class AppBuild {
     return `/v1/apps/${this.appId}/configuration`;
   }
 
-  getAuthorizationToken() {
-    // TODO(Ivan): add real jwt token when authorization api available
-    return this.jwt;
-  }
-
   downloadConfiguration() {
     console.time('download configuration');
     const configurationFile = fs.createWriteStream(this.configurationFilePath);
@@ -48,7 +43,7 @@ class AppBuild {
         path: this.getConfigurationUrl(),
         host: this.serverApiEndpoint,
         headers: {
-          Authorization: this.getAuthorizationToken(),
+          Authorization: this.authorization,
           Accept: 'application/vnd.api+json',
         },
       }, response => {
@@ -69,8 +64,8 @@ class AppBuild {
     });
   }
 
-  getConfiguration(assetsPath) {
-    return require(path.join('..', assetsPath));
+  getConfiguration() {
+    return require(path.join('..', this.configurationFilePath));
   }
 
   removeBabelrcFiles() {
@@ -82,7 +77,7 @@ class AppBuild {
   }
 
   prepareExtensions() {
-    this.configuration = this.getConfiguration(this.configurationFilePath);
+    this.configuration = this.getConfiguration();
     const extensions = getExtensionsFromConfigurations(this.configuration);
     const localExtensions = getLocalExtensions(this.workingDirectories);
     const extensionsJsPath = this.extensionsJsPath;
@@ -101,8 +96,6 @@ class AppBuild {
   run() {
     console.time('build time');
     console.log(`starting build for app ${this.appId}`);
-    // this.downloadConfiguration()
-    //   .then(() => this.prepareExtensions())
     this.prepareExtensions()
       .then(() => {
         console.timeEnd('build time');
