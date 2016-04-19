@@ -9,14 +9,6 @@ import { connectStyle } from 'shoutem/theme';
  * Used to show single item in large grid box.
  * Contains, headline, topLabel, bottomLabel, infoFields, bottomButton and backgroundImage.
  * Available properties:
- *  - headline: String
- *  - bottomButtonText: String
- *  - bottomButtonIcon: Image
- *  - topLabelText: String
- *  - bottomLabelText: String
- *  - backgroundImage: Image
- *  - infoSeparator: Image
- *  - infoFields: List<String>
  */
 function GridBox({
   style,
@@ -38,14 +30,13 @@ function GridBox({
 }
 
 GridBox.propTypes = {
-  children: React.propTypes.children,
+  children: React.PropTypes.element,
   backgroundImage: Image.propTypes.source,
   style: React.PropTypes.object,
 };
 
 const style = {
   container: {
-    height: 330,
   },
   backgroundImage: {
     width: null,
@@ -54,11 +45,9 @@ const style = {
   },
   imageOverlay: {
     flex: 1,
-    padding: 15,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    backgroundColor: 'rgba(0,0,0,0.2)',
   },
   header: {},
   body: {},

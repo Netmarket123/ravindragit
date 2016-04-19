@@ -1,9 +1,9 @@
 import React, {
   Text,
 } from 'react-native';
-import InfoFields from './InfoFields';
-import GridBox from './base/GridBox';
-import Button from './Button';
+import InfoFields from '../InfoFields/InfoFields';
+import GridBox from './GridBox';
+import Button from '../Button/Button';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
 
 function createEventDates(eventsDetails, eventDetailsSeparator, eventDetailsStyle) {

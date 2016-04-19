@@ -14,9 +14,15 @@ function createOffsetStyle(offset) {
   return Dimensions.get('window').height - offset;
 }
 
-function createDetailsStyle(topOffset) {
+function createDetailsStyle(topOffset, style) {
   return {
-    marginTop: topOffset,
+    detailsContainer: {
+      ...style.detailsContainer,
+      marginTop: topOffset,
+    },
+    detailsTitle: style.detailsTitle,
+    detailsTitleContainer: style.detailsTitleContainer,
+    detailsText: style.detailsText,
   };
 }
 
@@ -40,12 +46,13 @@ function getScrollHandle(scrollY) {
 }
 
 function Details({ item, style }) {
+  console.log(style);
   return (
-    <View key="details" style={style}>
-      <View style={style.titleContainer}>
-        <Text style={style.title}>{item.title}</Text>
+    <View key="details" style={style.detailsContainer}>
+      <View style={style.detailsTitleContainer}>
+        <Text style={style.detailsTitle}>{item.title}</Text>
       </View>
-      <Text>{item.body.replace(/<\/?[^>]+(>|$)/g, '')}</Text>
+      <Text style={style.detailsText}>{item.body.replace(/<\/?[^>]+(>|$)/g, '')}</Text>
     </View>
   );
 }
@@ -64,7 +71,7 @@ function GannettDetailsScreen({
   const scrollY = new Animated.Value(0);
   const detailsTopOffset = createOffsetStyle(bottomContentOffset);
   const headerStyle = createAnimatedHeaderStyle(style.header, scrollY, detailsTopOffset);
-  const detailsStyle = createDetailsStyle(detailsTopOffset);
+  const detailsStyle = createDetailsStyle(detailsTopOffset, style);
 
   return (
     <View style={style.screen}>
@@ -78,7 +85,7 @@ function GannettDetailsScreen({
         scrollEventThrottle={16}
         onScroll={getScrollHandle(scrollY)}
       >
-        <Details item={item} style={[style.details, detailsStyle]} />
+        <Details item={item} style={detailsStyle} />
       </ScrollView>
     </View>
   );
@@ -94,20 +101,20 @@ const style = {
   screen: {
     position: 'relative',
   },
-  title: {
+  detailsText: {},
+  detailsTitle: {
     [INCLUDE]: ['h1'],
-    color: 'black',
     paddingBottom: 20,
     position: 'absolute',
     bottom: 0,
     backgroundColor: 'transparent',
   },
-  titleContainer: {
+  detailsTitleContainer: {
     backgroundColor: 'transparent',
     position: 'absolute',
     top: 0,
   },
-  details: {
+  detailsContainer: {
     flex: 1,
     backgroundColor: '#fff',
     padding: 15,

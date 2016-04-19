@@ -5,7 +5,8 @@ import React, {
   TouchableOpacity,
 } from 'react-native';
 import { connectStyle } from 'shoutem/theme';
-import Button from './Button';
+import Button from '../Button/Button';
+import GridBox from '../GridBox/GridBox';
 
 /**
  * Used to show single list item.
@@ -19,7 +20,7 @@ import Button from './Button';
  *  - extrasSeparatorImage: Image
  *  - buttonIcon: Image
  */
-function MediumListItem({
+function ListItem({
   style,
   id,
   description,
@@ -50,8 +51,8 @@ function MediumListItem({
   }
 
   return (
-    <TouchableOpacity onPress={onPress} key={id}>
-      <View style={style.container}>
+    <GridBox style={style.gridBox}>
+      <TouchableOpacity style={style.container} onPress={onPress} key={id}>
         <Image style={style.itemImage} source={image} />
         <View style={style.itemInfo}>
           <Text style={[style.baseFont, style.itemDescription]}>
@@ -64,12 +65,12 @@ function MediumListItem({
           </View>
         </View>
         <Button style={style.mediumListItemButton} icon={buttonIcon} />
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </GridBox>
   );
 }
 
-MediumListItem.propTypes = {
+ListItem.propTypes = {
   style: React.PropTypes.object,
   id: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
   description: React.PropTypes.string,
@@ -83,6 +84,9 @@ MediumListItem.propTypes = {
 };
 
 const style = {
+  gridBox: {
+
+  },
   container: {
     padding: 15,
     flexDirection: 'row',
@@ -134,4 +138,4 @@ const style = {
   },
 };
 
-export default connectStyle('dev.ext.MediumListItem', style)(MediumListItem);
+export default connectStyle('shoutem.ui.ListItem', style)(ListItem);

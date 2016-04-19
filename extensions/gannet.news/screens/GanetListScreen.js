@@ -10,7 +10,7 @@ import { bindActionCreators } from 'redux';
 import { find } from 'redux-api-state';
 
 import { connectStyle } from 'shoutem/theme';
-import { LargeGridItem, MediumListItem } from 'shoutem.ui';
+import { NewsGridBox, ListItem } from 'shoutem.ui';
 import { navigateTo } from 'shoutem/navigation';
 
 function formatDate(dateString) {
@@ -25,7 +25,7 @@ function formatDate(dateString) {
 function renderRow(item, style, extrasSeparator, onPress) {
   if (item.featured) {
     return (
-      <LargeGridItem
+      <NewsGridBox
         backgroundImage={item.image}
         headline={item.description.toUpperCase()}
         infoFields={[item.source, item.date]}
@@ -35,7 +35,7 @@ function renderRow(item, style, extrasSeparator, onPress) {
   }
 
   return (
-    <MediumListItem
+    <ListItem
       description={item.title}
       image={{ uri: item.image_url }}
       extrasSeparatorImage={extrasSeparator}

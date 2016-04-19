@@ -1,11 +1,8 @@
 import React, {
   Text,
-  View,
-  Image,
 } from 'react-native';
-import InfoFields from './InfoFields';
-import GridBox from './base/GridBox';
-import Button from './Button';
+import InfoFields from '../InfoFields/InfoFields';
+import GridBox from './GridBox';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
 
 /**

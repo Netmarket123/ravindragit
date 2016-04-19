@@ -4,7 +4,7 @@ import React, {
   TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { connectStyle } from 'shoutem/theme';
+import { INCLUDE, connectStyle } from 'shoutem/theme';
 
 import {
   navigateBack,
@@ -25,6 +25,7 @@ const styles = {
     backgroundColor: 'gray',
     marginTop: 5,
     padding: 15,
+    [INCLUDE]: ['h1'],
   },
   gannettButton: {
     textAlign: 'center',

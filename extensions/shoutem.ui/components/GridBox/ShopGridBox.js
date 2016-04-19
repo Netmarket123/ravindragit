@@ -1,8 +1,8 @@
 import React, {
   Text,
 } from 'react-native';
-import GridBox from './base/GridBox';
-import Button from './Button';
+import GridBox from './GridBox';
+import Button from '../Button/Button';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
 
 /**
