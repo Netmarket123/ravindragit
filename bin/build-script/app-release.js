@@ -1,7 +1,6 @@
 'use-strict';
 
 const CodePush = require('code-push');
-const AppBuild = require('./app-build');
 const https = require('https');
 const _ = require('lodash');
 
@@ -23,7 +22,6 @@ class AppRelease {
     Object.assign(this, config);
     this.codePush = new CodePush(codePushAccessKey);
     this.platform = platform;
-    this.appBuild = new AppBuild(config);
   }
 
   registerNewDeploymentKeys(deploymentKeys) {
@@ -86,12 +84,19 @@ class AppRelease {
 
     return Promise.resolve();
   }
-  
+
   getDeploymentName() {
-    return this.production
+    return this.production ? 'Production' : 'Staging';
   }
 
   release() {
-    this.codePush.release(this.appId, this.getDeploymentName())
+    this.codePush.release(this.appId, this.getDeploymentName(), '.')
+      .then(() =>
+        console.log(`App with id:${this.appId} is successfully released`)
+      )
+      .catch((error) => {
+        console.error(error);
+        process.exit(1);
+      });
   }
 }
