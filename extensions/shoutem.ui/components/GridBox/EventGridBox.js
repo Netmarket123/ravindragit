@@ -1,70 +1,47 @@
 import React, {
   Text,
-  View,
   Image,
 } from 'react-native';
 import InfoFields from './InfoFields';
+import GridBox from './base/GridBox';
 import Button from './Button';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
 
 /**
- * LargeGridItem is single list item.
- * Used to show single item in large grid box.
- * Contains, headline, topLabel, bottomLabel, infoFields, bottomButton and backgroundImage.
- * Available properties:
- *  - headline: String
- *  - bottomButtonText: String
- *  - bottomButtonIcon: Image
- *  - topLabelText: String
- *  - bottomLabelText: String
- *  - backgroundImage: Image
- *  - infoSeparator: Image
- *  - infoFields: List<String>
+ * EventGridBox used to show single item with shop related properties and actions.
  */
-function LargeGridItem({
+function EventGridItem({
   style,
-  topLabelText,
-  bottomLabelText,
-  backgroundImage,
   infoFields,
   infoSeparator,
   bottomButtonText,
   bottomButtonIcon,
   headline,
 }) {
-  const topLabelComp = topLabelText ?
-    <Text style={style.topLabel}>{topLabelText}</Text> : null;
-
-  const bottomLabelComp = bottomLabelText ?
-    <Text style={style.bottomLabel}>{bottomLabelText}</Text> : null;
-
   return (
-    <View style={style.container}>
-      <Image
-        style={style.backgroundImage}
-        source={backgroundImage}
-      >
-        <View style={style.imageOverlay}>
-          {topLabelComp}
-          <Text style={style.headline}>{headline}</Text>
-          <InfoFields
-            infoFields={infoFields}
-            infoSeparator={infoSeparator}
-            style={style.infoFields}
-          />
-          {bottomLabelComp}
-          <Button
-            text={bottomButtonText}
-            icon={bottomButtonIcon}
-            style={style.button}
-          />
-        </View>
-      </Image>
-    </View>
+    <GridBox>
+      <Text style={style.headline}>{headline}</Text>
+      <InfoFields
+        infoFields={infoFields}
+        infoSeparator={infoSeparator}
+        style={style.infoFields}
+      />
+      <Image />
+      <InfoFields
+        infoFields={infoFields}
+        infoSeparator={infoSeparator}
+        style={style.infoFields}
+      />
+      <Button
+        text={bottomButtonText}
+        icon={bottomButtonIcon}
+        style={style.button}
+      />
+    </GridBox>
   );
 }
 
-LargeGridItem.propTypes = {
+EventGridItem.propTypes = {
   bottomButtonText: React.PropTypes.any,
   bottomButtonIcon: React.PropTypes.string,
   topLabelText: React.PropTypes.string,
@@ -124,6 +101,7 @@ const style = {
       marginBottom: 30,
     },
   },
+  gridBox: {},
 };
 
-export default connectStyle('dev.ext.LargeGridItem', style)(LargeGridItem);
+export default connectStyle('shoutem.ui.EventGridItem', style)(EventGridItem);

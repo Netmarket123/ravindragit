@@ -44,7 +44,7 @@ function InfoFields({
 
 InfoFields.propTypes = {
   infoFields: React.PropTypes.array,
-  infoSeparator: React.PropTypes.any,
+  infoSeparator: Image.PropTypes.source,
   style: React.PropTypes.object,
 };
 
