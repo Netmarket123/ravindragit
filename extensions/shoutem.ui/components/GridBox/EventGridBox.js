@@ -1,6 +1,5 @@
 import React, {
   Text,
-  Image,
 } from 'react-native';
 import InfoFields from './InfoFields';
 import GridBox from './base/GridBox';
@@ -43,8 +42,8 @@ function EventGridItem({
     <GridBox style={style.gridBox}>
       <Text style={style.headline}>{headline}</Text>
       <InfoFields
-        infoFields={eventsDetailsComponents}
-        infoSeparator={eventSeparator}
+        fields={eventsDetailsComponents}
+        fieldsSeparator={eventSeparator}
         style={style.event}
       />
       <Button
@@ -59,9 +58,9 @@ function EventGridItem({
 EventGridItem.propTypes = {
   buttonText: React.PropTypes.string,
   buttonIcon: React.PropTypes.string,
-  eventSeparator: Image.propTypes.source,
+  eventSeparator: React.PropTypes.string,
   eventDetails: React.PropTypes.array,
-  eventDetailsSeparator: Image.propTypes.source,
+  eventDetailsSeparator: React.PropTypes.string,
   style: React.PropTypes.object,
   headline: React.PropTypes.string,
 };

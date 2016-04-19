@@ -13,16 +13,16 @@ import { connectStyle, INCLUDE } from 'shoutem/theme';
  */
 function NewsGridBox({
   style,
-  infoFields,
-  infoSeparator,
+  newsDetails,
+  newsDetailsSeparator,
   headline,
 }) {
   return (
     <GridBox style={style.gridBox}>
       <Text style={style.headline}>{headline}</Text>
       <InfoFields
-        infoFields={infoFields}
-        infoSeparator={infoSeparator}
+        fields={newsDetails}
+        fieldsSeparator={newsDetailsSeparator}
         style={style.infoFields}
       />
     </GridBox>
@@ -30,9 +30,9 @@ function NewsGridBox({
 }
 
 NewsGridBox.propTypes = {
-  infoSeparator: Image.propTypes.source,
+  newsDetailsSeparator: React.PropTypes.string,
   style: React.PropTypes.object,
-  infoFields: React.PropTypes.array,
+  newsDetails: React.PropTypes.array,
   headline: React.PropTypes.string,
 };
 
