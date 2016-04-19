@@ -7,34 +7,49 @@ import GridBox from './base/GridBox';
 import Button from './Button';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
 
+function createEventDates(eventsDetails, eventDetailsSeparator, eventDetailsStyle) {
+  const datesListComponents = [];
+
+  eventsDetails.forEach((eventDetails, index) => {
+    datesListComponents.push(
+      (<InfoFields
+        key={index}
+        infoFields={eventDetails}
+        infoSeparator={eventDetailsSeparator}
+        style={eventDetailsStyle}
+      />)
+    );
+  });
+
+  return datesListComponents;
+}
+
 /**
- * EventGridBox used to show single item with shop related properties and actions.
+ * EventGridBox used to show single item with event related properties and actions.
  */
 function EventGridItem({
   style,
-  infoFields,
-  infoSeparator,
-  bottomButtonText,
-  bottomButtonIcon,
+  eventDetails,
+  eventDetailsSeparator,
+  eventSeparator,
+  buttonText,
+  buttonIcon,
   headline,
 }) {
+  const eventsDetailsComponents =
+    createEventDates(eventDetails, eventDetailsSeparator, style.eventDetails);
+
   return (
-    <GridBox>
+    <GridBox style={style.gridBox}>
       <Text style={style.headline}>{headline}</Text>
       <InfoFields
-        infoFields={infoFields}
-        infoSeparator={infoSeparator}
-        style={style.infoFields}
-      />
-      <Image />
-      <InfoFields
-        infoFields={infoFields}
-        infoSeparator={infoSeparator}
-        style={style.infoFields}
+        infoFields={eventsDetailsComponents}
+        infoSeparator={eventSeparator}
+        style={style.event}
       />
       <Button
-        text={bottomButtonText}
-        icon={bottomButtonIcon}
+        text={buttonText}
+        icon={buttonIcon}
         style={style.button}
       />
     </GridBox>
@@ -42,35 +57,16 @@ function EventGridItem({
 }
 
 EventGridItem.propTypes = {
-  bottomButtonText: React.PropTypes.any,
-  bottomButtonIcon: React.PropTypes.string,
-  topLabelText: React.PropTypes.string,
-  bottomLabelText: React.PropTypes.string,
-  backgroundImage: Image.propTypes.source,
-  infoSeparator: Image.propTypes.source,
+  buttonText: React.PropTypes.string,
+  buttonIcon: React.PropTypes.string,
+  eventSeparator: Image.propTypes.source,
+  eventDetails: React.PropTypes.array,
+  eventDetailsSeparator: Image.propTypes.source,
   style: React.PropTypes.object,
-  infoFields: React.PropTypes.array,
   headline: React.PropTypes.string,
 };
 
 const style = {
-  backgroundImage: {
-    width: null,
-    height: null,
-    flex: 1,
-  },
-  imageOverlay: {
-    flex: 1,
-    padding: 15,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-    backgroundColor: 'rgba(0,0,0,0.2)',
-  },
-  horizontal_layout: {},
-  container: {
-    height: 330,
-  },
   headline: {
     textAlign: 'center',
     fontSize: 25,
@@ -94,9 +90,8 @@ const style = {
       fontSize: 12,
     },
   },
-  topLabel: {},
-  bottomLabel: {},
-  infoFields: {
+  eventDetails: {},
+  event: {
     info: {
       marginBottom: 30,
     },
@@ -104,4 +99,4 @@ const style = {
   gridBox: {},
 };
 
-export default connectStyle('shoutem.ui.EventGridItem', style)(EventGridItem);
+export default connectStyle('shoutem.ui.EventGridBox', style)(EventGridItem);
