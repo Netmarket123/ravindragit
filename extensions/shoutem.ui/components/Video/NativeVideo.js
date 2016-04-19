@@ -4,27 +4,40 @@ import React, {
   View,
   TouchableOpacity,
   Modal,
+  Text,
+  PropTypes,
 } from 'react-native';
 
 import Video from 'react-native-video';
+
+const propTypes = {
+  width: PropTypes.number,
+  height: PropTypes.number,
+  source: PropTypes.shape({
+    uri: PropTypes.string,
+  }),
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'black',
+    backgroundColor: '#d8d8d8',
   },
   fullScreen: {
     position: 'absolute',
-    height: 700,
     top: 0,
     left: 0,
     bottom: 0,
     right: 0,
   },
-  embedded: {
-    flex: 1
+  closeButton: {
+    fontSize: 35,
+    color: 'white',
+    lineHeight: 40,
+    width: 40,
+    textAlign: 'center',
   },
   controls: {
     backgroundColor: 'transparent',
@@ -34,14 +47,11 @@ const styles = StyleSheet.create({
     left: 4,
     right: 4,
   },
-  exit: {
-    borderRadius: 10,
-    backgroundColor: 'yellow',
+  header: {
     position: 'absolute',
-    top: 20,
-    left: 300,
-    width: 50,
-    height: 50,
+    top: 0,
+    left: 0,
+    backgroundColor: 'transparent',
   },
   progress: {
     flex: 1,
@@ -59,13 +69,12 @@ const styles = StyleSheet.create({
   },
 });
 
-class NativeVideo extends Component {
+export default class NativeVideo extends Component {
   constructor(props) {
     super(props);
     this.onLoad = this.onLoad.bind(this);
     this.onProgress = this.onProgress.bind(this);
     this.onError = this.onError.bind(this);
-    this.onLoadStart = this.onLoadStart.bind(this);
     this.getCurrentTimePercentage = this.getCurrentTimePercentage.bind(this);
   }
 
@@ -80,14 +89,8 @@ class NativeVideo extends Component {
     paused: true,
   };
 
-  onLoadStart(data) {
-    console.warn(JSON.stringify(this.props));
-    //console.warn(`Video is loading ${JSON.stringify(data)}`);
-  }
-
   onLoad(data) {
     this.setState({ duration: data.duration });
-    //console.warn(`Video is loaded ${JSON.stringify(data)}`);
     this.setState({ paused: !this.state.paused });
   }
 
@@ -107,73 +110,81 @@ class NativeVideo extends Component {
     return 0;
   }
 
-  getWrapperComponent() {
-    return this.state.fullScreen ? Modal : View;
-  }
-
   render() {
-    const flexCompleted = this.getCurrentTimePercentage() * 100;
-    const flexRemaining = (1 - this.getCurrentTimePercentage()) * 100;
     const { width, height } = this.props;
 
-    const WrapperComponent = this.getWrapperComponent();
-
-    let closeButton;
-    let controls;
+    const playableVideo = (
+      <TouchableOpacity style={styles.fullScreen} onPress={() => {
+        this.setState({
+          paused: !this.state.paused,
+          fullScreen: true,
+        });
+      }}
+      >
+        <Video
+          source={this.props.source}
+          style={ this.state.fullScreen ? styles.fullScreen : { width, height } }
+          rate={this.state.rate}
+          paused={this.state.paused}
+          volume={this.state.volume}
+          muted={this.state.muted}
+          resizeMode={this.state.resizeMode}
+          onLoad={this.onLoad}
+          onError={this.onError}
+          onProgress={this.onProgress}
+          repeat
+        />
+      </TouchableOpacity>
+    );
 
     if (this.state.fullScreen) {
-      closeButton = <View style={styles.exit}>
+      const flexCompleted = this.getCurrentTimePercentage() * 100;
+      const flexRemaining = (1 - this.getCurrentTimePercentage()) * 100;
+
+      const closeButton = (
+        <View style={styles.header}>
           <TouchableOpacity style={styles.fullScreen} onPress={() => {
             this.setState({
               paused: true,
               fullScreen: !this.state.fullScreen,
             });
           }}
-      >
+          >
+            <Text style={styles.closeButton}>×</Text>
           </TouchableOpacity>
-        </View>;
+        </View>
+      );
 
-      controls = <View style={styles.controls}>
+      const controls = (
+        <View style={styles.controls}>
           <View style={styles.trackingControls}>
             <View style={styles.progress}>
               <View style={[styles.innerProgressCompleted, { flex: flexCompleted }]} />
               <View style={[styles.innerProgressRemaining, { flex: flexRemaining }]} />
             </View>
           </View>
-        </View>;
+        </View>
+       );
+
+      return (
+        <Modal>
+          <View style={styles.container}>
+            {playableVideo}
+            {controls}
+            {closeButton}
+          </View>
+        </Modal>
+      );
     }
 
     return (
-      <WrapperComponent >
-      <View style={styles.container}>
-        <TouchableOpacity style={styles.fullScreen} onPress={() => {
-          this.setState({
-            paused: !this.state.paused,
-            fullScreen: true,
-          });
-        }}
-        >
-          <Video
-            source={this.props.source}
-            style={ this.state.fullScreen ? styles.fullScreen : { width, height } }
-            rate={this.state.rate}
-            paused={this.state.paused}
-            volume={this.state.volume}
-            muted={this.state.muted}
-            resizeMode={this.state.resizeMode}
-            onLoadStart={this.onLoadStart}
-            onLoad={this.onLoad}
-            onError={this.onError}
-            onProgress={this.onProgress}
-            repeat
-          />
-        </TouchableOpacity>
-        {controls}
-        {closeButton}
+      <View >
+        <View style={styles.container}>
+          {playableVideo}
+        </View>
       </View>
-      </WrapperComponent>
     );
   }
 }
 
-export default NativeVideo;
+NativeVideo.propTypes = propTypes;
