@@ -76,6 +76,8 @@ export default class NativeVideo extends Component {
     this.onProgress = this.onProgress.bind(this);
     this.onError = this.onError.bind(this);
     this.getCurrentTimePercentage = this.getCurrentTimePercentage.bind(this);
+    this.onPressCloseBUtton = this.onPressCloseBUtton.bind(this);
+    this.onPressVideo = this.onPressVideo.bind(this);
   }
 
   state = {
@@ -102,6 +104,20 @@ export default class NativeVideo extends Component {
     console.warn(`Video cannot be loaded ${error}`);
   }
 
+  onPressCloseBUtton() {
+    this.setState({
+      paused: true,
+      fullScreen: !this.state.fullScreen,
+    });
+  }
+
+  onPressVideo() {
+    this.setState({
+      paused: !this.state.paused,
+      fullScreen: true,
+    });
+  }
+
   getCurrentTimePercentage() {
     if (this.state.currentTime > 0) {
       return parseFloat(this.state.currentTime) / parseFloat(this.state.duration);
@@ -110,17 +126,12 @@ export default class NativeVideo extends Component {
     return 0;
   }
 
+
   render() {
     const { width, height } = this.props;
 
     const playableVideo = (
-      <TouchableOpacity style={styles.fullScreen} onPress={() => {
-        this.setState({
-          paused: !this.state.paused,
-          fullScreen: true,
-        });
-      }}
-      >
+      <TouchableOpacity style={styles.fullScreen} onPress={this.onPressVideo}>
         <Video
           source={this.props.source}
           style={ this.state.fullScreen ? styles.fullScreen : { width, height } }
@@ -143,13 +154,7 @@ export default class NativeVideo extends Component {
 
       const closeButton = (
         <View style={styles.header}>
-          <TouchableOpacity style={styles.fullScreen} onPress={() => {
-            this.setState({
-              paused: true,
-              fullScreen: !this.state.fullScreen,
-            });
-          }}
-          >
+          <TouchableOpacity style={styles.fullScreen} onPress={this.onPressCloseBUtton}>
             <Text style={styles.closeButton}>×</Text>
           </TouchableOpacity>
         </View>
