@@ -45,13 +45,7 @@ const style = {
   },
   imageOverlay: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
   },
-  header: {},
-  body: {},
-  footer: {},
 };
 
 export default connectStyle('shoutem.ui.GridBox', style)(GridBox);

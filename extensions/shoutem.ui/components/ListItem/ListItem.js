@@ -8,6 +8,8 @@ import { connectStyle } from 'shoutem/theme';
 import Button from '../Button/Button';
 import GridBox from '../GridBox/GridBox';
 
+const DEFAULT_NUMBER_OF_LINES = 2;
+
 /**
  * Used to show single list item.
  * Contains description, image, leftExtra, rightExtra, extraSeparator & button.
@@ -31,6 +33,7 @@ function ListItem({
   buttonIcon,
   onPressItem,
   onPressMethod,
+  numberOfLines,
 }) {
   let separatorImage = null;
   if (extrasSeparatorImage) {
@@ -55,7 +58,10 @@ function ListItem({
       <TouchableOpacity style={style.container} onPress={onPress} key={id}>
         <Image style={style.itemImage} source={image} />
         <View style={style.itemInfo}>
-          <Text style={[style.baseFont, style.itemDescription]}>
+          <Text
+            numberOfLines={numberOfLines || DEFAULT_NUMBER_OF_LINES}
+            style={[style.baseFont, style.itemDescription]}
+          >
             {description}
           </Text>
           <View style={style.itemExtras}>
@@ -81,60 +87,29 @@ ListItem.propTypes = {
   buttonIcon: React.PropTypes.any,
   onPressItem: React.PropTypes.any,
   onPressMethod: React.PropTypes.func,
+  numberOfLines: React.PropTypes.number,
 };
 
 const style = {
   gridBox: {
-
   },
   container: {
-    padding: 15,
-    flexDirection: 'row',
-    alignItems: 'stretch',
-    alignSelf: 'stretch',
-    height: 95,
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#ccc',
   },
   itemImage: {
-    width: 65,
-    height: null,
-    borderRadius: 2,
-    marginRight: 15,
-    resizeMode: 'cover',
   },
   itemInfo: {
-    flexDirection: 'column',
-    flex: 1,
-    alignSelf: 'stretch',
-    justifyContent: 'flex-start',
-    position: 'relative',
   },
   itemExtras: {
-    flexDirection: 'row',
-    alignSelf: 'flex-start',
-    bottom: 0,
-    alignItems: 'center',
   },
   itemDescription: {
-    flex: 1,
-    fontSize: 15,
-    color: '#222',
   },
   extrasSeparator: {
-    width: 3,
-    height: 3,
   },
   leftExtra: {
-    fontSize: 15,
   },
   rightExtra: {
-    fontSize: 15,
   },
   mediumListItemButton: {
-    button: {
-      alignSelf: 'stretch',
-    },
   },
 };
 
