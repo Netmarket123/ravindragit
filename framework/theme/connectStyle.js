@@ -125,6 +125,9 @@ export default function connectStyle(componentStyleName, componentStyle) {
           return <WrappedComponent {...this.props} {...this.state} />;
         }
 
+        // TODO(Braco) - check if this different Component creation for func and class is needed
+        // for React > 0.15. In React > 0.15, func components should be able to render `null`
+
         // otherwise initialize function component as function for case it returns null
         // https://github.com/facebook/react/issues/4599
         // eslint-disable-next-line new-cap
