@@ -31,14 +31,13 @@ class AppBuild {
   }
 
   getConfigurationUrl() {
-    return `/v1/apps/${this.appId}/configuration`;
+    return `/v1/apps/${this.appId}/configuration/current`;
   }
 
   downloadConfiguration() {
     console.time('download configuration');
     const configurationFile = fs.createWriteStream(this.configurationFilePath);
     return new Promise((resolve, reject) => {
-      let responseSent = false; // flag to make sure that response is sent only once.
       http.get({
         path: this.getConfigurationUrl(),
         host: this.serverApiEndpoint,
@@ -50,15 +49,11 @@ class AppBuild {
         response.pipe(configurationFile);
         configurationFile.on('finish', () => {
           configurationFile.close(() => {
-            if (responseSent) return;
-            responseSent = true;
             console.timeEnd('download configuration');
             resolve(this.configurationPath);
           });
         });
       }).on('error', err => {
-        if (responseSent) return;
-        responseSent = true;
         reject(err);
       });
     });
@@ -96,11 +91,12 @@ class AppBuild {
   run() {
     console.time('build time');
     console.log(`starting build for app ${this.appId}`);
-    this.prepareExtensions()
+    this.downloadConfiguration()
+      .then(() => this.prepareExtensions())
+      .then(() => this.removeBabelrcFiles())
       .then(() => {
         console.timeEnd('build time');
       })
-      .then(() => this.removeBabelrcFiles())
       .catch((e) => {
         console.log(e);
         process.exit(1);

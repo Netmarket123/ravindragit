@@ -4,27 +4,45 @@ const CodePush = require('code-push');
 const https = require('https');
 const _ = require('lodash');
 
-function getCodePushExtensionSettings(appConfiguration) {
-  const codePushExtension = _.find(appConfiguration.included, {
-    type: 'shoutem.core.extensions',
-    id: 'shoutem.codepush',
-  });
-
-  if (!codePushExtension) {
-    throw new Error('shoutem.codepush extension is not installed in app');
-  }
-
-  return _.get(codePushExtension, 'attributes.settings');
-}
-
 class AppRelease {
-  constructor(config, codePushAccessKey, platform) {
+  constructor(config) {
     Object.assign(this, config);
-    this.codePush = new CodePush(codePushAccessKey);
-    this.platform = platform;
+    this.codePush = new CodePush(this.codePushAccessKey);
   }
 
-  registerNewDeploymentKeys(deploymentKeys) {
+  registerNewDeploymentKeysForInstallation(deploymentKeys, extensionInstallation) {
+    return new Promise((resolve, reject) => {
+      https.request({
+        host: this.serverApiEndpoint,
+        path: `/v1/apps/1/installations/${extensionInstallation.id}`,
+        headers: {
+          Authorization: this.authorization,
+          Accept: 'application/vnd.api+json',
+        },
+        method: 'PATCH',
+        json: true,
+        body: {
+          data: {
+            type: 'shoutem.core.installations',
+            id: extensionInstallation.id,
+            attributes: {
+              settings: {
+                deploymentKeys,
+              },
+            },
+          },
+        },
+      }, (patchResponse) => {
+        if (patchResponse.statusCode === 200) {
+          resolve();
+        }
+      }).on('error', err => {
+        reject(err);
+      });
+    });
+  }
+
+  getCodePushExtensionInstallation() {
     return new Promise((resolve, reject) => {
       https.get({
         host: this.serverApiEndpoint,
@@ -35,54 +53,32 @@ class AppRelease {
         },
       }, (response) => {
         if (response.statusCode === 200) {
-          const extensionInstallation = response.data;
-          https.request({
-            host: this.serverApiEndpoint,
-            path: `/v1/apps/1/installations/${extensionInstallation.id}`,
-            headers: {
-              Authorization: this.authorization,
-              Accept: 'application/vnd.api+json',
-            },
-            method: 'PATCH',
-            json: true,
-            body: {
-              data:  {
-                type: 'shoutem.core.installations',
-                id: extensionInstallation.id,
-                attributes: {
-                  settings: {
-                    deploymentKeys,
-                  },
-                },
-              },
-            },
-          }, (patchResponse) => {
-            if (patchResponse.statusCode === 200) {
-              resolve();
-            }
-          }).on('error', err => {
-            reject(err);
-          });
+          const extensionInstallation = response.body;
+          resolve(extensionInstallation);
         }
-      });
+      }).on('error', (error) => reject(error));
     });
   }
 
-  setupAppRelease(appConfiguration) {
-    const codePushExtensionSettings = getCodePushExtensionSettings(appConfiguration);
-    const deploymentKeys = codePushExtensionSettings.deploymentKeys;
-
-    if (!deploymentKeys || deploymentKeys.length < 1) {
-      return this.codePush.addApp(this.appId)
-        .then((app) => this.codePush.getDeployments(app.name))
-        .then((deployments) => this.registerNewDeploymentKeys(deployments))
-        .catch((error) => {
-          console.error(error);
-          process.exit(1);
-        });
-    }
-
-    return Promise.resolve();
+  setupAppRelease() {
+    this.getCodePushExtensionInstallation()
+      .then((codePushExtension) => {
+        const deploymentKeys = _.get(codePushExtension, 'attributes.settings.deploymentKeys');
+        if (!deploymentKeys || deploymentKeys.length < 1) {
+          this.codePush.addApp(this.appId)
+            .then((app) => this.codePush.getDeployments(app.name))
+            .then((deployments) =>
+              this.registerNewDeploymentKeysForInstallation(deployments, codePushExtension))
+            .catch((error) => {
+              console.error(error);
+              process.exit(1);
+            });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        process.exit(1);
+      });
   }
 
   getDeploymentName() {
@@ -100,3 +96,5 @@ class AppRelease {
       });
   }
 }
+
+module.exports = AppRelease;
