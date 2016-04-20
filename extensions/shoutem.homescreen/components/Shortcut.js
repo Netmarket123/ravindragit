@@ -1,5 +1,4 @@
 import React, {
-  Component,
   StyleSheet,
   View,
   TouchableOpacity,
@@ -7,7 +6,6 @@ import React, {
   PropTypes,
 } from 'react-native';
 
-import { connect } from 'react-redux';
 import { actions } from 'shoutem.application';
 import shortcutDataShape from './ShortcutDataShape';
 import buttonConfigShape from './ButtonConfigShape';
@@ -56,41 +54,35 @@ export function generateStyle(configuration) {
   };
 }
 
-class Shortcut extends Component {
-  constructor(props) {
-    super(props);
-    this.execute = this.execute.bind(this);
-  }
-
-  execute() {
-    const { dispatch, shortcutData } = this.props;
+export default function Shortcut({
+  shortcutData,
+  buttonConfig,
+  dispatch,
+}) {
+  function execute() {
     dispatch(actions.executeShortcut(shortcutData));
   }
 
-  render() {
-    const { shortcut, buttonIcon } = generateStyle(this.props.buttonConfig);
-    const { iconUrl, highlightedIconUrl } = this.props.shortcutData;
+  const { shortcut, buttonIcon } = generateStyle(buttonConfig);
+  const { iconUrl, highlightedIconUrl } = shortcutData;
 
-    return (
-        <View style={[styles.shortcut, shortcut]}>
+  return (
+      <View style={[styles.shortcut, shortcut]}>
+        <Image
+          source={{ uri: iconUrl }}
+          style={[styles.buttonIcon, buttonIcon, styles.hiddenIcon]}
+          resizeMode={Image.resizeMode.stretch}
+        />
+        <TouchableOpacity activeOpacity={0} onPress={execute}>
           <Image
-            source={{ uri: iconUrl }}
-            style={[styles.buttonIcon, buttonIcon, styles.hiddenIcon]}
+            source={shortcutData}
+            source={{ uri: highlightedIconUrl || iconUrl }}
+            style={[styles.buttonIcon, buttonIcon]}
             resizeMode={Image.resizeMode.stretch}
           />
-          <TouchableOpacity activeOpacity={0} onPress={this.execute}>
-            <Image
-              source={this.props.shortcutData}
-              source={{ uri: highlightedIconUrl || iconUrl }}
-              style={[styles.buttonIcon, buttonIcon]}
-              resizeMode={Image.resizeMode.stretch}
-            />
-          </TouchableOpacity>
-        </View>
-    );
-  }
+        </TouchableOpacity>
+      </View>
+  );
 }
 
 Shortcut.propTypes = propTypes;
-
-export default connect()(Shortcut);

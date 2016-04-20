@@ -43,11 +43,6 @@ public class MainActivity extends ReactActivity {
                new MainReactPackage(), new VectorIconsPackage(), this.codePush);
    }
 
-    @Override
-    protected String getJSMainModuleName() {
-        return "index";
-    }
-
     /**
      * Override the getJSBundleFile method in order to let
      * the CodePush runtime determine where to get the JS

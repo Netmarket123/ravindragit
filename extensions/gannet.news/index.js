@@ -5,7 +5,7 @@ import { apiMiddleware } from 'redux-api-middleware';
 import thunk from 'redux-thunk';
 import { combineReducers } from 'redux';
 import { openListScreen, reducers } from './actions';
-import { jsonApiMiddleware } from 'redux-json-api';
+import { apiStateMiddleware } from 'redux-api-state';
 
 const reducer = combineReducers({ ...reducers });
 
@@ -26,4 +26,4 @@ export const screens = {
 };
 
 
-export const middleware = [thunk, apiMiddleware, jsonApiMiddleware];
+export const middleware = [thunk, apiMiddleware, apiStateMiddleware];

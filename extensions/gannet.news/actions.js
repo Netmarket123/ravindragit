@@ -1,11 +1,11 @@
 import {
   navigateTo,
 } from 'shoutem/navigation';
-import { storage, collection } from 'redux-json-api';
+import { storage, collection } from 'redux-api-state';
 
 export const reducers = {
   news: storage('gannett.news'),
-  latestNews: collection('gannett.news', 'latestNews', []),
+  latestNews: collection('gannett.news', 'latestNews'),
 };
 
 export function openListScreen() {
