@@ -19,10 +19,14 @@ function includeSymbolMergeHandler(objVal, srcVal) {
 
   // if objVal doesn't exists create new from source if INCLUDE exists
   if (_.isUndefined(newObjVal) && include) {
-    return {
-      ...srcVal,
-      [INCLUDE]: include,
-    };
+    const newObj = { ...srcVal };
+    // Assigning INCLUDE after object definition to avoid Object.assign when code transpiled.
+    // Object.assign in RN uses polyfill which doesn't copy Symbols that's why INCLUDE symbol
+    // must be set manually after spread.
+    // TODO(Braco) - once Object.assign polyfill is no longer used use commented code bellow
+    // return { ...srcVal, [INCLUDE]: include }; // add new lines for each property
+    newObj[INCLUDE] = include;
+    return newObj;
   }
 
   // otherwise let lodash default merge (return undefined)
