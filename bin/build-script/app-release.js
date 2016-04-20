@@ -4,6 +4,13 @@ const CodePush = require('code-push');
 const https = require('https');
 const _ = require('lodash');
 
+const deploymentNames = {
+  production: 'Production',
+  staging: 'Staging',
+};
+
+const binFolderPath = '.';
+
 class AppRelease {
   constructor(config) {
     Object.assign(this, config);
@@ -14,7 +21,7 @@ class AppRelease {
     return new Promise((resolve, reject) => {
       https.request({
         host: this.serverApiEndpoint,
-        path: `/v1/apps/1/installations/${extensionInstallation.id}`,
+        path: `/v1/apps/${this.appId}/installations/${extensionInstallation.id}`,
         headers: {
           Authorization: this.authorization,
           Accept: 'application/vnd.api+json',
@@ -82,11 +89,11 @@ class AppRelease {
   }
 
   getDeploymentName() {
-    return this.production ? 'Production' : 'Staging';
+    return this.production ? deploymentNames.production : deploymentNames.staging;
   }
 
   release() {
-    this.codePush.release(this.appId, this.getDeploymentName(), '.')
+    this.codePush.release(this.appId, this.getDeploymentName(), binFolderPath)
       .then(() =>
         console.log(`App with id:${this.appId} is successfully released`)
       )
