@@ -56,7 +56,7 @@ class AppRelease {
     console.log('get extension installation');
     return new Promise((resolve, reject) => {
       request.get({
-        url: `http://${this.serverApiEndpoint}/v1/apps/${this.appId}/installations/gannet.news`,
+        url: `http://${this.serverApiEndpoint}/v1/apps/${this.appId}/installations/shoutem.codepush`,
         headers: {
           Authorization: this.authorization,
           Accept: 'application/vnd.api+json',
