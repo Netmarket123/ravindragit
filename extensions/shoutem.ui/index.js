@@ -1,28 +1,13 @@
-import NavigationBar from './components/NavigationBar/NavigationBar';
-export {
-  NavigationBar,
-};
+export { default as NavigationBar } from './components/NavigationBar/NavigationBar';
 
-import Button from './components/Button/Button';
-export {
-  Button,
-};
+export { default as Button } from './components/Button/Button';
 
-import InfoFields from './components/InfoFields/InfoFields';
-export {
-  InfoFields,
-};
+export { default as InfoFields } from './components/InfoFields/InfoFields';
 
-import EventGridBox from './components/GridBox/EventGridBox';
-import NewsGridBox from './components/GridBox/NewsGridBox';
-import ShopGridBox from './components/GridBox/ShopGridBox';
-export {
-  EventGridBox,
-  NewsGridBox,
-  ShopGridBox,
-};
+export { default as EventGridBox } from './components/GridBox/EventGridBox';
+export { default as NewsGridBox } from './components/GridBox/NewsGridBox';
+export { default as ShopGridBox } from './components/GridBox/ShopGridBox';
 
-import ListItem from './components/ListItem/ListItem';
-export {
-  ListItem,
-};
+export { default as ListItem } from './components/ListItem/ListItem';
+
+export { default as Video } from './components/Video/Video';

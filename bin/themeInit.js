@@ -1,9 +1,5 @@
-import { INCLUDE } from 'shoutem/theme';
-import { Dimensions } from 'react-native';
-
-const { width } = Dimensions.get('window');
-
-export default (variables) => ({
+// eslint-disable-next-line no-unused-vars
+export default (INCLUDE, variables, screenWidth, screenHeight) => ({
   baseFont: {
     color: '#fff',
   },
@@ -23,7 +19,7 @@ export default (variables) => ({
   'shoutem.ui.ListItem.textCentric': {
     gridBox: {
       container: {
-        width,
+        width: screenWidth,
       },
       imageOverlay: {
         flexDirection: 'column',
@@ -86,7 +82,7 @@ export default (variables) => ({
     gridBox: {
       container: {
         margin: 2.5,
-        width: (width / 2) - (2 * 2 * 2.5),
+        width: (screenWidth / 2) - (2 * 2 * 2.5),
       },
       imageOverlay: {
         alignItems: 'stretch',

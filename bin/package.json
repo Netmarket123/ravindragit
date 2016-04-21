@@ -8,6 +8,7 @@
     "watch": "node ./build-script/watchLocalExtensions.js"
   },
   "dependencies": {
+    "code-push": "^1.8.0-beta",
     "command-line-args": "^2.1.6",
     "es6-symbol": "^3.0.2",
     "fs-extra": "^0.26.5",
@@ -20,6 +21,7 @@
     "react-native-browser-polyfill": "^0.1.1",
     "react-native-code-push": "^1.10.1-beta",
     "react-native-vector-icons": "^1.3.2",
+    "react-native-video": "^0.7.1",
     "react-redux": "^4.4.0",
     "redux": "^3.3.1",
     "redux-thunk": "^1.0.3",

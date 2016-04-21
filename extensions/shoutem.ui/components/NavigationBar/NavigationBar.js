@@ -8,11 +8,17 @@ import React, {
 import { connectStyle } from 'shoutem/theme';
 
 function navigationBarBackButton(hasHistory, navigateBack) {
+  /**
+   * onPress sets `event` as first param, which leads to ignoring default navigateBack
+   * first argument (navigator) so we have to wrap navigateBack into function to leave first
+   * argument empty, default
+   */
+  function navigateBackWithoutEventParameter() {
+    navigateBack();
+  }
+
   const backButton = hasHistory ? (
-    // onPress sets `event` as first param, which leads to ignoring default navigateBack
-    // first argument (navigator) so we have to wrap navigateBack into function to leave first
-    // argument empty, default
-    <TouchableOpacity onPress={() => navigateBack()}>
+    <TouchableOpacity onPress={navigateBackWithoutEventParameter}>
       <Text>Back</Text>
     </TouchableOpacity>
   ) : null;
