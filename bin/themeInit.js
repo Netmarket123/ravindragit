@@ -81,8 +81,8 @@ export default (INCLUDE, variables, screenWidth, screenHeight) => ({
   'shoutem.ui.ListItem.photoCentric': {
     gridBox: {
       container: {
-        margin: 2.5,
-        width: (screenWidth / 2) - (2 * 2 * 2.5),
+        margin: 5,
+        width: (screenWidth / 2) - (2 * 2 * 5),
       },
       imageOverlay: {
         alignItems: 'stretch',
@@ -94,20 +94,20 @@ export default (INCLUDE, variables, screenWidth, screenHeight) => ({
       padding: 0,
       flexDirection: 'column',
       flexWrap: 'wrap',
-      height: 100,
+      height: 200,
       alignItems: 'stretch',
       alignSelf: 'stretch',
     },
     itemImage: {
       alignSelf: 'stretch',
-      height: 42.5,
+      height: 85,
       borderRadius: 2,
       marginBottom: 5,
     },
     itemInfo: {
       flexDirection: 'column',
       flexWrap: 'wrap',
-      height: 45,
+      height: 90,
       position: 'relative',
     },
     itemExtras: {
@@ -117,7 +117,7 @@ export default (INCLUDE, variables, screenWidth, screenHeight) => ({
     },
     itemDescription: {
       flex: 1,
-      fontSize: 7.5,
+      fontSize: 15,
       color: '#222',
     },
     extrasSeparator: {
@@ -127,10 +127,10 @@ export default (INCLUDE, variables, screenWidth, screenHeight) => ({
       marginHorizontal: 10,
     },
     leftExtra: {
-      fontSize: 6,
+      fontSize: 12,
     },
     rightExtra: {
-      fontSize: 6,
+      fontSize: 12,
       color: '#888',
     },
     mediumListItemButton: {
