@@ -1,7 +1,7 @@
-'use-strict';
+'use strict';
 
 const CodePush = require('code-push');
-const https = require('https');
+const request = require('request');
 const _ = require('lodash');
 
 const deploymentNames = {
@@ -9,22 +9,23 @@ const deploymentNames = {
   staging: 'Staging',
 };
 
-const binFolderPath = '.';
+const binFolderPath = '../';
 
 class AppRelease {
   constructor(config) {
     Object.assign(this, config);
     this.codePush = new CodePush(this.codePushAccessKey);
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
   }
 
   registerNewDeploymentKeysForInstallation(deploymentKeys, extensionInstallation) {
     return new Promise((resolve, reject) => {
-      https.request({
-        host: this.serverApiEndpoint,
-        path: `/v1/apps/${this.appId}/installations/${extensionInstallation.id}`,
+      request({
+        url: `http://${this.serverApiEndpoint}/v1/apps/${this.appId}/installations/${extensionInstallation.id}`,
         headers: {
           Authorization: this.authorization,
           Accept: 'application/vnd.api+json',
+          'Content-Type': 'application/vnd.api+json',
         },
         method: 'PATCH',
         json: true,
@@ -39,8 +40,8 @@ class AppRelease {
             },
           },
         },
-      }, (patchResponse) => {
-        if (patchResponse.statusCode === 200) {
+      }, (error, patchResponse) => {
+        if (!error && patchResponse.statusCode === 200) {
           resolve();
         }
       }).on('error', err => {
@@ -50,17 +51,17 @@ class AppRelease {
   }
 
   getCodePushExtensionInstallation() {
+    console.log('get extension installation');
     return new Promise((resolve, reject) => {
-      https.get({
-        host: this.serverApiEndpoint,
-        path: `/v1/apps/${this.appId}/installations/shoutem.codepush`,
+      request.get({
+        url: `http://${this.serverApiEndpoint}/v1/apps/${this.appId}/installations/gannet.news`,
         headers: {
           Authorization: this.authorization,
           Accept: 'application/vnd.api+json',
         },
-      }, (response) => {
-        if (response.statusCode === 200) {
-          const extensionInstallation = response.body;
+      }, (error, response, body) => {
+        if (!error && response.statusCode === 200) {
+          const extensionInstallation = JSON.parse(body).data;
           resolve(extensionInstallation);
         }
       }).on('error', (error) => reject(error));
@@ -72,7 +73,8 @@ class AppRelease {
       .then((codePushExtension) => {
         const deploymentKeys = _.get(codePushExtension, 'attributes.settings.deploymentKeys');
         if (!deploymentKeys || deploymentKeys.length < 1) {
-          this.codePush.addApp(this.appId)
+          console.log('create app on CodePush');
+          this.codePush.addApp(`${this.appId}`)
             .then((app) => this.codePush.getDeployments(app.name))
             .then((deployments) =>
               this.registerNewDeploymentKeysForInstallation(deployments, codePushExtension))
