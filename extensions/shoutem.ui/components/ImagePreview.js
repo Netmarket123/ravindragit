@@ -48,7 +48,7 @@ const style = {
  * Renders an ImagePreview which shows an inline image preview
  * which displays the image in full screen when clicked
  */
-export default class ImagePreview extends Component {
+class ImagePreview extends Component {
   constructor(props) {
     super(props);
     this.onPressCloseButton = this.onPressCloseButton.bind(this);
@@ -115,3 +115,4 @@ export default class ImagePreview extends Component {
 
 ImagePreview.propTypes = propTypes;
 
+export default connectStyle('shoutem.ui.ImagePreview', style)(ImagePreview);
