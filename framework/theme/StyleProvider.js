@@ -1,5 +1,6 @@
-import React, { Children, PropTypes } from 'react-native';
+import React, { Children, PropTypes, Dimensions } from 'react-native';
 import Theme, { ThemeShape } from './Theme';
+import { INCLUDE } from './resolveIncludes';
 
 // Privates
 const THEME = Symbol('theme');
@@ -39,7 +40,8 @@ export default class StyleProvider extends React.Component {
     return false;
   }
   createState() {
-    return new Theme(this.props.themeInit(this.props.themeVariables));
+    const { width, height } = Dimensions.get('window');
+    return new Theme(this.props.themeInit(INCLUDE, this.props.themeVariables, width, height));
   }
   render() {
     const { children } = this.props;
