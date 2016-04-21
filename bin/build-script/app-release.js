@@ -1,6 +1,8 @@
 'use strict';
 
 const CodePush = require('code-push');
+const codePushExec = require('code-push-cli/script/command-executor');
+const codePushCli = require('code-push-cli/definitions/cli');
 const request = require('request');
 const _ = require('lodash');
 
@@ -95,7 +97,12 @@ class AppRelease {
   }
 
   release() {
-    this.codePush.release(this.appId, this.getDeploymentName(), binFolderPath)
+    codePushExec.execute({
+      type: codePushCli.CommandType.releaseReact,
+      appName: `${this.appId}`,
+      deploymentName: this.getDeploymentName(),
+      platform: 'ios',
+    })
       .then(() =>
         console.log(`App with id:${this.appId} is successfully released`)
       )
