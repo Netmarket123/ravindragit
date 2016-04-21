@@ -1,6 +1,5 @@
-import { INCLUDE } from 'shoutem/theme';
-
-export default (variables) => ({
+// eslint-disable-next-line no-unused-vars
+export default (INCLUDE, variables, screenWidth, screenHeight) => ({
   baseFont: {
     color: '#fff',
   },
