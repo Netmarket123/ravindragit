@@ -1,14 +1,16 @@
 import React, {
   View,
-  StyleSheet,
   PropTypes,
   Modal,
   Image,
   TouchableOpacity,
   Component,
+  Platform,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
+import { connectStyle } from 'shoutem/theme';
 
 const propTypes = {
   width: PropTypes.number,
@@ -20,8 +22,9 @@ const propTypes = {
 
 const CLOSE_ICON_NAME = 'clear';
 const CLOSE_ICON_SIZE = 25;
+const STATUS_BAR_OFFSET = (Platform.OS === 'android' ? -25 : 0);
 
-const styles = StyleSheet.create({
+const style = {
   container: {
     flex: 1,
   },
@@ -30,15 +33,16 @@ const styles = StyleSheet.create({
   },
   header: {
     position: 'absolute',
-    top: 0,
+    top: STATUS_BAR_OFFSET,
     left: 0,
     backgroundColor: 'transparent',
   },
   closeIcon: {
     color: 'white',
-    marginLeft: 10,
+    marginLeft: 15,
+    marginTop: 20,
   },
-});
+};
 
 /**
  * Renders an ImagePreview which shows an inline image preview
@@ -72,9 +76,9 @@ export default class ImagePreview extends Component {
 
     if (this.state.fullScreen) {
       const closeButton = (
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.fullScreen} onPress={this.onPressCloseButton}>
-            <Icon name={CLOSE_ICON_NAME} size={CLOSE_ICON_SIZE} style={styles.closeIcon} />
+        <View style={style.header}>
+          <TouchableOpacity style={style.fullScreen} onPress={this.onPressCloseButton}>
+            <Icon name={CLOSE_ICON_NAME} size={CLOSE_ICON_SIZE} style={style.closeIcon} />
           </TouchableOpacity>
         </View>
       );
@@ -83,9 +87,9 @@ export default class ImagePreview extends Component {
         <Modal
           animated
         >
-          <View style={styles.container}>
+          <View style={style.container}>
             <Image
-              style={styles.image}
+              style={style.image}
               source={source}
               resizeMode={'contain'}
             />
@@ -96,7 +100,7 @@ export default class ImagePreview extends Component {
     }
 
     return (
-      <View style={[styles.container, { width, height }]}>
+      <View style={[style.container, { width, height }]}>
         <TouchableOpacity onPress={this.onPressImage} >
           <Image
             source={source}
