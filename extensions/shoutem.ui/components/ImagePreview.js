@@ -6,8 +6,9 @@ import React, {
   Image,
   TouchableOpacity,
   Component,
-  Text,
 } from 'react-native';
+
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const propTypes = {
   width: PropTypes.number,
@@ -16,6 +17,9 @@ const propTypes = {
     uri: PropTypes.string,
   }),
 };
+
+const CLOSE_ICON_NAME = 'clear';
+const CLOSE_ICON_SIZE = 25;
 
 const styles = StyleSheet.create({
   container: {
@@ -30,12 +34,9 @@ const styles = StyleSheet.create({
     left: 0,
     backgroundColor: 'transparent',
   },
-  closeButton: {
-    fontSize: 35,
+  closeIcon: {
     color: 'white',
-    lineHeight: 40,
-    width: 40,
-    textAlign: 'center',
+    marginLeft: 10,
   },
 });
 
@@ -70,17 +71,18 @@ export default class ImagePreview extends Component {
     const { source, width, height } = this.props;
 
     if (this.state.fullScreen) {
-      // TODO(Vladimir): use clear icon from material icon set instead of x
       const closeButton = (
         <View style={styles.header}>
           <TouchableOpacity style={styles.fullScreen} onPress={this.onPressCloseButton}>
-            <Text style={styles.closeButton}>×</Text>
+            <Icon name={CLOSE_ICON_NAME} size={CLOSE_ICON_SIZE} style={styles.closeIcon} />
           </TouchableOpacity>
         </View>
       );
 
       return (
-        <Modal>
+        <Modal
+          animated
+        >
           <View style={styles.container}>
             <Image
               style={styles.image}
