@@ -1,4 +1,5 @@
 import React, { Dimensions } from 'react-native';
+import * as _ from 'lodash';
 import { assert } from 'chai';
 import { mount } from 'enzyme';
 import { Theme, StyleProvider, connectStyle, INCLUDE } from '../theme';
@@ -25,7 +26,7 @@ function createThemeInit() {
 }
 
 function getComponentStyleFromWrapper(wrapper, component) {
-  return wrapper.find(component).nodes[0].refs.wrappedInstance.props.style;
+  return _.get(wrapper.find(component), 'nodes[0].refs.wrappedInstance.props.style');
 }
 
 const { width, height } = Dimensions.get('window');

@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-export default (INCLUDE, variables, width, height) => ({
+export default (INCLUDE, variables, screenWidth, screenHeight) => ({
   baseFont: {
     color: '#fff',
   },
