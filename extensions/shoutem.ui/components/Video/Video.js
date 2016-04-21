@@ -1,8 +1,9 @@
 import React, {
   View,
-  StyleSheet,
   PropTypes,
 } from 'react-native';
+
+import { connectStyle } from 'shoutem/theme';
 
 import NativeVideo from './NativeVideo';
 import WebViewVideo from './WebViewVideo';
@@ -14,11 +15,11 @@ const propTypes = {
   source: PropTypes.string,
 };
 
-const styles = StyleSheet.create({
+const style = {
   container: {
     flex: 1,
   },
-});
+};
 
 /**
  * Renders a Video based on the source type
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
  *
  * @returns {*}
  */
-export default function Video({
+function Video({
   width,
   height,
   source,
@@ -41,7 +42,7 @@ export default function Video({
   }
 
   return (
-    <View style={[styles.container, { width, height }]}>
+    <View style={[style.container, { width, height }]}>
       <VideoElement
         source={{ uri: sourceReader.getUrl() }}
         width={width}
@@ -53,3 +54,4 @@ export default function Video({
 
 Video.propTypes = propTypes;
 
+export default connectStyle('shoutem.ui.Video', style)(Video);
