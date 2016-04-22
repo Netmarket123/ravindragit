@@ -1,5 +1,6 @@
 import React, {
   Text,
+  Image,
 } from 'react-native';
 import InfoFields from '../InfoFields/InfoFields';
 import GridBox from './GridBox';
@@ -13,9 +14,10 @@ function NewsGridBox({
   newsDetails,
   newsDetailsSeparator,
   headline,
+  backgroundImage,
 }) {
   return (
-    <GridBox style={style.gridBox}>
+    <GridBox style={style.gridBox} backgroundImage={backgroundImage}>
       <Text style={style.headline}>{headline}</Text>
       <InfoFields
         fields={newsDetails}
@@ -31,6 +33,7 @@ NewsGridBox.propTypes = {
   style: React.PropTypes.object,
   newsDetails: React.PropTypes.array,
   headline: React.PropTypes.string,
+  backgroundImage: Image.propTypes.source,
 };
 
 const style = {
@@ -42,6 +45,12 @@ const style = {
   infoFields: {
     info: {
       marginBottom: 30,
+      marginTop: 6,
+    },
+    fieldText: {
+      fontSize: 12,
+      color: '#fff',
+      backgroundColor: 'transparent',
     },
   },
   gridBox: {},

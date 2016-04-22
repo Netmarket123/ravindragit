@@ -19,7 +19,7 @@ function InfoFields({
   const infoFieldsComponents = [];
   if (fields && fields.length > 0) {
     fields.forEach((info, i) => {
-      if (i > 0) {
+      if (i > 0 && fieldsSeparator) {
         infoFieldsComponents.push(
           <Icon
             style={style.fieldsSeparator}
@@ -50,21 +50,17 @@ InfoFields.propTypes = {
 
 const style = {
   fieldsSeparator: {
-    marginHorizontal: 10,
     flex: 1,
-    width: 3,
-    height: 3,
   },
   fieldText: {
-    fontSize: 12,
-    color: '#fff',
-    backgroundColor: 'transparent',
+    flex: 1,
+    justifyContent: 'center',
+    textAlign: 'center',
   },
   info: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 6,
   },
 };
 

@@ -1,5 +1,6 @@
 import React, {
   Text,
+  Image,
 } from 'react-native';
 import InfoFields from '../InfoFields/InfoFields';
 import GridBox from './GridBox';
@@ -63,6 +64,7 @@ EventGridItem.propTypes = {
   eventDetailsSeparator: React.PropTypes.string,
   style: React.PropTypes.object,
   headline: React.PropTypes.string,
+  backgroundImage: Image.propTypes.source,
 };
 
 const style = {

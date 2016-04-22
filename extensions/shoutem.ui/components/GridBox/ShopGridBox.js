@@ -1,5 +1,6 @@
 import React, {
   Text,
+  Image,
 } from 'react-native';
 import GridBox from './GridBox';
 import Button from '../Button/Button';
@@ -49,6 +50,7 @@ ShopGridBox.propTypes = {
   ]),
   style: React.PropTypes.object,
   headline: React.PropTypes.string,
+  backgroundImage: Image.propTypes.source,
 };
 
 const style = {

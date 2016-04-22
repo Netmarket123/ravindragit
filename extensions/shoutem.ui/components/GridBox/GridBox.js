@@ -21,7 +21,7 @@ function GridBox({
         style={style.backgroundImage}
         source={backgroundImage}
       >
-        <View style={style.imageOverlay}>
+        <View style={style.contentWrapper}>
           {children}
         </View>
       </Image>
@@ -43,7 +43,7 @@ const style = {
     height: null,
     flex: 1,
   },
-  imageOverlay: {
+  contentWrapper: {
     flex: 1,
   },
 };
