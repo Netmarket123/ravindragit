@@ -15,9 +15,7 @@ import { connectStyle } from 'shoutem/theme';
 const propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
-  source: PropTypes.shape({
-    uri: PropTypes.string,
-  }),
+  source: Image.propTypes.source,
 };
 
 const CLOSE_ICON_NAME = 'clear';
