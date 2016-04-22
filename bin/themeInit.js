@@ -21,6 +21,26 @@ export default (variables) => {
       alignItems: 'stretch',
       flex: 1,
     },
+    'shoutem.ui.NewsGridBox.photoCentric': {
+      gridBox: {
+        container: {
+          flex: 1,
+        },
+        contentWrapper: {
+          justifyContent: 'center',
+        },
+      },
+    },
+    'shoutem.ui.NewsGridBox.textCentric': {
+      gridBox: {
+        container: {
+          height: 280,
+        },
+        contentWrapper: {
+          justifyContent: 'center',
+        },
+      },
+    },
     'shoutem.ui.ListItem.textCentric': {
       gridBox: {
         container: {

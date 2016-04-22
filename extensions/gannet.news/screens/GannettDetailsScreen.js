@@ -6,6 +6,7 @@ import React, {
   Animated,
 } from 'react-native';
 import { INCLUDE, connectStyle } from 'shoutem/theme';
+import { NewsGridBox } from 'shoutem.ui';
 import * as _ from 'lodash';
 
 const DEFAULT_BOTTOM_CONTENT_OFFSET = 50;
@@ -49,9 +50,6 @@ function Details({ item, style }) {
   console.log(style);
   return (
     <View key="details" style={style.detailsContainer}>
-      <View style={style.detailsTitleContainer}>
-        <Text style={style.detailsTitle}>{item.title}</Text>
-      </View>
       <Text style={style.detailsText}>{item.body.replace(/<\/?[^>]+(>|$)/g, '')}</Text>
     </View>
   );
@@ -75,10 +73,16 @@ function GannettDetailsScreen({
 
   return (
     <View style={style.screen}>
-      <Animated.Image
-        source={{ uri: item.image_url }}
+      <Animated.View
         style={headerStyle}
-      />
+      >
+        <NewsGridBox
+          style={style.headline}
+          headline={item.title}
+          newsDetails={[item.author, 'test']}
+          backgroundImage={{ uri: item.image_url, width: 200, height: 200 }}
+        />
+      </Animated.View>
       <ScrollView
         automaticallyAdjustContentInsets={false}
         style={style.container}
@@ -98,6 +102,9 @@ GannettDetailsScreen.propTypes = {
 };
 
 const style = {
+  headline: {
+    [INCLUDE]: ['shoutem.ui.NewsGridBox.textCentricgst'],
+  },
   screen: {
     position: 'relative',
   },
