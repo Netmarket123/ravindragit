@@ -6,6 +6,7 @@ import React, {
   Animated,
 } from 'react-native';
 import { INCLUDE, connectStyle } from 'shoutem/theme';
+import { NewsGridBox } from 'shoutem.ui';
 import * as _ from 'lodash';
 
 const DEFAULT_BOTTOM_CONTENT_OFFSET = 50;
@@ -14,9 +15,15 @@ function createOffsetStyle(offset) {
   return Dimensions.get('window').height - offset;
 }
 
-function createDetailsStyle(topOffset) {
+function createDetailsStyle(topOffset, style) {
   return {
-    marginTop: topOffset,
+    detailsContainer: {
+      ...style.detailsContainer,
+      marginTop: topOffset,
+    },
+    detailsTitle: style.detailsTitle,
+    detailsTitleContainer: style.detailsTitleContainer,
+    detailsText: style.detailsText,
   };
 }
 
@@ -41,11 +48,8 @@ function getScrollHandle(scrollY) {
 
 function Details({ item, style }) {
   return (
-    <View key="details" style={style}>
-      <View style={style.titleContainer}>
-        <Text style={style.title}>{item.title}</Text>
-      </View>
-      <Text>{item.body.replace(/<\/?[^>]+(>|$)/g, '')}</Text>
+    <View key="details" style={style.detailsContainer}>
+      <Text style={style.detailsText}>{item.body.replace(/<\/?[^>]+(>|$)/g, '')}</Text>
     </View>
   );
 }
@@ -64,21 +68,27 @@ function GannettDetailsScreen({
   const scrollY = new Animated.Value(0);
   const detailsTopOffset = createOffsetStyle(bottomContentOffset);
   const headerStyle = createAnimatedHeaderStyle(style.header, scrollY, detailsTopOffset);
-  const detailsStyle = createDetailsStyle(detailsTopOffset);
+  const detailsStyle = createDetailsStyle(detailsTopOffset, style);
 
   return (
     <View style={style.screen}>
-      <Animated.Image
-        source={{ uri: item.image_url }}
+      <Animated.View
         style={headerStyle}
-      />
+      >
+        <NewsGridBox
+          style={style.headline}
+          headline={item.title}
+          newsDetails={[item.author, 'test']}
+          backgroundImage={{ uri: item.image_url, width: 200, height: 200 }}
+        />
+      </Animated.View>
       <ScrollView
         automaticallyAdjustContentInsets={false}
         style={style.container}
         scrollEventThrottle={16}
         onScroll={getScrollHandle(scrollY)}
       >
-        <Details item={item} style={[style.details, detailsStyle]} />
+        <Details item={item} style={detailsStyle} />
       </ScrollView>
     </View>
   );
@@ -91,23 +101,26 @@ GannettDetailsScreen.propTypes = {
 };
 
 const style = {
+  headline: {
+    [INCLUDE]: ['shoutem.ui.NewsGridBox.textCentric'],
+  },
   screen: {
     position: 'relative',
   },
-  title: {
+  detailsText: {},
+  detailsTitle: {
     [INCLUDE]: ['h1'],
-    color: 'black',
     paddingBottom: 20,
     position: 'absolute',
     bottom: 0,
     backgroundColor: 'transparent',
   },
-  titleContainer: {
+  detailsTitleContainer: {
     backgroundColor: 'transparent',
     position: 'absolute',
     top: 0,
   },
-  details: {
+  detailsContainer: {
     flex: 1,
     backgroundColor: '#fff',
     padding: 15,

@@ -46,9 +46,6 @@ class AppBuild {
           Accept: 'application/vnd.api+json',
         },
       }, response => {
-        if (response.statusCode !== 200) {
-          reject('Could not download app configuration');
-        }
         response.pipe(configurationFile);
         configurationFile.on('finish', () => {
           configurationFile.close(() => {
@@ -91,12 +88,19 @@ class AppBuild {
       });
   }
 
+  prepareConfiguration() {
+    if (this.offlineMode) {
+      // Nothing to do, resolve to proceed with next build step
+      return new Promise((resolve) => resolve());
+    }
+    return this.downloadConfiguration();
+  }
+
   run() {
     console.time('build time');
     console.log(`starting build for app ${this.appId}`);
-    // this.downloadConfiguration()
-    //   .then(() => this.prepareExtensions())
-    this.prepareExtensions()
+    this.prepareConfiguration()
+      .then(() => this.prepareExtensions())
       .then(() => this.removeBabelrcFiles())
       .then(() => {
         console.timeEnd('build time');

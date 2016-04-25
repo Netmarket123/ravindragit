@@ -1,6 +1,7 @@
 package com.shoutemapp;
 
 import com.facebook.react.ReactActivity;
+import com.brentvatne.RCTVideo.ReactVideoPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactPackage;
@@ -42,6 +43,7 @@ public class MainActivity extends ReactActivity {
 
        return Arrays.<ReactPackage>asList(
                new MainReactPackage(),
+            new ReactVideoPackage(),
                new ReactVideoPackage(),
                new VectorIconsPackage(),
                this.codePush);

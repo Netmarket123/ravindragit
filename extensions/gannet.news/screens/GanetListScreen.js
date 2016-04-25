@@ -9,23 +9,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { find } from 'redux-api-state';
 
-import { connectStyle } from 'shoutem/theme';
-import { LargeGridItem, MediumListItem } from 'shoutem.ui';
+import { connectStyle, INCLUDE } from 'shoutem/theme';
+import { NewsGridBox, ListItem } from 'shoutem.ui';
 import { navigateTo } from 'shoutem/navigation';
-
-function formatDate(dateString) {
-  let date = new Date(dateString);
-  if (!date.getDate()) {
-    date = new Date();
-  }
-  return `${date.getDay()}.${(date.getMonth() + 1)}.${date.getFullYear()}`;
-}
-
 
 function renderRow(item, style, extrasSeparator, onPress) {
   if (item.featured) {
     return (
-      <LargeGridItem
+      <NewsGridBox
         backgroundImage={item.image}
         headline={item.description.toUpperCase()}
         infoFields={[item.source, item.date]}
@@ -35,12 +26,10 @@ function renderRow(item, style, extrasSeparator, onPress) {
   }
 
   return (
-    <MediumListItem
+    <ListItem
       description={item.title}
       image={{ uri: item.image_url }}
-      extrasSeparatorImage={extrasSeparator}
       leftExtra={item.author}
-      rightExtra={formatDate(item.published_at)}
       id={item.id}
       style={style.items}
       onPressItem={item}
@@ -84,6 +73,7 @@ class GannettListScreen extends Component {
     return (
       <View style={style.screen}>
         <ListView
+          contentContainerStyle={style.listContent}
           style={style.list}
           dataSource={dataSourceItems}
           renderRow={renderGannetListRow}
@@ -106,8 +96,14 @@ const style = {
   screen: {},
   h1: {},
   list: {},
+  listContent: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
   featuredItem: {},
-  items: {},
+  items: {
+    [INCLUDE]: ['shoutem.ui.ListItem.textCentric'],
+  },
 };
 
 function fetchLatestNewsFromState(state) {

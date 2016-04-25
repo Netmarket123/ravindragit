@@ -24,6 +24,7 @@ function includeSymbolMergeHandler(objVal, srcVal) {
     // Object.assign in RN uses polyfill which doesn't copy Symbols that's why INCLUDE symbol
     // must be set manually after spread.
     // TODO(Braco) - once Object.assign polyfill is no longer used use commented code bellow
+    // Check if `customizer` is needed still at all after polyfill is removed!
     // return { ...srcVal, [INCLUDE]: include }; // add new lines for each property
     newObj[INCLUDE] = include;
     return newObj;
