@@ -30,7 +30,7 @@
         "data": [
           {
             "type": "shoutem.core.shortcuts",
-            "id": "56efcdf9f3973a4609a7a918"
+            "id": "56efcdf9f3973a4609a7a910"
           }
         ]
       },
@@ -70,6 +70,16 @@
         "settings": {
           "screen": 2
         }
+      }
+    },
+    {
+      "type": "shoutem.core.shortcuts",
+      "id": "56efcdf9f3973a4609a7a910",
+      "attributes": {
+        "canonicalName": "gannet.news.openListScreen",
+        "title": "Gannett news list screen",
+        "iconUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488005&timestamp=635932174426170000&custom_layout=true&highlighted=false&version=58",
+        "action": "gannet.news.openListScreen"
       }
     },
     {

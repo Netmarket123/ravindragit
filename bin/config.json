@@ -12,7 +12,8 @@
       "../extensions/shoutem.application",
       "../extensions/shoutem.codepush",
       "../extensions/shoutem.ui",
-      "../extensions/gannet.news"
+      "../extensions/gannet.news",
+      "../framework"
     ],
     "extensionsJsPath": "./extensions.js"
 }

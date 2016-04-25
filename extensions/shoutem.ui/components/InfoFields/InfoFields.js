@@ -1,36 +1,36 @@
 import React, {
   View,
   Text,
-  Image,
 } from 'react-native';
 import { connectStyle } from 'shoutem/theme';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 /**
  * InfoFields is List component.
  * Available props:
- *  - infoFields: List<String> - string to be listed
- *  - infoSeparator: Image - image between strings
+ *  - fields: List<String> - string to be listed
+ *  - fieldsSeparator: String (name) - icon between strings
  */
 function InfoFields({
-  infoFields,
-  infoSeparator,
+  fields,
+  fieldsSeparator,
   style,
 }) {
   const infoFieldsComponents = [];
-  if (infoFields && infoFields.length > 0) {
-    infoFields.forEach((info, i) => {
-      if (i > 0) {
+  if (fields && fields.length > 0) {
+    fields.forEach((info, i) => {
+      if (i > 0 && fieldsSeparator) {
         infoFieldsComponents.push(
-          <Image
-            style={style.infoSeparator}
-            source={infoSeparator}
+          <Icon
+            style={style.fieldsSeparator}
+            name={fieldsSeparator}
             key={`separator${i}`}
           />
         );
       }
       infoFieldsComponents.push(
         <Text
-          style={style.infoText}
+          style={style.fieldText}
           key={i}
         >
           {info}
@@ -43,28 +43,24 @@ function InfoFields({
 }
 
 InfoFields.propTypes = {
-  infoFields: React.PropTypes.array,
-  infoSeparator: React.PropTypes.any,
+  fields: React.PropTypes.array,
+  fieldsSeparator: React.PropTypes.string,
   style: React.PropTypes.object,
 };
 
 const style = {
-  infoSeparator: {
-    marginHorizontal: 10,
+  fieldsSeparator: {
     flex: 1,
-    width: 3,
-    height: 3,
   },
-  infoText: {
-    fontSize: 12,
-    color: '#fff',
-    backgroundColor: 'transparent',
+  fieldText: {
+    flex: 1,
+    justifyContent: 'center',
+    textAlign: 'center',
   },
   info: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 6,
   },
 };
 
