@@ -18,7 +18,7 @@ const actions = {
 
 // create reducer with wanted default configuration
 const reducer = combineReducers({
-  configuration: configurationReducer(),
+  configuration: configurationReducer,
 });
 
 const appActions = {};

@@ -8,9 +8,10 @@ export function configurationReducer(state = {}, action) {
   if (_.get(action, 'meta.schema') !== 'shoutem.core.configuration') {
     return state;
   }
+  const denormalizer = new ObjectDenormalizer(action.payload);
+
   switch (action.type) {
     case OBJECT_FETCHED:
-      const denormalizer = new ObjectDenormalizer(action.payload);
       return denormalizer.getDenormalizedData();
     default:
       return state;
