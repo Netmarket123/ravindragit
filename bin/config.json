@@ -10,6 +10,7 @@
       "../extensions/shoutem.homescreen",
       "../extensions/shoutem.application",
       "../extensions/shoutem.codepush",
+      "../extensions/shoutem.preview",
       "../extensions/shoutem.ui",
       "../extensions/gannet.news"
     ],

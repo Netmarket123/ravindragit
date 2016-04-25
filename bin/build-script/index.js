@@ -7,8 +7,7 @@ const commandLineArgs = require('command-line-args');
 const cli = commandLineArgs([
   { name: 'appId', type: Number },
   { name: 'serverApiEndpoint', type: String },
-  { name: 'debug', type: Boolean },
-  { name: 'designMode', type: Boolean },
+  { name: 'production', type: Boolean },
   { name: 'configurationFilePath', type: String },
   { name: 'workingDirectories', type: String, multiple: true },
   { name: 'extensionsJsPath', type: String },

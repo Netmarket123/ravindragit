@@ -70,7 +70,7 @@ class AppRelease {
     });
   }
 
-  setupAppRelease() {
+  setup() {
     this.getCodePushExtensionInstallation()
       .then((codePushExtension) => {
         const deploymentKeys = _.get(codePushExtension, 'attributes.settings.deploymentKeys');
