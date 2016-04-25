@@ -4,7 +4,7 @@ import { createExecuteShortcutMiddleware } from './middleware';
 
 import { combineReducers } from 'redux';
 
-import { loaded } from 'redux-api-state';
+import { loaded, storage } from 'redux-api-state';
 
 import {
   configurationReducer,
@@ -19,6 +19,10 @@ const actions = {
 // create reducer with wanted default configuration
 const reducer = combineReducers({
   configuration: configurationReducer,
+  shortcuts: storage('shoutem.core.shortcuts'),
+  screens: storage('shoutem.core.screens'),
+  extensions: storage('shoutem.core.extensions'),
+  themes: storage('shoutem.core.theme'),
 });
 
 const appActions = {};
@@ -46,7 +50,8 @@ function appWillMount(app) {
 function openInitialScreen(app) {
   const store = app.getStore();
   const configurationFromState = store.getState()['shoutem.application'].configuration;
-  const firstShortcut = getFirstShortcut(configurationFromState);
+  const shortcuts = store.getState()['shoutem.application'].shortcuts;
+  const firstShortcut = getFirstShortcut(configurationFromState, shortcuts);
   app.getStore().dispatch(executeShortcut(firstShortcut));
 }
 

@@ -1,5 +1,4 @@
 import * as _ from 'lodash';
-import { ObjectDenormalizer } from 'denormalizer';
 import { OBJECT_FETCHED } from 'redux-api-state';
 
 export const EXECUTE_SHORTCUT = 'shoutem.application.EXECUTE_SHORTCUT';
@@ -8,11 +7,10 @@ export function configurationReducer(state = {}, action) {
   if (_.get(action, 'meta.schema') !== 'shoutem.core.configuration') {
     return state;
   }
-  const denormalizer = new ObjectDenormalizer(action.payload);
 
   switch (action.type) {
     case OBJECT_FETCHED:
-      return denormalizer.getDenormalizedData();
+      return action.payload;
     default:
       return state;
   }
