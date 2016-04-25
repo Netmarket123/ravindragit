@@ -88,10 +88,18 @@ class AppBuild {
       });
   }
 
+  prepareConfiguration() {
+    if (this.offlineMode) {
+      // Nothing to do, resolve to proceed with next build step
+      return new Promise((resolve) => resolve());
+    }
+    return this.downloadConfiguration();
+  }
+
   run() {
     console.time('build time');
     console.log(`starting build for app ${this.appId}`);
-    this.downloadConfiguration()
+    this.prepareConfiguration()
       .then(() => this.prepareExtensions())
       .then(() => this.removeBabelrcFiles())
       .then(() => {
