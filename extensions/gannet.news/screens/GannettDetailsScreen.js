@@ -47,7 +47,6 @@ function getScrollHandle(scrollY) {
 }
 
 function Details({ item, style }) {
-  console.log(style);
   return (
     <View key="details" style={style.detailsContainer}>
       <Text style={style.detailsText}>{item.body.replace(/<\/?[^>]+(>|$)/g, '')}</Text>
