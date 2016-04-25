@@ -13,15 +13,6 @@ import { connectStyle, INCLUDE } from 'shoutem/theme';
 import { NewsGridBox, ListItem } from 'shoutem.ui';
 import { navigateTo } from 'shoutem/navigation';
 
-function formatDate(dateString) {
-  let date = new Date(dateString);
-  if (!date.getDate()) {
-    date = new Date();
-  }
-  return `${date.getDay()}.${(date.getMonth() + 1)}.${date.getFullYear()}`;
-}
-
-
 function renderRow(item, style, extrasSeparator, onPress) {
   if (item.featured) {
     return (
