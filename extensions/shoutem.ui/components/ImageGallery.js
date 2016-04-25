@@ -1,14 +1,9 @@
 import React, {
-  View,
   PropTypes,
-  ScrollView,
-  ViewPagerAndroid,
-  Dimensions,
-  Platform,
 } from 'react-native';
 
 import ImagePreview from './ImagePreview';
-import { connectStyle } from 'shoutem/theme';
+import HorizontalPager from './HorizontalPager';
 
 const propTypes = {
   width: PropTypes.number,
@@ -16,64 +11,47 @@ const propTypes = {
   sources: PropTypes.arrayOf(PropTypes.string),
 };
 
-const screenWidth = Dimensions.get('window').width;
-
-const styles = {
-  item: {
-    flex: 1,
-    width: screenWidth,
-  },
-};
-
-function ImagePreviewPage({
+function renderImagePreview({
   source,
   height,
   width,
 }, key) {
   return (
-    <View
-      style={styles.item}
+    <ImagePreview
+      source={source}
+      width={width}
+      height={height}
       key={key}
-    >
-      <ImagePreview
-        source={source}
-        width={width}
-        height={height}
-      />
-    </View>
+    />
   );
 }
 
-ImagePreviewPage.propTypes = ImagePreview.propTypes;
+renderImagePreview.propTypes = ImagePreview.propTypes;
 
-function Gallery({
+/**
+ * Renders a collection of ImageGallery components within
+ * a HorizontalPager. Each preview component is rendered
+ * on a separate page.
+ *
+ * @returns {*}
+ */
+export default function ImageGallery({
   sources,
   width,
   height,
 }) {
-  if (Platform.OS === 'android') {
-    return (
-      <ViewPagerAndroid
-        style={{ height:500 }}
-        initialPage={0}
-      >
-        {sources.map(source => ({ source: { uri: source }, width, height })).map(ImagePreviewPage)}
-      </ViewPagerAndroid>
-    );
-  }
-
-  console.warn('nije android');
-
   return (
-    <ScrollView
-      pagingEnabled
-      horizontal
+    <HorizontalPager
+      width={width}
+      height={height}
     >
-      {sources.map(source => ({ source: { uri: source }, width, height })).map(ImagePreviewPage)}
-    </ScrollView>
+      {
+        sources.map((src, key) => (renderImagePreview({
+          source: { uri: src }, width, height,
+        }, key)))
+      }
+    </HorizontalPager>
   );
 }
 
-Gallery.propTypes = propTypes;
-
-export default connectStyle('shoutem.ui.Gallery', styles)(Gallery);
+ImageGallery.propTypes = propTypes;
