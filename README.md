@@ -5,6 +5,7 @@ Shoutem React Native App
 Please add all __important__ todos here so we can keep track and finish them.
 * connectStyle - For React 0.15+ check if we still need to render func and class component differently [#code line](https://github.com/5minutes/mobile-app/blob/develop/framework/theme/connectStyle.js#L128)
 * resolveIncludes - once Object.assign polyfill is removed, remove customizer ? [#code line](https://github.com/5minutes/mobile-app/blob/develop/framework/theme/resolveIncludes.js#L26)
+* Rename shoutem.ui components not to be named as extensions
 * How to write a theme and component style - check what is best way to write a theme and component style (having default style or not)...check Writing a Style section
 
 ## Code style

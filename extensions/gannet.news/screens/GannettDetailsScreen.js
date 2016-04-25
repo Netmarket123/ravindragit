@@ -102,7 +102,7 @@ GannettDetailsScreen.propTypes = {
 
 const style = {
   headline: {
-    [INCLUDE]: ['shoutem.ui.NewsGridBox.textCentricgst'],
+    [INCLUDE]: ['shoutem.ui.NewsGridBox.textCentric'],
   },
   screen: {
     position: 'relative',
