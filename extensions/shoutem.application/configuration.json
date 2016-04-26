@@ -252,17 +252,7 @@
         "app": "690",
         "configuration": "690",
         "owner": "1111",
-        "canonicalName": "gannet.news",
-        "location": {
-          "app": {
-            "type": "zip",
-            "package": "https://seext-test.s3.amazonaws.com/jajajajaja/gannet.news/0.0.1/app.zip"
-          },
-          "server": {
-            "type": "dir",
-            "package": "https://seext-test.s3.amazonaws.com/jajajajaja/gannet.news/0.0.1/content/server"
-          }
-        },
+        "canonicalName": "shoutem.codepush",
         "settings": {
           "test": "123",
           "enableSharing": true,

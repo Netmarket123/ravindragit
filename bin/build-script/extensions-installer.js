@@ -136,8 +136,8 @@ class ExtensionsInstaller {
 
     if (extensions) {
       _.forEach(extensions, (extension) => {
-        const notAvailableLocally = _.some(localExtensions, (localExtension) =>
-          localExtension.id !== extension.id
+        const notAvailableLocally = !_.some(localExtensions, (localExtension) =>
+          localExtension.id === extension.id
         ) || localExtensions.length <= 0;
 
         if (notAvailableLocally) {
