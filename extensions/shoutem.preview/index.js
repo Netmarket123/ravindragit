@@ -8,13 +8,13 @@ const authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkM
 function getAppIdFromUrl(url) {
   const appId = url.match(/preview:\/\/open-app\/([0-9]*)/);
   if (appId.length) {
-    return appId[0];
+    return appId[1];
   }
 }
 
 function appDidMount() {
-  Linking.addEventListener('url', (url) => {
-    const appId = getAppIdFromUrl(url);
+  Linking.addEventListener('url', (deepLink) => {
+    const appId = getAppIdFromUrl(deepLink.url);
     if (appId) {
       find({
         endpoint: `http://apps.aperfector.com/v1/apps/${appId}/configuration/current`,
