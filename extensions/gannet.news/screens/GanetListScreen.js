@@ -1,8 +1,8 @@
 import React, {
   View,
-  ListView,
   Text,
   Component,
+  measure,
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -10,7 +10,7 @@ import { bindActionCreators } from 'redux';
 import { find } from 'redux-api-state';
 
 import { connectStyle, INCLUDE } from 'shoutem/theme';
-import { NewsGridBox, ListItem } from 'shoutem.ui';
+import { NewsGridBox, ListItem, ShoutemListView } from 'shoutem.ui';
 import { navigateTo } from 'shoutem/navigation';
 
 function renderRow(item, style, extrasSeparator, onPress) {
@@ -38,23 +38,37 @@ function renderRow(item, style, extrasSeparator, onPress) {
   );
 }
 
-const dataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-
 class GannettListScreen extends Component {
+  static state = {
+    headerHeight: 0,
+  }
+
   constructor(props, context) {
     super(props, context);
-    props.getGannetNews();
+    this.onFetch = this.onFetch.bind(this);
+    this.renderHeader = this.renderHeader.bind(this);
   }
+
+  onFetch(page = 1, callback, options) {
+    this.props.getGannetNews().then(() => {
+      callback(this.props.news);
+    });
+  }
+
+  renderHeader() {
+    return (<View>
+      <Text style={this.props.style.search}>Search</Text>
+    </View>);
+  }
+
 
   render() {
     const {
-      news,
       style,
       setNavBarProps,
       navigateToRoute,
     } = this.props;
     const extrasSeparator = require('../assets/circle_grey.png');
-    const dataSourceItems = dataSource.cloneWithRows(news);
 
     const navBarTitle = <Text>News</Text>;
     setNavBarProps({
@@ -72,12 +86,14 @@ class GannettListScreen extends Component {
 
     return (
       <View style={style.screen}>
-        <ListView
-          contentContainerStyle={style.listContent}
-          style={style.list}
-          dataSource={dataSourceItems}
+        <ShoutemListView
+          registerScrollRef={(WrappedListView) => {
+            this.listView = WrappedListView;
+          }}
+          onFetch={this.onFetch}
           renderRow={renderGannetListRow}
-          enableEmptySections
+          headerView={this.renderHeader}
+          style={style.listView}
         />
       </View>
     );
@@ -93,6 +109,12 @@ GannettListScreen.propTypes = {
 };
 
 const style = {
+  listView: {
+    search: {
+      backgroundColor: 'red',
+      height: 50,
+    }
+  },
   screen: {},
   h1: {},
   list: {},
