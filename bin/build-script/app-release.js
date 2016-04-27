@@ -11,13 +11,10 @@ const deploymentNames = {
   staging: 'Staging',
 };
 
-const binFolderPath = '../';
-
 class AppRelease {
   constructor(config) {
     Object.assign(this, config);
     this.codePush = new CodePush(this.codePushAccessKey);
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
   }
 
   registerNewDeploymentKeysForInstallation(deploymentKeys, extensionInstallation) {

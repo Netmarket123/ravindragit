@@ -15,7 +15,9 @@ import StyleProvider from './theme/StyleProvider';
 const ConnectedStyleProvider = connect(state => {
   const shoutemAppState = state['shoutem.application'];
   const themeId = _.get(shoutemAppState, 'configuration.relationships.themes.data[0].id');
-  const themeVariables = themeId ? _.get(shoutemAppState, `themes['${themeId}'].attributes.variables`) : { variables: {} };
+  const themeVariables = themeId
+    ? _.get(shoutemAppState, `themes['${themeId}'].attributes.variables`)
+    : { variables: {} };
 
   return {
     themeVariables,
