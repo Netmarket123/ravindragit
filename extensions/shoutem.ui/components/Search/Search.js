@@ -18,10 +18,6 @@ class Search extends React.Component {
     };
   }
 
-  updateSearchTerm(text) {
-    this.setState({ text });
-  }
-
   onSubmit() {
     if (!this.state.text) {
       if (this.props.onCleared) {
@@ -32,6 +28,10 @@ class Search extends React.Component {
     if (this.props.onSearchTermChange) {
       this.props.onSearchTermChange(this.state.text);
     }
+  }
+
+  updateSearchTerm(text) {
+    this.setState({ text });
   }
 
   clearTextInput() {
