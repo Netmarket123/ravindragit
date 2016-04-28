@@ -1,31 +1,44 @@
 import React, {
   View,
-  ListView,
 } from 'react-native';
 import _ from 'lodash';
 import Search from '../Search/Search';
 import GiftedListView from 'react-native-gifted-listview';
 import { connectStyle } from 'shoutem/theme';
 
-const dataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-
 function isRefreshable(searchedItems, notRefreshable) {
   return !Boolean(searchedItems.length > 0 || notRefreshable);
 }
-function createDataSource(searchedItems, items) {
-  const itemsToShow = searchedItems.length > 0 ? searchedItems : items;
-  return dataSource.cloneWithRows(itemsToShow);
+function getItemsToRender(searchedItems, items) {
+  return searchedItems.length > 0 ? searchedItems : items;
 }
-class ShoutemListView extends React.Component {
+class AdvancedListView extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.handleListViewRef = this.handleListViewRef.bind(this);
     this.fetch = this.fetch.bind(this);
+    this.search = this.search.bind(this);
     this.searchHidden = false;
     this.listView = null;
+    this.giftedListView = null;
     this.state = {
       searchTerm: '',
     };
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const { items, searchedItems } = this.props;
+    if (this.giftedListView &&
+      (nextProps.items !== items || nextProps.searchedItems !== searchedItems)) {
+      // GiftedListView use _updateRows to handle data to show and update internal state
+      // such loading statuses and other.
+      // Second argument (options) can be passed to mark last page and things like that.
+      // This function is used here so we do not need to implement callback onFetch method
+      // and work with callbacks as GiftedListView does
+      // https://github.com/FaridSafi/react-native-gifted-listview/blob/master/GiftedListViewExample/example_simple.js#L26
+      this.giftedListView._updateRows(getItemsToRender(nextProps.searchedItems, nextProps.items));
+    }
+    return true;
   }
 
   /**
@@ -35,6 +48,7 @@ class ShoutemListView extends React.Component {
    */
   getPropsToPass() {
     const props = this.props;
+    // TODO(Braco) - optimise omit/pick
     const mappedProps = _.omit(props, ['style', 'fetch', 'items', 'searchedItems']);
 
     // Default values
@@ -61,8 +75,6 @@ class ShoutemListView extends React.Component {
     // we do not want to pass style to GiftedListView, it uses customStyle
     mappedProps.customStyle = props.style.list;
     mappedProps.contentContainerStyle = props.style.listContent;
-    // data for list to show
-    mappedProps.dataSource = createDataSource(props.searchedItems, props.items);
 
     return mappedProps;
   }
@@ -89,26 +101,28 @@ class ShoutemListView extends React.Component {
   }
 
   /**
-   * Save RN ListView ref and pass it to parent.
+   * Save RN ListView GiftedListViewRef and pass it to parent.
    * Hide search on first load if search is present.
-   * @param ref
+   * @param GiftedListViewRef
    */
-  handleListViewRef(ref) {
+  handleListViewRef(GiftedListViewRef) {
     const props = this.props;
 
-    if (!ref) {
+    if (!GiftedListViewRef) {
       return;
     }
+
+    this.giftedListView = GiftedListViewRef;
+    this.listView = GiftedListViewRef.refs.listview;
 
     if (!this.searchHidden && props.search) {
       // scroll off to hide search only once and only if search enabled
       this.searchHidden = true;
-      this.listView = ref.refs.listview;
       this.listView.scrollTo({ y: _.get(props, 'style.header.search.container.height') });
     }
 
     if (props.registerScrollRef) {
-      // pass ref to parent
+      // pass GiftedListViewRef to parent
       props.registerScrollRef(this.listView);
     }
   }
@@ -157,7 +171,7 @@ class ShoutemListView extends React.Component {
   }
 }
 
-ShoutemListView.propTypes = {
+AdvancedListView.propTypes = {
   style: React.PropTypes.object,
   search: React.PropTypes.bool,
   searchPlaceholder: React.PropTypes.string,
@@ -183,4 +197,4 @@ const style = {
   list: {},
 };
 
-export default connectStyle('shoutem.ui.ListView', style)(ShoutemListView);
+export default connectStyle('shoutem.ui.ListView', style)(AdvancedListView);

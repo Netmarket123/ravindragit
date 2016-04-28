@@ -9,7 +9,7 @@ import { bindActionCreators } from 'redux';
 import { find } from 'redux-api-state';
 
 import { connectStyle, INCLUDE } from 'shoutem/theme';
-import { NewsGridBox, ListItem, ShoutemListView } from 'shoutem.ui';
+import { NewsGridBox, ListItem, AdvancedListView } from 'shoutem.ui';
 import { navigateTo } from 'shoutem/navigation';
 
 
@@ -85,7 +85,7 @@ class GannettListScreen extends Component {
 
     return (
       <View style={style.screen}>
-        <ShoutemListView
+        <AdvancedListView
           items={news}
           search
           searchedItems={searchedNews}
