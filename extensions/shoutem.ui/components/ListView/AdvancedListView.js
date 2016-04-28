@@ -7,10 +7,10 @@ import GiftedListView from 'react-native-gifted-listview';
 import { connectStyle } from 'shoutem/theme';
 
 function isRefreshable(searchedItems, notRefreshable) {
-  return !Boolean(searchedItems.length > 0 || notRefreshable);
+  return !Boolean((_.isArray(searchedItems) && searchedItems.length > 0) || notRefreshable);
 }
 function getItemsToRender(searchedItems, items) {
-  return searchedItems.length > 0 ? searchedItems : items;
+  return (_.isArray(searchedItems) && searchedItems.length > 0) ? searchedItems : items;
 }
 class AdvancedListView extends React.Component {
   constructor(props, context) {
