@@ -9,5 +9,6 @@
  * for the iOS platform.
  */
 
+require('react-native-browser-polyfill');
 // Run index.js containing the common application logic
 require('./index.js');
