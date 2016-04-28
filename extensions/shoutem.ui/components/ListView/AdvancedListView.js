@@ -31,7 +31,7 @@ class AdvancedListView extends React.Component {
     if (this.giftedListView &&
       (nextProps.items !== items || nextProps.searchedItems !== searchedItems)) {
       // GiftedListView use _updateRows to handle data to show and update internal state
-      // such loading statuses and other.
+      // such as loading status and other.
       // Second argument (options) can be passed to mark last page and things like that.
       // This function is used here so we do not need to implement callback onFetch method
       // and work with callbacks as GiftedListView does
