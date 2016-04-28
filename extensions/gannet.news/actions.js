@@ -6,6 +6,7 @@ import { storage, collection } from 'redux-api-state';
 export const reducers = {
   news: storage('gannett.news'),
   latestNews: collection('gannett.news', 'latestNews'),
+  searchedNews: collection('gannett.news', 'searchedNews'),
 };
 
 export function openListScreen() {

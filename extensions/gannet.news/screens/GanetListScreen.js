@@ -2,7 +2,6 @@ import React, {
   View,
   Text,
   Component,
-  measure,
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -12,6 +11,7 @@ import { find } from 'redux-api-state';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
 import { NewsGridBox, ListItem, ShoutemListView } from 'shoutem.ui';
 import { navigateTo } from 'shoutem/navigation';
+
 
 function renderRow(item, style, extrasSeparator, onPress) {
   if (item.featured) {
@@ -39,34 +39,33 @@ function renderRow(item, style, extrasSeparator, onPress) {
 }
 
 class GannettListScreen extends Component {
-  static state = {
-    headerHeight: 0,
-  }
-
   constructor(props, context) {
     super(props, context);
-    this.onFetch = this.onFetch.bind(this);
-    this.renderHeader = this.renderHeader.bind(this);
+    this.fetch = this.fetch.bind(this);
+    this.onSearchCleared = this.onSearchCleared.bind(this);
   }
 
-  onFetch(page = 1, callback, options) {
+  onSearchCleared() {
+    // reset searched news
+  }
+
+  fetch(searchTerm) {
+    if (searchTerm) {
+      alert(`Apply search! Search term: ${searchTerm}`);
+    }
     this.props.getGannetNews().then(() => {
-      callback(this.props.news);
+      // this is also possible solution, to set items trough callback
+      // setRows(this.props.news);
     });
   }
-
-  renderHeader() {
-    return (<View>
-      <Text style={this.props.style.search}>Search</Text>
-    </View>);
-  }
-
 
   render() {
     const {
       style,
       setNavBarProps,
       navigateToRoute,
+      news,
+      searchedNews,
     } = this.props;
     const extrasSeparator = require('../assets/circle_grey.png');
 
@@ -87,12 +86,12 @@ class GannettListScreen extends Component {
     return (
       <View style={style.screen}>
         <ShoutemListView
-          registerScrollRef={(WrappedListView) => {
-            this.listView = WrappedListView;
-          }}
-          onFetch={this.onFetch}
+          items={news}
+          search
+          searchedItems={searchedNews}
+          onSearchCleared={this.onSearchCleared}
+          fetch={this.fetch}
           renderRow={renderGannetListRow}
-          headerView={this.renderHeader}
           style={style.listView}
         />
       </View>
@@ -103,6 +102,7 @@ class GannettListScreen extends Component {
 GannettListScreen.propTypes = {
   getGannetNews: React.PropTypes.func,
   news: React.PropTypes.array,
+  searchedNews: React.PropTypes.array,
   style: React.PropTypes.object,
   setNavBarProps: React.PropTypes.func,
   navigateToRoute: React.PropTypes.func,
@@ -110,42 +110,42 @@ GannettListScreen.propTypes = {
 
 const style = {
   listView: {
-    search: {
-      backgroundColor: 'red',
-      height: 50,
-    }
+    header: {
+      container: {
+      },
+      search: {
+      },
+    },
+    list: {
+    },
+    listContent: {
+    },
   },
   screen: {},
   h1: {},
   list: {},
-  listContent: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
   featuredItem: {},
   items: {
-    [INCLUDE]: ['shoutem.ui.ListItem.textCentric'],
+    [INCLUDE]: ['shoutem.ui.ListItem.photoCentric'],
   },
 };
 
-function fetchLatestNewsFromState(state) {
+function fetchNewsFromState(state, collectionName = 'latestNews') {
   const news = state['gannet.news'].news; // storage
-  const latestNews = [];
+  const newsCollection = [];
 
   // latestNews = collection
-  state['gannet.news'].latestNews.forEach(id => {
-    const singleNews = news[id];
-    if (singleNews) {
-      latestNews.push(singleNews);
-    }
+  state['gannet.news'][collectionName].forEach(id => {
+    newsCollection.push(news[id]);
   });
 
-  return latestNews;
+  return newsCollection;
 }
 
 function mapStateToProps(state) {
   return {
-    news: fetchLatestNewsFromState(state),
+    news: fetchNewsFromState(state),
+    searchedNews: fetchNewsFromState(state, 'searchedNews'),
   };
 }
 
