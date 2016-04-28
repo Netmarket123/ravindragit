@@ -20,6 +20,7 @@ export default (variables) => {
       flexDirection: 'column',
       alignItems: 'stretch',
       flex: 1,
+      paddingTop: 70,
     },
     'shoutem.ui.NewsGridBox.photoCentric': {
       gridBox: {
@@ -161,6 +162,48 @@ export default (variables) => {
       mediumListItemButton: {
         button: {
           alignSelf: 'stretch',
+        },
+      },
+    },
+    'shoutem.ui.ListView': {
+      listContent: {
+        width: screenWidth,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'stretch',
+      },
+      list: {
+
+      },
+      header: {
+        search: {
+          container: {
+            width: screenWidth,
+            paddingHorizontal: 7,
+            backgroundColor: '#ccc',
+            height: 40,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+          },
+          input: {
+            flex: 1,
+            height: 30,
+            paddingHorizontal: 5,
+            borderRadius: 4,
+            backgroundColor: '#fff',
+            alignSelf: 'center',
+          },
+          clearButton: {
+            container: {
+              height: 30,
+            },
+            buttonText: {
+              paddingHorizontal: 5,
+              textAlign: 'center',
+            },
+          },
         },
       },
     },
