@@ -67,12 +67,12 @@ export default class CompositeMedia extends Component {
   render() {
     if (this.state.element) {
       return (
-      <View style={{flexDirection: 'row', flexWrap: 'wrap', flex: 1}} >
-          {this.state.element}
-        </View>
+      <View style={{width: 330, flexDirection: 'row', flexWrap: 'wrap'}} >
+        {this.state.element}
+      </View>
       );
     }
-    return <View style={{flexDirection: 'column'}} />;
+    return <View />;
   }
 }
 

@@ -14,8 +14,10 @@ const styles = {
   text: {
     flex: 0,
     width: null,
-  }
-}
+    height: null,
+    flexWrap: 'wrap',
+  },
+};
 
 function decodeHTML(string) {
   return entities.decodeHTML(string);
@@ -42,10 +44,11 @@ export default class HtmlRenderer {
     function domToElement(dom, parent) {
       if (!dom) return null;
 
-      return dom.map((node, index, list) => {
+      const nodesList = dom.map((node, index, list) => {
         if (node.type === 'text') {
+          const parentStyle = parent ? opts.styles[parent.name] : null;
           return (
-            <Text key={index} style={parent ? opts.styles[parent.name] : null}>
+            <Text key={index} style={[parentStyle, styles.text]}>
               {decodeHTML(node.data)}
             </Text>
           );
@@ -54,30 +57,61 @@ export default class HtmlRenderer {
         if (node.type === 'tag') {
           const mediaTag = renderTag(node, index);
 
-          const pre = node.name === 'pre' ? <Text>{LINE_BREAK}</Text> : null;
-          const li = node.name === 'li' ? <Text>{BULLET}</Text> : null;
-          const br = node.name === 'br' ? <Text>{LINE_BREAK}</Text> : null;
-          const p = (node.name === 'p' && index < list.length - 1)
-                    ? <Text>{PARAGRAPH_BREAK}</Text>
-                    : null;
-          const h1 = (node.name === 'h1' || node.name === 'h2' || node.name === 'h3' || node.name === 'h4' || node.name === 'h5')
-                    ? <Text>{PARAGRAPH_BREAK}</Text>
-                    : null;
+          if (node.name === 'pre') {
+            return (
+              <View key={index} >
+                <Text>{LINE_BREAK}</Text>
+                {domToElement(node.children, node)}
+              </View>
+            );
+          } else if (node.name === 'a') {
+            return domToElement(node.children, node);
+          } else if (node.name === 'li') {
+            return (
+              <View key={index} >
+                <Text>{BULLET}</Text>
+                {domToElement(node.children, node)}
+              </View>
+            );
+          } else if (node.name === 'br') {
+            return (
+              <View key={index} style={{width: 330, flexDirection: 'row', flexWrap: 'wrap'}} >
+                {domToElement(node.children, node)}
+                <Text>{LINE_BREAK}</Text>
+              </View>
+            );
+          } else if (node.name === 'p') {
+            let paragraphBreak = null;
 
-          return (
-            <View key={index} >
-            {pre}
-            {li}
-            {domToElement(node.children, node)}
-            {br}
-            {p}
-            {h1}
-            {mediaTag}
-            </View>
-          );
+            if (index < list.length - 1) {
+              paragraphBreak = <Text>{PARAGRAPH_BREAK}</Text>;
+            }
+
+            return (
+              <View key={index} style={{width: 330, flexDirection: 'row', flexWrap: 'wrap'}} >
+                {domToElement(node.children, node)}
+                {paragraphBreak}
+              </View>
+            );
+          } else if (node.name === 'h1' || node.name === 'h2' || node.name === 'h3' || node.name === 'h4' || node.name === 'h5') {
+            return (
+              <View key={index} >
+                {domToElement(node.children, node)}
+                <Text>{PARAGRAPH_BREAK}</Text>
+              </View>
+            );
+          } else {
+            return (
+              <View key={index} >
+                {mediaTag}
+              </View>
+            );
+          }
         }
         return null;
       });
+
+      return nodesList;
     }
 
     const handler = new htmlparser.DomHandler((err, dom) => {
