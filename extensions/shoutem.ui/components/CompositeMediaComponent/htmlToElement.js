@@ -14,8 +14,12 @@ function decodeHTML(string) {
   return entities.decodeHTML(string);
 }
 
+function isMediaElement(node) {
+  return node.name === 'attachment';
+}
+
 function containsAttachment(node) {
-  return node.name === 'attachment'
+  return isMediaElement(node)
     || (node.children && node.children.some((childNode) => containsAttachment(childNode)));
 }
 
@@ -96,7 +100,7 @@ export default class HtmlRenderer {
                 <Text>{PARAGRAPH_BREAK}</Text>
               </ContainerElement>
             );
-          } else if (node.name === 'attachment') {
+          } else if (isMediaElement(node)) {
             return (
               <View key={index} >
                 {mediaTag}
