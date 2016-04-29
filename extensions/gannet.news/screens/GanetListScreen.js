@@ -10,7 +10,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { connectStyle, INCLUDE } from 'shoutem/theme';
-import { NewsGridBox, ListItem, AdvancedListView } from 'shoutem.ui';
+
+import {
+  NewsGridBox,
+  ListItem,
+  DropDownMenu,
+  AdvancedListView,
+} from 'shoutem.ui';
+
 import { navigateTo } from 'shoutem/navigation';
 
 const GANNETT_SCHEME = 'shoutem.news.articles';
@@ -66,9 +73,14 @@ class GannettListScreen extends Component {
     } = this.props;
     const extrasSeparator = require('../assets/circle_grey.png');
 
-    const navBarTitle = <Text>News</Text>;
+    const categoryDropDown = (
+      <DropDownMenu
+        items={[{ name: 'World', id: 1 }, { name: 'Sport', id: 2 }, { name: 'Music', id: 3 }]}
+        bindings={{ text: 'name', value: 'id' }}
+      />
+    );
     setNavBarProps({
-      centerComponent: navBarTitle,
+      rightComponent: categoryDropDown,
     });
 
     function openDetailsScreen(item) {
