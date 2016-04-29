@@ -10,15 +10,6 @@ const LINE_BREAK = '\n';
 const PARAGRAPH_BREAK = '\n\n';
 const BULLET = '\u2022 ';
 
-const styles = {
-  text: {
-    flex: 0,
-    width: null,
-    height: null,
-    flexWrap: 'wrap',
-  },
-};
-
 function decodeHTML(string) {
   return entities.decodeHTML(string);
 }
@@ -53,7 +44,7 @@ export default class HtmlRenderer {
         if (node.type === 'text') {
           const parentStyle = parent ? opts.styles[parent.name] : null;
           return (
-            <Text key={index} style={[parentStyle, styles.text]}>
+            <Text key={index} style={parentStyle}>
               {decodeHTML(node.data)}
             </Text>
           );
@@ -71,8 +62,6 @@ export default class HtmlRenderer {
                 {domToElement(node.children, node)}
               </ContainerElement>
             );
-          } else if (node.name === 'a') {
-            return domToElement(node.children, node);
           } else if (node.name === 'li') {
             return (
               <ContainerElement key={index} >
@@ -82,7 +71,7 @@ export default class HtmlRenderer {
             );
           } else if (node.name === 'br') {
             return (
-              <ContainerElement key={index} style={{ width: 330, flexDirection: 'row', flexWrap: 'wrap' }} >
+              <ContainerElement key={index}>
                 {domToElement(node.children, node)}
                 <Text>{LINE_BREAK}</Text>
               </ContainerElement>
@@ -95,7 +84,7 @@ export default class HtmlRenderer {
             }
 
             return (
-              <ContainerElement key={index} style={{ width: 330, flexDirection: 'row', flexWrap: 'wrap' }} >
+              <ContainerElement key={index}>
                 {domToElement(node.children, node)}
                 {paragraphBreak}
               </ContainerElement>
@@ -113,6 +102,8 @@ export default class HtmlRenderer {
                 {mediaTag}
               </View>
             );
+          } else {
+            return domToElement(node.children, node);
           }
         }
         return null;

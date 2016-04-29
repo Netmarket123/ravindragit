@@ -1,7 +1,6 @@
 import React, {
   StyleSheet,
   Component,
-  Text,
   PropTypes,
   View,
 } from 'react-native';
@@ -67,7 +66,7 @@ export default class CompositeMedia extends Component {
   render() {
     if (this.state.element) {
       return (
-      <View style={{width: 330, flexDirection: 'row', flexWrap: 'wrap'}} >
+      <View>
         {this.state.element}
       </View>
       );
