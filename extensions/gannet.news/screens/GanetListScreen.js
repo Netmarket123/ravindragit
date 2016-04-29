@@ -41,7 +41,7 @@ function renderRow(item, style, extrasSeparator, onPress) {
       leftExtra={'News'}
       id={item.id}
       style={style.items}
-      onPressItem={{ body: item.attributes.body, title: item.attributes.title }}
+      onPressItem={{ body: item.attributes.body, title: item.attributes.title, image_url: item.image_url }}
       onPressMethod={onPress}
     />
   );
@@ -52,6 +52,10 @@ class GannettListScreen extends Component {
     super(props, context);
     this.fetch = this.fetch.bind(this);
     this.onSearchCleared = this.onSearchCleared.bind(this);
+  }
+
+  componentWillUnmount() {
+    this.props.clearSearch();
   }
 
   onSearchCleared() {
