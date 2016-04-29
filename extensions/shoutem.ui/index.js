@@ -13,6 +13,9 @@ export { default as ShopGridBox } from './components/GridBox/ShopGridBox';
 export { default as ListItem } from './components/ListItem/ListItem';
 
 export { default as Video } from './components/Video/Video';
-// export { default as ImagePreview } from './components/ImagePreview.js';
 
 export { default as DropDownMenu } from './components/DropDownMenu/DropDownMenu';
+
+export { default as ImagePreview } from './components/ImagePreview';
+export { default as CompositeMedia } from './components/CompositeMediaComponent/CompositeMedia';
+
