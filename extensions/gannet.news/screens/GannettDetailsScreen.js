@@ -1,12 +1,11 @@
 import React, {
   View,
   ScrollView,
-  Text,
   Dimensions,
   Animated,
 } from 'react-native';
 import { INCLUDE, connectStyle } from 'shoutem/theme';
-import { NewsGridBox } from 'shoutem.ui';
+import { NewsGridBox, CompositeMedia } from 'shoutem.ui';
 import * as _ from 'lodash';
 
 const DEFAULT_BOTTOM_CONTENT_OFFSET = 50;
@@ -49,7 +48,10 @@ function getScrollHandle(scrollY) {
 function Details({ item, style }) {
   return (
     <View key="details" style={style.detailsContainer}>
-      <Text style={style.detailsText}>{item.body.replace(/<\/?[^>]+(>|$)/g, '')}</Text>
+      <CompositeMedia
+        body={item.body}
+        attachments={item.attachments}
+      />
     </View>
   );
 }
@@ -102,7 +104,7 @@ GannettDetailsScreen.propTypes = {
 
 const style = {
   headline: {
-    [INCLUDE]: ['shoutem.ui.NewsGridBox.textCentric'],
+    [INCLUDE]: ['shoutem.ui.NewsGridBox.photoCentric'],
   },
   screen: {
     position: 'relative',
