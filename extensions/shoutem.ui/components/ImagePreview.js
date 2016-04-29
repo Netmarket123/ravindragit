@@ -25,6 +25,7 @@ const STATUS_BAR_OFFSET = (Platform.OS === 'android' ? -25 : 0);
 const style = {
   container: {
     flex: 1,
+    backgroundColor: 'black',
   },
   image: {
     flex: 1,
@@ -84,6 +85,7 @@ class ImagePreview extends Component {
       return (
         <Modal
           animated
+          transparent
         >
           <View style={style.container}>
             <Image
