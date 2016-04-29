@@ -53,7 +53,7 @@ class AppRelease {
     console.log('get extension installation');
     return new Promise((resolve, reject) => {
       request.get({
-        url: `http://${this.serverApiEndpoint}/v1/apps/${this.appId}/installations/shoutem.codepush`,
+        url: `http://${this.serverApiEndpoint}/v1/apps/${this.appId}/installations/shoutem.code-push`,
         headers: {
           Authorization: this.authorization,
           Accept: 'application/vnd.api+json',
