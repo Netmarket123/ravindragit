@@ -15,12 +15,12 @@ function decodeHTML(string) {
 }
 
 function isMediaElement(node) {
-  return node.name === 'attachment';
+  return node.name === 'attachment' || node.name === 'img';
 }
 
-function containsAttachment(node) {
+function containsMediaElement(node) {
   return isMediaElement(node)
-    || (node.children && node.children.some((childNode) => containsAttachment(childNode)));
+    || (node.children && node.children.some((childNode) => containsMediaElement(childNode)));
 }
 
 export default class HtmlRenderer {
@@ -54,7 +54,7 @@ export default class HtmlRenderer {
           );
         }
 
-        const ContainerElement = containsAttachment(node) ? View : Text;
+        const ContainerElement = containsMediaElement(node) ? View : Text;
 
         if (node.type === 'tag') {
           const mediaTag = renderTag(node, index);

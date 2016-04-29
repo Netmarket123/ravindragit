@@ -5,6 +5,7 @@ import ImagePreview from '../../ImagePreview';
 import Video from '../../Video/Video';
 
 const {height, width} = Dimensions.get('window');
+const MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE = 30;
 
 class AttachmentTagTransformer {
   canHandle(node) {
@@ -28,8 +29,8 @@ class AttachmentTagTransformer {
       return (
         <ImagePreview
           source={{ uri: image.src }}
-          width={imageWidth - 30}
-          height={image.height - 30}
+          width={imageWidth - MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE}
+          height={image.height - MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE}
           key={key}
         />
       );
@@ -39,13 +40,13 @@ class AttachmentTagTransformer {
       // TODO(Vladimir) - ensure images exists
       const video = this.attachments.videos.find((video) => video.id === id);
       const videoWidth = (width < video.width) ? width : video.width;
-      const heightScale = videoWidth/video.width
+      const heightScale = videoWidth/video.width;
 
       return (
         <Video
           source={video.src}
-          width={videoWidth - 30}
-          height={video.height * heightScale - 30}
+          width={videoWidth - MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE}
+          height={video.height * heightScale - MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE}
           key={key}
         />
       );

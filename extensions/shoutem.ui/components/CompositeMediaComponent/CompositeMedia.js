@@ -13,7 +13,6 @@ const propTypes = {
   body: PropTypes.string,
   stylesheet: PropTypes.object,
   onError: PropTypes.func,
-  renderNode: PropTypes.func,
 };
 
 export default class CompositeMedia extends Component {
@@ -23,7 +22,7 @@ export default class CompositeMedia extends Component {
 
   componentDidMount() {
     this.mounted = true;
-    const {body, attachments} = this.props;
+    const { body, attachments } = this.props;
     this.startHtmlRender(body, attachments);
   }
 
@@ -44,7 +43,6 @@ export default class CompositeMedia extends Component {
 
     const opts = {
       styles: Object.assign({}, styles, this.props.stylesheet),
-      customRenderer: this.props.renderNode,
     };
 
     const htmlRenderer = new HtmlRenderer([
@@ -66,9 +64,9 @@ export default class CompositeMedia extends Component {
   render() {
     if (this.state.element) {
       return (
-      <View>
-        {this.state.element}
-      </View>
+        <View>
+          {this.state.element}
+        </View>
       );
     }
     return <View />;
