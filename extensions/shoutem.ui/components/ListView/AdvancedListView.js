@@ -6,16 +6,17 @@ import Search from '../Search/Search';
 import GiftedListView from 'react-native-gifted-listview';
 import { connectStyle } from 'shoutem/theme';
 
-function isRefreshable(searchedItems, notRefreshable) {
-  return !Boolean((_.isArray(searchedItems) && searchedItems.length > 0) || notRefreshable);
+const GET_PROPS_TO_PASS = Symbol('getPropsToPass');
+const HANDLE_LIST_VIEW_REF = Symbol('handleListViewRef');
+
+function isRefreshable(searchTerm, notRefreshable) {
+  return !(searchTerm || notRefreshable);
 }
-function getItemsToRender(searchedItems, items) {
-  return (_.isArray(searchedItems) && searchedItems.length > 0) ? searchedItems : items;
-}
+
 class AdvancedListView extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.handleListViewRef = this.handleListViewRef.bind(this);
+    this[HANDLE_LIST_VIEW_REF] = this[HANDLE_LIST_VIEW_REF].bind(this);
     this.fetch = this.fetch.bind(this);
     this.search = this.search.bind(this);
     this.searchHidden = false;
@@ -27,16 +28,15 @@ class AdvancedListView extends React.Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    const { items, searchedItems } = this.props;
-    if (this.giftedListView &&
-      (nextProps.items !== items || nextProps.searchedItems !== searchedItems)) {
+    const { items } = this.props;
+    if (this.giftedListView && nextProps.items !== items) {
       // GiftedListView use _updateRows to handle data to show and update internal state
       // such as loading status and other.
       // Second argument (options) can be passed to mark last page and things like that.
       // This function is used here so we do not need to implement callback onFetch method
       // and work with callbacks as GiftedListView does
       // https://github.com/FaridSafi/react-native-gifted-listview/blob/master/GiftedListViewExample/example_simple.js#L26
-      this.giftedListView._updateRows(getItemsToRender(nextProps.searchedItems, nextProps.items));
+      this.giftedListView._updateRows(nextProps.items);
     }
     return true;
   }
@@ -46,7 +46,7 @@ class AdvancedListView extends React.Component {
    * Setting default values.
    * @returns {{}}
    */
-  getPropsToPass() {
+  [GET_PROPS_TO_PASS]() {
     const props = this.props;
     // TODO(Braco) - optimise omit/pick
     const mappedProps = _.omit(props, ['style', 'fetch', 'items', 'searchedItems']);
@@ -57,7 +57,7 @@ class AdvancedListView extends React.Component {
     // enable infinite scrolling using touch to load more
     mappedProps.pagination = Boolean(!props.disablePagination);
     // enable pull-to-refresh for iOS and touch-to-refresh for Android
-    mappedProps.refreshable = isRefreshable(props.searchedItems, props.notRefreshable);
+    mappedProps.refreshable = isRefreshable(this.state.searchTerm, props.notRefreshable);
     // enable sections
     mappedProps.withSections = props.sections;
     // react native warning
@@ -105,7 +105,7 @@ class AdvancedListView extends React.Component {
    * Hide search on first load if search is present.
    * @param GiftedListViewRef
    */
-  handleListViewRef(GiftedListViewRef) {
+  [HANDLE_LIST_VIEW_REF](GiftedListViewRef) {
     const props = this.props;
 
     if (!GiftedListViewRef) {
@@ -165,8 +165,8 @@ class AdvancedListView extends React.Component {
 
   render() {
     return (<GiftedListView
-      ref={this.handleListViewRef}
-      {...this.getPropsToPass()}
+      ref={this[HANDLE_LIST_VIEW_REF]}
+      {...this[GET_PROPS_TO_PASS]()}
     />);
   }
 }
@@ -185,7 +185,6 @@ AdvancedListView.propTypes = {
   renderHeader: React.PropTypes.func,
   fetch: React.PropTypes.func,
   items: React.PropTypes.array,
-  searchedItems: React.PropTypes.array,
   onEndReach: React.PropTypes.func, // TODO(Braco) - enable real infinite scrolling
 };
 
