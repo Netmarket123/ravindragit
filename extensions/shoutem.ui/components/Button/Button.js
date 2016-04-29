@@ -13,6 +13,7 @@ function Button({
   icon,
   text,
   onPress,
+  iconOnRight
 }) {
   let buttonImage = null;
   if (icon) {
@@ -25,16 +26,31 @@ function Button({
     return null;
   }
 
+  let content;
+
+  if (iconOnRight) {
+    content = (
+      <View style={style.button}>
+        {buttonText}
+        {buttonImage}
+      </View>
+    );
+  } else {
+    content = (
+      <View style={style.button}>
+        {buttonImage}
+        {buttonText}
+      </View>
+    );
+  }
+
   return (
     <TouchableOpacity
       style={style.buttonContainer}
       underlayColor={style.buttonActive.backgroundColor}
       onPress={onPress}
     >
-      <View style={style.button}>
-        {buttonImage}
-        {buttonText}
-      </View>
+      {content}
     </TouchableOpacity>
   );
 }
