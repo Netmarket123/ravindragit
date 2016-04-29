@@ -1,7 +1,6 @@
 import React, {
   View,
   ListView,
-  Text,
   Component,
 } from 'react-native';
 
@@ -56,12 +55,14 @@ class GannettListScreen extends Component {
     const extrasSeparator = require('../assets/circle_grey.png');
     const dataSourceItems = dataSource.cloneWithRows(news);
 
-    const navBarTitle = <DropDownMenu
-      items={[{ name: 'World', id: 1 }, { name: 'Sport', id: 2 }, { name: 'Music', id: 3 }]}
-      bindings={{ text: 'name', value: 'id' }}
-    />;
+    const categoryDropDown = (
+      <DropDownMenu
+        items={[{ name: 'World', id: 1 }, { name: 'Sport', id: 2 }, { name: 'Music', id: 3 }]}
+        bindings={{ text: 'name', value: 'id' }}
+      />
+    );
     setNavBarProps({
-      centerComponent: navBarTitle,
+      rightComponent: categoryDropDown,
     });
 
     function openDetailsScreen(item) {

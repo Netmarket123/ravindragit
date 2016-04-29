@@ -11,9 +11,9 @@ import { connectStyle } from 'shoutem/theme';
 function Button({
   style,
   icon,
+  showIconOnRight,
   text,
   onPress,
-  iconOnRight
 }) {
   let buttonImage = null;
   if (icon) {
@@ -28,7 +28,7 @@ function Button({
 
   let content;
 
-  if (iconOnRight) {
+  if (showIconOnRight) {
     content = (
       <View style={style.button}>
         {buttonText}
@@ -57,6 +57,7 @@ function Button({
 
 Button.propTypes = {
   icon: React.PropTypes.string,
+  showIconOnRight: React.PropTypes.boolean,
   text: React.PropTypes.string,
   style: React.PropTypes.object,
   onPress: React.PropTypes.func,

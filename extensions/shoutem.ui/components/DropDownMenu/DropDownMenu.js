@@ -80,7 +80,7 @@ class DropDownMenu extends Component {
     return (
       <View>
         <Button
-          iconOnRight
+          showIconOnRight
           icon="arrow-drop-down"
           text={selectedItem[bindings.text]}
           onPress={this.collapse}
