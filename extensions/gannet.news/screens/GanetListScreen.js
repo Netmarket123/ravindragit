@@ -109,6 +109,7 @@ class GannettListScreen extends Component {
           fetch={this.fetch}
           renderRow={renderGannetListRow}
           style={style.listView}
+          disablePagination
         />
       </View>
     );
