@@ -15,34 +15,18 @@ function Button({
   text,
   onPress,
 }) {
-  let buttonImage = null;
+  let buttonIcon = null;
   if (icon) {
-    buttonImage = <Icon name={icon} style={style.buttonIcon} />;
+    buttonIcon = <Icon key="icon" name={icon} style={style.buttonIcon} />;
   }
   const buttonText = text ?
-    <Text style={style.buttonText}>{text}</Text> : null;
+    <Text key="text" style={style.buttonText}>{text}</Text> : null;
 
-  if (!buttonImage && !buttonText) {
+  if (!buttonIcon && !buttonText) {
     return null;
   }
 
-  let content;
-
-  if (showIconOnRight) {
-    content = (
-      <View style={style.button}>
-        {buttonText}
-        {buttonImage}
-      </View>
-    );
-  } else {
-    content = (
-      <View style={style.button}>
-        {buttonImage}
-        {buttonText}
-      </View>
-    );
-  }
+  const content = showIconOnRight ? [buttonText, buttonIcon] : [buttonIcon, buttonText];
 
   return (
     <TouchableOpacity
@@ -50,7 +34,9 @@ function Button({
       underlayColor={style.buttonActive.backgroundColor}
       onPress={onPress}
     >
-      {content}
+      <View style={style.button}>
+        {content}
+      </View>
     </TouchableOpacity>
   );
 }
