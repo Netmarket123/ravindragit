@@ -46,13 +46,17 @@ class AppBuild {
           Accept: 'application/vnd.api+json',
         },
       }, response => {
-        response.pipe(configurationFile);
-        configurationFile.on('finish', () => {
-          configurationFile.close(() => {
-            console.timeEnd('download configuration');
-            resolve(this.configurationPath);
+        if (response.statusCode === 200) {
+          response.pipe(configurationFile);
+          configurationFile.on('finish', () => {
+            configurationFile.close(() => {
+              console.timeEnd('download configuration');
+              resolve(this.configurationPath);
+            });
           });
-        });
+        } else {
+          reject('Configuration download failed!');
+        }
       }).on('error', err => {
         reject(err);
       });
