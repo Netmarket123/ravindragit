@@ -1,7 +1,6 @@
 import React, {
   View,
   ListView,
-  Text,
   Component,
 } from 'react-native';
 
@@ -10,7 +9,7 @@ import { bindActionCreators } from 'redux';
 import { find } from 'redux-api-state';
 
 import { connectStyle, INCLUDE } from 'shoutem/theme';
-import { NewsGridBox, ListItem } from 'shoutem.ui';
+import { NewsGridBox, ListItem, DropDownMenu } from 'shoutem.ui';
 import { navigateTo } from 'shoutem/navigation';
 
 function renderRow(item, style, extrasSeparator, onPress) {
@@ -56,9 +55,14 @@ class GannettListScreen extends Component {
     const extrasSeparator = require('../assets/circle_grey.png');
     const dataSourceItems = dataSource.cloneWithRows(news);
 
-    const navBarTitle = <Text>News</Text>;
+    const categoryDropDown = (
+      <DropDownMenu
+        items={[{ name: 'World', id: 1 }, { name: 'Sport', id: 2 }, { name: 'Music', id: 3 }]}
+        bindings={{ text: 'name', value: 'id' }}
+      />
+    );
     setNavBarProps({
-      centerComponent: navBarTitle,
+      rightComponent: categoryDropDown,
     });
 
     function openDetailsScreen(item) {
@@ -72,6 +76,7 @@ class GannettListScreen extends Component {
 
     return (
       <View style={style.screen}>
+
         <ListView
           contentContainerStyle={style.listContent}
           style={style.list}
