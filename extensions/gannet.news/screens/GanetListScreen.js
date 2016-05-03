@@ -1,6 +1,5 @@
 import React, {
   View,
-  Text,
   Component,
 } from 'react-native';
 import { clear, find } from 'redux-api-state';
@@ -10,7 +9,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { connectStyle, INCLUDE } from 'shoutem/theme';
-import { NewsGridBox, ListItem, AdvancedListView } from 'shoutem.ui';
+import { NewsGridBox, ListItem, AdvancedListView, DropDownMenu } from 'shoutem.ui';
 import { navigateTo } from 'shoutem/navigation';
 
 const GANNETT_SCHEME = 'shoutem.news.articles';
@@ -66,9 +65,14 @@ class GannettListScreen extends Component {
     } = this.props;
     const extrasSeparator = require('../assets/circle_grey.png');
 
-    const navBarTitle = <Text>News</Text>;
+    const categoryDropDown = (
+      <DropDownMenu
+        items={[{ name: 'World', id: 1 }, { name: 'Sport', id: 2 }, { name: 'Music', id: 3 }]}
+        bindings={{ text: 'name', value: 'id' }}
+      />
+    );
     setNavBarProps({
-      centerComponent: navBarTitle,
+      rightComponent: categoryDropDown,
     });
 
     function openDetailsScreen(item) {
@@ -79,6 +83,7 @@ class GannettListScreen extends Component {
     function renderGannetListRow(item) {
       const imageId = _.get(item, 'relationships.image.data.id');
       if (imageId) {
+        // eslint-disable-next-line
         item.image_url = _.get(images, `${[imageId]}.attributes.url`);
       }
       return renderRow(item, style, extrasSeparator, openDetailsScreen);
@@ -100,6 +105,7 @@ class GannettListScreen extends Component {
 }
 
 GannettListScreen.propTypes = {
+  images: React.PropTypes.array,
   getGannetNews: React.PropTypes.func,
   clearSearch: React.PropTypes.func,
   news: React.PropTypes.array,
