@@ -1,0 +1,11 @@
+{
+  "name": "gannet.news",
+  "version": "0.0.1",
+  "private": true,
+  "main": "index.js",
+  "dependencies": {
+    "react": "^0.14.5",
+    "react-native": "^0.23.1",
+    "redux-api-state": "0.0.6"
+  }
+}
