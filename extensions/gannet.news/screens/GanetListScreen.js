@@ -133,7 +133,7 @@ const style = {
   list: {},
   featuredItem: {},
   items: {
-    [INCLUDE]: ['shoutem.ui.ListItem.textCentric'],
+    [INCLUDE]: ['shoutem.ui.ListItem.photoCentric'],
   },
 };
 
