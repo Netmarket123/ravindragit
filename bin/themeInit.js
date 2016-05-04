@@ -225,16 +225,5 @@ export default (variables) => {
         backgroundColor: variables.testColor,
       },
     },
-    'dev.ext.GannettListScreen': {
-      featuredItem: {
-        container: {
-          padding: 30,
-          backgroundColor: variables.ganetColor,
-        },
-        headline: {
-          marginBottom: 30,
-        },
-      },
-    },
   };
 };
