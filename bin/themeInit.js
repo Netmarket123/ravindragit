@@ -20,6 +20,7 @@ export default (variables) => {
       flexDirection: 'column',
       alignItems: 'stretch',
       flex: 1,
+      backgroundColor: '#f2f2f2',
       paddingTop: 70,
     },
     'shoutem.ui.NewsGridBox.photoCentric': {
@@ -89,7 +90,8 @@ export default (variables) => {
         marginHorizontal: 10,
       },
       leftExtra: {
-        fontSize: 15,
+        fontSize: 12,
+        color: '#888',
       },
       rightExtra: {
         fontSize: 12,
@@ -104,7 +106,8 @@ export default (variables) => {
     'shoutem.ui.ListItem.photoCentric': {
       gridBox: {
         container: {
-          margin: 5,
+          marginTop: 5,
+          marginLeft: 5,
         },
         imageOverlay: {
           alignItems: 'stretch',
@@ -116,15 +119,19 @@ export default (variables) => {
         padding: 0,
         flexDirection: 'column',
         flexWrap: 'wrap',
-        height: 200,
         alignItems: 'stretch',
         alignSelf: 'stretch',
+        backgroundColor: '#fff',
+        borderRadius: 2,
+        shadowColor: 'black',
+        shadowRadius: 9,
+        shadowOpacity: 0.3,
+        shadowOffset: { width: 5, height: 7 },
       },
       itemImage: {
         alignSelf: 'stretch',
         height: 85,
         borderRadius: 2,
-        marginBottom: 5,
       },
       itemInfo: {
         flexDirection: 'column',
@@ -141,6 +148,8 @@ export default (variables) => {
         flex: 1,
         fontSize: 15,
         color: '#222',
+        marginHorizontal: 10,
+        marginTop: 10,
       },
       extrasSeparator: {
         width: 3,
@@ -150,6 +159,9 @@ export default (variables) => {
       },
       leftExtra: {
         fontSize: 12,
+        marginHorizontal: 10,
+        marginBottom: 10,
+        color: '#888',
       },
       rightExtra: {
         fontSize: 12,
@@ -205,7 +217,7 @@ export default (variables) => {
     },
     'shoutem.ui.NavigationBar': {
       container: {
-        backgroundColor: '#ccc',
+        backgroundColor: '#fff',
       },
     },
     'shoutem.test.ExampleScreen': {
