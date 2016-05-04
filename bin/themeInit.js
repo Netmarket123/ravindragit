@@ -44,9 +44,6 @@ export default (variables) => {
     },
     'shoutem.ui.ListItem.textCentric': {
       gridBox: {
-        container: {
-          width: screenWidth,
-        },
         imageOverlay: {
           flexDirection: 'column',
         },
@@ -108,7 +105,6 @@ export default (variables) => {
       gridBox: {
         container: {
           margin: 5,
-          width: (screenWidth / 2) - (2 * 2 * 5),
         },
         imageOverlay: {
           alignItems: 'stretch',
