@@ -4,13 +4,13 @@ import React, {
   ViewPagerAndroid,
   Dimensions,
   Platform,
-  Children,
   View,
 } from 'react-native';
 
 const propTypes = {
   height: PropTypes.number.isRequired,
-  children: PropTypes.node,
+  dataSource: PropTypes.arrayOf(PropTypes.string),
+  renderPage: PropTypes.func,
 };
 
 const screenWidth = Dimensions.get('window').width;
@@ -23,8 +23,9 @@ const styles = {
 };
 
 /**
- * Renders a horizontal pager which wraps its child components
- * as pages.
+ * Renders a horizontal pager which renders pages by using
+ * the provided renderPage function with data from provided
+ * dataSource.
  *
  * It can be used as a general wrapper component for any group
  * of uniform components which require horizontal paging.
@@ -36,11 +37,13 @@ const styles = {
  */
 export default function HorizontalPager({
   height,
-  children,
+  dataSource,
+  renderPage,
 }) {
-  // wrap children in a View component of a fixed width
-  const childrenWrappedInPages = Children.map(children, child => (
-    <View style={styles.item}>{child}</View>
+  const pages = dataSource.map((src, key) => (
+    <View style={styles.item} key={key} >
+      {renderPage(src, key)}
+    </View>
   ));
 
   if (Platform.OS === 'android') {
@@ -49,7 +52,7 @@ export default function HorizontalPager({
         style={{ height }}
         initialPage={0}
       >
-        {childrenWrappedInPages}
+        {pages}
       </ViewPagerAndroid>
     );
   }
@@ -59,7 +62,7 @@ export default function HorizontalPager({
       pagingEnabled
       horizontal
     >
-      {childrenWrappedInPages}
+      {pages}
     </ScrollView>
   );
 }

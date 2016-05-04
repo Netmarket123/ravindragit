@@ -40,17 +40,23 @@ export default function ImageGallery({
   width,
   height,
 }) {
+  function renderPage(src, key) {
+    return renderImagePreview({
+      source: {
+        uri: src,
+      },
+      width,
+      height,
+    }, key);
+  }
+
   return (
     <HorizontalPager
       width={width}
       height={height}
-    >
-      {
-        sources.map((src, key) => (renderImagePreview({
-          source: { uri: src }, width, height,
-        }, key)))
-      }
-    </HorizontalPager>
+      dataSource={sources}
+      renderPage={renderPage}
+    />
   );
 }
 
