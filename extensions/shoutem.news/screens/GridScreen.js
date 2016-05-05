@@ -4,42 +4,24 @@ import React, {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
-import { ListItem, AdvancedListView, DropDownMenu } from 'shoutem.ui';
+import { ListItem, AdvancedGridView, DropDownMenu } from 'shoutem.ui';
 import newsMapDispatchToProps from './lib/newsMapDispatchToProps';
 import newsMapStateToProps from './lib/newsMapStateToProps';
+import ListScreenPropTypes from './lib/ListScreenPropTypes';
 
-const DEFAULT_ITEMS_GROUP_SIZE = 2;
-
-function renderRow(items, style, extrasSeparator, onPress) {
+function renderNewsItem(item, style, extrasSeparator, onPress) {
   return (
-    <View style={style.gridRow}>
-      {
-        items.reduce((gridItems, item) => {
-          gridItems.puhs(
-            <ListItem
-              description={item.attributes.title}
-              image={{ uri: item.image_url }}
-              leftExtra={'News'}
-              id={item.id}
-              style={style.gridColumn}
-              onPressItem={{ body: item.attributes.body, title: item.attributes.title }}
-              onPressMethod={onPress}
-            />
-          );
-          return gridItems;
-        }, [])
-      }
-    </View>);
-}
-
-function groupItems(items, itemsPerGroup = DEFAULT_ITEMS_GROUP_SIZE) {
-  return items.reduce((groupedItems, item, index) => {
-    if (index % itemsPerGroup === 0) {
-      groupedItems.push([]);
-    }
-    groupedItems[(groupedItems.length - 1)].push(item);
-    return groupedItems;
-  }, []);
+    <ListItem
+      key={item.id}
+      description={item.attributes.title}
+      image={{ uri: item.image_url }}
+      leftExtra={'News'}
+      id={item.id}
+      style={style.gridColumn}
+      onPressItem={{ body: item.attributes.body, title: item.attributes.title }}
+      onPressMethod={onPress}
+    />
+  );
 }
 
 class GridScreen extends Component {
@@ -66,7 +48,6 @@ class GridScreen extends Component {
       searchedNews,
       gridColumns,
     } = this.props;
-    const groupedItems = groupItems((searchedNews.length > 0 ? searchedNews : news), gridColumns);
 
 
     const categoryDropDown = (
@@ -84,18 +65,19 @@ class GridScreen extends Component {
       navigateToRoute(route);
     }
 
-    function renderGridRow(item) {
-      return renderRow(item, style, undefined, openDetailsScreen);
+    function renderGridItem(item) {
+      return renderNewsItem(item, style, undefined, openDetailsScreen);
     }
 
     return (
       <View style={style.screen}>
-        <AdvancedListView
-          items={groupedItems}
+        <AdvancedGridView
+          items={searchedNews.length > 0 ? searchedNews : news}
+          gridColumns={gridColumns}
           search
           onSearchCleared={this.onSearchCleared}
           fetch={this.fetch}
-          renderRow={renderGridRow}
+          renderGridItem={renderGridItem}
           style={style.listView}
         />
       </View>
@@ -103,16 +85,9 @@ class GridScreen extends Component {
   }
 }
 
-GridScreen.propTypes = {
+GridScreen.propTypes = Object.assign({}, ListScreenPropTypes, {
   gridColumns: React.PropTypes.number,
-  findNews: React.PropTypes.func,
-  clearSearch: React.PropTypes.func,
-  news: React.PropTypes.array,
-  searchedNews: React.PropTypes.array,
-  style: React.PropTypes.object,
-  setNavBarProps: React.PropTypes.func,
-  navigateToRoute: React.PropTypes.func,
-};
+});
 
 const style = {
   listView: {

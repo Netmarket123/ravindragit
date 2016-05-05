@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
 import { NewsGridBox, ListItem, AdvancedListView, DropDownMenu } from 'shoutem.ui';
 import newsMapDispatchToProps from './lib/newsMapDispatchToProps';
+import ListScreenPropTypes from './lib/ListScreenPropTypes';
 import newsMapStateToProps from './lib/newsMapStateToProps';
 
 function renderRow(item, style, extrasSeparator, onPress) {
@@ -91,16 +92,7 @@ class ListScreen extends Component {
   }
 }
 
-ListScreen.propTypes = {
-  gridColumns: React.PropTypes.number,
-  findNews: React.PropTypes.func,
-  clearSearch: React.PropTypes.func,
-  news: React.PropTypes.array,
-  searchedNews: React.PropTypes.array,
-  style: React.PropTypes.object,
-  setNavBarProps: React.PropTypes.func,
-  navigateToRoute: React.PropTypes.func,
-};
+ListScreen.propTypes = ListScreenPropTypes;
 
 const style = {
   listView: {

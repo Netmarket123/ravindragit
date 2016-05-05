@@ -1,8 +1,7 @@
 import {
   navigateTo,
 } from 'shoutem/navigation';
-import { storage, collection } from 'redux-api-state';
-import { find } from 'redux-api-state';
+import { find, storage, collection } from 'redux-api-state';
 
 export const SHOUTEM_NEWS_SCHEME = 'shoutem.news.articles';
 
@@ -13,14 +12,12 @@ export const reducers = {
   searchedNews: collection('shoutem.news.articles', 'searchedNews'),
 };
 
-export function openListScreen() {
-  const nextScreenName = 'shoutem.news.ListScreen';
+export function openListScreen(settings = { photoCentric: true }) {
+  const nextScreenName = `shoutem.news.${settings.photoCentric ? 'GridScreen' : 'ListScreen'}`;
 
   const route = {
     screen: nextScreenName,
-    props: {
-      message: 'Screen: Shoutem News',
-    },
+    props: {},
   };
 
   return navigateTo(route);
@@ -37,11 +34,11 @@ export function findNews(searchTerm) {
 
   return find(
     {
-      endpoint: `http://api.aperfector.com/v1/apps/1113/resources/${SHOUTEM_NEWS_SCHEME}?` +
+      endpoint: `http://api.shoutem.local/v1/apps/5734177/resources/${SHOUTEM_NEWS_SCHEME}?` +
       `include=image${query}`,
       headers: { 'Content-Type': 'application/json' },
     },
     SHOUTEM_NEWS_SCHEME,
     collectionName
   );
-};
+}

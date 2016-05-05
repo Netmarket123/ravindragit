@@ -1,4 +1,4 @@
-import { bindActionCreators } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { clear } from 'redux-api-state';
 import { actions } from '../../index';
 import { SHOUTEM_NEWS_SCHEME } from '../../actions';
