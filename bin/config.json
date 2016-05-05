@@ -12,7 +12,7 @@
       "../extensions/shoutem.application",
       "../extensions/shoutem.codepush",
       "../extensions/shoutem.ui",
-      "../extensions/gannet.news",
+      "../extensions/shoutem.news",
       "../framework"
     ],
     "extensionsJsPath": "./extensions.js"
