@@ -48,7 +48,7 @@ function Video({
         width={width}
         height={height}
       />
-   </View>
+    </View>
   );
 }
 

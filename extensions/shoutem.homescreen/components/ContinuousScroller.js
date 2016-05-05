@@ -57,7 +57,8 @@ export default function ContinuousScroller({
       directionalLockEnabled
       contentContainerStyle={contentContainerPosition}
     >
-      <ShortcutsGrid gridItems={shortcutsData}
+      <ShortcutsGrid
+        gridItems={shortcutsData}
         dimensions={dimensions}
         layoutPosition={layoutPosition}
         buttonConfig={buttonConfig}

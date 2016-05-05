@@ -158,7 +158,7 @@ class AdvancedListView extends React.Component {
     return function headerView() {
       return (<View style={style.container}>
         {searchComponent}
-        {renderHeader ? renderHeader() : null }
+        {renderHeader ? renderHeader() : null}
       </View>);
     };
   }

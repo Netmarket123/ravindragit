@@ -67,21 +67,21 @@ export default function Shortcut({
   const { iconUrl, highlightedIconUrl } = shortcutData;
 
   return (
-      <View style={[styles.shortcut, shortcut]}>
+    <View style={[styles.shortcut, shortcut]}>
+      <Image
+        source={{ uri: iconUrl }}
+        style={[styles.buttonIcon, buttonIcon, styles.hiddenIcon]}
+        resizeMode={Image.resizeMode.stretch}
+      />
+      <TouchableOpacity activeOpacity={0} onPress={execute}>
         <Image
-          source={{ uri: iconUrl }}
-          style={[styles.buttonIcon, buttonIcon, styles.hiddenIcon]}
+          source={shortcutData}
+          source={{ uri: highlightedIconUrl || iconUrl }}
+          style={[styles.buttonIcon, buttonIcon]}
           resizeMode={Image.resizeMode.stretch}
         />
-        <TouchableOpacity activeOpacity={0} onPress={execute}>
-          <Image
-            source={shortcutData}
-            source={{ uri: highlightedIconUrl || iconUrl }}
-            style={[styles.buttonIcon, buttonIcon]}
-            resizeMode={Image.resizeMode.stretch}
-          />
-        </TouchableOpacity>
-      </View>
+      </TouchableOpacity>
+    </View>
   );
 }
 
