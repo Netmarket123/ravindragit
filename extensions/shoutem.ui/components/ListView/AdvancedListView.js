@@ -196,4 +196,4 @@ const style = {
   list: {},
 };
 
-export default connectStyle('shoutem.ui.ListView', style)(AdvancedListView);
+export default connectStyle('shoutem.ui.AdvancedListView', style)(AdvancedListView);

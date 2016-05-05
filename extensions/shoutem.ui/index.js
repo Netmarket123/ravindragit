@@ -2,6 +2,8 @@ export { default as NavigationBar } from './components/NavigationBar/NavigationB
 
 export { default as AdvancedListView } from './components/ListView/AdvancedListView';
 
+export { default as AdvancedGridView } from './components/GridView/AdvancedGridView';
+
 export { default as Button } from './components/Button/Button';
 
 export { default as InfoFields } from './components/InfoFields/InfoFields';
