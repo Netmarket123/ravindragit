@@ -3,21 +3,38 @@ import React, {
   PropTypes,
   View,
 } from 'react-native';
+import { connectStyle } from 'shoutem/theme';
 import HypermediaComposer from './lib/HypermediaComposer';
 import AttachmentTagTransformer from './lib/AttachmentTagTransformer';
 
 const propTypes = {
   body: PropTypes.string,
-  stylesheet: PropTypes.object,
   onError: PropTypes.func,
   attachments: PropTypes.object,
+};
+
+const boldStyle = { fontWeight: '500' };
+const italicStyle = { fontStyle: 'italic' };
+const codeStyle = { fontFamily: 'Menlo' };
+
+const style = {
+  b: boldStyle,
+  strong: boldStyle,
+  i: italicStyle,
+  em: italicStyle,
+  pre: codeStyle,
+  code: codeStyle,
+  a: {
+    fontWeight: '500',
+    color: '#007AFF',
+  },
 };
 
 /**
  * Displays content in the html body as a composition of
  * react native components.
  */
-export default class RichMedia extends Component {
+class RichMedia extends Component {
   state = {
     content: null,
   }
@@ -40,7 +57,7 @@ export default class RichMedia extends Component {
   startHtmlRender(body, attachments) {
     if (body) {
       const attachmentTagTransformer = new AttachmentTagTransformer(attachments);
-      const hypermediaComposer = new HypermediaComposer([attachmentTagTransformer]);
+      const hypermediaComposer = new HypermediaComposer([attachmentTagTransformer], style);
 
       hypermediaComposer.compose(body, (err, content) => {
         if (err) {
@@ -67,3 +84,5 @@ RichMedia.propTypes = propTypes;
 RichMedia.defaultProps = {
   onError: console.error.bind(console),
 };
+
+export default connectStyle('shoutem.ui.RichMedia', style)(RichMedia);

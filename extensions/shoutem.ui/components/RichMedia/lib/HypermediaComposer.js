@@ -8,7 +8,6 @@ const entities = require('./vendor/entities');
 import React, {
   Text,
   View,
-  StyleSheet,
 } from 'react-native';
 
 import ImageTagTransformer from './ImageTagTransformer';
@@ -22,23 +21,6 @@ import type {
 
 const TEXT_NODE = 'text';
 const ELEMENT_NODE = 'tag';
-
-const boldStyle = { fontWeight: '500' };
-const italicStyle = { fontStyle: 'italic' };
-const codeStyle = { fontFamily: 'Menlo' };
-
-const styles = StyleSheet.create({
-  b: boldStyle,
-  strong: boldStyle,
-  i: italicStyle,
-  em: italicStyle,
-  pre: codeStyle,
-  code: codeStyle,
-  a: {
-    fontWeight: '500',
-    color: '#007AFF',
-  },
-});
 
 const defaultMediaTagTransformers = [
   ImageTagTransformer,
@@ -65,13 +47,15 @@ export default class HypermediaComposer {
   // All tag transformers
   tagTransformers: Array<TagTransformerType>;
   renderElementNode: any;
+  style: any;
 
-  constructor(mediaTransformers?: Array<TagTransformerType>) {
+  constructor(mediaTransformers?: Array<TagTransformerType>, style: any) {
     const additionalMediaTransformers = mediaTransformers || [];
 
     this.mediaTransformers = defaultMediaTagTransformers.concat(additionalMediaTransformers);
     this.tagTransformers = this.mediaTransformers.concat(HtmlTagTransformer);
     this.renderElementNode = this.renderElementNode.bind(this);
+    this.style = style;
   }
 
   isMediaElement(node: NodeType): boolean {
@@ -89,6 +73,8 @@ export default class HypermediaComposer {
    */
   domToElement(dom?: Array<NodeType>, parent?: NodeType): any {
     if (!dom) return null;
+
+    const styles = this.style;
 
     return dom.map((node, index) => {
       if (node.type === TEXT_NODE) {
