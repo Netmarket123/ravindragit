@@ -13,12 +13,12 @@ function renderNewsItem(item, style, extrasSeparator, onPress) {
   return (
     <ListItem
       key={item.id}
-      description={item.attributes.title}
-      image={{ uri: item.image_url }}
+      description={item.title}
+      image={{ uri: item.image.url }}
       leftExtra={'News'}
       id={item.id}
       style={style.gridColumn}
-      onPressItem={{ body: item.attributes.body, title: item.attributes.title }}
+      onPressItem={item}
       onPressMethod={onPress}
     />
   );
@@ -78,7 +78,7 @@ class GridScreen extends Component {
           onSearchCleared={this.onSearchCleared}
           fetch={this.fetch}
           renderGridItem={renderGridItem}
-          style={style.listView}
+          style={style.gridView}
         />
       </View>
     );
@@ -90,7 +90,7 @@ GridScreen.propTypes = Object.assign({}, ListScreenPropTypes, {
 });
 
 const style = {
-  listView: {
+  gridView: {
     header: {
       container: {
       },
@@ -98,12 +98,21 @@ const style = {
       },
     },
     list: {
+      paginationView: {
+        paddingTop: 10,
+        marginTop: 10,
+      },
+      actionsLabel: {
+        background: 'red',
+      },
     },
     listContent: {
     },
+    gridRow: {
+      paddingRight: 5,
+    },
   },
   screen: {},
-  gridRow: {},
   gridColumn: {
     [INCLUDE]: ['shoutem.ui.ListItem.photoCentric'],
   },
