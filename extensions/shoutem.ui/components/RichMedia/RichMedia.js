@@ -19,11 +19,10 @@ const propTypes = {
  */
 export default class RichMedia extends Component {
   state = {
-    element: null,
+    content: null,
   }
 
   componentDidMount() {
-    this.mounted = true;
     const { body, attachments } = this.props;
     this.startHtmlRender(body, attachments);
   }
@@ -34,8 +33,8 @@ export default class RichMedia extends Component {
     }
   }
 
-  componentWillUnmount() {
-    this.mounted = false;
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.props.body !== nextProps.body || this.state.content !== nextState.content;
   }
 
   startHtmlRender(body, attachments) {
@@ -43,24 +42,22 @@ export default class RichMedia extends Component {
       const attachmentTagTransformer = new AttachmentTagTransformer(attachments);
       const hypermediaComposer = new HypermediaComposer([attachmentTagTransformer]);
 
-      hypermediaComposer.compose(body, (err, element) => {
+      hypermediaComposer.compose(body, (err, content) => {
         if (err) {
           this.props.onError(err);
         }
 
-        if (this.mounted) {
-          this.setState({ element });
-        }
+        this.setState({ content });
       });
     } else {
-      this.setState({ element: null });
+      this.setState({ content: null });
     }
   }
 
   render() {
     return (
       <View>
-        {this.state.element}
+        {this.state.content}
       </View>
     );
   }
