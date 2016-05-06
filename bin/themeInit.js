@@ -12,10 +12,6 @@ export default (variables) => {
       [INCLUDE]: ['baseFont'],
       fontSize: 25,
     },
-    list: {
-      position: 'relative',
-      flex: 1,
-    },
     screen: {
       flexDirection: 'column',
       alignItems: 'stretch',
@@ -173,21 +169,10 @@ export default (variables) => {
         },
       },
     },
-    'shoutem.ui.ListView': {
-      listContent: {
-        width: screenWidth,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        alignItems: 'stretch',
-      },
-      list: {
-
-      },
+    'shoutem.ui.AdvancedListView': {
       header: {
         search: {
           container: {
-            width: screenWidth,
             paddingHorizontal: 7,
             backgroundColor: '#ccc',
             height: 40,
