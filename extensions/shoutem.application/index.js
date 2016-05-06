@@ -43,7 +43,7 @@ function extractAppActions(app) {
 
 function appWillMount(app) {
   const dispatch = app.getStore().dispatch;
-  dispatch(loaded(configuration));
+  dispatch(loaded(configuration, 'shoutem.core.configuration'));
   extractAppActions(app);
 }
 
