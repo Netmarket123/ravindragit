@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { ObjectDenormalizer } from 'denormalizer';
+import { DataDenormalizer } from 'denormalizer';
 
 export const SET_CONFIGURATION = 'shoutem.configuration.configuration.SET';
 export const UPDATE_CONFIGURATION = 'shoutem.configuration.configuration.UPDATE';
@@ -27,8 +27,8 @@ export function configurationReducer(state = {}, action) {
  * @param defaultConfiguration {Object} configuration provided by shoutem.application
  */
 export default function configurationReducerCreator(defaultConfiguration = {}) {
-  const denormalizer = new ObjectDenormalizer(defaultConfiguration);
-  return function reducer(state = denormalizer.getDenormalizedData(), action) {
+  const denormalizer = new DataDenormalizer(defaultConfiguration);
+  return function reducer(state = denormalizer.denormalize(), action) {
     return configurationReducer(state, action);
   };
 }

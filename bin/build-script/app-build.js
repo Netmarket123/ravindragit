@@ -1,3 +1,8 @@
+/* eslint global-require: "off" */
+/* global requre needs to be enabled because files to be required are
+ * determined dynamically
+*/
+
 'use strict';
 
 const http = require('http');
@@ -31,46 +36,36 @@ class AppBuild {
   }
 
   getConfigurationUrl() {
-    return `/v1/apps/${this.appId}/configuration`;
-  }
-
-  getAuthorizationToken() {
-    // TODO(Ivan): add real jwt token when authorization api available
-    return this.jwt;
+    return `/v1/apps/${this.appId}/configuration/current`;
   }
 
   downloadConfiguration() {
     console.time('download configuration');
     const configurationFile = fs.createWriteStream(this.configurationFilePath);
     return new Promise((resolve, reject) => {
-      let responseSent = false; // flag to make sure that response is sent only once.
       http.get({
         path: this.getConfigurationUrl(),
         host: this.serverApiEndpoint,
         headers: {
-          Authorization: this.getAuthorizationToken(),
+          Authorization: this.authorization,
           Accept: 'application/vnd.api+json',
         },
       }, response => {
         response.pipe(configurationFile);
         configurationFile.on('finish', () => {
           configurationFile.close(() => {
-            if (responseSent) return;
-            responseSent = true;
             console.timeEnd('download configuration');
             resolve(this.configurationPath);
           });
         });
       }).on('error', err => {
-        if (responseSent) return;
-        responseSent = true;
         reject(err);
       });
     });
   }
 
-  getConfiguration(assetsPath) {
-    return require(path.join('..', assetsPath));
+  getConfiguration() {
+    return require(path.join('..', this.configurationFilePath));
   }
 
   removeBabelrcFiles() {
@@ -82,7 +77,7 @@ class AppBuild {
   }
 
   prepareExtensions() {
-    this.configuration = this.getConfiguration(this.configurationFilePath);
+    this.configuration = this.getConfiguration();
     const extensions = getExtensionsFromConfigurations(this.configuration);
     const localExtensions = getLocalExtensions(this.workingDirectories);
     const extensionsJsPath = this.extensionsJsPath;
@@ -98,16 +93,23 @@ class AppBuild {
       });
   }
 
+  prepareConfiguration() {
+    if (this.offlineMode) {
+      // Nothing to do, resolve to proceed with next build step
+      return new Promise((resolve) => resolve());
+    }
+    return this.downloadConfiguration();
+  }
+
   run() {
     console.time('build time');
     console.log(`starting build for app ${this.appId}`);
-    // this.downloadConfiguration()
-    //   .then(() => this.prepareExtensions())
-    this.prepareExtensions()
+    this.prepareConfiguration()
+      .then(() => this.prepareExtensions())
+      .then(() => this.removeBabelrcFiles())
       .then(() => {
         console.timeEnd('build time');
       })
-      .then(() => this.removeBabelrcFiles())
       .catch((e) => {
         console.log(e);
         process.exit(1);

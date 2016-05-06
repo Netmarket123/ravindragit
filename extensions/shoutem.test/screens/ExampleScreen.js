@@ -4,7 +4,7 @@ import React, {
   TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { connectStyle } from 'shoutem/theme';
+import { INCLUDE, connectStyle } from 'shoutem/theme';
 
 import {
   navigateBack,
@@ -25,6 +25,9 @@ const styles = {
     backgroundColor: 'gray',
     marginTop: 5,
     padding: 15,
+  },
+  buttonText: {
+    [INCLUDE]: ['h1'],
   },
   gannettButton: {
     textAlign: 'center',
@@ -101,7 +104,7 @@ function ExampleScreen({
         style={style.button}
         onPress={() => navigateToScreen(3, true)}
       >
-        <Text>Screen 3</Text>
+        <Text style={style.buttonText}>Screen 3</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={style.button}
