@@ -5,7 +5,7 @@ import React, {
   Animated,
 } from 'react-native';
 import { INCLUDE, connectStyle } from 'shoutem/theme';
-import { NewsGridBox, CompositeMedia } from 'shoutem.ui';
+import { NewsGridBox, RichMedia } from 'shoutem.ui';
 import * as _ from 'lodash';
 
 const DEFAULT_BOTTOM_CONTENT_OFFSET = 50;
@@ -48,7 +48,7 @@ function getScrollHandle(scrollY) {
 function Details({ item, style }) {
   return (
     <View key="details" style={style.detailsContainer}>
-      <CompositeMedia
+      <RichMedia
         body={item.body}
         attachments={item.attachments}
       />

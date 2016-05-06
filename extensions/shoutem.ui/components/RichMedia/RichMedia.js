@@ -17,7 +17,7 @@ const propTypes = {
  * Displays content in the html body as a composition of
  * react native components.
  */
-export default class CompositeMedia extends Component {
+export default class RichMedia extends Component {
   state = {
     element: null,
   }
@@ -66,7 +66,7 @@ export default class CompositeMedia extends Component {
   }
 }
 
-CompositeMedia.propTypes = propTypes;
-CompositeMedia.defaultProps = {
+RichMedia.propTypes = propTypes;
+RichMedia.defaultProps = {
   onError: console.error.bind(console),
 };
