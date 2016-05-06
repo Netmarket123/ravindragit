@@ -8,7 +8,7 @@ const DEFAULT_ITEMS_GROUP_SIZE = 2;
 
 function createRenderRow(renderGridItem, style, columns) {
   return function renderRow(items) {
-  const columnsDiff = columns - items.length;
+    const columnsDiff = columns - items.length;
     return (
       <View style={style.gridRow}>
         {
