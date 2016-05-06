@@ -1,17 +1,18 @@
 import React, {
   View,
-  ListView,
-  Text,
   Component,
 } from 'react-native';
+import { clear, find } from 'redux-api-state';
+import _ from 'lodash';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { find } from 'redux-api-state';
 
 import { connectStyle, INCLUDE } from 'shoutem/theme';
-import { NewsGridBox, ListItem } from 'shoutem.ui';
+import { NewsGridBox, ListItem, AdvancedListView, DropDownMenu } from 'shoutem.ui';
 import { navigateTo } from 'shoutem/navigation';
+
+const GANNETT_SCHEME = 'shoutem.news.articles';
 
 function renderRow(item, style, extrasSeparator, onPress) {
   if (item.featured) {
@@ -27,38 +28,51 @@ function renderRow(item, style, extrasSeparator, onPress) {
 
   return (
     <ListItem
-      description={item.title}
+      description={item.attributes.title}
       image={{ uri: item.image_url }}
-      leftExtra={item.author}
+      leftExtra={'News'}
       id={item.id}
       style={style.items}
-      onPressItem={item}
+      onPressItem={{ body: item.attributes.body, title: item.attributes.title }}
       onPressMethod={onPress}
     />
   );
 }
 
-const dataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-
 class GannettListScreen extends Component {
   constructor(props, context) {
     super(props, context);
-    props.getGannetNews();
+    this.fetch = this.fetch.bind(this);
+    this.onSearchCleared = this.onSearchCleared.bind(this);
+  }
+
+  onSearchCleared() {
+    this.props.clearSearch();
+  }
+
+  fetch(searchTerm) {
+    this.props.getGannetNews(searchTerm);
   }
 
   render() {
     const {
-      news,
       style,
       setNavBarProps,
       navigateToRoute,
+      news,
+      searchedNews,
+      images,
     } = this.props;
     const extrasSeparator = require('../assets/circle_grey.png');
-    const dataSourceItems = dataSource.cloneWithRows(news);
 
-    const navBarTitle = <Text>News</Text>;
+    const categoryDropDown = (
+      <DropDownMenu
+        items={[{ name: 'World', id: 1 }, { name: 'Sport', id: 2 }, { name: 'Music', id: 3 }]}
+        bindings={{ text: 'name', value: 'id' }}
+      />
+    );
     setNavBarProps({
-      centerComponent: navBarTitle,
+      rightComponent: categoryDropDown,
     });
 
     function openDetailsScreen(item) {
@@ -67,17 +81,23 @@ class GannettListScreen extends Component {
     }
 
     function renderGannetListRow(item) {
+      const imageId = _.get(item, 'relationships.image.data.id');
+      if (imageId) {
+        // eslint-disable-next-line
+        item.image_url = _.get(images, `${[imageId]}.attributes.url`);
+      }
       return renderRow(item, style, extrasSeparator, openDetailsScreen);
     }
 
     return (
       <View style={style.screen}>
-        <ListView
-          contentContainerStyle={style.listContent}
-          style={style.list}
-          dataSource={dataSourceItems}
+        <AdvancedListView
+          items={searchedNews.length > 0 ? searchedNews : news}
+          search
+          onSearchCleared={this.onSearchCleared}
+          fetch={this.fetch}
           renderRow={renderGannetListRow}
-          enableEmptySections
+          style={style.listView}
         />
       </View>
     );
@@ -85,61 +105,85 @@ class GannettListScreen extends Component {
 }
 
 GannettListScreen.propTypes = {
+  images: React.PropTypes.array,
   getGannetNews: React.PropTypes.func,
+  clearSearch: React.PropTypes.func,
   news: React.PropTypes.array,
+  searchedNews: React.PropTypes.array,
   style: React.PropTypes.object,
   setNavBarProps: React.PropTypes.func,
   navigateToRoute: React.PropTypes.func,
 };
 
 const style = {
+  listView: {
+    header: {
+      container: {
+      },
+      search: {
+      },
+    },
+    list: {
+    },
+    listContent: {
+    },
+  },
   screen: {},
   h1: {},
   list: {},
-  listContent: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
   featuredItem: {},
   items: {
-    [INCLUDE]: ['shoutem.ui.ListItem.textCentric'],
+    [INCLUDE]: ['shoutem.ui.ListItem.photoCentric'],
   },
 };
 
-function fetchLatestNewsFromState(state) {
+function fetchNewsFromState(state, collectionName = 'latestNews') {
   const news = state['gannet.news'].news; // storage
-  const latestNews = [];
+  const newsCollection = [];
 
   // latestNews = collection
-  state['gannet.news'].latestNews.forEach(id => {
-    const singleNews = news[id];
-    if (singleNews) {
-      latestNews.push(singleNews);
+  state['gannet.news'][collectionName].forEach(id => {
+    const item = news[id];
+    if (!item) {
+      return;
     }
+    newsCollection.push(news[id]);
   });
 
-  return latestNews;
+  return newsCollection;
 }
 
 function mapStateToProps(state) {
   return {
-    news: fetchLatestNewsFromState(state),
+    news: fetchNewsFromState(state),
+    images: state['gannet.news'].newsImages,
+    searchedNews: fetchNewsFromState(state, 'searchedNews'),
   };
 }
 
-function findGannettNews() {
+function findGannettNews(searchTerm) {
+  let query = '';
+  let collectionName = 'latestNews';
+
+  if (searchTerm) {
+    query = `&query=${searchTerm}`;
+    collectionName = 'searchedNews';
+  }
+
   return find(
     {
-      endpoint: 'http://gannett.getsandbox.com/gannett/news',
+      endpoint: 'http://api.aperfector.com/v1/apps/1113/resources/shoutem.news.articles?' +
+                `include=image${query}`,
       headers: { 'Content-Type': 'application/json' },
     },
-    'gannett.news',
-    'latestNews'
+    GANNETT_SCHEME,
+    collectionName
   );
 }
 
 function mapDispatchToProps(dispatch) {
   return {
+    clearSearch: bindActionCreators(() => clear(GANNETT_SCHEME, 'searchedNews'), dispatch),
     getGannetNews: bindActionCreators(findGannettNews, dispatch),
     navigateToRoute: bindActionCreators(navigateTo, dispatch),
   };

@@ -11,19 +11,22 @@ import { connectStyle } from 'shoutem/theme';
 function Button({
   style,
   icon,
+  showIconOnRight,
   text,
   onPress,
 }) {
-  let buttonImage = null;
+  let buttonIcon = null;
   if (icon) {
-    buttonImage = <Icon name={icon} style={style.buttonIcon} />;
+    buttonIcon = <Icon key="icon" name={icon} style={style.buttonIcon} />;
   }
   const buttonText = text ?
-    <Text style={style.buttonText}>{text}</Text> : null;
+    <Text key="text" style={style.buttonText}>{text}</Text> : null;
 
-  if (!buttonImage && !buttonText) {
+  if (!buttonIcon && !buttonText) {
     return null;
   }
+
+  const content = showIconOnRight ? [buttonText, buttonIcon] : [buttonIcon, buttonText];
 
   return (
     <TouchableOpacity
@@ -32,8 +35,7 @@ function Button({
       onPress={onPress}
     >
       <View style={style.button}>
-        {buttonImage}
-        {buttonText}
+        {content}
       </View>
     </TouchableOpacity>
   );
@@ -41,6 +43,7 @@ function Button({
 
 Button.propTypes = {
   icon: React.PropTypes.string,
+  showIconOnRight: React.PropTypes.boolean,
   text: React.PropTypes.string,
   style: React.PropTypes.object,
   onPress: React.PropTypes.func,

@@ -134,7 +134,7 @@ export default class NativeVideo extends Component {
       <TouchableOpacity style={styles.fullScreen} onPress={this.onPressVideo}>
         <Video
           source={this.props.source}
-          style={ this.state.fullScreen ? styles.fullScreen : { width, height } }
+          style={this.state.fullScreen ? styles.fullScreen : { width, height }}
           rate={this.state.rate}
           paused={this.state.paused}
           volume={this.state.volume}
