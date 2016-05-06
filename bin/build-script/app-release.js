@@ -60,8 +60,12 @@ class AppRelease {
         },
       }, (error, response, body) => {
         if (!error && response.statusCode === 200) {
-          const extensionInstallation = JSON.parse(body).data;
-          resolve(extensionInstallation);
+          try {
+            const extensionInstallation = JSON.parse(body).data;
+            resolve(extensionInstallation);
+          } catch (exception) {
+            reject(exception);
+          }
         }
       }).on('error', (error) => reject(error));
     });

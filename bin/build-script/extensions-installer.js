@@ -135,15 +135,10 @@ class ExtensionsInstaller {
     this.extensionsToInstall = [];
 
     if (extensions) {
-      _.forEach(extensions, (extension) => {
-        const notAvailableLocally = !_.some(localExtensions, (localExtension) =>
-          localExtension.id === extension.id
-        ) || localExtensions.length <= 0;
-
-        if (notAvailableLocally) {
-          this.extensionsToInstall.push(extension);
-        }
-      });
+      this.extensionsToInstall = extensions.filter((extension) =>
+        !localExtensions.some(localExtension => localExtension.id === extension.id) ||
+        localExtensions.length <= 0
+      );
     }
   }
 

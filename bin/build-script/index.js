@@ -8,6 +8,7 @@ const cli = commandLineArgs([
   { name: 'appId', type: Number },
   { name: 'serverApiEndpoint', type: String },
   { name: 'production', type: Boolean },
+  { name: 'offlineMode', type: Boolean },
   { name: 'configurationFilePath', type: String },
   { name: 'workingDirectories', type: String, multiple: true },
   { name: 'extensionsJsPath', type: String },
