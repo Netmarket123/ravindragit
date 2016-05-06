@@ -1,15 +1,15 @@
-'use-strict';
+'use strict';
 
 const CodePush = require('code-push');
-const https = require('https');
+const codePushExec = require('code-push-cli/script/command-executor');
+const codePushCli = require('code-push-cli/definitions/cli');
+const request = require('request');
 const _ = require('lodash');
 
 const deploymentNames = {
   production: 'Production',
   staging: 'Staging',
 };
-
-const binFolderPath = '.';
 
 class AppRelease {
   constructor(config) {
@@ -19,12 +19,12 @@ class AppRelease {
 
   registerNewDeploymentKeysForInstallation(deploymentKeys, extensionInstallation) {
     return new Promise((resolve, reject) => {
-      https.request({
-        host: this.serverApiEndpoint,
-        path: `/v1/apps/${this.appId}/installations/${extensionInstallation.id}`,
+      request({
+        url: `http://${this.serverApiEndpoint}/v1/apps/${this.appId}/installations/${extensionInstallation.id}`,
         headers: {
           Authorization: this.authorization,
           Accept: 'application/vnd.api+json',
+          'Content-Type': 'application/vnd.api+json',
         },
         method: 'PATCH',
         json: true,
@@ -39,8 +39,8 @@ class AppRelease {
             },
           },
         },
-      }, (patchResponse) => {
-        if (patchResponse.statusCode === 200) {
+      }, (error, patchResponse) => {
+        if (!error && patchResponse.statusCode === 200) {
           resolve();
         }
       }).on('error', err => {
@@ -50,29 +50,34 @@ class AppRelease {
   }
 
   getCodePushExtensionInstallation() {
+    console.log('get extension installation');
     return new Promise((resolve, reject) => {
-      https.get({
-        host: this.serverApiEndpoint,
-        path: `/v1/apps/${this.appId}/installations/shoutem.codepush`,
+      request.get({
+        url: `http://${this.serverApiEndpoint}/v1/apps/${this.appId}/installations/shoutem.code-push`,
         headers: {
           Authorization: this.authorization,
           Accept: 'application/vnd.api+json',
         },
-      }, (response) => {
-        if (response.statusCode === 200) {
-          const extensionInstallation = response.body;
-          resolve(extensionInstallation);
+      }, (error, response, body) => {
+        if (!error && response.statusCode === 200) {
+          try {
+            const extensionInstallation = JSON.parse(body).data;
+            resolve(extensionInstallation);
+          } catch (exception) {
+            reject(exception);
+          }
         }
       }).on('error', (error) => reject(error));
     });
   }
 
-  setupAppRelease() {
+  setup() {
     this.getCodePushExtensionInstallation()
       .then((codePushExtension) => {
         const deploymentKeys = _.get(codePushExtension, 'attributes.settings.deploymentKeys');
         if (!deploymentKeys || deploymentKeys.length < 1) {
-          this.codePush.addApp(this.appId)
+          console.log('create app on CodePush');
+          this.codePush.addApp(`${this.appId}`)
             .then((app) => this.codePush.getDeployments(app.name))
             .then((deployments) =>
               this.registerNewDeploymentKeysForInstallation(deployments, codePushExtension))
@@ -93,7 +98,12 @@ class AppRelease {
   }
 
   release() {
-    this.codePush.release(this.appId, this.getDeploymentName(), binFolderPath)
+    codePushExec.execute({
+      type: codePushCli.CommandType.releaseReact,
+      appName: `${this.appId}`,
+      deploymentName: this.getDeploymentName(),
+      platform: 'ios',
+    })
       .then(() =>
         console.log(`App with id:${this.appId} is successfully released`)
       )

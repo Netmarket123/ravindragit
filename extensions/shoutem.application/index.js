@@ -4,29 +4,30 @@ import { createExecuteShortcutMiddleware } from './middleware';
 
 import { combineReducers } from 'redux';
 
-import configurationReducerCreator, {
-  setConfiguration,
-  updateConfiguration,
-  updateConfigurationProperty,
+import { loaded, storage } from 'redux-api-state';
+
+import {
+  configurationReducer,
   executeShortcut,
 } from './actions';
 import { getFirstShortcut } from './getFirstShortcut';
 
 const actions = {
-  setConfiguration,
-  updateConfiguration,
-  updateConfigurationProperty,
   executeShortcut,
 };
 
 // create reducer with wanted default configuration
 const reducer = combineReducers({
-  configuration: configurationReducerCreator(configuration),
+  configuration: configurationReducer,
+  shortcuts: storage('shoutem.core.shortcuts'),
+  screens: storage('shoutem.core.screens'),
+  extensions: storage('shoutem.core.extensions'),
+  themes: storage('shoutem.core.theme'),
 });
 
 const appActions = {};
 
-function appWillMount(app) {
+function extractAppActions(app) {
   const extensions = app.getExtensions();
   Object.keys(extensions).forEach(extensionName => {
     const extension = extensions[extensionName];
@@ -40,10 +41,17 @@ function appWillMount(app) {
   });
 }
 
+function appWillMount(app) {
+  const dispatch = app.getStore().dispatch;
+  dispatch(loaded(configuration, 'shoutem.core.configuration'));
+  extractAppActions(app);
+}
+
 function openInitialScreen(app) {
   const store = app.getStore();
   const configurationFromState = store.getState()['shoutem.application'].configuration;
-  const firstShortcut = getFirstShortcut(configurationFromState);
+  const shortcuts = store.getState()['shoutem.application'].shortcuts;
+  const firstShortcut = getFirstShortcut(configurationFromState, shortcuts);
   app.getStore().dispatch(executeShortcut(firstShortcut));
 }
 
