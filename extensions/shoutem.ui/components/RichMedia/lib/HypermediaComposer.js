@@ -13,6 +13,7 @@ import React, {
 import ImageTagTransformer from './ImageTagTransformer';
 import VideoTagTransformer from './VideoTagTransformer';
 import HtmlTagTransformer from './HtmlTagTransformer';
+import AnchorTagTransformer from './AnchorTagTransformer';
 type TagTransformerType = typeof HtmlTagTransformer;
 
 import type {
@@ -25,6 +26,11 @@ const ELEMENT_NODE = 'tag';
 const defaultMediaTagTransformers = [
   ImageTagTransformer,
   VideoTagTransformer,
+];
+
+const defaultHtmlTagTransformers = [
+  HtmlTagTransformer,
+  AnchorTagTransformer,
 ];
 
 function decodeHTML(string) {
@@ -53,7 +59,7 @@ export default class HypermediaComposer {
     const additionalMediaTransformers = mediaTransformers || [];
 
     this.mediaTransformers = defaultMediaTagTransformers.concat(additionalMediaTransformers);
-    this.tagTransformers = this.mediaTransformers.concat(HtmlTagTransformer);
+    this.tagTransformers = this.mediaTransformers.concat(defaultHtmlTagTransformers);
     this.renderElementNode = this.renderElementNode.bind(this);
     this.style = style;
   }
