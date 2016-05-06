@@ -58,7 +58,6 @@ const style = {
   list: {},
   gridRow: {
     flexDirection: 'row',
-    backgroundColor: 'red',
   },
 };
 
