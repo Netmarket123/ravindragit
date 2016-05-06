@@ -5,7 +5,8 @@
   "scripts": {
     "build": "node build-script",
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "watch": "node ./build-script/watchLocalExtensions.js"
+    "watch": "node ./build-script/watchLocalExtensions.js",
+    "lint": "eslint ../"
   },
   "dependencies": {
     "code-push": "^1.8.0-beta",
@@ -29,6 +30,13 @@
     "unzip2": "^0.2.5"
   },
   "devDependencies": {
+    "babel-eslint": "^6.0.4",
+    "eslint": "^2.9.0",
+    "eslint-config-airbnb": "^8.0.0",
+    "eslint-plugin-import": "^1.6.1",
+    "eslint-plugin-jsx-a11y": "^1.0.4",
+    "eslint-plugin-react": "^5.0.1",
+    "eslint-plugin-react-native": "^1.0.2",
     "redux-logger": "^2.6.1"
   }
 }

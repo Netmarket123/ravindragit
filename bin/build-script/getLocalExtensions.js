@@ -1,3 +1,8 @@
+/* eslint global-require: "off" */
+/* global requre needs to be enabled because files to be required are
+ * determined dynamically
+*/
+
 'use-strict';
 
 const fs = require('fs');
