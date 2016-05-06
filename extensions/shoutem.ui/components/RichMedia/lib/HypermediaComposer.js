@@ -2,8 +2,8 @@
  * @flow
  */
 
-const htmlparser = require('./vendor/htmlparser');
-const entities = require('./vendor/entities');
+import htmlparser2 from 'htmlparser2';
+import { AllHtmlEntities } from 'html-entities';
 
 import React, {
   Text,
@@ -34,7 +34,7 @@ const defaultHtmlTagTransformers = [
 ];
 
 function decodeHTML(string) {
-  return entities.decodeHTML(string);
+  return AllHtmlEntities.decode(string);
 }
 
 /**
@@ -123,7 +123,7 @@ export default class HypermediaComposer {
    * return it in a done callback
    */
   compose(rawHtml: string, done: any) {
-    const handler = new htmlparser.DomHandler((err, dom) => {
+    const handler = new htmlparser2.DomHandler((err, dom) => {
       if (err) {
         done(err);
       }
@@ -131,7 +131,7 @@ export default class HypermediaComposer {
       done(null, this.domToElement(dom));
     });
 
-    const parser = new htmlparser.Parser(handler);
+    const parser = new htmlparser2.Parser(handler);
     parser.write(rawHtml);
     parser.done();
   }
