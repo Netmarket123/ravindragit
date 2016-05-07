@@ -9,8 +9,8 @@ import { connectStyle } from 'shoutem/theme';
 const GET_PROPS_TO_PASS = Symbol('getPropsToPass');
 const HANDLE_LIST_VIEW_REF = Symbol('handleListViewRef');
 
-function isRefreshable(searchTerm, notRefreshable) {
-  return !(searchTerm || notRefreshable);
+function isRefreshable(queryParams, notRefreshable) {
+  return !(queryParams || notRefreshable);
 }
 
 class AdvancedListView extends React.Component {
@@ -18,17 +18,14 @@ class AdvancedListView extends React.Component {
     super(props, context);
     this[HANDLE_LIST_VIEW_REF] = this[HANDLE_LIST_VIEW_REF].bind(this);
     this.fetch = this.fetch.bind(this);
-    this.search = this.search.bind(this);
+    this.onSearchTermChanged = this.onSearchTermChanged.bind(this);
     this.searchHidden = false;
     this.listView = null;
     this.giftedListView = null;
-    this.state = {
-      searchTerm: '',
-    };
   }
 
   shouldComponentUpdate(nextProps) {
-    const { items } = this.props;
+    const { items, queryParams } = this.props;
     if (this.giftedListView && nextProps.items !== items) {
       // GiftedListView use _updateRows to handle data to show and update internal state
       // such as loading status and other.
@@ -38,7 +35,18 @@ class AdvancedListView extends React.Component {
       // https://github.com/FaridSafi/react-native-gifted-listview/blob/master/GiftedListViewExample/example_simple.js#L26
       this.giftedListView._updateRows(nextProps.items);
     }
+    if (!_.eq(nextProps.queryParams, queryParams)) {
+      // Compare current query params and new, if different make new request
+      // QueryParams can be changed from outside
+      this.fetch(nextProps.queryParams);
+    }
     return true;
+  }
+
+  onSearchTermChanged(searchTerm) {
+    if (this.props.onSearchTermChanged) {
+      this.props.onSearchTermChanged(searchTerm);
+    }
   }
 
   /**
@@ -57,7 +65,7 @@ class AdvancedListView extends React.Component {
     // enable infinite scrolling using touch to load more
     mappedProps.pagination = Boolean(!props.disablePagination);
     // enable pull-to-refresh for iOS and touch-to-refresh for Android
-    mappedProps.refreshable = isRefreshable(this.state.searchTerm, props.notRefreshable);
+    mappedProps.refreshable = props.notRefreshable;
     // enable sections
     mappedProps.withSections = props.sections;
     // react native warning
@@ -80,23 +88,14 @@ class AdvancedListView extends React.Component {
   }
 
   /**
-   * Handle default ListView search.
-   * @param searchTerm
-   */
-  search(searchTerm) {
-    this.setState({
-      searchTerm,
-    });
-    this.fetch();
-  }
-
-  /**
    * Called by GiftedListView with (page, callback, options) args.
    * Calls passed fetch to get new items.
+   * By default props.queryParams are used,
+   * in case queryParams change they are passed from nextProps.
    */
-  fetch() {
+  fetch(queryParams = this.props.queryParams) {
     if (this.props.fetch) {
-      this.props.fetch(this.state.searchTerm);
+      this.props.fetch(queryParams || {});
     }
   }
 
@@ -150,7 +149,7 @@ class AdvancedListView extends React.Component {
     const searchComponent = search ?
       (<Search
         style={style.search}
-        onSearchTermChange={this.search}
+        onSearchTermChange={this.onSearchTermChanged}
         onCleared={onSearchCleared}
         placeholder={searchPlaceholder}
       />) : null;
@@ -176,6 +175,8 @@ AdvancedListView.propTypes = {
   search: React.PropTypes.bool,
   searchPlaceholder: React.PropTypes.string,
   onSearchCleared: React.PropTypes.func,
+  onSearchTermChanged: React.PropTypes.func,
+  queryParams: React.PropTypes.object,
   notRefreshable: React.PropTypes.bool,
   disablePagination: React.PropTypes.bool,
   hideFirstLoader: React.PropTypes.bool,
