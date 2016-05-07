@@ -4,17 +4,20 @@ import React, {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
-import { ListItem, AdvancedGridView, DropDownMenu } from 'shoutem.ui';
+import { ListItem, AdvancedGridView } from 'shoutem.ui';
 import newsMapDispatchToProps from './lib/newsMapDispatchToProps';
 import newsMapStateToProps from './lib/newsMapStateToProps';
 import ListScreenPropTypes from './lib/ListScreenPropTypes';
+import NewsCategoriesDropDownMenu from '../components/NewsCategoriesDropDownMenu';
+import isSearch from './lib/isSearch';
+import _ from 'lodash';
 
 function renderNewsItem(item, style, extrasSeparator, onPress) {
   return (
     <ListItem
       key={item.id}
       description={item.title}
-      image={{ uri: item.image.url }}
+      image={{ uri: _.get(item, 'image.url') }}
       leftExtra={'News'}
       id={item.id}
       style={style.gridColumn}
@@ -29,14 +32,22 @@ class GridScreen extends Component {
     super(props, context);
     this.fetch = this.fetch.bind(this);
     this.onSearchCleared = this.onSearchCleared.bind(this);
+    this.onSearchChanged = this.onSearchChanged.bind(this);
+    this.state = {
+      searchTerm: '',
+    };
+  }
+
+  onSearchChanged(searchTerm) {
+    this.setState({ searchTerm });
   }
 
   onSearchCleared() {
     this.props.clearSearch();
   }
 
-  fetch(searchTerm) {
-    this.props.findNews(searchTerm);
+  fetch(queryParams) {
+    this.props.findNews(queryParams.searchTerm, queryParams.selectedCategory);
   }
 
   render() {
@@ -47,17 +58,14 @@ class GridScreen extends Component {
       news,
       searchedNews,
       gridColumns,
+      selectedCategory,
     } = this.props;
+    const searchTerm = this.state.searchTerm;
+    const showSearchResults = isSearch(searchTerm, selectedCategory);
 
 
-    const categoryDropDown = (
-      <DropDownMenu
-        items={[{ name: 'World', id: 1 }, { name: 'Sport', id: 2 }, { name: 'Music', id: 3 }]}
-        bindings={{ text: 'name', value: 'id' }}
-      />
-    );
     setNavBarProps({
-      rightComponent: categoryDropDown,
+      rightComponent: <NewsCategoriesDropDownMenu />,
     });
 
     function openDetailsScreen(item) {
@@ -72,10 +80,13 @@ class GridScreen extends Component {
     return (
       <View style={style.screen}>
         <AdvancedGridView
-          items={searchedNews.length > 0 ? searchedNews : news}
+          items={showSearchResults ? searchedNews : news}
           gridColumns={gridColumns}
           search
+          notRefreshable={showSearchResults}
           onSearchCleared={this.onSearchCleared}
+          onSearchTermChanged={this.onSearchChanged}
+          queryParams={{ searchTerm, selectedCategory }}
           fetch={this.fetch}
           renderGridItem={renderGridItem}
           style={style.gridView}

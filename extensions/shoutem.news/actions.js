@@ -5,12 +5,25 @@ import { find, storage, collection } from 'redux-api-state';
 
 export const SHOUTEM_NEWS_SCHEME = 'shoutem.news.articles';
 export const SHOUTEM_IMAGES_SCHEME = 'shoutem.core.image-attachments';
+export const SHOUTEM_CATEGORIES_SCHEME = 'shoutem.core.categories';
+export const CATEGORY_SELECTED = Symbol('categorySelected');
+
+function categoryReducer(state = null, action) {
+  if (action.type === CATEGORY_SELECTED) {
+    return action.category;
+  }
+
+  return state;
+}
 
 export const reducers = {
-  news: storage('shoutem.news.articles'),
-  newsImages: storage('shoutem.core.image-attachments'),
-  latestNews: collection('shoutem.news.articles', 'latestNews'),
-  searchedNews: collection('shoutem.news.articles', 'searchedNews'),
+  news: storage(SHOUTEM_NEWS_SCHEME),
+  categories: storage(SHOUTEM_CATEGORIES_SCHEME),
+  newsImages: storage(SHOUTEM_IMAGES_SCHEME),
+  newsCategories: collection(SHOUTEM_CATEGORIES_SCHEME, 'newsCategories'),
+  latestNews: collection(SHOUTEM_NEWS_SCHEME, 'latestNews'),
+  searchedNews: collection(SHOUTEM_NEWS_SCHEME, 'searchedNews'),
+  selectedCategory: categoryReducer,
 };
 
 export function openListScreen(settings = { photoCentric: true }) {
@@ -24,12 +37,23 @@ export function openListScreen(settings = { photoCentric: true }) {
   return navigateTo(route);
 }
 
-export function findNews(searchTerm) {
+export function selectCategory(category) {
+  return { type: CATEGORY_SELECTED, category };
+}
+
+export function findNews(searchTerm, category) {
   let query = '';
   let collectionName = 'latestNews';
 
   if (searchTerm) {
-    query = `&query=${searchTerm}`;
+    query += `&query=${searchTerm}`;
+  }
+
+  if (category && category.id) {
+    query += `&filter[categories]=${category.id}`;
+  }
+
+  if (query) {
     collectionName = 'searchedNews';
   }
 
@@ -42,4 +66,17 @@ export function findNews(searchTerm) {
     SHOUTEM_NEWS_SCHEME,
     collectionName
   );
+}
+
+export function getNewsCategories(parent = 'null') {
+  return find(
+    {
+      endpoint: 'http://api.shoutem.local/v1/apps/5734177/categories' +
+      `?filter[parent]=${parent}&filter[schema]=${SHOUTEM_NEWS_SCHEME}`,
+      headers: { 'Content-Type': 'application/json' },
+    },
+    SHOUTEM_CATEGORIES_SCHEME,
+    'newsCategories'
+  );
+
 }

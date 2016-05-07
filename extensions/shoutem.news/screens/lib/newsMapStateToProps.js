@@ -18,5 +18,6 @@ export default (state) => {
     searchedNews: denormalizer.denormalizeCollection(
       state[SHOUTEM_NEWS_EXT_NAME].searchedNews, SHOUTEM_NEWS_SCHEME
     ),
+    selectedCategory: state[SHOUTEM_NEWS_EXT_NAME].selectedCategory,
   };
 };
