@@ -33,8 +33,10 @@ class GridScreen extends Component {
     this.fetch = this.fetch.bind(this);
     this.onSearchCleared = this.onSearchCleared.bind(this);
     this.onSearchChanged = this.onSearchChanged.bind(this);
+    this.categorySelected = this.categorySelected.bind(this);
     this.state = {
       searchTerm: '',
+      selectedCategory: null,
     };
   }
 
@@ -50,6 +52,9 @@ class GridScreen extends Component {
     this.props.findNews(queryParams.searchTerm, queryParams.selectedCategory);
   }
 
+  categorySelected(category) {
+    this.setState({ selectedCategory: category });
+  }
   render() {
     const {
       style,
@@ -58,14 +63,16 @@ class GridScreen extends Component {
       news,
       searchedNews,
       gridColumns,
-      selectedCategory,
     } = this.props;
-    const searchTerm = this.state.searchTerm;
+    const { searchTerm, selectedCategory } = this.state;
     const showSearchResults = isSearch(searchTerm, selectedCategory);
 
 
     setNavBarProps({
-      rightComponent: <NewsCategoriesDropDownMenu />,
+      rightComponent: (<NewsCategoriesDropDownMenu
+        categorySelected={this.categorySelected}
+        selectedCategory={selectedCategory}
+      />),
     });
 
     function openDetailsScreen(item) {

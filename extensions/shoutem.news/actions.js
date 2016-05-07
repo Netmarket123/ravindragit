@@ -8,14 +8,6 @@ export const SHOUTEM_IMAGES_SCHEME = 'shoutem.core.image-attachments';
 export const SHOUTEM_CATEGORIES_SCHEME = 'shoutem.core.categories';
 export const CATEGORY_SELECTED = Symbol('categorySelected');
 
-function categoryReducer(state = null, action) {
-  if (action.type === CATEGORY_SELECTED) {
-    return action.category;
-  }
-
-  return state;
-}
-
 export const reducers = {
   news: storage(SHOUTEM_NEWS_SCHEME),
   categories: storage(SHOUTEM_CATEGORIES_SCHEME),
@@ -23,7 +15,6 @@ export const reducers = {
   newsCategories: collection(SHOUTEM_CATEGORIES_SCHEME, 'newsCategories'),
   latestNews: collection(SHOUTEM_NEWS_SCHEME, 'latestNews'),
   searchedNews: collection(SHOUTEM_NEWS_SCHEME, 'searchedNews'),
-  selectedCategory: categoryReducer,
 };
 
 export function openListScreen(settings = { photoCentric: true }) {
@@ -35,10 +26,6 @@ export function openListScreen(settings = { photoCentric: true }) {
   };
 
   return navigateTo(route);
-}
-
-export function selectCategory(category) {
-  return { type: CATEGORY_SELECTED, category };
 }
 
 export function findNews(searchTerm, category) {
