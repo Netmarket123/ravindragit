@@ -9,17 +9,25 @@ import { SHOUTEM_NEWS_EXT_NAME } from '../index';
 class NewsCategoriesDropDownMenu extends React.Component {
   constructor(props, context) {
     super(props, context);
+    this.onCategorySelect = this.onCategorySelect.bind(this);
     props.getNewsCategories();
   }
 
+  onCategorySelect(category) {
+    if (this.props.categorySelected) {
+      // if "All" selected, emit null as selectedCategory
+      this.props.categorySelected(category.id ? category : null);
+    }
+  }
+
   render() {
-    const { categories, categorySelected, selectedCategory } = this.props;
+    const { categories, selectedCategory } = this.props;
     const clearCategoriesFilter = { name: 'All', id: null };
 
     return (<DropDownMenu
       items={[clearCategoriesFilter].concat(categories)}
       bindings={{ text: 'name', value: 'id' }}
-      onItemSelected={categorySelected}
+      onItemSelected={this.onCategorySelect}
       selectedItem={selectedCategory}
     />);
   }

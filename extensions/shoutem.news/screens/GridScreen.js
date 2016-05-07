@@ -45,6 +45,7 @@ class GridScreen extends Component {
   }
 
   onSearchCleared() {
+    this.onSearchChanged('');
     this.props.clearSearch();
   }
 

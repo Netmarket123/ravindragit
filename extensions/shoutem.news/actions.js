@@ -36,7 +36,7 @@ export function findNews(searchTerm, category) {
     query += `&query=${searchTerm}`;
   }
 
-  if (category && category.id) {
+  if (category) {
     query += `&filter[categories]=${category.id}`;
   }
 
