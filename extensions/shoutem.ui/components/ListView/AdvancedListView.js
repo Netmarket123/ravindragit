@@ -9,10 +9,6 @@ import { connectStyle } from 'shoutem/theme';
 const GET_PROPS_TO_PASS = Symbol('getPropsToPass');
 const HANDLE_LIST_VIEW_REF = Symbol('handleListViewRef');
 
-function isRefreshable(queryParams, notRefreshable) {
-  return !(queryParams || notRefreshable);
-}
-
 class AdvancedListView extends React.Component {
   constructor(props, context) {
     super(props, context);

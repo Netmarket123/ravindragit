@@ -78,5 +78,4 @@ export function getNewsCategories(parent = 'null') {
     SHOUTEM_CATEGORIES_SCHEME,
     'newsCategories'
   );
-
 }
