@@ -15,7 +15,6 @@ import type {
 } from './types';
 
 const windowWidth = Dimensions.get('window').width;
-const MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE = 30;
 
 // TODO(Vladimir) - split into multiple files, each implementing the TagTransformer interface
 export default class AttachmentTagTransformer {
@@ -29,7 +28,7 @@ export default class AttachmentTagTransformer {
     return (node.name === 'attachment' && !!node.attribs);
   }
 
-  transform(_: any, node: NodeType) : any {
+  transform(_: any, node: NodeType, style: any) : any {
     const id = node.attribs.id;
 
     if (node.attribs.type === 'image' && this.attachments.images) {
@@ -37,12 +36,14 @@ export default class AttachmentTagTransformer {
 
       const imageWidth = (windowWidth < attachedImage.width) ? windowWidth : attachedImage.width;
       const imageScale = imageWidth / attachedImage.width;
+      const imageMargin = style.img.marginHorizontal;
 
       return [
         <ImagePreview
+          style={style.img}
           source={{ uri: attachedImage.src }}
-          windowWidth={imageWidth - MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE}
-          height={(attachedImage.height - MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE) * imageScale}
+          windowWidth={imageWidth - imageMargin}
+          height={(attachedImage.height - imageMargin) * imageScale}
           key={0}
         />,
       ];
@@ -52,12 +53,14 @@ export default class AttachmentTagTransformer {
       const attachedVideo = this.attachments.videos.find((video) => video.id === id);
       const videoWidth = (windowWidth < attachedVideo.width) ? windowWidth : attachedVideo.width;
       const heightScale = videoWidth / attachedVideo.width;
+      const videoMargin = style.video.marginHorizontal;
 
       return [
         <Video
+          style={style.video}
           source={attachedVideo.src}
-          windowWidth={videoWidth - MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE}
-          height={attachedVideo.height * heightScale - MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE}
+          windowWidth={videoWidth - videoMargin}
+          height={(attachedVideo.height - videoMargin) * heightScale}
           key={0}
         />,
       ];

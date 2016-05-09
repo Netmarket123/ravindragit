@@ -15,7 +15,6 @@ import type {
 } from './types';
 
 const windowWidth = Dimensions.get('window').width;
-const MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE = 30;
 const ImageTagTransformer = {
   canTransform(node: NodeType): boolean {
     return (node.name === 'img' && !!node.attribs && !!node.attribs.src);
@@ -27,17 +26,11 @@ const ImageTagTransformer = {
     const imageWidth = (windowWidth < attribsWidth) ? windowWidth : attribsWidth;
     const imageScale = imageWidth / attribsWidth;
     const { img } = style;
-    const { marginLeft, marginRight } = img;
-
-    let elementToWindowBorderDistance = MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE;
-
-    if (marginLeft && marginRight) {
-      elementToWindowBorderDistance = marginLeft + marginRight;
-    }
+    const elementToWindowBorderDistance = img.marginHorizontal;
 
     return [
       <ImagePreview
-        style={style}
+        style={style.img}
         source={{ uri: node.attribs.src }}
         width={imageWidth - elementToWindowBorderDistance}
         height={(attribsHeight - elementToWindowBorderDistance) * imageScale}

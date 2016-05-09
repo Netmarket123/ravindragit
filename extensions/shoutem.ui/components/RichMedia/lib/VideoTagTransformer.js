@@ -15,29 +15,22 @@ import type {
 } from './types';
 
 const windowWidth = Dimensions.get('window').width;
-const MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE = 30;
 const VideoTagTransformer = {
   canTransform(node: NodeType): boolean {
     return (node.name === 'video' && !!node.attribs && !!node.attribs.src);
   },
 
-  transform(_: any, node: NodeType, style): Array<ReactComponentType> {
+  transform(_: any, node: NodeType, style: any): Array<ReactComponentType> {
     const attribsWidth = parseInt(node.attribs.width, 10);
     const attribsHeight = parseInt(node.attribs.height, 10);
     const videoWidth = (windowWidth < attribsWidth) ? windowWidth : attribsWidth;
     const videoScale = videoWidth / attribsWidth;
     const { video } = style;
-    const { marginLeft, marginRight } = img;
-
-    let elementToWindowBorderDistance = MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE;
-
-    if (marginLeft && marginRight) {
-      elementToWindowBorderDistance = marginLeft + marginRight;
-    }
+    const elementToWindowBorderDistance = video.marginHorizontal;
 
     return [
       <Video
-        style={style}
+        style={style.video}
         source={node.attribs.src}
         width={videoWidth - elementToWindowBorderDistance}
         height={(attribsHeight - elementToWindowBorderDistance) * videoScale}

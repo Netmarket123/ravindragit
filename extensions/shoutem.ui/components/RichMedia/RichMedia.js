@@ -34,6 +34,34 @@ const style = {
   },
 };
 
+const MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE = 30;
+
+function getMediaElementMargin(mediaElementStyle) {
+  const { marginHorizontal, margin, marginLeft, marginRight } = mediaElementStyle;
+
+  return marginHorizontal ||
+         margin ||
+         marginLeft + marginRight ||
+         MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE;
+}
+
+function getStyleWithUpdatedMediaElementMargins(oldStyle) {
+  const videoStyle = oldStyle.video;
+  const videoFullWidth = getMediaElementMargin(videoStyle);
+
+  const imageStyle = oldStyle.img;
+  const imageFullWidth = getMediaElementMargin(imageStyle);
+
+  return Object.assign({}, oldStyle, {
+    img: {
+      marginHorizontal: imageFullWidth,
+    },
+    video: {
+      marginHorizontal: videoFullWidth,
+    },
+  });
+}
+
 /**
  * Displays content in the html body as a composition of
  * react native components.
@@ -60,8 +88,9 @@ class RichMedia extends Component {
 
   startHtmlRender(body, attachments) {
     if (body) {
+      const customStyle = getStyleWithUpdatedMediaElementMargins(style);
       const attachmentTagTransformer = new AttachmentTagTransformer(attachments);
-      const hypermediaComposer = new HypermediaComposer([attachmentTagTransformer], style);
+      const hypermediaComposer = new HypermediaComposer([attachmentTagTransformer], customStyle);
 
       hypermediaComposer.compose(body, (err, content) => {
         if (err) {
