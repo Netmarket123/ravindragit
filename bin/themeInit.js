@@ -8,6 +8,10 @@ export default (variables) => ({
     [INCLUDE]: ['baseFont'],
     fontSize: 25,
   },
+  centerContent: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   screen: {
     flexDirection: 'column',
     alignItems: 'stretch',
