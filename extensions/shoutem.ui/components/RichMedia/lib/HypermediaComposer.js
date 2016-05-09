@@ -76,6 +76,10 @@ export default class HypermediaComposer {
   /**
    * Return an array of react components representing the provided
    * array of dom nodes.
+   *
+   * @param dom array of nodes to be transformed.
+   * @param parent parent node.
+   * @returns [ReactComponents] an array of React components.
    */
   domToElement(dom?: Array<NodeType>, parent?: NodeType): any {
     if (!dom) return null;
@@ -121,6 +125,9 @@ export default class HypermediaComposer {
   /**
    * Compose the content from the raw html string into a react component and
    * return it in a done callback
+   * @param rawHtml a string of raw html to be transformed.
+   * @param done a callback to recieve the composed react components after
+   *             they are transformed.
    */
   compose(rawHtml: string, done: any) {
     const handler = new htmlparser2.DomHandler((err, dom) => {
