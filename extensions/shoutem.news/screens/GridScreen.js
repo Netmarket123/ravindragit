@@ -55,7 +55,8 @@ class GridScreen extends Component {
     ) {
       this.props.clearSearch();
     }
-    this.props.findNews(queryParams.searchTerm, queryParams.selectedCategory);
+
+    return this.props.findNews(queryParams.searchTerm, queryParams.selectedCategory);
   }
 
   categorySelected(category) {
