@@ -17,6 +17,8 @@ const boldStyle = { fontWeight: '500' };
 const italicStyle = { fontStyle: 'italic' };
 const codeStyle = { fontFamily: 'Menlo' };
 
+const MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE = 30;
+
 const style = {
   b: boldStyle,
   strong: boldStyle,
@@ -29,36 +31,35 @@ const style = {
     color: '#007AFF',
   },
   video: {
+    marginHorizontal: MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE,
   },
   img: {
+    marginHorizontal: MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE,
   },
 };
-
-const MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE = 30;
 
 function getMediaElementMargin(mediaElementStyle) {
   const { marginHorizontal, margin, marginLeft, marginRight } = mediaElementStyle;
 
-  return marginHorizontal ||
-         margin ||
-         marginLeft + marginRight ||
-         MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE;
+  const left = marginLeft || marginHorizontal / 2 || margin;
+  const right = marginRight || marginHorizontal / 2 || margin;
+
+  return {
+    marginLeft: left,
+    marginRight: right,
+  };
 }
 
 function getStyleWithUpdatedMediaElementMargins(oldStyle) {
   const videoStyle = oldStyle.video;
-  const videoFullWidth = getMediaElementMargin(videoStyle);
+  const videoWithMargins = getMediaElementMargin(videoStyle);
 
   const imageStyle = oldStyle.img;
-  const imageFullWidth = getMediaElementMargin(imageStyle);
+  const imageWithMargins = getMediaElementMargin(imageStyle);
 
   return Object.assign({}, oldStyle, {
-    img: {
-      marginHorizontal: imageFullWidth,
-    },
-    video: {
-      marginHorizontal: videoFullWidth,
-    },
+    img: imageWithMargins,
+    video: videoWithMargins,
   });
 }
 

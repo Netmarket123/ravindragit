@@ -26,7 +26,8 @@ const VideoTagTransformer = {
     const videoWidth = (windowWidth < attribsWidth) ? windowWidth : attribsWidth;
     const videoScale = videoWidth / attribsWidth;
     const { video } = style;
-    const elementToWindowBorderDistance = video.marginHorizontal;
+    const { marginLeft, marginRight } = video;
+    const elementToWindowBorderDistance = marginLeft + marginRight;
 
     return [
       <Video

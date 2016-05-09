@@ -26,7 +26,8 @@ const ImageTagTransformer = {
     const imageWidth = (windowWidth < attribsWidth) ? windowWidth : attribsWidth;
     const imageScale = imageWidth / attribsWidth;
     const { img } = style;
-    const elementToWindowBorderDistance = img.marginHorizontal;
+    const { marginLeft, marginRight } = img;
+    const elementToWindowBorderDistance = marginLeft + marginRight;
 
     return [
       <ImagePreview

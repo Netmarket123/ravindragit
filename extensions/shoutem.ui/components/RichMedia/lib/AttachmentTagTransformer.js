@@ -36,14 +36,16 @@ export default class AttachmentTagTransformer {
 
       const imageWidth = (windowWidth < attachedImage.width) ? windowWidth : attachedImage.width;
       const imageScale = imageWidth / attachedImage.width;
-      const imageMargin = style.img.marginHorizontal;
+      const { img } = style;
+      const { marginLeft, marginRight } = img;
+      const elementToWindowBorderDistance = marginLeft + marginRight;
 
       return [
         <ImagePreview
           style={style.img}
           source={{ uri: attachedImage.src }}
-          windowWidth={imageWidth - imageMargin}
-          height={(attachedImage.height - imageMargin) * imageScale}
+          windowWidth={imageWidth - elementToWindowBorderDistance}
+          height={(attachedImage.height - elementToWindowBorderDistance) * imageScale}
           key={0}
         />,
       ];
@@ -52,15 +54,17 @@ export default class AttachmentTagTransformer {
     if (node.attribs.type === 'video' && this.attachments.videos) {
       const attachedVideo = this.attachments.videos.find((video) => video.id === id);
       const videoWidth = (windowWidth < attachedVideo.width) ? windowWidth : attachedVideo.width;
-      const heightScale = videoWidth / attachedVideo.width;
-      const videoMargin = style.video.marginHorizontal;
+      const videoScale = videoWidth / attachedVideo.width;
+      const { video } = style;
+      const { marginLeft, marginRight } = video;
+      const elementToWindowBorderDistance = marginLeft + marginRight;
 
       return [
         <Video
           style={style.video}
           source={attachedVideo.src}
-          windowWidth={videoWidth - videoMargin}
-          height={(attachedVideo.height - videoMargin) * heightScale}
+          windowWidth={videoWidth - elementToWindowBorderDistance}
+          height={(attachedVideo.height - elementToWindowBorderDistance) * videoScale}
           key={0}
         />,
       ];
