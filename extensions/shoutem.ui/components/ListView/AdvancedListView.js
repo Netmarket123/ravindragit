@@ -5,6 +5,7 @@ import _ from 'lodash';
 import Search from '../Search/Search';
 import GiftedListView from 'react-native-gifted-listview';
 import { connectStyle } from 'shoutem/theme';
+import { FullScreenSpinner, PlatformSpinner } from 'shoutem.ui';
 
 const GET_PROPS_TO_PASS = Symbol('getPropsToPass');
 const HANDLE_LIST_VIEW_REF = Symbol('handleListViewRef');
@@ -15,9 +16,17 @@ class AdvancedListView extends React.Component {
     this[HANDLE_LIST_VIEW_REF] = this[HANDLE_LIST_VIEW_REF].bind(this);
     this.fetch = this.fetch.bind(this);
     this.onSearchTermChanged = this.onSearchTermChanged.bind(this);
+    this.renderFooter = this.renderFooter.bind(this);
+    this.onEndReached = this.onEndReached.bind(this);
     this.searchHidden = false;
     this.listView = null;
     this.giftedListView = null;
+    this.state = {
+      fetchStatus: {
+        fetching: false,
+        isLoadMore: false,
+      },
+    };
   }
 
   shouldComponentUpdate(nextProps) {
@@ -42,6 +51,19 @@ class AdvancedListView extends React.Component {
   onSearchTermChanged(searchTerm) {
     if (this.props.onSearchTermChanged) {
       this.props.onSearchTermChanged(searchTerm);
+    }
+  }
+
+  /**
+   * Triggered when list end threshold reached (scrolled to)
+   */
+  onEndReached() {
+    if (this.props.onEndReached) {
+      this.props.onEndReached();
+      return;
+    }
+    if (this.props.infiniteScrolling) {
+      this.loadMore();
     }
   }
 
@@ -79,8 +101,30 @@ class AdvancedListView extends React.Component {
     // we do not want to pass style to GiftedListView, it uses customStyle
     mappedProps.customStyles = props.style.list;
     mappedProps.contentContainerStyle = props.style.listContent;
+    // Override GiftedListView renderFooter
+    mappedProps.renderFooter = this.renderFooter;
+    // Default load more threshold
+    mappedProps.onEndReachedThreshold = 40;
+    //
+    mappedProps.onEndReached = function () {
+    };
 
     return mappedProps;
+  }
+
+  /**
+   * Updates fetch status
+   *
+   * @param fetching - if fetching new data
+   * @param isLoadMore - if loading more (pagination)
+   */
+  handleRequestStatus(fetching, isLoadMore) {
+    this.setState({
+      fetchStatus: {
+        fetching,
+        isLoadMore,
+      },
+    });
   }
 
   /**
@@ -88,16 +132,29 @@ class AdvancedListView extends React.Component {
    * Calls passed fetch to get new items.
    * By default props.queryParams are used,
    * in case queryParams change they are passed from nextProps.
+   *
+   * If fetch returns promise it will be used to notify user.
+   * TODO(Braco) - support collection busy as other mode for notifying user of loading.
+   * Detect if isLoadMore or new data.
    */
-  fetch(page, callback, queryParams = this.props.queryParams) {
+  fetch(page, callback, queryParams = this.props.queryParams, isLoadMore) {
     if (this.props.fetch) {
-      if (this.giftedListView) {
-        this.giftedListView.setState({
-          paginationStatus: 'fetching',
+      const request = this.props.fetch(queryParams || {}, isLoadMore);
+      if (request) {
+        this.handleRequestStatus(true, isLoadMore);
+        request.then(() => {
+          this.handleRequestStatus(false, isLoadMore);
         });
       }
-      this.props.fetch(queryParams || {});
     }
+  }
+
+  /**
+   * Used to load more data.
+   * It is called always.
+   */
+  loadMore() {
+    this.fetch(undefined, undefined, undefined, true);
   }
 
   /**
@@ -163,6 +220,22 @@ class AdvancedListView extends React.Component {
     };
   }
 
+  renderFooter() {
+    const fetchStatus = this.state.fetchStatus;
+    const { style, renderFooter } = this.props;
+
+    if (renderFooter) {
+      // Render customized footer
+      return renderFooter(fetchStatus);
+    } else if (fetchStatus.fetching) {
+      if (!fetchStatus.isLoadMore) {
+        return <FullScreenSpinner style={style.newDataSpinner} />;
+      }
+      return <View style={style.loadMoreSpinner}><PlatformSpinner /></View>;
+    }
+    return null;
+  }
+
   render() {
     return (<GiftedListView
       ref={this[HANDLE_LIST_VIEW_REF]}
@@ -180,14 +253,17 @@ AdvancedListView.propTypes = {
   queryParams: React.PropTypes.object,
   notRefreshable: React.PropTypes.bool,
   disablePagination: React.PropTypes.bool,
-  hideFirstLoader: React.PropTypes.bool,
+  hideFirstLoader: React.PropTypes.bool, // TODO(Braco) - either integrate it or deprecate
   sections: React.PropTypes.bool,
   renderRow: React.PropTypes.func,
   registerScrollRef: React.PropTypes.func,
   renderHeader: React.PropTypes.func,
+  renderFooter: React.PropTypes.bool,
   fetch: React.PropTypes.func,
   items: React.PropTypes.array,
-  onEndReach: React.PropTypes.func, // TODO(Braco) - enable real infinite scrolling
+  infiniteScrolling: React.PropTypes.bool,
+  onEndReachedThreshold: React.PropTypes.number,
+  onEndReached: React.PropTypes.func,
 };
 
 const style = {
@@ -196,6 +272,8 @@ const style = {
     search: {},
   },
   list: {},
+  newDataSpinner: {},
+  loadMoreSpinner: {},
 };
 
 export default connectStyle('shoutem.ui.AdvancedListView', style)(AdvancedListView);
