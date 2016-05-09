@@ -5,7 +5,6 @@
 import React, {
   Dimensions,
 } from 'react-native';
-import { connectStyle } from 'shoutem/theme';
 
 import Video from '../../Video/Video';
 
@@ -16,13 +15,7 @@ import type {
 } from './types';
 
 const windowWidth = Dimensions.get('window').width;
-const style = {
-  image: {
-    marginLeft: 15,
-    marginRight: 15,
-  },
-};
-
+const MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE = 30;
 const VideoTagTransformer = {
   canTransform(node: NodeType): boolean {
     return (node.name === 'video' && !!node.attribs && !!node.attribs.src);
@@ -33,17 +26,17 @@ const VideoTagTransformer = {
     const attribsHeight = parseInt(node.attribs.height, 10);
     const videoWidth = (windowWidth < attribsWidth) ? windowWidth : attribsWidth;
     const videoScale = videoWidth / attribsWidth;
-    const mediaElementToWindowBorderDistance = style.image.marginLeft + style.image.marginRight;
 
     return [
       <Video
         source={node.attribs.src}
-        width={videoWidth - mediaElementToWindowBorderDistance}
-        height={(attribsHeight - mediaElementToWindowBorderDistance) * videoScale}
+        width={videoWidth - MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE}
+        height={(attribsHeight - MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE) * videoScale}
         key={0}
       />,
     ];
   },
 };
 
-export default connectStyle('shoutem.ui.VideoTagTransformer', style)(VideoTagTransformer);
+export default VideoTagTransformer;
+
