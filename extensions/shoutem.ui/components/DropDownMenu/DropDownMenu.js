@@ -72,11 +72,11 @@ class DropDownMenu extends Component {
       onItemSelected,
     } = this.props;
     const onPress = () => {
+      this.close();
       this.setState({ selectedItem: item });
       if (onItemSelected) {
         onItemSelected(item);
       }
-      this.close();
     };
     return (
       <TouchableOpacity onPress={onPress} style={style.modalItem}>
