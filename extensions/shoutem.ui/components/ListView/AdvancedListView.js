@@ -34,7 +34,7 @@ class AdvancedListView extends React.Component {
     if (!_.eq(nextProps.queryParams, queryParams)) {
       // Compare current query params and new, if different make new request
       // QueryParams can be changed from outside
-      this.fetch(nextProps.queryParams);
+      this.fetch(undefined, undefined, nextProps.queryParams);
     }
     return true;
   }
@@ -61,7 +61,7 @@ class AdvancedListView extends React.Component {
     // enable infinite scrolling using touch to load more
     mappedProps.pagination = Boolean(!props.disablePagination);
     // enable pull-to-refresh for iOS and touch-to-refresh for Android
-    mappedProps.refreshable = props.notRefreshable;
+    mappedProps.refreshable = !props.notRefreshable;
     // enable sections
     mappedProps.withSections = props.sections;
     // react native warning
@@ -77,7 +77,7 @@ class AdvancedListView extends React.Component {
     // create headerView function if there is something to render in header
     mappedProps.headerView = this.createHeaderView();
     // we do not want to pass style to GiftedListView, it uses customStyle
-    mappedProps.customStyle = props.style.list;
+    mappedProps.customStyles = props.style.list;
     mappedProps.contentContainerStyle = props.style.listContent;
 
     return mappedProps;
@@ -89,8 +89,13 @@ class AdvancedListView extends React.Component {
    * By default props.queryParams are used,
    * in case queryParams change they are passed from nextProps.
    */
-  fetch(queryParams = this.props.queryParams) {
+  fetch(page, callback, queryParams = this.props.queryParams) {
     if (this.props.fetch) {
+      if (this.giftedListView) {
+        this.giftedListView.setState({
+          paginationStatus: 'fetching',
+        });
+      }
       this.props.fetch(queryParams || {});
     }
   }
