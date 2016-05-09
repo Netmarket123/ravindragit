@@ -73,7 +73,6 @@ class GridScreen extends Component {
     const { searchTerm, selectedCategory } = this.state;
     const showSearchResults = isSearch(searchTerm, selectedCategory);
 
-
     setNavBarProps({
       rightComponent: (<NewsCategoriesDropDownMenu
         categorySelected={this.categorySelected}
@@ -96,7 +95,7 @@ class GridScreen extends Component {
           items={showSearchResults ? searchedNews : news}
           gridColumns={gridColumns}
           search
-          notRefreshable={!showSearchResults}
+          notRefreshable={showSearchResults}
           onSearchCleared={this.onSearchCleared}
           onSearchTermChanged={this.onSearchChanged}
           queryParams={{ searchTerm, selectedCategory }}
@@ -123,11 +122,12 @@ const style = {
     },
     list: {
       paginationView: {
-        paddingTop: 10,
+        height: 0,
         marginTop: 10,
       },
       actionsLabel: {
-        background: 'red',
+        height: 0,
+        backgroundColor: 'red',
       },
     },
     listContent: {
