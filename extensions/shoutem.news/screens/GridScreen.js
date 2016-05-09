@@ -96,7 +96,7 @@ class GridScreen extends Component {
           items={showSearchResults ? searchedNews : news}
           gridColumns={gridColumns}
           search
-          notRefreshable={showSearchResults}
+          notRefreshable={!showSearchResults}
           onSearchCleared={this.onSearchCleared}
           onSearchTermChanged={this.onSearchChanged}
           queryParams={{ searchTerm, selectedCategory }}
