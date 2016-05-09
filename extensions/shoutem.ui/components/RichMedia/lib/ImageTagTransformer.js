@@ -5,6 +5,7 @@
 import React, {
   Dimensions,
 } from 'react-native';
+import { connectStyle } from 'shoutem/theme';
 
 import ImagePreview from '../../ImagePreview';
 
@@ -15,7 +16,13 @@ import type {
 } from './types';
 
 const windowWidth = Dimensions.get('window').width;
-const MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE = 30;
+const style = {
+  image: {
+    marginLeft: 15,
+    marginRight: 15,
+  },
+};
+
 const ImageTagTransformer = {
   canTransform(node: NodeType): boolean {
     return (node.name === 'img' && !!node.attribs && !!node.attribs.src);
@@ -26,17 +33,18 @@ const ImageTagTransformer = {
     const attribsHeight = parseInt(node.attribs.height, 10);
     const imageWidth = (windowWidth < attribsWidth) ? windowWidth : attribsWidth;
     const imageScale = imageWidth / attribsWidth;
+    const mediaElementToWindowBorderDistance = style.image.marginLeft + style.image.marginRight;
 
     return [
       <ImagePreview
         source={{ uri: node.attribs.src }}
-        width={imageWidth - MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE}
-        height={(attribsHeight - MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE) * imageScale}
+        width={imageWidth - mediaElementToWindowBorderDistance}
+        height={(attribsHeight - mediaElementToWindowBorderDistance) * imageScale}
         key={0}
       />,
     ];
   },
 };
 
-export default ImageTagTransformer;
+export default connectStyle('shoutem.ui.ImageTagTransformer', style)(ImageTagTransformer);
 
