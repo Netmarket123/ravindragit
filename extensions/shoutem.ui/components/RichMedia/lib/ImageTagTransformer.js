@@ -21,17 +21,26 @@ const ImageTagTransformer = {
     return (node.name === 'img' && !!node.attribs && !!node.attribs.src);
   },
 
-  transform(_: any, node: NodeType): Array<ReactComponentType> {
+  transform(_: any, node: NodeType, style: any): Array<ReactComponentType> {
     const attribsWidth = parseInt(node.attribs.width, 10);
     const attribsHeight = parseInt(node.attribs.height, 10);
     const imageWidth = (windowWidth < attribsWidth) ? windowWidth : attribsWidth;
     const imageScale = imageWidth / attribsWidth;
+    const { img } = style;
+    const { marginLeft, marginRight } = img;
+
+    let elementToWindowBorderDistance = MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE;
+
+    if (marginLeft && marginRight) {
+      elementToWindowBorderDistance = marginLeft + marginRight;
+    }
 
     return [
       <ImagePreview
+        style={style}
         source={{ uri: node.attribs.src }}
-        width={imageWidth - MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE}
-        height={(attribsHeight - MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE) * imageScale}
+        width={imageWidth - elementToWindowBorderDistance}
+        height={(attribsHeight - elementToWindowBorderDistance) * imageScale}
         key={0}
       />,
     ];

@@ -28,6 +28,10 @@ const style = {
     fontWeight: '500',
     color: '#007AFF',
   },
+  video: {
+  },
+  img: {
+  },
 };
 
 /**

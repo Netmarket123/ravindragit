@@ -21,17 +21,26 @@ const VideoTagTransformer = {
     return (node.name === 'video' && !!node.attribs && !!node.attribs.src);
   },
 
-  transform(_: any, node: NodeType): Array<ReactComponentType> {
+  transform(_: any, node: NodeType, style): Array<ReactComponentType> {
     const attribsWidth = parseInt(node.attribs.width, 10);
     const attribsHeight = parseInt(node.attribs.height, 10);
     const videoWidth = (windowWidth < attribsWidth) ? windowWidth : attribsWidth;
     const videoScale = videoWidth / attribsWidth;
+    const { video } = style;
+    const { marginLeft, marginRight } = img;
+
+    let elementToWindowBorderDistance = MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE;
+
+    if (marginLeft && marginRight) {
+      elementToWindowBorderDistance = marginLeft + marginRight;
+    }
 
     return [
       <Video
+        style={style}
         source={node.attribs.src}
-        width={videoWidth - MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE}
-        height={(attribsHeight - MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE) * videoScale}
+        width={videoWidth - elementToWindowBorderDistance}
+        height={(attribsHeight - elementToWindowBorderDistance) * videoScale}
         key={0}
       />,
     ];

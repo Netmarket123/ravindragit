@@ -114,7 +114,7 @@ export default class HypermediaComposer {
 
       return (
         <ContainerElement key={index} >
-          {transformerForTag.transform(renderChildren, node)}
+          {transformerForTag.transform(renderChildren, node, this.style)}
         </ContainerElement>
       );
     }
