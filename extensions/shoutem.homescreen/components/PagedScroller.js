@@ -66,7 +66,8 @@ export default function PagedScroller({
 }) {
   function renderPage(data) {
     return (
-      <ShortcutsGrid gridItems={data}
+      <ShortcutsGrid
+        gridItems={data}
         dimensions={dimensions}
         layoutPosition={layoutPosition}
         buttonConfig={buttonConfig}
@@ -77,10 +78,10 @@ export default function PagedScroller({
   const containerLayoutPosition = getStyleForContainerLayoutPosition(layoutPosition);
   return (
     <View style={[styles.container, containerLayoutPosition]}>
-    <ViewPager
-      dataSource={createPagingDataSource(shortcutsData, dimensions)}
-      renderPage={renderPage}
-    />
+      <ViewPager
+        dataSource={createPagingDataSource(shortcutsData, dimensions)}
+        renderPage={renderPage}
+      />
     </View>
   );
 }

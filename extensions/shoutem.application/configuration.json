@@ -23,6 +23,10 @@
           {
             "type": "shoutem.core.extensions",
             "id": "shoutem.test"
+          },
+          {
+            "type": "shoutem.core.extensions",
+            "id": "shoutem.codepush"
           }
         ]
       },
@@ -30,7 +34,7 @@
         "data": [
           {
             "type": "shoutem.core.shortcuts",
-            "id": "56efcdf9f3973a4609a7a910"
+            "id": "56efcdf9f3973a4609a7a918"
           }
         ]
       },
@@ -54,8 +58,8 @@
       "id": "shoutem.theme.default",
       "attributes": {
         "variables": {
-         "testColor": "red",
-         "ganetColor": "961a2d"
+          "testColor": "red",
+          "ganetColor": "961a2d"
         }
       }
     },
@@ -237,6 +241,31 @@
         "canonicalType": "shoutem.places.PlaceDetails",
         "settings": {
           "layout": "x"
+        }
+      }
+    },
+    {
+      "type": "shoutem.core.extensions",
+      "id": "shoutem.codepush",
+      "attributes": {
+        "extension": "56fe4814007ed55a0c6dba36",
+        "app": "690",
+        "configuration": "690",
+        "owner": "1111",
+        "canonicalName": "shoutem.codepush",
+        "settings": {
+          "test": "123",
+          "enableSharing": true,
+          "deploymentKeys": [
+            {
+              "name": "Production",
+              "key": "eAUuOt3mynn5Wm8xl1cdFGEmZ7sjV1nVFkuog"
+            },
+            {
+              "name": "Staging",
+              "key": "d_qIxI70LWU6aSjaxQKczJXhs0VDV1nVFkuog"
+            }
+          ]
         }
       }
     }

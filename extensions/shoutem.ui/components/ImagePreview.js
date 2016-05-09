@@ -44,8 +44,8 @@ const style = {
 };
 
 /**
- * Renders an ImagePreview which shows an inline image preview
- * which displays the image in full screen when clicked
+ * Renders an ImagePreview which shows an inline image preview.
+ * When clicked, the image is displayed in full screen.
  */
 class ImagePreview extends Component {
   constructor(props) {

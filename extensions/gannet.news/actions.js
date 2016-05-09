@@ -4,9 +4,12 @@ import {
 import { storage, collection } from 'redux-api-state';
 
 export const reducers = {
-  news: storage('gannett.news'),
-  latestNews: collection('gannett.news', 'latestNews'),
+  news: storage('shoutem.news.articles'),
+  newsImages: storage('shoutem.core.image-attachments'),
+  latestNews: collection('shoutem.news.articles', 'latestNews'),
+  searchedNews: collection('shoutem.news.articles', 'searchedNews'),
 };
+
 
 export function openListScreen() {
   const nextScreenName = 'gannet.news.GannettListScreen';

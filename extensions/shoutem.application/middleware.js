@@ -1,11 +1,15 @@
+import * as _ from 'lodash';
+
 export function createExecuteShortcutMiddleware(actions) {
   return store => next => action => {
-    if (!action.shortcut || !action.shortcut.action) {
+    const actionName = _.get(action, 'shortcut.attributes.action');
+
+    if (!actionName) {
       return next(action);
     }
 
-    const { settings, children } = action.shortcut;
-    const actionName = action.shortcut.action;
+    const settings = _.get(action.shortcut, 'attributes.settings');
+    const children = _.get(action.shortcut, 'relationships.children.data');
     const shortcutAction = actions[actionName];
 
     if (typeof shortcutAction === 'function') {

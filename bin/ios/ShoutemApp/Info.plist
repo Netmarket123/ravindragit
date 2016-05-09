@@ -2,6 +2,25 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <string>preview</string>
+    </array>
+    <key>LSApplicationQueriesSchemes</key>
+    <string>preview</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLName</key>
+        <string>org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>preview</string>
+        </array>
+      </dict>
+    </array>
     <key>CFBundleDevelopmentRegion</key>
     <string>en</string>
     <key>CFBundleExecutable</key>
