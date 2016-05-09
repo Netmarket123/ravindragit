@@ -14,6 +14,9 @@ export { default as ShopGridBox } from './components/GridBox/ShopGridBox';
 
 export { default as ListItem } from './components/ListItem/ListItem';
 
+export { default as PlatformSpinner } from './components/Spinner/PlatformSpinner';
+export { default as FullScreenSpinner } from './components/Spinner/FullScreenSpinner';
+
 export { default as Video } from './components/Video/Video';
 // export { default as ImagePreview } from './components/ImagePreview.js';
 
