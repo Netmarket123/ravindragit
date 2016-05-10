@@ -246,7 +246,7 @@
     },
     {
       "type": "shoutem.core.extensions",
-      "id": "shoutem.codepush",
+      "id": "shoutem.code-push",
       "attributes": {
         "extension": "56fe4814007ed55a0c6dba36",
         "app": "690",
