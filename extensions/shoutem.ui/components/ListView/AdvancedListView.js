@@ -103,9 +103,11 @@ class AdvancedListView extends React.Component {
     mappedProps.enableEmptySections = true;
     // handle default onFetch
     mappedProps.onFetch = this.fetch;
+    // Tilt color
+    mappedProps.refreshableTintColor = props.style.tiltColor.backgroundColor;
+    // Default load more threshold
+    mappedProps.onEndReachedThreshold = props.onEndReachedThreshold || 40;
 
-    // TODO(Braco) - set by theme?
-    mappedProps.refreshableTintColor = 'blue';
 
     // Mapped properties
     // create headerView function if there is something to render in header
@@ -115,8 +117,6 @@ class AdvancedListView extends React.Component {
     mappedProps.contentContainerStyle = props.style.listContent;
     // Override GiftedListView renderFooter
     mappedProps.renderFooter = this.renderFooter;
-    // Default load more threshold
-    mappedProps.onEndReachedThreshold = props.onEndReachedThreshold || 40;
     // Handle on scroll end reach
     mappedProps.onEndReached = this.state.fetchStatus.noMoreItems ? null : this.onEndReached;
 
@@ -246,7 +246,6 @@ class AdvancedListView extends React.Component {
       renderHeader,
       search,
       searchPlaceholder,
-      onSearchCleared,
     } = this.props;
     const style = listViewStyle.header;
 
@@ -260,7 +259,6 @@ class AdvancedListView extends React.Component {
         style={style.search}
         searchTerm={this.state.searchTerm}
         onSearchTermChange={this.onSearchTermChanged}
-        onCleared={onSearchCleared}
         placeholder={searchPlaceholder}
       />) : null;
 
@@ -328,6 +326,10 @@ const style = {
     search: {},
   },
   list: {},
+  tiltColor: {
+    // uses only background color
+    backgroundColor: '#ccc',
+  },
   newDataSpinner: {},
   loadMoreSpinner: {
     paddingVertical: 25,
