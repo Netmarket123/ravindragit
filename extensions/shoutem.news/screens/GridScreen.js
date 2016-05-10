@@ -31,7 +31,6 @@ class GridScreen extends Component {
   constructor(props, context) {
     super(props, context);
     this.fetch = this.fetch.bind(this);
-    this.onSearchCleared = this.onSearchCleared.bind(this);
     this.onSearchChanged = this.onSearchChanged.bind(this);
     this.categorySelected = this.categorySelected.bind(this);
     this.state = {

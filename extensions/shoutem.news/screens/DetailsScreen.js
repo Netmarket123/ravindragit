@@ -81,7 +81,7 @@ function DetailsScreen({
           style={style.headline}
           headline={item.title}
           newsDetails={[item.author, 'test']}
-          backgroundImage={{ uri: item.image_url, width: 200, height: 200 }}
+          backgroundImage={{ uri: _.get(item, 'image.url'), width: 200, height: 200 }}
         />
       </Animated.View>
       <ScrollView
@@ -105,6 +105,9 @@ DetailsScreen.propTypes = {
 const style = {
   headline: {
     [INCLUDE]: ['shoutem.ui.NewsGridBox.photoCentric'],
+    headline: {
+      backgroundColor: 'transparent',
+    },
   },
   screen: {
     position: 'relative',
