@@ -48,7 +48,8 @@ class GridScreen extends Component {
     this.onSearchChanged('');
   }
 
-  fetch(queryParams) {
+  fetch(queryParams, isLoadMore) {
+    let offset;
     if (
       !isSearch(queryParams.searchTerm, queryParams.selectedCategory) &&
       this.props.searchedNews.length > 0
@@ -56,7 +57,15 @@ class GridScreen extends Component {
       this.props.clearSearch();
     }
 
-    return this.props.findNews(queryParams.searchTerm, queryParams.selectedCategory);
+    if (isLoadMore) {
+      offset = 1;
+    }
+
+    if (isLoadMore) {
+      return undefined;
+    }
+
+    return this.props.findNews(queryParams.searchTerm, queryParams.selectedCategory, offset);
   }
 
   categorySelected(category) {
@@ -96,6 +105,7 @@ class GridScreen extends Component {
           items={showSearchResults ? searchedNews : news}
           gridColumns={gridColumns}
           search
+          infiniteScrolling
           notRefreshable={showSearchResults}
           onSearchCleared={this.onSearchCleared}
           onSearchTermChanged={this.onSearchChanged}

@@ -28,9 +28,10 @@ export function openListScreen(settings = { photoCentric: true }) {
   return navigateTo(route);
 }
 
-export function findNews(searchTerm, category) {
+export function findNews(searchTerm, category, pageOffset = 0) {
   let query = '';
   let collectionName = 'latestNews';
+  const offset = `&page[offset]=${pageOffset}`;
 
   if (searchTerm) {
     query += `&query=${searchTerm}`;
@@ -47,7 +48,7 @@ export function findNews(searchTerm, category) {
   return find(
     {
       endpoint: `http://api.shoutem.local/v1/apps/5734177/resources/${SHOUTEM_NEWS_SCHEME}?` +
-      `include=image${query}`,
+      `include=image${query}${offset}&page[limit]=8`,
       headers: { 'Content-Type': 'application/json' },
     },
     SHOUTEM_NEWS_SCHEME,
