@@ -122,6 +122,10 @@ export default function resolveIncludes(target, base = {}) {
     const resultingStyle = _.mergeWith({}, stylesToInclude, styleNode, includeSymbolMergeHandler);
     delete resultingStyle[INCLUDE];
 
+    // if () {
+    //
+    // }
+
     for (const styleName of _.keys(resultingStyle)) {
       resultingStyle[styleName] =
         includeNodeStyles(resultingStyle[styleName], processingStyleNames);
