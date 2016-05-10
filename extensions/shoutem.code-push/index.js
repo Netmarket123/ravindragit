@@ -25,7 +25,7 @@ export function appDidMount(app) {
     const extensions = state['shoutem.application'].extensions;
     // Try to sync only of there are any changes on extensions
     if (extensions !== oldExtensions) {
-      const codePushExtension = _.find(extensions, { id: 'shoutem.codepush' });
+      const codePushExtension = _.find(extensions, { id: 'shoutem.code-push' });
       const deployments = _.get(codePushExtension, 'attributes.settings.deploymentKeys');
       // TODO (Ivan): Change this to use deployment name depending on environment
       const deployment = _.find(deployments, { name: 'Staging' });
