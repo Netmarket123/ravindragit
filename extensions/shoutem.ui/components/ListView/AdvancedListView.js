@@ -9,6 +9,9 @@ import { FullScreenSpinner, PlatformSpinner } from 'shoutem.ui';
 
 const GET_PROPS_TO_PASS = Symbol('getPropsToPass');
 const HANDLE_LIST_VIEW_REF = Symbol('handleListViewRef');
+const LOAD_MORE = Symbol('loadMore');
+const REFRESH = Symbol('refresh');
+const NEW_REQUEST = Symbol('newRequest');
 
 class AdvancedListView extends React.Component {
   constructor(props, context) {
@@ -23,9 +26,11 @@ class AdvancedListView extends React.Component {
     this.giftedListView = null;
     this.state = {
       fetchStatus: {
+        requestNumber: 0, // Maybe only did request ?
         fetching: false,
-        isLoadMore: false,
+        type: undefined,
       },
+      noMoreItems: false,
     };
   }
 
@@ -104,12 +109,30 @@ class AdvancedListView extends React.Component {
     // Override GiftedListView renderFooter
     mappedProps.renderFooter = this.renderFooter;
     // Default load more threshold
-    mappedProps.onEndReachedThreshold = 40;
-    //
-    mappedProps.onEndReached = function () {
-    };
+    mappedProps.onEndReachedThreshold = props.onEndReachedThreshold || 40;
+    // Handle on scroll end reach
+    mappedProps.onEndReached = this.state.noMoreItems ? null : this.onEndReached;
 
     return mappedProps;
+  }
+
+  /**
+   * Identify request type
+   * REFRESH - pull to refresh
+   * LOAD_more - load next items
+   * NEW_REQUEST - first load or query params changed
+   *
+   * @param isLoadMore
+   * @param giftedListViewRef
+   * @returns {Symbol}
+   */
+  detectRequestType(isLoadMore, giftedListViewRef) {
+    if (isLoadMore) {
+      return LOAD_MORE;
+    } else if (giftedListViewRef && giftedListViewRef.state.isRefreshing) {
+      return REFRESH;
+    }
+    return NEW_REQUEST;
   }
 
   /**
@@ -119,10 +142,15 @@ class AdvancedListView extends React.Component {
    * @param isLoadMore - if loading more (pagination)
    */
   handleRequestStatus(fetching, isLoadMore) {
+    // update request number if not load more (request changed)
+    // else increase requestNumber
+    const newRequestNumber = isLoadMore ? this.state.fetchStatus.requestNumber + 1 : 1;
     this.setState({
+      noMoreItems: false,
       fetchStatus: {
+        requestNumber: newRequestNumber,
         fetching,
-        isLoadMore,
+        type: this.detectRequestType(isLoadMore, this.giftedListView),
       },
     });
   }
@@ -140,10 +168,17 @@ class AdvancedListView extends React.Component {
   fetch(page, callback, queryParams = this.props.queryParams, isLoadMore) {
     if (this.props.fetch) {
       const request = this.props.fetch(queryParams || {}, isLoadMore);
+      // TODO(Braco) - implement RAS mode without promise
       if (request) {
+        // Request is promise
         this.handleRequestStatus(true, isLoadMore);
         request.then(() => {
           this.handleRequestStatus(false, isLoadMore);
+        });
+      } else {
+        // Request undefined means end is reached
+        this.setState({
+          noMoreItems: true,
         });
       }
     }
@@ -154,7 +189,11 @@ class AdvancedListView extends React.Component {
    * It is called always.
    */
   loadMore() {
-    this.fetch(undefined, undefined, undefined, true);
+    const { requestNumber, fetching } = this.state.fetchStatus;
+    if (requestNumber > 0 && !fetching && this.props.items.length > 0) {
+      // Load more if not first request, if not already fetching and if not empty list
+      this.fetch(undefined, undefined, undefined, true);
+    }
   }
 
   /**
@@ -228,10 +267,15 @@ class AdvancedListView extends React.Component {
       // Render customized footer
       return renderFooter(fetchStatus);
     } else if (fetchStatus.fetching) {
-      if (!fetchStatus.isLoadMore) {
-        return <FullScreenSpinner style={style.newDataSpinner} />;
+      switch (fetchStatus.type) {
+        case NEW_REQUEST:
+          return <FullScreenSpinner style={style.newDataSpinner} />;
+        case LOAD_MORE:
+          return <View style={style.loadMoreSpinner}><PlatformSpinner /></View>;
+        case REFRESH:
+        default:
+          return null;
       }
-      return <View style={style.loadMoreSpinner}><PlatformSpinner /></View>;
     }
     return null;
   }
@@ -273,7 +317,9 @@ const style = {
   },
   list: {},
   newDataSpinner: {},
-  loadMoreSpinner: {},
+  loadMoreSpinner: {
+    paddingVertical: 25,
+  },
 };
 
 export default connectStyle('shoutem.ui.AdvancedListView', style)(AdvancedListView);
