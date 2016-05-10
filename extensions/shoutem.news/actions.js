@@ -47,7 +47,7 @@ export function findNews(searchTerm, category, pageOffset = 0) {
 
   return find(
     {
-      endpoint: `http://api.shoutem.local/v1/apps/5734177/resources/${SHOUTEM_NEWS_SCHEME}?` +
+      endpoint: `http://10.5.1.160/v1/apps/5734177/resources/${SHOUTEM_NEWS_SCHEME}?` +
       `include=image${query}${offset}&page[limit]=8`,
       headers: { 'Content-Type': 'application/json' },
     },
@@ -59,7 +59,7 @@ export function findNews(searchTerm, category, pageOffset = 0) {
 export function getNewsCategories(parent = 'null') {
   return find(
     {
-      endpoint: 'http://api.shoutem.local/v1/apps/5734177/categories' +
+      endpoint: 'http://10.5.1.160/v1/apps/5734177/categories' +
       `?filter[parent]=${parent}&filter[schema]=${SHOUTEM_NEWS_SCHEME}`,
       headers: { 'Content-Type': 'application/json' },
     },
