@@ -44,10 +44,6 @@ class GridScreen extends Component {
     this.setState({ searchTerm });
   }
 
-  onSearchCleared() {
-    this.onSearchChanged('');
-  }
-
   fetch(queryParams, isLoadMore) {
     let offset;
     if (
@@ -107,7 +103,6 @@ class GridScreen extends Component {
           search
           infiniteScrolling
           notRefreshable={showSearchResults}
-          onSearchCleared={this.onSearchCleared}
           onSearchTermChanged={this.onSearchChanged}
           queryParams={{ searchTerm, selectedCategory }}
           fetch={this.fetch}

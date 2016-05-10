@@ -21,7 +21,6 @@ class AdvancedListView extends React.Component {
     this.onSearchTermChanged = this.onSearchTermChanged.bind(this);
     this.renderFooter = this.renderFooter.bind(this);
     this.onEndReached = this.onEndReached.bind(this);
-    this.searchHidden = false;
     this.listView = null;
     this.giftedListView = null;
     this.state = {
@@ -29,8 +28,9 @@ class AdvancedListView extends React.Component {
         requestNumber: 0, // Maybe only did request ?
         fetching: false,
         type: undefined,
+        noMoreItems: false,
       },
-      noMoreItems: false,
+      searchTerm: '',
     };
   }
 
@@ -53,7 +53,14 @@ class AdvancedListView extends React.Component {
     return true;
   }
 
+  componentDidUpdate() {
+    if (this.giftedListView && !this.state.searchTerm) {
+      this.listView.scrollTo({ y: _.get(this.props, 'style.header.search.container.height') });
+    }
+  }
+
   onSearchTermChanged(searchTerm) {
+    this.setState({ searchTerm });
     if (this.props.onSearchTermChanged) {
       this.props.onSearchTermChanged(searchTerm);
     }
@@ -111,9 +118,22 @@ class AdvancedListView extends React.Component {
     // Default load more threshold
     mappedProps.onEndReachedThreshold = props.onEndReachedThreshold || 40;
     // Handle on scroll end reach
-    mappedProps.onEndReached = this.state.noMoreItems ? null : this.onEndReached;
+    mappedProps.onEndReached = this.state.fetchStatus.noMoreItems ? null : this.onEndReached;
 
     return mappedProps;
+  }
+
+  /**
+   * Changes to be applied to fetchStatus
+   * @param diff {{}}
+   */
+  updateFetchStatus(diff) {
+    this.setState({
+      fetchStatus: {
+        ...this.state.fetchStatus,
+        ...diff,
+      },
+    });
   }
 
   /**
@@ -141,17 +161,15 @@ class AdvancedListView extends React.Component {
    * @param fetching - if fetching new data
    * @param isLoadMore - if loading more (pagination)
    */
-  handleRequestStatus(fetching, isLoadMore) {
+  handleFetchAction(fetching, isLoadMore) {
     // update request number if not load more (request changed)
     // else increase requestNumber
     const newRequestNumber = isLoadMore ? this.state.fetchStatus.requestNumber + 1 : 1;
-    this.setState({
+    this.updateFetchStatus({
       noMoreItems: false,
-      fetchStatus: {
-        requestNumber: newRequestNumber,
-        fetching,
-        type: this.detectRequestType(isLoadMore, this.giftedListView),
-      },
+      requestNumber: newRequestNumber,
+      fetching,
+      type: this.detectRequestType(isLoadMore, this.giftedListView),
     });
   }
 
@@ -171,13 +189,13 @@ class AdvancedListView extends React.Component {
       // TODO(Braco) - implement RAS mode without promise
       if (request) {
         // Request is promise
-        this.handleRequestStatus(true, isLoadMore);
+        this.handleFetchAction(true, isLoadMore);
         request.then(() => {
-          this.handleRequestStatus(false, isLoadMore);
+          this.handleFetchAction(false, isLoadMore);
         });
       } else {
         // Request undefined means end is reached
-        this.setState({
+        this.updateFetchStatus({
           noMoreItems: true,
         });
       }
@@ -211,12 +229,6 @@ class AdvancedListView extends React.Component {
     this.giftedListView = GiftedListViewRef;
     this.listView = GiftedListViewRef.refs.listview;
 
-    if (!this.searchHidden && props.search) {
-      // scroll off to hide search only once and only if search enabled
-      this.searchHidden = true;
-      this.listView.scrollTo({ y: _.get(props, 'style.header.search.container.height') });
-    }
-
     if (props.registerScrollRef) {
       // pass GiftedListViewRef to parent
       props.registerScrollRef(this.listView);
@@ -246,6 +258,7 @@ class AdvancedListView extends React.Component {
     const searchComponent = search ?
       (<Search
         style={style.search}
+        searchTerm={this.state.searchTerm}
         onSearchTermChange={this.onSearchTermChanged}
         onCleared={onSearchCleared}
         placeholder={searchPlaceholder}
@@ -269,7 +282,7 @@ class AdvancedListView extends React.Component {
     } else if (fetchStatus.fetching) {
       switch (fetchStatus.type) {
         case NEW_REQUEST:
-          return <FullScreenSpinner style={style.newDataSpinner} />;
+          return <FullScreenSpinner style={style.newDataSpinner}/>;
         case LOAD_MORE:
           return <View style={style.loadMoreSpinner}><PlatformSpinner /></View>;
         case REFRESH:
@@ -292,7 +305,6 @@ AdvancedListView.propTypes = {
   style: React.PropTypes.object,
   search: React.PropTypes.bool,
   searchPlaceholder: React.PropTypes.string,
-  onSearchCleared: React.PropTypes.func,
   onSearchTermChanged: React.PropTypes.func,
   queryParams: React.PropTypes.object,
   notRefreshable: React.PropTypes.bool,
