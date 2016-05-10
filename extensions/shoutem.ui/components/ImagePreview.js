@@ -25,6 +25,7 @@ const STATUS_BAR_OFFSET = (Platform.OS === 'android' ? -25 : 0);
 const style = {
   container: {
     flex: 1,
+    backgroundColor: 'black',
   },
   image: {
     flex: 1,
@@ -43,8 +44,8 @@ const style = {
 };
 
 /**
- * Renders an ImagePreview which shows an inline image preview
- * which displays the image in full screen when clicked
+ * Renders an ImagePreview which shows an inline image preview.
+ * When clicked, the image is displayed in full screen.
  */
 class ImagePreview extends Component {
   constructor(props) {
@@ -84,6 +85,7 @@ class ImagePreview extends Component {
       return (
         <Modal
           animated
+          transparent
         >
           <View style={style.container}>
             <Image

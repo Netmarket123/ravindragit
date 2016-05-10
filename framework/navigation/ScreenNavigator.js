@@ -154,7 +154,8 @@ export class ScreenNavigator extends Component {
 
   render() {
     const navigatorComponent = this.initialRoute ? (
-      <Navigator ref={this.captureNavigatorRef}
+      <Navigator
+        ref={this.captureNavigatorRef}
         initialRoute={this.initialRoute}
         configureScene={this.configureScene}
         renderScene={this.renderScene}

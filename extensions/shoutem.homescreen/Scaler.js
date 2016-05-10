@@ -16,7 +16,8 @@ function getScaledValue(value, ratio) {
 function getScaledObject(object, ratio) {
   const result = Object.assign({}, object);
 
-  for (const propertyName in result) {
+  // Use for in because we need access to all the keys up the prototype chain
+  for (const propertyName in result) { // eslint-disable-line no-restricted-syntax
     if (Number.isSafeInteger(result[propertyName])) {
       result[propertyName] = getScaledValue(result[propertyName], ratio);
     }

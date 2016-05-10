@@ -6,15 +6,18 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider, connect } from 'react-redux';
 import thunk from 'redux-thunk';
 
+import * as _ from 'lodash';
+
 import { ScreenNavigator, ROOT_NAVIGATOR_NAME } from './navigation';
 import coreExtensions from './coreExtensions';
 
 import StyleProvider from './theme/StyleProvider';
 const ConnectedStyleProvider = connect(state => {
   const shoutemAppState = state['shoutem.application'];
-  const themeVariables =
-    shoutemAppState && shoutemAppState.configuration && shoutemAppState.configuration.themes ?
-    state['shoutem.application'].configuration.themes[0].variables : { variables: {} };
+  const themeId = _.get(shoutemAppState, 'configuration.relationships.themes.data[0].id');
+  const themeVariables = themeId
+    ? _.get(shoutemAppState, `themes['${themeId}'].attributes.variables`)
+    : { variables: {} };
 
   return {
     themeVariables,

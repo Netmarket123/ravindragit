@@ -15,4 +15,4 @@ const cli = commandLineArgs([
 // merge command line arguments and config.json
 const releaseConfig = Object.assign({}, config, cli.parse());
 const release = new AppRelease(releaseConfig);
-release.setupAppRelease();
+release.setup();

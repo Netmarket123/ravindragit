@@ -77,7 +77,8 @@ export default function ShortcutsGrid({
     const layoutStyle = getStyleForLayoutPosition(layoutPosition);
 
     return (
-      <ListView contentContainerStyle={[styles.row, layoutStyle.row]}
+      <ListView
+        contentContainerStyle={[styles.row, layoutStyle.row]}
         dataSource={dataSource}
         renderRow={renderListItem}
         key={key}

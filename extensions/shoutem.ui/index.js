@@ -18,6 +18,7 @@ export { default as PlatformSpinner } from './components/Spinner/PlatformSpinner
 export { default as FullScreenSpinner } from './components/Spinner/FullScreenSpinner';
 
 export { default as Video } from './components/Video/Video';
-// export { default as ImagePreview } from './components/ImagePreview.js';
-
+export { default as ImagePreview } from './components/ImagePreview';
+export { default as RichMedia } from './components/RichMedia/RichMedia';
+export { default as ImageGallery } from './components/ImageGallery';
 export { default as DropDownMenu } from './components/DropDownMenu/DropDownMenu';
