@@ -54,7 +54,10 @@ class AdvancedListView extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.giftedListView && !this.state.searchTerm) {
+    const { searchTerm, fetchStatus } = this.state;
+    // TODO(Braco) - confirm condition
+    if (!searchTerm && fetchStatus.fetching && fetchStatus.type === NEW_REQUEST) {
+      // TODO(Braco) - scrollTo without animation
       this.listView.scrollTo({ y: _.get(this.props, 'style.header.search.container.height') });
     }
   }
@@ -246,6 +249,7 @@ class AdvancedListView extends React.Component {
       renderHeader,
       search,
       searchPlaceholder,
+      items,
     } = this.props;
     const style = listViewStyle.header;
 
@@ -254,7 +258,7 @@ class AdvancedListView extends React.Component {
       return undefined;
     }
 
-    const searchComponent = search ?
+    const searchComponent = search && items.length > 0 ?
       (<Search
         style={style.search}
         searchTerm={this.state.searchTerm}
@@ -280,7 +284,7 @@ class AdvancedListView extends React.Component {
     } else if (fetchStatus.fetching) {
       switch (fetchStatus.type) {
         case NEW_REQUEST:
-          return <FullScreenSpinner style={style.newDataSpinner}/>;
+          return <FullScreenSpinner style={style.newDataSpinner} />;
         case LOAD_MORE:
           return <View style={style.loadMoreSpinner}><PlatformSpinner /></View>;
         case REFRESH:
@@ -292,6 +296,7 @@ class AdvancedListView extends React.Component {
   }
 
   render() {
+    // TODO(Braco) - handle no results view
     return (<GiftedListView
       ref={this[HANDLE_LIST_VIEW_REF]}
       {...this[GET_PROPS_TO_PASS]()}
@@ -326,6 +331,7 @@ const style = {
     search: {},
   },
   list: {},
+  listContent: {},
   tiltColor: {
     // uses only background color
     backgroundColor: '#ccc',
