@@ -26,7 +26,7 @@
           },
           {
             "type": "shoutem.core.extensions",
-            "id": "shoutem.codepush"
+            "id": "shoutem.code-push"
           }
         ]
       },
@@ -252,7 +252,7 @@
         "app": "690",
         "configuration": "690",
         "owner": "1111",
-        "canonicalName": "shoutem.codepush",
+        "canonicalName": "shoutem.code-push",
         "settings": {
           "test": "123",
           "enableSharing": true,
