@@ -45,7 +45,7 @@ class AdvancedListView extends React.Component {
       // https://github.com/FaridSafi/react-native-gifted-listview/blob/master/GiftedListViewExample/example_simple.js#L26
       this.giftedListView._updateRows(nextProps.items);
     }
-    if (!_.eq(nextProps.queryParams, queryParams)) {
+    if (!_.isEqual(nextProps.queryParams, queryParams)) {
       // Compare current query params and new, if different make new request
       // QueryParams can be changed from outside
       this.fetch(undefined, undefined, nextProps.queryParams);
