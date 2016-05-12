@@ -4,10 +4,13 @@ import React, {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
-import { NewsGridBox, ListItem, AdvancedListView, DropDownMenu } from 'shoutem.ui';
+import { NewsGridBox, ListItem, AdvancedListView } from 'shoutem.ui';
 import newsMapDispatchToProps from './lib/newsMapDispatchToProps';
 import ListScreenPropTypes from './lib/ListScreenPropTypes';
 import newsMapStateToProps from './lib/newsMapStateToProps';
+import NewsCategoriesDropDownMenu from '../components/NewsCategoriesDropDownMenu';
+import isSearch from './lib/isSearch';
+import _ from 'lodash';
 
 function renderRow(item, style, extrasSeparator, onPress) {
   if (item.featured) {
@@ -23,12 +26,12 @@ function renderRow(item, style, extrasSeparator, onPress) {
 
   return (
     <ListItem
-      description={item.attributes.title}
-      image={{ uri: item.image_url }}
+      description={item.title}
+      image={{ uri: _.get(item, 'image.url') }}
       leftExtra={'News'}
       id={item.id}
-      style={style.items}
-      onPressItem={{ body: item.attributes.body, title: item.attributes.title }}
+      style={style.listRow}
+      onPressItem={item}
       onPressMethod={onPress}
     />
   );
@@ -38,15 +41,40 @@ class ListScreen extends Component {
   constructor(props, context) {
     super(props, context);
     this.fetch = this.fetch.bind(this);
-    this.onSearchCleared = this.onSearchCleared.bind(this);
+    this.onSearchChanged = this.onSearchChanged.bind(this);
+    this.categorySelected = this.categorySelected.bind(this);
+    this.state = {
+      searchTerm: '',
+      selectedCategory: null,
+    };
   }
 
-  onSearchCleared() {
-    this.props.clearSearch();
+  onSearchChanged(searchTerm) {
+    this.setState({ searchTerm });
   }
 
-  fetch(searchTerm) {
-    this.props.findNews(searchTerm);
+  fetch(queryParams, isLoadMore) {
+    let offset;
+    if (
+      !isSearch(queryParams.searchTerm, queryParams.selectedCategory) &&
+      this.props.searchedNews.length > 0
+    ) {
+      this.props.clearSearch();
+    }
+
+    if (isLoadMore) {
+      offset = 1;
+    }
+
+    if (isLoadMore) {
+      return undefined;
+    }
+
+    return this.props.findNews(queryParams.searchTerm, queryParams.selectedCategory, offset);
+  }
+
+  categorySelected(category) {
+    this.setState({ selectedCategory: category });
   }
 
   render() {
@@ -56,16 +84,16 @@ class ListScreen extends Component {
       navigateToRoute,
       news,
       searchedNews,
+      gridColumns,
     } = this.props;
+    const { searchTerm, selectedCategory } = this.state;
+    const showSearchResults = isSearch(searchTerm, selectedCategory);
 
-    const categoryDropDown = (
-      <DropDownMenu
-        items={[{ name: 'World', id: 1 }, { name: 'Sport', id: 2 }, { name: 'Music', id: 3 }]}
-        bindings={{ text: 'name', value: 'id' }}
-      />
-    );
     setNavBarProps({
-      rightComponent: categoryDropDown,
+      rightComponent: (<NewsCategoriesDropDownMenu
+        categorySelected={this.categorySelected}
+        selectedCategory={selectedCategory}
+      />),
     });
 
     function openDetailsScreen(item) {
@@ -73,18 +101,21 @@ class ListScreen extends Component {
       navigateToRoute(route);
     }
 
-    function renderGridRow(item) {
+    function renderListRow(item) {
       return renderRow(item, style, undefined, openDetailsScreen);
     }
 
     return (
       <View style={style.screen}>
         <AdvancedListView
-          items={searchedNews.length > 0 ? searchedNews : news}
+          items={showSearchResults ? searchedNews : news}
           search
-          onSearchCleared={this.onSearchCleared}
+          infiniteScrolling
+          notRefreshable={showSearchResults}
+          onSearchTermChanged={this.onSearchChanged}
+          queryParams={{ searchTerm, selectedCategory }}
           fetch={this.fetch}
-          renderRow={renderGridRow}
+          renderRow={renderListRow}
           style={style.listView}
         />
       </View>
