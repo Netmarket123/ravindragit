@@ -1,5 +1,5 @@
 import { Linking } from 'react-native';
-import { find } from 'redux-api-state';
+import { find } from '@shoutem/redux-api-state';
 
 // TODO (Ivan): Remove this when authorization is available
 // eslint-disable-next-line max-len

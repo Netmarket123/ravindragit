@@ -1,5 +1,5 @@
 import { bindActionCreators } from 'redux';
-import { clear } from 'redux-api-state';
+import { clear } from '@shoutem/redux-api-state';
 import { actions } from '../../index';
 import { SHOUTEM_NEWS_SCHEME } from '../../actions';
 import { navigateTo } from 'shoutem/navigation';

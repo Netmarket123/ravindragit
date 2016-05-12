@@ -5,7 +5,7 @@ import { apiMiddleware } from 'redux-api-middleware';
 import thunk from 'redux-thunk';
 import { combineReducers } from 'redux';
 import { openListScreen, reducers, findNews } from './actions';
-import { apiStateMiddleware } from 'redux-api-state';
+import { apiStateMiddleware } from '@shoutem/redux-api-state';
 
 const SHOUTEM_NEWS_EXT_NAME = 'shoutem.news';
 const reducer = combineReducers({ ...reducers });

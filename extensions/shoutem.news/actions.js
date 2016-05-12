@@ -1,7 +1,7 @@
 import {
   navigateTo,
 } from 'shoutem/navigation';
-import { find, storage, collection } from 'redux-api-state';
+import { find, storage, collection } from '@shoutem/redux-api-state';
 
 export const SHOUTEM_NEWS_SCHEME = 'shoutem.news.articles';
 export const SHOUTEM_IMAGES_SCHEME = 'shoutem.core.image-attachments';

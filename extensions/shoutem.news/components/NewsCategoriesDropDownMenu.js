@@ -3,7 +3,7 @@ import { DropDownMenu } from 'shoutem.ui';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getNewsCategories, SHOUTEM_CATEGORIES_SCHEME } from '../actions';
-import { ReduxApiStateDenormalizer } from 'redux-api-state';
+import { ReduxApiStateDenormalizer } from '@shoutem/redux-api-state';
 import { SHOUTEM_NEWS_EXT_NAME } from '../index';
 
 class NewsCategoriesDropDownMenu extends React.Component {

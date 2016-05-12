@@ -1,4 +1,4 @@
-import { ReduxApiStateDenormalizer } from 'redux-api-state';
+import { ReduxApiStateDenormalizer } from '@shoutem/redux-api-state';
 import { SHOUTEM_NEWS_EXT_NAME } from '../../index';
 import { SHOUTEM_NEWS_SCHEME, SHOUTEM_IMAGES_SCHEME } from '../../actions';
 
