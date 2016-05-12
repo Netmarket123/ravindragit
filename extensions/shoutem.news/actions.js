@@ -17,7 +17,7 @@ export const reducers = {
   searchedNews: collection(SHOUTEM_NEWS_SCHEME, 'searchedNews'),
 };
 
-export function openListScreen(settings = { photoCentric: true }) {
+export function openListScreen(settings = { photoCentric: false }) {
   const nextScreenName = `shoutem.news.${settings.photoCentric ? 'GridScreen' : 'ListScreen'}`;
 
   const route = {
