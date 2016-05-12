@@ -46,6 +46,7 @@ export default (variables) => ({
       },
     },
     container: {
+      backgroundColor: '#fff',
       padding: 15,
       flexDirection: 'row',
       alignItems: 'stretch',
