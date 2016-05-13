@@ -48,7 +48,7 @@ class AdvancedListView extends React.Component {
     if (!_.isEqual(nextProps.queryParams, queryParams)) {
       // Compare current query params and new, if different make new request
       // QueryParams can be changed from outside
-      this.fetch(undefined, undefined, nextProps.queryParams);
+      this.fetch(undefined, undefined, undefined, nextProps.queryParams);
     }
     return true;
   }
@@ -186,7 +186,7 @@ class AdvancedListView extends React.Component {
    * TODO(Braco) - support collection busy as other mode for notifying user of loading.
    * Detect if isLoadMore or new data.
    */
-  fetch(page, callback, queryParams = this.props.queryParams, isLoadMore) {
+  fetch(page, callback, options, queryParams = this.props.queryParams, isLoadMore) {
     if (this.props.fetch) {
       const request = this.props.fetch(queryParams || {}, isLoadMore);
       // TODO(Braco) - implement RAS mode without promise
@@ -213,7 +213,7 @@ class AdvancedListView extends React.Component {
     const { requestNumber, fetching } = this.state.fetchStatus;
     if (requestNumber > 0 && !fetching && this.props.items.length > 0) {
       // Load more if not first request, if not already fetching and if not empty list
-      this.fetch(undefined, undefined, undefined, true);
+      this.fetch(undefined, undefined, undefined, undefined, true);
     }
   }
 
