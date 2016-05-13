@@ -17,9 +17,9 @@ function renderRow(item, style, extrasSeparator, onPress) {
   if (item.featured) {
     return (
       <NewsGridBox
-        backgroundImage={item.image}
-        headline={item.description.toUpperCase()}
-        infoFields={[item.source, item.date]}
+        backgroundImage={{ uri: _.get(item, 'image.url') }}
+        headline={item.title.toUpperCase()}
+        infoFields={['News', 'Sprint 6']}
         style={style.featuredItem}
       />
     );
@@ -126,7 +126,15 @@ const style = {
     },
   },
   screen: {},
-  featuredItem: {},
+  featuredItem: {
+    gridBox: {
+      contentWrapper: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 330,
+      },
+    },
+  },
   listRow: {
     [INCLUDE]: ['shoutem.ui.ListItem.textCentric'],
   },

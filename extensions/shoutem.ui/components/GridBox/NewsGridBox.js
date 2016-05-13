@@ -40,6 +40,7 @@ const style = {
   headline: {
     textAlign: 'center',
     fontSize: 25,
+    backgroundColor: 'transparent',
     [INCLUDE]: ['h1'],
   },
   infoFields: {
