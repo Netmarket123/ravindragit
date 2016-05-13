@@ -1,17 +1,13 @@
 {
     "title": "Home Screen Extension",
-    "canonicalName": "shoutem.homescreen",
+    "name": "homescreen",
     "version": "0.0.1",
     "description": "Shoutem Home Screen",
     "shortcuts": [
         {
-          "canonicalName": "shoutem.homescreen.openHomeScreen",
-          "action": "shoutem.homescreen.openHomeScreen",
-          "settings": {}
+          "name": "openHomeScreen",
+          "title": "HomeScreen",
+          "action": "shoutem.homescreen.openHomeScreen"
         }
-    ],
-    "settingsPage": {},
-    "screens": [
-        {}
     ]
 }
