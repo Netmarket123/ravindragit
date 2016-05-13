@@ -1,1 +1,1 @@
-export default (searchTerm, category) => Boolean(searchTerm || category);
+export default (searchTerm) => Boolean(searchTerm);

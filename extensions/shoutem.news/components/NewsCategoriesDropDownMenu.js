@@ -10,6 +10,7 @@ class NewsCategoriesDropDownMenu extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.onCategorySelect = this.onCategorySelect.bind(this);
+    // TODO(Braco) - pass categories from out side
     props.getNewsCategories(props.parentCategoryId, props.settings);
   }
 

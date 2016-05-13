@@ -10,6 +10,7 @@ import ListScreenPropTypes from './lib/ListScreenPropTypes';
 import newsMapStateToProps from './lib/newsMapStateToProps';
 import NewsCategoriesDropDownMenu from '../components/NewsCategoriesDropDownMenu';
 import isSearch from './lib/isSearch';
+import fetchNews from './lib/fetchNews';
 import _ from 'lodash';
 
 function renderRow(item, style, extrasSeparator, onPress) {
@@ -40,7 +41,7 @@ function renderRow(item, style, extrasSeparator, onPress) {
 class ListScreen extends Component {
   constructor(props, context) {
     super(props, context);
-    this.fetch = this.fetch.bind(this);
+    this.fetch = fetchNews.bind(this);
     this.onSearchChanged = this.onSearchChanged.bind(this);
     this.categorySelected = this.categorySelected.bind(this);
     this.state = {
@@ -51,26 +52,6 @@ class ListScreen extends Component {
 
   onSearchChanged(searchTerm) {
     this.setState({ searchTerm });
-  }
-
-  fetch(queryParams, isLoadMore) {
-    let offset;
-    if (
-      !isSearch(queryParams.searchTerm, queryParams.selectedCategory) &&
-      this.props.searchedNews.length > 0
-    ) {
-      this.props.clearSearch();
-    }
-
-    if (isLoadMore) {
-      offset = 1;
-    }
-
-    if (isLoadMore) {
-      return undefined;
-    }
-
-    return this.props.findNews(queryParams.searchTerm, queryParams.selectedCategory, offset);
   }
 
   categorySelected(category) {
@@ -84,13 +65,16 @@ class ListScreen extends Component {
       navigateToRoute,
       news,
       searchedNews,
-      gridColumns,
+      settings: { parentCategoryId },
+      settings,
     } = this.props;
     const { searchTerm, selectedCategory } = this.state;
-    const showSearchResults = isSearch(searchTerm, selectedCategory);
+    const showSearchResults = isSearch(searchTerm);
 
     setNavBarProps({
       rightComponent: (<NewsCategoriesDropDownMenu
+        settings={settings}
+        parentCategoryId={parentCategoryId}
         categorySelected={this.categorySelected}
         selectedCategory={selectedCategory}
       />),
@@ -105,19 +89,22 @@ class ListScreen extends Component {
       return renderRow(item, style, undefined, openDetailsScreen);
     }
 
+    const itemsList = selectedCategory ? (
+    <AdvancedListView
+      items={showSearchResults ? searchedNews : news}
+      search
+      infiniteScrolling
+      notRefreshable={showSearchResults}
+      onSearchTermChanged={this.onSearchChanged}
+      queryParams={{ searchTerm, selectedCategory }}
+      fetch={this.fetch}
+      renderRow={renderListRow}
+      style={style.listView}
+    />) : null;
+
     return (
       <View style={style.screen}>
-        <AdvancedListView
-          items={showSearchResults ? searchedNews : news}
-          search
-          infiniteScrolling
-          notRefreshable={showSearchResults}
-          onSearchTermChanged={this.onSearchChanged}
-          queryParams={{ searchTerm, selectedCategory }}
-          fetch={this.fetch}
-          renderRow={renderListRow}
-          style={style.listView}
-        />
+        {itemsList}
       </View>
     );
   }

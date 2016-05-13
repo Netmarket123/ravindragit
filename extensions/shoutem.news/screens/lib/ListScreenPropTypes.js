@@ -1,6 +1,7 @@
 import React from 'react-native';
 
 export default {
+  settings: React.PropTypes.object, // TODO(Braco) - clean up
   findNews: React.PropTypes.func,
   clearSearch: React.PropTypes.func,
   news: React.PropTypes.array,

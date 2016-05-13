@@ -1,6 +1,6 @@
 import { ReduxApiStateDenormalizer } from '@shoutem/redux-api-state';
 import { SHOUTEM_NEWS_EXT_NAME } from '../../index';
-import { SHOUTEM_NEWS_SCHEME, SHOUTEM_IMAGES_SCHEME } from '../../actions';
+import { SHOUTEM_NEWS_SCHEME, SHOUTEM_IMAGES_SCHEME, SHOUTEM_CATEGORIES_SCHEME } from '../../actions';
 
 const schemasMap = {
   [SHOUTEM_NEWS_SCHEME]: '["shoutem.news"]news',
@@ -19,5 +19,10 @@ export default (state) => {
       state[SHOUTEM_NEWS_EXT_NAME].searchedNews, SHOUTEM_NEWS_SCHEME
     ),
     selectedCategory: state[SHOUTEM_NEWS_EXT_NAME].selectedCategory,
+    categories: denormalizer.denormalizeCollection(
+      state[SHOUTEM_NEWS_EXT_NAME].newsCategories,
+      SHOUTEM_CATEGORIES_SCHEME,
+      { [SHOUTEM_CATEGORIES_SCHEME]: state[SHOUTEM_NEWS_EXT_NAME].categories }
+    ),
   };
 };

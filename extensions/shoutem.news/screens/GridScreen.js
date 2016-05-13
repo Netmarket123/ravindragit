@@ -10,6 +10,7 @@ import newsMapStateToProps from './lib/newsMapStateToProps';
 import ListScreenPropTypes from './lib/ListScreenPropTypes';
 import NewsCategoriesDropDownMenu from '../components/NewsCategoriesDropDownMenu';
 import isSearch from './lib/isSearch';
+import fetchNews from './lib/fetchNews';
 import _ from 'lodash';
 
 function renderNewsItem(item, style, extrasSeparator, onPress) {
@@ -30,7 +31,7 @@ function renderNewsItem(item, style, extrasSeparator, onPress) {
 class GridScreen extends Component {
   constructor(props, context) {
     super(props, context);
-    this.fetch = this.fetch.bind(this);
+    this.fetch = fetchNews.bind(this);
     this.onSearchChanged = this.onSearchChanged.bind(this);
     this.categorySelected = this.categorySelected.bind(this);
     this.state = {
@@ -41,26 +42,6 @@ class GridScreen extends Component {
 
   onSearchChanged(searchTerm) {
     this.setState({ searchTerm });
-  }
-
-  fetch(queryParams, isLoadMore) {
-    let offset;
-    if (
-      !isSearch(queryParams.searchTerm, queryParams.selectedCategory) &&
-      this.props.searchedNews.length > 0
-    ) {
-      this.props.clearSearch();
-    }
-
-    if (isLoadMore) {
-      offset = 1;
-    }
-
-    if (isLoadMore) {
-      return undefined;
-    }
-
-    return this.props.findNews(queryParams.searchTerm, queryParams.selectedCategory, offset);
   }
 
   categorySelected(category) {
@@ -74,12 +55,16 @@ class GridScreen extends Component {
       news,
       searchedNews,
       gridColumns,
+      settings: { parentCategoryId },
+      settings,
     } = this.props;
     const { searchTerm, selectedCategory } = this.state;
-    const showSearchResults = isSearch(searchTerm, selectedCategory);
+    const showSearchResults = isSearch(searchTerm);
 
     setNavBarProps({
       rightComponent: (<NewsCategoriesDropDownMenu
+        setting={settings}
+        parentCategoryId={parentCategoryId}
         categorySelected={this.categorySelected}
         selectedCategory={selectedCategory}
       />),
@@ -94,20 +79,23 @@ class GridScreen extends Component {
       return renderNewsItem(item, style, undefined, openDetailsScreen);
     }
 
+    const itemsList = selectedCategory ? (
+      <AdvancedGridView
+        items={showSearchResults ? searchedNews : news}
+        gridColumns={gridColumns}
+        search
+        infiniteScrolling
+        notRefreshable={showSearchResults}
+        onSearchTermChanged={this.onSearchChanged}
+        queryParams={{ searchTerm, selectedCategory }}
+        fetch={this.fetch}
+        renderGridItem={renderGridItem}
+        style={style.gridView}
+      />) : null;
+
     return (
       <View style={style.screen}>
-        <AdvancedGridView
-          items={showSearchResults ? searchedNews : news}
-          gridColumns={gridColumns}
-          search
-          infiniteScrolling
-          notRefreshable={showSearchResults}
-          onSearchTermChanged={this.onSearchChanged}
-          queryParams={{ searchTerm, selectedCategory }}
-          fetch={this.fetch}
-          renderGridItem={renderGridItem}
-          style={style.gridView}
-        />
+        {itemsList}
       </View>
     );
   }
