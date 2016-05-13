@@ -22,7 +22,7 @@ function appDidMount() {
     if (appId) {
       // get new configuration for app id provided in deepLink
       find({
-        endpoint: `http://apps.aperfector.com/v1/apps/${appId}/configuration/current`,
+        endpoint: `http://apps.aperfector.com/v1/apps/${appId}/configurations/current`,
         headers: {
           Authorization: authorization,
           Accept: 'application/vnd.api+json',
