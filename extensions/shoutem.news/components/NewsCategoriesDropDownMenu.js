@@ -10,22 +10,28 @@ class NewsCategoriesDropDownMenu extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.onCategorySelect = this.onCategorySelect.bind(this);
-    props.getNewsCategories();
+    props.getNewsCategories(props.parentCategoryId, props.settings);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.categories.length > 0 && !nextProps.selectedCategory) {
+      // TODO(Braco) - confirm if this is good way to select first item by default
+      this.onCategorySelect(nextProps.categories[0]);
+    }
   }
 
   onCategorySelect(category) {
     if (this.props.categorySelected) {
       // if "All" selected, emit null as selectedCategory
-      this.props.categorySelected(category.id ? category : null);
+      this.props.categorySelected(category);
     }
   }
 
   render() {
     const { categories, selectedCategory } = this.props;
-    const clearCategoriesFilter = { name: 'All', id: null };
 
     return (<DropDownMenu
-      items={[clearCategoriesFilter].concat(categories)}
+      items={categories}
       bindings={{ text: 'name', value: 'id' }}
       onItemSelected={this.onCategorySelect}
       selectedItem={selectedCategory}
@@ -34,6 +40,8 @@ class NewsCategoriesDropDownMenu extends React.Component {
 }
 
 NewsCategoriesDropDownMenu.propTypes = {
+  settings: React.PropTypes.object,
+  parentCategoryId: React.PropTypes.any,
   categories: React.PropTypes.array,
   selectedCategory: React.PropTypes.object,
   getNewsCategories: React.PropTypes.func,
