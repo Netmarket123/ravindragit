@@ -17,37 +17,46 @@ export const reducers = {
   searchedNews: collection(SHOUTEM_NEWS_SCHEME, 'searchedNews'),
 };
 
-export function openListScreen(settings = { photoCentric: false }) {
+export function openListScreen(settings = {
+  photoCentric: false,
+  endpoint: 'http://10.5.1.160',
+  appId: '5734177',
+  parentCategoryId: '92102',
+}) {
   const nextScreenName = `shoutem.news.${settings.photoCentric ? 'GridScreen' : 'ListScreen'}`;
 
   const route = {
     screen: nextScreenName,
-    props: {},
+    props: {
+      settings: {
+        appId: settings.appId,
+        endpoint: settings.endpoint,
+        parentCategoryId: settings.parentCategoryId,
+      },
+    },
   };
 
   return navigateTo(route);
 }
 
-export function findNews(searchTerm, category, pageOffset = 0) {
+export function findNews(searchTerm, category, pageOffset = 0, settings) {
   let query = '';
   let collectionName = 'latestNews';
   const offset = `&page[offset]=${pageOffset}`;
 
   if (searchTerm) {
     query += `&query=${searchTerm}`;
+    collectionName = 'searchedNews';
   }
 
   if (category) {
     query += `&filter[categories]=${category.id}`;
   }
 
-  if (query) {
-    collectionName = 'searchedNews';
-  }
-
   return find(
     {
-      endpoint: `http://10.5.1.160/v1/apps/5734177/resources/${SHOUTEM_NEWS_SCHEME}?` +
+      // TODO(Braco) - use appID dynamically (the right way)
+      endpoint: `${settings.endpoint}/v1/apps/${settings.appId}/resources/${SHOUTEM_NEWS_SCHEME}?` +
       `include=image${query}${offset}&page[limit]=8`,
       headers: { 'Content-Type': 'application/json' },
     },
@@ -56,10 +65,11 @@ export function findNews(searchTerm, category, pageOffset = 0) {
   );
 }
 
-export function getNewsCategories(parent = 'null') {
+export function getNewsCategories(parent = 'null', settings) {
   return find(
     {
-      endpoint: 'http://10.5.1.160/v1/apps/5734177/categories' +
+      // TODO(Braco) - use appID dynamically (the right way)
+      endpoint: `${settings.endpoint}/v1/apps/${settings.appId}/categories` +
       `?filter[parent]=${parent}&filter[schema]=${SHOUTEM_NEWS_SCHEME}`,
       headers: { 'Content-Type': 'application/json' },
     },
