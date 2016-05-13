@@ -1,0 +1,6 @@
+{
+  "title": "Preview Extension",
+  "name": "preview",
+  "version": "0.0.1",
+  "description": "Extension that enables app owner to preview his app in Shoutem App builder"
+}

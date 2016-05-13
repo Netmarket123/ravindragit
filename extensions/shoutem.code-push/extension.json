@@ -1,0 +1,6 @@
+{
+  "title": "CodePush Extension",
+  "name": "code-push",
+  "version": "0.0.1",
+  "description": "Extension that enables application updates"
+}
