@@ -21,6 +21,7 @@
     "react": "^0.14.5",
     "react-native": "^0.23.1",
     "react-native-browser-polyfill": "^0.1.1",
+    "react-native-calendar-manager": "git+ssh://git@bitbucket.org/Vunovati/react-native-calendar-manager.git",
     "react-native-code-push": "^1.10.4-beta",
     "react-native-vector-icons": "^1.3.2",
     "react-native-video": "^0.7.1",
