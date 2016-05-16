@@ -19,9 +19,9 @@ function syncPackage(deploymentKey, updateDialog) {
 
 export function appDidMount(app) {
   const store = app.getStore();
-  const state = store.getState();
   let oldExtensions;
   store.subscribe(() => {
+    const state = store.getState();
     const extensions = state['shoutem.application'].extensions;
     // Try to sync only of there are any changes on extensions
     if (extensions !== oldExtensions) {
