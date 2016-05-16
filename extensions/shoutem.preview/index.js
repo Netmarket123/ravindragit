@@ -16,18 +16,20 @@ function getAppIdFromUrl(url) {
   return appId;
 }
 
-function appDidMount() {
+function appDidMount(app) {
+  const dispatch = app.getStore().dispatch;
   Linking.addEventListener('url', (deepLink) => {
     const appId = getAppIdFromUrl(deepLink.url);
     if (appId) {
       // get new configuration for app id provided in deepLink
-      find({
-        endpoint: `http://apps.aperfector.com/v1/apps/${appId}/configuration/current`,
+      dispatch(find({
+        endpoint: `http://apps.aperfector.com/v1/apps/${appId}/configurations/current`,
         headers: {
           Authorization: authorization,
           Accept: 'application/vnd.api+json',
         },
-      }, 'shoutem.core.configuration');
+      }, 'shoutem.core.configuration')
+      );
     }
   });
 }

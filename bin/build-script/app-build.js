@@ -36,7 +36,7 @@ class AppBuild {
   }
 
   getConfigurationUrl() {
-    return `/v1/apps/${this.appId}/configuration/current`;
+    return `/v1/apps/${this.appId}/configurations/current`;
   }
 
   downloadConfiguration() {
