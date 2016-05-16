@@ -10,7 +10,7 @@ import * as _ from 'lodash';
 
 const DEFAULT_BOTTOM_CONTENT_OFFSET = 50;
 
-function createOffsetStyle(offset) {
+function getOffsetHeight(offset) {
   return Dimensions.get('window').height - offset;
 }
 
@@ -27,7 +27,7 @@ function createDetailsStyle(topOffset, style) {
 }
 
 function createAnimatedHeaderStyle(headerStyle, animatedValue, headerHeight) {
-  return _.merge({}, headerStyle, {
+  return [headerStyle, {
     transform: [
       {
         translateY: animatedValue.interpolate({
@@ -36,7 +36,7 @@ function createAnimatedHeaderStyle(headerStyle, animatedValue, headerHeight) {
         }),
       },
     ],
-  });
+  }];
 }
 
 function getScrollHandle(scrollY) {
@@ -68,7 +68,7 @@ function DetailsScreen({
 }) {
   const bottomContentOffset = bottomContentOffsetProp || DEFAULT_BOTTOM_CONTENT_OFFSET;
   const scrollY = new Animated.Value(0);
-  const detailsTopOffset = createOffsetStyle(bottomContentOffset);
+  const detailsTopOffset = getOffsetHeight(bottomContentOffset);
   const headerStyle = createAnimatedHeaderStyle(style.header, scrollY, detailsTopOffset);
   const detailsStyle = createDetailsStyle(detailsTopOffset, style);
 
