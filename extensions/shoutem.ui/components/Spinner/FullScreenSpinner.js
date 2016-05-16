@@ -5,17 +5,38 @@ import React, {
 import PlatformSpinner from './PlatformSpinner';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
 
-function FullScreenSpinner({ style }) {
-  return (
-    <Modal visible transparent>
-      <View style={style.container}>
-        <View style={style.spinnerFrame}>
-          <PlatformSpinner />
+let mountedInstance;
+
+class FullScreenSpinner extends React.Component {
+  componentWillMount() {
+    if (!mountedInstance) {
+      mountedInstance = this;
+    }
+  }
+
+  componentWillUnmount() {
+    mountedInstance = null;
+  }
+
+  render() {
+    const { style } = this.props;
+    if (mountedInstance !== this) {
+      // Allowing only one FullScreenSpinner instance per app
+      console.warn('Rendering multiple FullScreenSpinner component.');
+      return null;
+    }
+    return (
+      <Modal visible transparent>
+        <View style={style.container}>
+          <View style={style.spinnerFrame}>
+            <PlatformSpinner />
+          </View>
         </View>
-      </View>
-    </Modal>
-  );
+      </Modal>
+    );
+  }
 }
+
 
 FullScreenSpinner.propTypes = {
   style: React.PropTypes.object,
