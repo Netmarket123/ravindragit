@@ -4,7 +4,7 @@ import React, {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import { connectStyle } from 'shoutem/theme';
+import { connectStyle, INCLUDE } from 'shoutem/theme';
 import Button from '../Button/Button';
 import GridBox from '../GridBox/GridBox';
 
@@ -60,7 +60,7 @@ function ListItem({
         <View style={style.itemInfo}>
           <Text
             numberOfLines={numberOfLines || DEFAULT_NUMBER_OF_LINES}
-            style={[style.baseFont, style.itemDescription]}
+            style={style.itemTitle}
           >
             {description}
           </Text>
@@ -101,13 +101,16 @@ const style = {
   },
   itemExtras: {
   },
-  itemDescription: {
+  itemTitle: {
+    [INCLUDE]: ['baseFont'],
   },
   extrasSeparator: {
   },
   leftExtra: {
+    [INCLUDE]: ['baseFont'],
   },
   rightExtra: {
+    [INCLUDE]: ['baseFont'],
   },
   mediumListItemButton: {
   },
