@@ -4,7 +4,7 @@ import { createExecuteShortcutMiddleware } from './middleware';
 
 import { combineReducers } from 'redux';
 
-import { loaded, storage } from 'redux-api-state';
+import { loaded, storage } from '@shoutem/redux-api-state';
 
 import {
   configurationReducer,

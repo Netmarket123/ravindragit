@@ -26,7 +26,7 @@
           },
           {
             "type": "shoutem.core.extensions",
-            "id": "shoutem.codepush"
+            "id": "shoutem.code-push"
           }
         ]
       },
@@ -34,7 +34,7 @@
         "data": [
           {
             "type": "shoutem.core.shortcuts",
-            "id": "56efcdf9f3973a4609a7a918"
+            "id": "56efcdf9f3973a4609a7a123"
           }
         ]
       },
@@ -80,10 +80,23 @@
       "type": "shoutem.core.shortcuts",
       "id": "56efcdf9f3973a4609a7a910",
       "attributes": {
-        "canonicalName": "gannet.news.openListScreen",
-        "title": "Gannett news list screen",
+        "canonicalName": "shoutem.news.openListScreen",
+        "title": "Shoutem news list screen",
         "iconUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488005&timestamp=635932174426170000&custom_layout=true&highlighted=false&version=58",
-        "action": "gannet.news.openListScreen"
+        "action": "shoutem.news.openListScreen",
+        "settings": {
+          "textCentric": true
+        }
+      }
+    },
+    {
+      "type": "shoutem.core.shortcuts",
+      "id": "56efcdf9f3973a4609a7a123",
+      "attributes": {
+        "canonicalName": "shoutem.news.openListScreen",
+        "title": "Shoutem news list screen",
+        "iconUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488005&timestamp=635932174426170000&custom_layout=true&highlighted=false&version=58",
+        "action": "shoutem.news.openListScreen"
       }
     },
     {
@@ -246,13 +259,13 @@
     },
     {
       "type": "shoutem.core.extensions",
-      "id": "shoutem.codepush",
+      "id": "shoutem.code-push",
       "attributes": {
         "extension": "56fe4814007ed55a0c6dba36",
         "app": "690",
         "configuration": "690",
         "owner": "1111",
-        "canonicalName": "shoutem.codepush",
+        "canonicalName": "shoutem.code-push",
         "settings": {
           "test": "123",
           "enableSharing": true,

@@ -61,7 +61,7 @@ Details.propTypes = {
   style: React.PropTypes.object,
 };
 
-function GannettDetailsScreen({
+function DetailsScreen({
   item,
   style,
   bottomContentOffset: bottomContentOffsetProp,
@@ -81,7 +81,7 @@ function GannettDetailsScreen({
           style={style.headline}
           headline={item.title}
           newsDetails={[item.author, 'test']}
-          backgroundImage={{ uri: item.image_url, width: 200, height: 200 }}
+          backgroundImage={{ uri: _.get(item, 'image.url'), width: 200, height: 200 }}
         />
       </Animated.View>
       <ScrollView
@@ -96,7 +96,7 @@ function GannettDetailsScreen({
   );
 }
 
-GannettDetailsScreen.propTypes = {
+DetailsScreen.propTypes = {
   item: React.PropTypes.object,
   style: React.PropTypes.object,
   bottomContentOffset: React.PropTypes.number,
@@ -105,6 +105,9 @@ GannettDetailsScreen.propTypes = {
 const style = {
   headline: {
     [INCLUDE]: ['shoutem.ui.NewsGridBox.photoCentric'],
+    headline: {
+      backgroundColor: 'transparent',
+    },
   },
   screen: {
     position: 'relative',
@@ -142,4 +145,4 @@ const style = {
   },
 };
 
-export default connectStyle('dev.ext.GannettDetailsScreen', style)(GannettDetailsScreen);
+export default connectStyle('shoutem.news.DetailsScreen', style)(DetailsScreen);

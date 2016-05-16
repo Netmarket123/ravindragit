@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { OBJECT_FETCHED } from 'redux-api-state';
+import { OBJECT_FETCHED } from '@shoutem/redux-api-state';
 
 export const EXECUTE_SHORTCUT = 'shoutem.application.EXECUTE_SHORTCUT';
 
