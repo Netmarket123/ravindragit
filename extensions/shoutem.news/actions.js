@@ -19,9 +19,6 @@ export const reducers = {
 
 export function openListScreen(settings = {
   photoCentric: false,
-  endpoint: 'http://10.5.1.160',
-  appId: '5734177',
-  parentCategoryId: '92102',
 }) {
   const nextScreenName = `shoutem.news.${settings.photoCentric ? 'GridScreen' : 'ListScreen'}`;
 
@@ -29,9 +26,9 @@ export function openListScreen(settings = {
     screen: nextScreenName,
     props: {
       settings: {
-        appId: settings.appId,
-        endpoint: settings.endpoint,
-        parentCategoryId: settings.parentCategoryId,
+        appId: settings.appId || '167875094',
+        endpoint: settings.endpoint || 'http://api.aperfector.com',
+        parentCategoryId: settings.parentCategoryId || '2251460',
       },
     },
   };

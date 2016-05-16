@@ -63,7 +63,7 @@ class GridScreen extends Component {
 
     setNavBarProps({
       rightComponent: (<NewsCategoriesDropDownMenu
-        setting={settings}
+        settings={settings}
         parentCategoryId={parentCategoryId}
         categorySelected={this.categorySelected}
         selectedCategory={selectedCategory}
