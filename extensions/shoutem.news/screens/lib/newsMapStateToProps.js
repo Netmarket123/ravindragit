@@ -1,6 +1,10 @@
 import { ReduxApiStateDenormalizer } from '@shoutem/redux-api-state';
 import { SHOUTEM_NEWS_EXT_NAME } from '../../index';
-import { SHOUTEM_NEWS_SCHEME, SHOUTEM_IMAGES_SCHEME, SHOUTEM_CATEGORIES_SCHEME } from '../../actions';
+import {
+  SHOUTEM_NEWS_SCHEME,
+  SHOUTEM_IMAGES_SCHEME,
+  SHOUTEM_CATEGORIES_SCHEME,
+} from '../../actions';
 
 const schemasMap = {
   [SHOUTEM_NEWS_SCHEME]: '["shoutem.news"]news',

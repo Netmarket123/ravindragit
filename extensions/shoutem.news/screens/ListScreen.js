@@ -90,17 +90,17 @@ class ListScreen extends Component {
     }
 
     const itemsList = selectedCategory ? (
-    <AdvancedListView
-      items={showSearchResults ? searchedNews : news}
-      search
-      infiniteScrolling
-      notRefreshable={showSearchResults}
-      onSearchTermChanged={this.onSearchChanged}
-      queryParams={{ searchTerm, selectedCategory }}
-      fetch={this.fetch}
-      renderRow={renderListRow}
-      style={style.listView}
-    />) : null;
+      <AdvancedListView
+        items={showSearchResults ? searchedNews : news}
+        search
+        infiniteScrolling
+        notRefreshable={showSearchResults}
+        onSearchTermChanged={this.onSearchChanged}
+        queryParams={{ searchTerm, selectedCategory }}
+        fetch={this.fetch}
+        renderRow={renderListRow}
+        style={style.listView}
+      />) : null;
 
     return (
       <View style={style.screen}>
