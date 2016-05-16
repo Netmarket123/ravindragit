@@ -1,6 +1,7 @@
 import React, {
   View,
   Component,
+  TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
@@ -16,12 +17,14 @@ import _ from 'lodash';
 function renderRow(item, style, extrasSeparator, onPress) {
   if (item.featured) {
     return (
+    <TouchableOpacity onPress={() => {onPress.apply(null, [item])}}>
       <NewsGridBox
         backgroundImage={{ uri: _.get(item, 'image.url') }}
         headline={item.title.toUpperCase()}
         infoFields={['News', 'Sprint 6']}
         style={style.featuredItem}
       />
+    </TouchableOpacity>
     );
   }
 
