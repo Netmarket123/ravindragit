@@ -3,7 +3,7 @@ import React, {
   PropTypes,
   View,
 } from 'react-native';
-import { connectStyle } from 'shoutem/theme';
+import { connectStyle, INCLUDE } from 'shoutem/theme';
 import HypermediaComposer from './lib/HypermediaComposer';
 import AttachmentTagTransformer from './lib/AttachmentTagTransformer';
 
@@ -11,6 +11,7 @@ const propTypes = {
   body: PropTypes.string,
   onError: PropTypes.func,
   attachments: PropTypes.object,
+  style: PropTypes.object,
 };
 
 const boldStyle = { fontWeight: '500' };
@@ -35,6 +36,9 @@ const style = {
   },
   img: {
     marginHorizontal: MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE,
+  },
+  p: {
+    [INCLUDE]: ['baseFont'],
   },
 };
 
@@ -89,7 +93,7 @@ class RichMedia extends Component {
 
   startHtmlRender(body, attachments) {
     if (body) {
-      const customStyle = getStyleWithUpdatedMediaElementMargins(style);
+      const customStyle = getStyleWithUpdatedMediaElementMargins(this.props.style);
       const attachmentTagTransformer = new AttachmentTagTransformer(attachments);
       const hypermediaComposer = new HypermediaComposer([attachmentTagTransformer], customStyle);
 
