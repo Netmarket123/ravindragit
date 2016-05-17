@@ -1,31 +1,22 @@
 import React, {
   View,
   Component,
-  TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
-import { NewsGridBox, ListItem, AdvancedListView } from 'shoutem.ui';
+import { ListItem, AdvancedListView } from 'shoutem.ui';
 import newsMapDispatchToProps from './lib/newsMapDispatchToProps';
 import ListScreenPropTypes from './lib/ListScreenPropTypes';
 import newsMapStateToProps from './lib/newsMapStateToProps';
 import NewsCategoriesDropDownMenu from '../components/NewsCategoriesDropDownMenu';
 import isSearch from './lib/isSearch';
 import fetchNews from './lib/fetchNews';
+import renderFeaturedItem from './lib/renderFeaturedItem';
 import _ from 'lodash';
 
 function renderRow(item, style, extrasSeparator, onPress) {
   if (item.featured) {
-    return (
-      <TouchableOpacity onPress={() => { onPress.apply(null, [item]); }}>
-        <NewsGridBox
-          backgroundImage={{ uri: _.get(item, 'image.url') }}
-          headline={item.title.toUpperCase()}
-          infoFields={['News', 'Sprint 6']}
-          style={style.featuredItem}
-        />
-      </TouchableOpacity>
-    );
+    return renderFeaturedItem(item, style, () => { onPress.apply(null, [item]); });
   }
 
   return (

@@ -11,9 +11,14 @@ import ListScreenPropTypes from './lib/ListScreenPropTypes';
 import NewsCategoriesDropDownMenu from '../components/NewsCategoriesDropDownMenu';
 import isSearch from './lib/isSearch';
 import fetchNews from './lib/fetchNews';
+import renderFeaturedItem from './lib/renderFeaturedItem';
 import _ from 'lodash';
 
 function renderNewsItem(item, style, extrasSeparator, onPress) {
+  if (item.featured) {
+    return renderFeaturedItem(item, style, () => { onPress.apply(null, [item]); });
+  }
+
   return (
     <ListItem
       key={item.id}
