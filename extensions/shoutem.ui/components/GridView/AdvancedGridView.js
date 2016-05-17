@@ -17,9 +17,7 @@ function createRenderRow(renderGridItem, style, columns) {
             return gridItems;
           }, [])
         }
-        {
-          columnsDiff > 0 ? <View style={{ flex: columnsDiff }} /> : []
-        }
+        {columnsDiff > 0 ? <View style={{ flex: columnsDiff }} /> : []}
       </View>);
   };
 }
