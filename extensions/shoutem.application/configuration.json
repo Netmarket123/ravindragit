@@ -34,6 +34,10 @@
         "data": [
           {
             "type": "shoutem.core.shortcuts",
+            "id": "56efcdf9f3973a4609a7a910"
+          },
+          {
+            "type": "shoutem.core.shortcuts",
             "id": "56efcdf9f3973a4609a7a123"
           }
         ]

@@ -20,7 +20,7 @@ export const reducers = {
 export function openListScreen(settings = {
   textCentric: false,
 }) {
-  const nextScreenName = `shoutem.news.${settings.textCentric ? 'GridScreen' : 'ListScreen'}`;
+  const nextScreenName = `shoutem.news.${settings.textCentric ? 'ListScreen' : 'GridScreen'}`;
 
   const route = {
     screen: nextScreenName,
