@@ -12,12 +12,16 @@ import { ScreenNavigator, ROOT_NAVIGATOR_NAME } from './navigation';
 import coreExtensions from './coreExtensions';
 
 import StyleProvider from './theme/StyleProvider';
+
+// connect is called several times, and we do not want to have different object reference
+// for fallback because it will resolve theme again (changing variables recalculates theme)
+const fallBackThemeVariables = {};
 const ConnectedStyleProvider = connect(state => {
   const shoutemAppState = state['shoutem.application'];
   const themeId = _.get(shoutemAppState, 'configuration.relationships.themes.data[0].id');
   const themeVariables = themeId
     ? _.get(shoutemAppState, `themes['${themeId}'].attributes.variables`)
-    : { variables: {} };
+    : fallBackThemeVariables;
 
   return {
     themeVariables,
