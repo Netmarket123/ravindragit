@@ -3,7 +3,7 @@ import React, {
   TextInput,
 } from 'react-native';
 import Button from '../Button/Button';
-import { connectStyle } from 'shoutem/theme';
+import { connectStyle, INCLUDE } from 'shoutem/theme';
 
 const DEFAULT_SEARCH_PLACEHOLDER = 'Search';
 
@@ -71,7 +71,9 @@ Search.propTypes = {
 
 const style = {
   container: {},
-  input: {},
+  input: {
+    [INCLUDE]: ['baseFont'],
+  },
   clearButton: {},
 };
 

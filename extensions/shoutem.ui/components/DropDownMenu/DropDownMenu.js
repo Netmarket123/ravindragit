@@ -9,7 +9,7 @@ import React, {
 
 import Button from '../Button/Button';
 
-import { connectStyle } from 'shoutem/theme';
+import { connectStyle, INCLUDE } from 'shoutem/theme';
 
 const RENDER_ROW = Symbol('renderRow');
 
@@ -80,7 +80,7 @@ class DropDownMenu extends Component {
     };
     return (
       <TouchableOpacity onPress={onPress} style={style.modalItem}>
-        <Text>{item[this.state.bindings.text].toUpperCase()}</Text>
+        <Text style={style.modalItemText}>{item[this.state.bindings.text].toUpperCase()}</Text>
       </TouchableOpacity>
     );
   }
@@ -150,6 +150,9 @@ const style = {
   },
   modalItem: {
     paddingVertical: 23,
+  },
+  modalItemText: {
+    [INCLUDE]: ['baseFont'],
   },
   modalCloseButton: {
     buttonContainer: {

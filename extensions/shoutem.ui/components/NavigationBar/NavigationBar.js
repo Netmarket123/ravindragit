@@ -5,9 +5,9 @@ import React, {
   TouchableOpacity,
 } from 'react-native';
 
-import { connectStyle } from 'shoutem/theme';
+import { connectStyle, INCLUDE } from 'shoutem/theme';
 
-function navigationBarBackButton(hasHistory, navigateBack) {
+function navigationBarBackButton(hasHistory, navigateBack, style) {
   /**
    * onPress sets `event` as first param, which leads to ignoring default navigateBack
    * first argument (navigator) so we have to wrap navigateBack into function to leave first
@@ -19,7 +19,7 @@ function navigationBarBackButton(hasHistory, navigateBack) {
 
   const backButton = hasHistory ? (
     <TouchableOpacity onPress={navigateBackWithoutEventParameter}>
-      <Text>Back</Text>
+      <Text style={style.defaultBackButton}>Back</Text>
     </TouchableOpacity>
   ) : null;
 
@@ -35,7 +35,8 @@ function NavigationBar({
   backgroundImage,
   leftComponent: leftComponentProp,
 }) {
-  const leftComponent = leftComponentProp || navigationBarBackButton(hasHistory, navigateBack);
+  const leftComponent = leftComponentProp ||
+    navigationBarBackButton(hasHistory, navigateBack, style);
 
   return (
     <View style={style.container}>
@@ -84,7 +85,9 @@ const style = {
     marginBottom: -8,
     alignSelf: 'flex-end',
   },
-  backButton: {},
+  defaultBackButton: {
+    [INCLUDE]: ['baseFont'],
+  },
 };
 
 export default connectStyle('shoutem.ui.NavigationBar', style)(NavigationBar);

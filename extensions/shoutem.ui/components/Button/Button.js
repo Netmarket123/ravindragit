@@ -6,7 +6,7 @@ import React, {
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import { connectStyle } from 'shoutem/theme';
+import { connectStyle, INCLUDE } from 'shoutem/theme';
 
 function Button({
   style,
@@ -62,7 +62,9 @@ const style = {
     backgroundColor: '#ccc',
   },
   buttonIcon: {},
-  buttonText: {},
+  buttonText: {
+    [INCLUDE]: ['baseFont'],
+  },
 };
 
 export default connectStyle('dev.ext.Button', style)(Button);

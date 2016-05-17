@@ -2,10 +2,11 @@ import { INCLUDE } from 'shoutem/theme';
 
 export default (variables) => ({
   baseFont: {
-    color: '#fff',
+    fontFamily: 'Rubik-Regular',
   },
   h1: {
     [INCLUDE]: ['baseFont'],
+    color: '#fff',
     fontSize: 25,
   },
   centerContent: {
