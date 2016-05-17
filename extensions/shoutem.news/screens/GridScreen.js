@@ -1,6 +1,7 @@
 import React, {
   View,
   Component,
+  Text,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
@@ -8,7 +9,7 @@ import { ListItem, AdvancedGridView } from 'shoutem.ui';
 import newsMapDispatchToProps from './lib/newsMapDispatchToProps';
 import newsMapStateToProps from './lib/newsMapStateToProps';
 import ListScreenPropTypes from './lib/ListScreenPropTypes';
-import NewsCategoriesDropDownMenu from '../components/NewsCategoriesDropDownMenu';
+import renderCategoriesDropDown from './lib/renderNewsCategoriesDropDownMenu';
 import isSearch from './lib/isSearch';
 import fetchNews from './lib/fetchNews';
 import renderFeaturedItem from './lib/renderFeaturedItem';
@@ -37,12 +38,19 @@ class GridScreen extends Component {
   constructor(props, context) {
     super(props, context);
     this.fetch = fetchNews.bind(this);
+    props.getNewsCategories(props.parentCategoryId, props.settings);
     this.onSearchChanged = this.onSearchChanged.bind(this);
     this.categorySelected = this.categorySelected.bind(this);
     this.state = {
       searchTerm: '',
       selectedCategory: null,
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.categories.length > 0 && !nextProps.selectedCategory) {
+      this.categorySelected(nextProps.categories[0]);
+    }
   }
 
   onSearchChanged(searchTerm) {
@@ -60,19 +68,18 @@ class GridScreen extends Component {
       news,
       searchedNews,
       gridColumns,
-      settings: { parentCategoryId },
-      settings,
+      categories,
     } = this.props;
     const { searchTerm, selectedCategory } = this.state;
     const showSearchResults = isSearch(searchTerm);
 
     setNavBarProps({
-      rightComponent: (<NewsCategoriesDropDownMenu
-        settings={settings}
-        parentCategoryId={parentCategoryId}
-        categorySelected={this.categorySelected}
-        selectedCategory={selectedCategory}
-      />),
+      rightComponent:
+        renderCategoriesDropDown(
+          categories, selectedCategory, this.categorySelected, style.categoriesDropDown
+        ),
+      centerComponent: (<Text style={style.navBarTitle}>News</Text>),
+      style: style.navigationBar,
     });
 
     function openDetailsScreen(item) {
@@ -116,6 +123,9 @@ const style = {
       container: {
       },
       search: {
+        container: {
+          backgroundColor: '#2c2c2c',
+        },
       },
     },
     list: {
@@ -133,6 +143,21 @@ const style = {
     gridRow: {
       paddingRight: 5,
     },
+  },
+  navigationBar: {
+    backgroundImage: {
+      backgroundColor: '#2c2c2c',
+    },
+  },
+  categoriesDropDown: {
+    popUpButton: {
+      buttonText: {
+        [INCLUDE]: ['navBarTitle'],
+      },
+    },
+  },
+  navBarTitle: {
+    color: '#fff',
   },
   screen: {},
   gridColumn: {
