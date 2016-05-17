@@ -20,12 +20,12 @@ export default class StyleProvider extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      [THEME]: this.createState(),
+      theme: this.createNewTheme(props),
     };
   }
   getChildContext() {
     return {
-      theme: this.state[THEME],
+      theme: this.state.theme,
     };
   }
   componentWillReceiveProps(nextProps) {
@@ -33,13 +33,13 @@ export default class StyleProvider extends React.Component {
       nextProps.themeInit !== this.props.themeInit ||
       nextProps.themeVariables !== this.props.themeVariables
     ) {
-      this.setState(this.createState());
-      return true;
+      this.setState({
+        theme: this.createNewTheme(nextProps),
+      });
     }
-    return false;
   }
-  createState() {
-    return new Theme(this.props.themeInit(this.props.themeVariables));
+  createNewTheme(props) {
+    return new Theme(props.themeInit(props.themeVariables));
   }
   render() {
     const { children } = this.props;
