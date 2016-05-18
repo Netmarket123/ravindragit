@@ -3,7 +3,7 @@ import {
 } from 'shoutem/navigation';
 import { find, storage, collection } from '@shoutem/redux-api-state';
 
-export const SHOUTEM_NEWS_SCHEME = 'shoutem.news.news-articles';
+export const SHOUTEM_NEWS_SCHEME = 'shoutem.news.articles';
 export const SHOUTEM_IMAGES_SCHEME = 'shoutem.core.image-attachments';
 export const SHOUTEM_CATEGORIES_SCHEME = 'shoutem.core.categories';
 export const CATEGORY_SELECTED = Symbol('categorySelected');
