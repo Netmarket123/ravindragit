@@ -22,12 +22,14 @@ export function appDidMount(app) {
   store.subscribe(() => {
     const state = store.getState();
     const extensions = state['shoutem.application'].extensions;
-    const codePushExtension = _.find(extensions, { id: 'shoutem.codepush' });
-    const deployments = _.get(codePushExtension, 'attributes.settings.deploymentKeys');
-    // TODO (Ivan): Change this to use deployment name depending on environment
-    const deployment = _.find(deployments, { name: 'Staging' });
-    // Update package if there are any new changes.
-    // Update dialog is hidden by default
-    syncPackage(deployment.key, true);
+    const codePushExtension = _.find(extensions, { id: 'shoutem.code-push' });
+    if (codePushExtension) {
+      const deployments = _.get(codePushExtension, 'attributes.settings.deploymentKeys');
+      // TODO (Ivan): Change this to use deployment name depending on environment
+      const deployment = _.find(deployments, {name: 'Staging'});
+      // Update package if there are any new changes.
+      // Update dialog is hidden by default
+      syncPackage(deployment.key, true);
+    }
   });
 }
