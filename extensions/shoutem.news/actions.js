@@ -26,9 +26,9 @@ export function openListScreen(settings = {
     screen: nextScreenName,
     props: {
       settings: {
-        appId: settings.appId || '167875094',
-        endpoint: settings.endpoint || 'http://api.aperfector.com',
-        parentCategoryId: settings.parentCategoryId || '2251460',
+        appId: settings.appId || '2047',
+        endpoint: settings.endpoint || 'http://api.dev.sauros.hr',
+        parentCategoryId: settings.parentCategoryId || '28',
       },
     },
   };
