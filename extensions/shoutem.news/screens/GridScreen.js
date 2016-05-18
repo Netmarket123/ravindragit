@@ -140,8 +140,8 @@ const style = {
     },
     listContent: {
     },
-    gridRow: {
-      paddingRight: 5,
+    gridItemWrapper: {
+      padding: 5,
     },
   },
   navigationBar: {
@@ -158,6 +158,21 @@ const style = {
   },
   navBarTitle: {
     color: '#fff',
+  },
+  featuredItem: {
+    gridBox: {
+      container: {
+        padding: 5,
+        backgroundColor: '#2c2c2c',
+      },
+      contentWrapper: {
+        flexWrap: 'wrap',
+        margin: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 330,
+      },
+    },
   },
   screen: {},
   gridColumn: {

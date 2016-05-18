@@ -111,6 +111,7 @@ const style = {
   },
   screen: {
     position: 'relative',
+    backgroundColor: '#fff',
   },
   detailsText: {},
   detailsTitle: {
