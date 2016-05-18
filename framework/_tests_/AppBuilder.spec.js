@@ -579,14 +579,24 @@ describe('AppBuilder', () => {
     });
     it('provides theme variables to StyleProvider', () => {
       const configurationMock = {
-        configuration: {
-          themes: [
-            {
+        themes: {
+          test: {
+            id: 'test',
+            attributes: {
               variables: {
-                test: 5,
+                testVariable: 5,
               },
             },
-          ],
+          },
+        },
+        configuration: {
+          relationships: {
+            themes: {
+              data: [
+                { id: 'test' },
+              ],
+            },
+          },
         },
       };
       const extensions = {
@@ -604,9 +614,10 @@ describe('AppBuilder', () => {
         })
         .build();
       const wrapper = mount(<App />);
+      const themeVariables = wrapper.find(StyleProvider).nodes[0].props.themeVariables;
       assert.deepEqual(
-        wrapper.find(StyleProvider).nodes[0].props.themeVariables,
-        configurationMock.configuration.themes[0].variables
+        themeVariables,
+        configurationMock.themes.test.attributes.variables
       );
     });
   });

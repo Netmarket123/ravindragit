@@ -9,7 +9,7 @@ import React, {
 
 import Button from '../Button/Button';
 
-import { connectStyle } from 'shoutem/theme';
+import { connectStyle, INCLUDE } from 'shoutem/theme';
 
 const RENDER_ROW = Symbol('renderRow');
 
@@ -23,9 +23,17 @@ class DropDownMenu extends Component {
   }
 
   componentWillMount() {
-    if (!this.props.selectedItem && !this.state.selectedItem) {
-      this.setState({ selectedItem: this.props.items[0] });
+    this.autoSelect(this.props.items, this.props.selectedItem);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.items === this.props.items && nextState === this.state) {
+      return false;
     }
+    if (!this.state.selectedItem) {
+      this.autoSelect(nextProps.items, nextProps.selectedItem);
+    }
+    return true;
   }
 
   getValue() {
@@ -39,6 +47,15 @@ class DropDownMenu extends Component {
 
   getSelectedItem() {
     return this.state.selectedItem;
+  }
+
+  /**
+   * Selects first item as default if non is selected
+   */
+  autoSelect(items, selectedItem) {
+    if (!selectedItem && !this.state.selectedItem && items.length > 0) {
+      this.setState({ selectedItem: items[0] });
+    }
   }
 
   collapse() {
@@ -55,15 +72,15 @@ class DropDownMenu extends Component {
       onItemSelected,
     } = this.props;
     const onPress = () => {
+      this.close();
       this.setState({ selectedItem: item });
       if (onItemSelected) {
         onItemSelected(item);
       }
-      this.close();
     };
     return (
       <TouchableOpacity onPress={onPress} style={style.modalItem}>
-        <Text>{item[this.state.bindings.text].toUpperCase()}</Text>
+        <Text style={style.modalItemText}>{item[this.state.bindings.text].toUpperCase()}</Text>
       </TouchableOpacity>
     );
   }
@@ -76,16 +93,17 @@ class DropDownMenu extends Component {
     } = this.state;
     const { items, style } = this.props;
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+    const button = selectedItem ? <Button
+      showIconOnRight
+      icon="arrow-drop-down"
+      text={selectedItem[bindings.text]}
+      onPress={this.collapse}
+      style={style.popUpButton}
+    /> : null;
 
     return (
       <View>
-        <Button
-          showIconOnRight
-          icon="arrow-drop-down"
-          text={selectedItem[bindings.text]}
-          onPress={this.collapse}
-          style={style.popUpButton}
-        />
+        {button}
         <Modal
           visible={collapsed || false}
           onRequestClose={this.close}
@@ -132,6 +150,9 @@ const style = {
   },
   modalItem: {
     paddingVertical: 23,
+  },
+  modalItemText: {
+    [INCLUDE]: ['baseFont'],
   },
   modalCloseButton: {
     buttonContainer: {

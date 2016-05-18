@@ -21,6 +21,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		146F89531CEA5C270065FC7B /* Rubik-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 146F89521CEA5C270065FC7B /* Rubik-Regular.ttf */; };
 		14EE14E12C884069B31FAC36 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6D19753EEA2E424EB54C42A0 /* Entypo.ttf */; };
 		2CCFD9260872413BA08ADE6E /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B165BA48BA954339BF78C0C3 /* Foundation.ttf */; };
 		43DDD9C76F4C4DA9BB361B45 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4009DD4D136A4A039DD3CA2A /* Octicons.ttf */; };
@@ -158,6 +159,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ShoutemApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ShoutemApp/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		146F89521CEA5C270065FC7B /* Rubik-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Rubik-Regular.ttf"; path = "../assets/fonts/Rubik-Regular.ttf"; sourceTree = "<group>"; };
 		1F215385F682417CA8ED6E6B /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		3CF69CC3BE124D44B3B9B074 /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		4009DD4D136A4A039DD3CA2A /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
@@ -389,6 +391,7 @@
 		E66035ACF78043E086CDCB89 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				146F89521CEA5C270065FC7B /* Rubik-Regular.ttf */,
 				6D19753EEA2E424EB54C42A0 /* Entypo.ttf */,
 				759F68D70E6540D599EA001E /* EvilIcons.ttf */,
 				1F215385F682417CA8ED6E6B /* FontAwesome.ttf */,
@@ -641,6 +644,7 @@
 				803336D7B5C34112BAD50388 /* EvilIcons.ttf in Resources */,
 				9E9E651E6B2047CFAE932FC4 /* FontAwesome.ttf in Resources */,
 				2CCFD9260872413BA08ADE6E /* Foundation.ttf in Resources */,
+				146F89531CEA5C270065FC7B /* Rubik-Regular.ttf in Resources */,
 				F70D8A1E2D2C4127BBFE1722 /* Ionicons.ttf in Resources */,
 				74294E4C5B304CBE9C0E5C8D /* MaterialIcons.ttf in Resources */,
 				43DDD9C76F4C4DA9BB361B45 /* Octicons.ttf in Resources */,

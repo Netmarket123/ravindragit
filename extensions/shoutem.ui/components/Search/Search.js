@@ -3,7 +3,7 @@ import React, {
   TextInput,
 } from 'react-native';
 import Button from '../Button/Button';
-import { connectStyle } from 'shoutem/theme';
+import { connectStyle, INCLUDE } from 'shoutem/theme';
 
 const DEFAULT_SEARCH_PLACEHOLDER = 'Search';
 
@@ -14,17 +14,11 @@ class Search extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.clearTextInput = this.clearTextInput.bind(this);
     this.state = {
-      text: '',
+      text: props.searchTerm,
     };
   }
 
   onSubmit() {
-    if (!this.state.text) {
-      if (this.props.onCleared) {
-        this.props.onCleared();
-      }
-      return;
-    }
     if (this.props.onSearchTermChange) {
       this.props.onSearchTermChange(this.state.text);
     }
@@ -71,13 +65,15 @@ class Search extends React.Component {
 Search.propTypes = {
   style: React.PropTypes.object,
   placeholder: React.PropTypes.string,
+  searchTerm: React.PropTypes.string,
   onSearchTermChange: React.PropTypes.func,
-  onCleared: React.PropTypes.func,
 };
 
 const style = {
   container: {},
-  input: {},
+  input: {
+    [INCLUDE]: ['baseFont'],
+  },
   clearButton: {},
 };
 

@@ -5,30 +5,37 @@ import _ from 'lodash';
 import Search from '../Search/Search';
 import GiftedListView from 'react-native-gifted-listview';
 import { connectStyle } from 'shoutem/theme';
+import { FullScreenSpinner, PlatformSpinner } from 'shoutem.ui';
 
 const GET_PROPS_TO_PASS = Symbol('getPropsToPass');
 const HANDLE_LIST_VIEW_REF = Symbol('handleListViewRef');
-
-function isRefreshable(searchTerm, notRefreshable) {
-  return !(searchTerm || notRefreshable);
-}
+const LOAD_MORE = Symbol('loadMore');
+const REFRESH = Symbol('refresh');
+const NEW_REQUEST = Symbol('newRequest');
 
 class AdvancedListView extends React.Component {
   constructor(props, context) {
     super(props, context);
     this[HANDLE_LIST_VIEW_REF] = this[HANDLE_LIST_VIEW_REF].bind(this);
     this.fetch = this.fetch.bind(this);
-    this.search = this.search.bind(this);
-    this.searchHidden = false;
+    this.onSearchTermChanged = this.onSearchTermChanged.bind(this);
+    this.renderFooter = this.renderFooter.bind(this);
+    this.onEndReached = this.onEndReached.bind(this);
     this.listView = null;
     this.giftedListView = null;
     this.state = {
+      fetchStatus: {
+        requestNumber: 0, // Maybe only did request ?
+        fetching: false,
+        type: undefined,
+        noMoreItems: false,
+      },
       searchTerm: '',
     };
   }
 
   shouldComponentUpdate(nextProps) {
-    const { items } = this.props;
+    const { items, queryParams } = this.props;
     if (this.giftedListView && nextProps.items !== items) {
       // GiftedListView use _updateRows to handle data to show and update internal state
       // such as loading status and other.
@@ -38,7 +45,41 @@ class AdvancedListView extends React.Component {
       // https://github.com/FaridSafi/react-native-gifted-listview/blob/master/GiftedListViewExample/example_simple.js#L26
       this.giftedListView._updateRows(nextProps.items);
     }
+    if (!_.isEqual(nextProps.queryParams, queryParams)) {
+      // Compare current query params and new, if different make new request
+      // QueryParams can be changed from outside
+      this.fetch(undefined, undefined, undefined, nextProps.queryParams);
+    }
     return true;
+  }
+
+  componentDidUpdate() {
+    const { searchTerm, fetchStatus } = this.state;
+    // TODO(Braco) - confirm condition
+    if (!searchTerm && fetchStatus.fetching && fetchStatus.type === NEW_REQUEST) {
+      // TODO(Braco) - scrollTo without animation
+      this.listView.scrollTo({ y: _.get(this.props, 'style.header.search.container.height') });
+    }
+  }
+
+  onSearchTermChanged(searchTerm) {
+    this.setState({ searchTerm });
+    if (this.props.onSearchTermChanged) {
+      this.props.onSearchTermChanged(searchTerm);
+    }
+  }
+
+  /**
+   * Triggered when list end threshold reached (scrolled to)
+   */
+  onEndReached() {
+    if (this.props.onEndReached) {
+      this.props.onEndReached();
+      return;
+    }
+    if (this.props.infiniteScrolling) {
+      this.loadMore();
+    }
   }
 
   /**
@@ -57,7 +98,7 @@ class AdvancedListView extends React.Component {
     // enable infinite scrolling using touch to load more
     mappedProps.pagination = Boolean(!props.disablePagination);
     // enable pull-to-refresh for iOS and touch-to-refresh for Android
-    mappedProps.refreshable = isRefreshable(this.state.searchTerm, props.notRefreshable);
+    mappedProps.refreshable = !props.notRefreshable;
     // enable sections
     mappedProps.withSections = props.sections;
     // react native warning
@@ -65,38 +106,114 @@ class AdvancedListView extends React.Component {
     mappedProps.enableEmptySections = true;
     // handle default onFetch
     mappedProps.onFetch = this.fetch;
+    // Tilt color
+    mappedProps.refreshableTintColor = props.style.tiltColor.backgroundColor;
+    // Default load more threshold
+    mappedProps.onEndReachedThreshold = props.onEndReachedThreshold || 40;
 
-    // TODO(Braco) - set by theme?
-    mappedProps.refreshableTintColor = 'blue';
 
     // Mapped properties
     // create headerView function if there is something to render in header
     mappedProps.headerView = this.createHeaderView();
     // we do not want to pass style to GiftedListView, it uses customStyle
-    mappedProps.customStyle = props.style.list;
+    mappedProps.customStyles = props.style.list;
     mappedProps.contentContainerStyle = props.style.listContent;
+    // Override GiftedListView renderFooter
+    mappedProps.renderFooter = this.renderFooter;
+    // Handle on scroll end reach
+    mappedProps.onEndReached = this.state.fetchStatus.noMoreItems ? null : this.onEndReached;
 
     return mappedProps;
   }
 
   /**
-   * Handle default ListView search.
-   * @param searchTerm
+   * Changes to be applied to fetchStatus
+   * @param diff {{}}
    */
-  search(searchTerm) {
+  updateFetchStatus(diff) {
     this.setState({
-      searchTerm,
+      fetchStatus: {
+        ...this.state.fetchStatus,
+        ...diff,
+      },
     });
-    this.fetch();
+  }
+
+  /**
+   * Identify request type
+   * REFRESH - pull to refresh
+   * LOAD_more - load next items
+   * NEW_REQUEST - first load or query params changed
+   *
+   * @param isLoadMore
+   * @param giftedListViewRef
+   * @returns {Symbol}
+   */
+  detectRequestType(isLoadMore, giftedListViewRef) {
+    if (isLoadMore) {
+      return LOAD_MORE;
+    } else if (giftedListViewRef && giftedListViewRef.state.isRefreshing) {
+      return REFRESH;
+    }
+    return NEW_REQUEST;
+  }
+
+  /**
+   * Updates fetch status
+   *
+   * @param fetching - if fetching new data
+   * @param isLoadMore - if loading more (pagination)
+   */
+  handleFetchAction(fetching, isLoadMore) {
+    // update request number if not load more (request changed)
+    // else increase requestNumber
+    const newRequestNumber = isLoadMore ? this.state.fetchStatus.requestNumber + 1 : 1;
+    this.updateFetchStatus({
+      noMoreItems: false,
+      requestNumber: newRequestNumber,
+      fetching,
+      type: this.detectRequestType(isLoadMore, this.giftedListView),
+    });
   }
 
   /**
    * Called by GiftedListView with (page, callback, options) args.
    * Calls passed fetch to get new items.
+   * By default props.queryParams are used,
+   * in case queryParams change they are passed from nextProps.
+   *
+   * If fetch returns promise it will be used to notify user.
+   * TODO(Braco) - support collection busy as other mode for notifying user of loading.
+   * Detect if isLoadMore or new data.
    */
-  fetch() {
+  fetch(page, callback, options, queryParams = this.props.queryParams, isLoadMore) {
     if (this.props.fetch) {
-      this.props.fetch(this.state.searchTerm);
+      const request = this.props.fetch(queryParams || {}, isLoadMore);
+      // TODO(Braco) - implement RAS mode without promise
+      if (request) {
+        // Request is promise
+        this.handleFetchAction(true, isLoadMore);
+        request.then(() => {
+          this.handleFetchAction(false, isLoadMore);
+        });
+      } else {
+        // Request undefined means end is reached
+        this.updateFetchStatus({
+          noMoreItems: true,
+        });
+      }
+    }
+  }
+
+  /**
+   * Used to load more data.
+   * It is called always.
+   */
+  loadMore() {
+    const { requestNumber, fetching } = this.state.fetchStatus;
+    if (requestNumber > 0 && !fetching && this.props.items.length > 0) {
+      // Load more if not first request, if not already fetching and if not empty list
+      this.fetch(undefined, undefined, undefined, undefined, true);
     }
   }
 
@@ -115,12 +232,6 @@ class AdvancedListView extends React.Component {
     this.giftedListView = GiftedListViewRef;
     this.listView = GiftedListViewRef.refs.listview;
 
-    if (!this.searchHidden && props.search) {
-      // scroll off to hide search only once and only if search enabled
-      this.searchHidden = true;
-      this.listView.scrollTo({ y: _.get(props, 'style.header.search.container.height') });
-    }
-
     if (props.registerScrollRef) {
       // pass GiftedListViewRef to parent
       props.registerScrollRef(this.listView);
@@ -138,7 +249,7 @@ class AdvancedListView extends React.Component {
       renderHeader,
       search,
       searchPlaceholder,
-      onSearchCleared,
+      items,
     } = this.props;
     const style = listViewStyle.header;
 
@@ -147,11 +258,11 @@ class AdvancedListView extends React.Component {
       return undefined;
     }
 
-    const searchComponent = search ?
+    const searchComponent = search && items.length > 0 ?
       (<Search
         style={style.search}
-        onSearchTermChange={this.search}
-        onCleared={onSearchCleared}
+        searchTerm={this.state.searchTerm}
+        onSearchTermChange={this.onSearchTermChanged}
         placeholder={searchPlaceholder}
       />) : null;
 
@@ -163,7 +274,29 @@ class AdvancedListView extends React.Component {
     };
   }
 
+  renderFooter() {
+    const fetchStatus = this.state.fetchStatus;
+    const { style, renderFooter } = this.props;
+
+    if (renderFooter) {
+      // Render customized footer
+      return renderFooter(fetchStatus);
+    } else if (fetchStatus.fetching) {
+      switch (fetchStatus.type) {
+        case NEW_REQUEST:
+          return <FullScreenSpinner style={style.newDataSpinner} />;
+        case LOAD_MORE:
+          return <View style={style.loadMoreSpinner}><PlatformSpinner /></View>;
+        case REFRESH:
+        default:
+          return null;
+      }
+    }
+    return null;
+  }
+
   render() {
+    // TODO(Braco) - handle no results view
     return (<GiftedListView
       ref={this[HANDLE_LIST_VIEW_REF]}
       {...this[GET_PROPS_TO_PASS]()}
@@ -175,17 +308,21 @@ AdvancedListView.propTypes = {
   style: React.PropTypes.object,
   search: React.PropTypes.bool,
   searchPlaceholder: React.PropTypes.string,
-  onSearchCleared: React.PropTypes.func,
+  onSearchTermChanged: React.PropTypes.func,
+  queryParams: React.PropTypes.object,
   notRefreshable: React.PropTypes.bool,
   disablePagination: React.PropTypes.bool,
-  hideFirstLoader: React.PropTypes.bool,
+  hideFirstLoader: React.PropTypes.bool, // TODO(Braco) - either integrate it or deprecate
   sections: React.PropTypes.bool,
   renderRow: React.PropTypes.func,
   registerScrollRef: React.PropTypes.func,
   renderHeader: React.PropTypes.func,
+  renderFooter: React.PropTypes.bool,
   fetch: React.PropTypes.func,
   items: React.PropTypes.array,
-  onEndReach: React.PropTypes.func, // TODO(Braco) - enable real infinite scrolling
+  infiniteScrolling: React.PropTypes.bool,
+  onEndReachedThreshold: React.PropTypes.number,
+  onEndReached: React.PropTypes.func,
 };
 
 const style = {
@@ -194,6 +331,15 @@ const style = {
     search: {},
   },
   list: {},
+  listContent: {},
+  tiltColor: {
+    // uses only background color
+    backgroundColor: '#ccc',
+  },
+  newDataSpinner: {},
+  loadMoreSpinner: {
+    paddingVertical: 25,
+  },
 };
 
-export default connectStyle('shoutem.ui.ListView', style)(AdvancedListView);
+export default connectStyle('shoutem.ui.AdvancedListView', style)(AdvancedListView);

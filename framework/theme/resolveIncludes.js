@@ -1,5 +1,4 @@
 import * as _ from 'lodash';
-
 export const INCLUDE = Symbol('include');
 
 /**
@@ -19,7 +18,13 @@ function includeSymbolMergeHandler(objVal, srcVal) {
 
   // if objVal doesn't exists create new from source if INCLUDE exists
   if (_.isUndefined(newObjVal) && include) {
-    const newObj = { ...srcVal };
+    // Copy symbol fix.
+    // { ...srcVal } copies symbol wrong, it adds symbol value to the property defined just after it
+    // Problem example: { SYMBOL: ['Test'], someProp: 10 } => { someProp: ['Test'] }
+    // mergeWith prevents wrong copy because it doesn't iterate trough Symbols so it skips INCLUDE
+    // We do not INCLUDE symbol to be copied actually in this function
+    // because it is copied manually. This whole function is fixing Symbol problems.
+    const newObj = _.mergeWith({}, srcVal, (o, s) => s);
     // Assigning INCLUDE after object definition to avoid Object.assign when code transpiled.
     // Object.assign in RN uses polyfill which doesn't copy Symbols that's why INCLUDE symbol
     // must be set manually after spread.

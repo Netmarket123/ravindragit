@@ -46,8 +46,8 @@ describe('resolveIncludes', () => {
           [INCLUDE]: ['firstIncludeNumber'],
         },
         secondInclude: {
-          color: 'red',
           [INCLUDE]: ['secondIncludeNumber'],
+          color: 'red',
         },
         includingStyle: {
           [INCLUDE]: ['firstInclude', 'secondInclude'],
@@ -217,6 +217,7 @@ describe('resolveIncludes', () => {
           },
           includeSingleStyle: {
             [INCLUDE]: ['numberInclude'],
+            width: 100,
           },
           includeMultipleStyles: {
             [INCLUDE]: ['numberInclude', 'textInclude'],

@@ -10,7 +10,7 @@ import * as _ from 'lodash';
 
 const DEFAULT_BOTTOM_CONTENT_OFFSET = 50;
 
-function createOffsetStyle(offset) {
+function getOffsetHeight(offset) {
   return Dimensions.get('window').height - offset;
 }
 
@@ -27,7 +27,7 @@ function createDetailsStyle(topOffset, style) {
 }
 
 function createAnimatedHeaderStyle(headerStyle, animatedValue, headerHeight) {
-  return _.merge({}, headerStyle, {
+  return [headerStyle, {
     transform: [
       {
         translateY: animatedValue.interpolate({
@@ -36,7 +36,7 @@ function createAnimatedHeaderStyle(headerStyle, animatedValue, headerHeight) {
         }),
       },
     ],
-  });
+  }];
 }
 
 function getScrollHandle(scrollY) {
@@ -61,14 +61,14 @@ Details.propTypes = {
   style: React.PropTypes.object,
 };
 
-function GannettDetailsScreen({
+function DetailsScreen({
   item,
   style,
   bottomContentOffset: bottomContentOffsetProp,
 }) {
   const bottomContentOffset = bottomContentOffsetProp || DEFAULT_BOTTOM_CONTENT_OFFSET;
   const scrollY = new Animated.Value(0);
-  const detailsTopOffset = createOffsetStyle(bottomContentOffset);
+  const detailsTopOffset = getOffsetHeight(bottomContentOffset);
   const headerStyle = createAnimatedHeaderStyle(style.header, scrollY, detailsTopOffset);
   const detailsStyle = createDetailsStyle(detailsTopOffset, style);
 
@@ -81,7 +81,7 @@ function GannettDetailsScreen({
           style={style.headline}
           headline={item.title}
           newsDetails={[item.author, 'test']}
-          backgroundImage={{ uri: item.image_url, width: 200, height: 200 }}
+          backgroundImage={{ uri: _.get(item, 'image.url'), width: 200, height: 200 }}
         />
       </Animated.View>
       <ScrollView
@@ -96,7 +96,7 @@ function GannettDetailsScreen({
   );
 }
 
-GannettDetailsScreen.propTypes = {
+DetailsScreen.propTypes = {
   item: React.PropTypes.object,
   style: React.PropTypes.object,
   bottomContentOffset: React.PropTypes.number,
@@ -105,6 +105,9 @@ GannettDetailsScreen.propTypes = {
 const style = {
   headline: {
     [INCLUDE]: ['shoutem.ui.NewsGridBox.photoCentric'],
+    headline: {
+      backgroundColor: 'transparent',
+    },
   },
   screen: {
     position: 'relative',
@@ -142,4 +145,4 @@ const style = {
   },
 };
 
-export default connectStyle('dev.ext.GannettDetailsScreen', style)(GannettDetailsScreen);
+export default connectStyle('shoutem.news.DetailsScreen', style)(DetailsScreen);

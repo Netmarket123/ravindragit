@@ -37,6 +37,7 @@ GridBox.propTypes = {
 
 const style = {
   container: {
+    flex: 1,
   },
   backgroundImage: {
     width: null,
