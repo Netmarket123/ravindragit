@@ -42,9 +42,9 @@ function NavigationBar({
     <View style={style.container}>
       <Image source={backgroundImage} style={style.backgroundImage}>
         <View style={style.componentsContainer}>
-          <View style={style.component}>{leftComponent}</View>
-          <View style={style.component}>{centerComponent}</View>
-          <View style={style.component}>{rightComponent}</View>
+          <View style={style.leftComponent}>{leftComponent}</View>
+          <View style={style.centerComponent}>{centerComponent}</View>
+          <View style={style.rightComponent}>{rightComponent}</View>
         </View>
       </Image>
     </View>
@@ -84,6 +84,19 @@ const style = {
     height: 24,
     marginBottom: -8,
     alignSelf: 'flex-end',
+    flex: 1,
+  },
+  leftComponent: {
+    [INCLUDE]: ['component'],
+    alignItems: 'flex-start',
+  },
+  centerComponent: {
+    [INCLUDE]: ['component'],
+    alignItems: 'center',
+  },
+  rightComponent: {
+    [INCLUDE]: ['component'],
+    alignItems: 'flex-end',
   },
   defaultBackButton: {
     [INCLUDE]: ['baseFont'],
