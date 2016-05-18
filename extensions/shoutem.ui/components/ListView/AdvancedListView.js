@@ -96,7 +96,7 @@ class AdvancedListView extends React.Component {
     // display a loader for the first fetching
     mappedProps.firstLoader = true;
     // enable infinite scrolling using touch to load more
-    mappedProps.pagination = Boolean(!props.disablePagination);
+    mappedProps.pagination = true;
     // enable pull-to-refresh for iOS and touch-to-refresh for Android
     mappedProps.refreshable = !props.notRefreshable;
     // enable sections
@@ -306,7 +306,6 @@ AdvancedListView.propTypes = {
   onSearchTermChanged: React.PropTypes.func,
   queryParams: React.PropTypes.object,
   notRefreshable: React.PropTypes.bool,
-  disablePagination: React.PropTypes.bool,
   sections: React.PropTypes.bool,
   renderRow: React.PropTypes.func,
   renderHeader: React.PropTypes.func,
