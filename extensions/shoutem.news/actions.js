@@ -6,7 +6,6 @@ import { find, storage, collection } from '@shoutem/redux-api-state';
 export const SHOUTEM_NEWS_SCHEME = 'shoutem.news.articles';
 export const SHOUTEM_IMAGES_SCHEME = 'shoutem.core.image-attachments';
 export const SHOUTEM_CATEGORIES_SCHEME = 'shoutem.core.categories';
-export const CATEGORY_SELECTED = Symbol('categorySelected');
 
 export const reducers = {
   news: storage(SHOUTEM_NEWS_SCHEME),
