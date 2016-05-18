@@ -231,11 +231,6 @@ class AdvancedListView extends React.Component {
 
     this.giftedListView = GiftedListViewRef;
     this.listView = GiftedListViewRef.refs.listview;
-
-    if (props.registerScrollRef) {
-      // pass GiftedListViewRef to parent
-      props.registerScrollRef(this.listView);
-    }
   }
 
   /**
@@ -315,7 +310,6 @@ AdvancedListView.propTypes = {
   hideFirstLoader: React.PropTypes.bool, // TODO(Braco) - either integrate it or deprecate
   sections: React.PropTypes.bool,
   renderRow: React.PropTypes.func,
-  registerScrollRef: React.PropTypes.func,
   renderHeader: React.PropTypes.func,
   renderFooter: React.PropTypes.bool,
   fetch: React.PropTypes.func,
@@ -324,6 +318,15 @@ AdvancedListView.propTypes = {
   onEndReachedThreshold: React.PropTypes.number,
   onEndReached: React.PropTypes.func,
 };
+// style: React.PropTypes.object,
+//   items: React.PropTypes.array,
+//   renderRow: React.PropTypes.func,
+//   renderHeader: React.PropTypes.func,
+//   renderSectionHeader: React.PropTypes.func,
+//   renderFooter: React.PropTypes.func,
+//   onLoadMore: React.PropTypes.func,
+//   onRefresh: React.PropTypes.func,
+
 
 const style = {
   header: {
