@@ -19,17 +19,20 @@ function syncPackage(deploymentKey, updateDialog) {
 
 export function appDidMount(app) {
   const store = app.getStore();
+  let oldExtensionIds = [];
   store.subscribe(() => {
     const state = store.getState();
     const extensions = state['shoutem.application'].extensions;
+    const extensionIds = _.map(extensions, (extension) => extension.id);
     const codePushExtension = _.find(extensions, { id: 'shoutem.code-push' });
-    if (codePushExtension) {
+    if (_.difference(extensionIds, oldExtensionIds).length > 0) {
       const deployments = _.get(codePushExtension, 'attributes.settings.deploymentKeys');
       // TODO (Ivan): Change this to use deployment name depending on environment
-      const deployment = _.find(deployments, {name: 'Staging'});
+      const deployment = _.find(deployments, { name: 'Staging' });
       // Update package if there are any new changes.
       // Update dialog is hidden by default
       syncPackage(deployment.key, true);
+      oldExtensionIds = extensionIds;
     }
   });
 }
