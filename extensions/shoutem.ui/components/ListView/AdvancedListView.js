@@ -94,7 +94,7 @@ class AdvancedListView extends React.Component {
 
     // Default values
     // display a loader for the first fetching
-    mappedProps.firstLoader = Boolean(!props.hideFirstLoader);
+    mappedProps.firstLoader = true;
     // enable infinite scrolling using touch to load more
     mappedProps.pagination = Boolean(!props.disablePagination);
     // enable pull-to-refresh for iOS and touch-to-refresh for Android
@@ -307,7 +307,6 @@ AdvancedListView.propTypes = {
   queryParams: React.PropTypes.object,
   notRefreshable: React.PropTypes.bool,
   disablePagination: React.PropTypes.bool,
-  hideFirstLoader: React.PropTypes.bool, // TODO(Braco) - either integrate it or deprecate
   sections: React.PropTypes.bool,
   renderRow: React.PropTypes.func,
   renderHeader: React.PropTypes.func,
