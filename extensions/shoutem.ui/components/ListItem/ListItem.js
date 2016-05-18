@@ -64,7 +64,7 @@ function ListItem({
             <Text style={style.rightExtra}>{rightExtra}</Text>
           </View>
         </View>
-        <Button style={style.mediumListItemButton} icon={buttonIcon} />
+        <Button style={style.mediumListItemButton} icon={buttonIcon} onPress={onButtonPressed} />
       </TouchableOpacity>
     </GridBox>
   );
