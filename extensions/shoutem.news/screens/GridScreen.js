@@ -14,6 +14,7 @@ import isSearch from './lib/isSearch';
 import fetchNews from './lib/fetchNews';
 import renderFeaturedItem from './lib/renderFeaturedItem';
 import _ from 'lodash';
+import moment from 'moment';
 
 function renderNewsItem(item, style, extrasSeparator, onPress) {
   if (item.featured) {
@@ -25,7 +26,7 @@ function renderNewsItem(item, style, extrasSeparator, onPress) {
       key={item.id}
       description={item.title}
       image={{ uri: _.get(item, 'image.url') }}
-      leftExtra={'News'}
+      leftExtra={moment(item.timeUpdated).fromNow()}
       id={item.id}
       style={style.gridColumn}
       onPressItem={item}
