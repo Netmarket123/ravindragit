@@ -103,10 +103,6 @@ export default (variables) => ({
   },
   'shoutem.ui.ListItem.photoCentric': {
     gridBox: {
-      container: {
-        marginTop: 5,
-        marginLeft: 5,
-      },
       imageOverlay: {
         alignItems: 'stretch',
         flexDirection: 'row',
