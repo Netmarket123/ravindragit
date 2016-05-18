@@ -16,29 +16,13 @@ import renderFeaturedItem from './lib/renderFeaturedItem';
 import _ from 'lodash';
 import moment from 'moment';
 
-function renderRow(item, style, extrasSeparator, onPress) {
-  if (item.featured) {
-    return renderFeaturedItem(item, style, () => { onPress.apply(null, [item]); });
-  }
-
-  return (
-    <ListItem
-      description={item.title}
-      image={{ uri: _.get(item, 'image.url') }}
-      leftExtra={moment(item.timeUpdated).fromNow()}
-      id={item.id}
-      style={style.listRow}
-      onPressItem={item}
-      onPressMethod={onPress}
-    />
-  );
-}
-
 class ListScreen extends Component {
   constructor(props, context) {
     super(props, context);
     props.getNewsCategories(props.parentCategoryId, props.settings);
     this.fetch = fetchNews.bind(this);
+    this.openDetailsScreen = this.openDetailsScreen.bind(this);
+    this.renderRow = this.renderRow.bind(this);
     this.onSearchChanged = this.onSearchChanged.bind(this);
     this.categorySelected = this.categorySelected.bind(this);
     this.state = {
@@ -61,11 +45,34 @@ class ListScreen extends Component {
     this.setState({ selectedCategory: category });
   }
 
+  openDetailsScreen(item) {
+    const route = { screen: 'shoutem.news.DetailsScreen', props: { item } };
+    this.props.navigateToRoute(route);
+  }
+
+  renderRow(item) {
+    const { style } = this.props;
+    if (item.featured) {
+      return renderFeaturedItem(item, style, () => this.openDetailsScreen(item));
+    }
+
+    return (
+      <ListItem
+        description={item.title}
+        image={{ uri: _.get(item, 'image.url') }}
+        leftExtra={moment(item.timeUpdated).fromNow()}
+        id={item.id}
+        style={style.listRow}
+        onPressItem={item}
+        onPressMethod={this.openDetailsScreen}
+      />
+    );
+  }
+
   render() {
     const {
       style,
       setNavBarProps,
-      navigateToRoute,
       news,
       searchedNews,
       categories,
@@ -82,15 +89,6 @@ class ListScreen extends Component {
       style: style.navigationBar,
     });
 
-    function openDetailsScreen(item) {
-      const route = { screen: 'shoutem.news.DetailsScreen', props: { item } };
-      navigateToRoute(route);
-    }
-
-    function renderListRow(item) {
-      return renderRow(item, style, undefined, openDetailsScreen);
-    }
-
     const itemsList = selectedCategory ? (
       <AdvancedListView
         items={showSearchResults ? searchedNews : news}
@@ -100,7 +98,7 @@ class ListScreen extends Component {
         onSearchTermChanged={this.onSearchChanged}
         queryParams={{ searchTerm, selectedCategory }}
         fetch={this.fetch}
-        renderRow={renderListRow}
+        renderRow={this.renderRow}
         style={style.listView}
       />) : null;
 

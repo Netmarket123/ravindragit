@@ -16,24 +16,6 @@ import renderFeaturedItem from './lib/renderFeaturedItem';
 import _ from 'lodash';
 import moment from 'moment';
 
-function renderNewsItem(item, style, extrasSeparator, onPress) {
-  if (item.featured) {
-    return renderFeaturedItem(item, style, () => { onPress.apply(null, [item]); });
-  }
-
-  return (
-    <ListItem
-      key={item.id}
-      description={item.title}
-      image={{ uri: _.get(item, 'image.url') }}
-      leftExtra={moment(item.timeUpdated).fromNow()}
-      id={item.id}
-      style={style.gridColumn}
-      onPressItem={item}
-      onPressMethod={onPress}
-    />
-  );
-}
 
 class GridScreen extends Component {
   constructor(props, context) {
@@ -41,6 +23,8 @@ class GridScreen extends Component {
     this.fetch = fetchNews.bind(this);
     props.getNewsCategories(props.parentCategoryId, props.settings);
     this.onSearchChanged = this.onSearchChanged.bind(this);
+    this.renderItem = this.renderItem.bind(this);
+    this.openDetailsScreen = this.openDetailsScreen.bind(this);
     this.categorySelected = this.categorySelected.bind(this);
     this.state = {
       searchTerm: '',
@@ -61,11 +45,36 @@ class GridScreen extends Component {
   categorySelected(category) {
     this.setState({ selectedCategory: category });
   }
+
+  openDetailsScreen(item) {
+    const route = { screen: 'shoutem.news.DetailsScreen', props: { item } };
+    this.props.navigateToRoute(route);
+  }
+
+  renderItem(item) {
+    const { style } = this.props;
+    if (item.featured) {
+      return renderFeaturedItem(item, style, () => this.openDetailsScreen(item));
+    }
+
+    return (
+      <ListItem
+        key={item.id}
+        description={item.title}
+        image={{ uri: _.get(item, 'image.url') }}
+        leftExtra={moment(item.timeUpdated).fromNow()}
+        id={item.id}
+        style={style.gridColumn}
+        onPressItem={item}
+        onPressMethod={this.openDetailsScreen}
+      />
+    );
+  }
+
   render() {
     const {
       style,
       setNavBarProps,
-      navigateToRoute,
       news,
       searchedNews,
       gridColumns,
@@ -83,15 +92,6 @@ class GridScreen extends Component {
       style: style.navigationBar,
     });
 
-    function openDetailsScreen(item) {
-      const route = { screen: 'shoutem.news.DetailsScreen', props: { item } };
-      navigateToRoute(route);
-    }
-
-    function renderGridItem(item) {
-      return renderNewsItem(item, style, undefined, openDetailsScreen);
-    }
-
     const itemsList = selectedCategory ? (
       <AdvancedGridView
         items={showSearchResults ? searchedNews : news}
@@ -102,7 +102,7 @@ class GridScreen extends Component {
         onSearchTermChanged={this.onSearchChanged}
         queryParams={{ searchTerm, selectedCategory }}
         fetch={this.fetch}
-        renderGridItem={renderGridItem}
+        renderGridItem={this.renderItem}
         style={style.gridView}
       />) : null;
 
