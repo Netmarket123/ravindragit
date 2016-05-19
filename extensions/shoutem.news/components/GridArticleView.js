@@ -5,8 +5,11 @@ import moment from 'moment';
 
 export default class GridArticleView extends React.Component {
   static propTypes = {
+    // Custom GridArticleView style
     style: React.PropTypes.object,
+    // onPress callback function, activated on View press
     onPress: React.PropTypes.func,
+    // Item used to bind data
     article: React.PropTypes.object,
   }
   constructor(props) {

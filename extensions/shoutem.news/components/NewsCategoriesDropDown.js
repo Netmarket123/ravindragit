@@ -14,4 +14,15 @@ export default function NewsCategoriesDropDown({
     selectedItem={selectedCategory}
     style={style}
   />);
+}
+
+NewsCategoriesDropDown.propTypes = {
+  // currently selected category
+  selectedCategory: React.PropTypes.object,
+  // categories array to display
+  categories: React.PropTypes.array,
+  // custom NewsCategoriesDropDown style
+  style: React.PropTypes.object,
+  // callback function when category is selected
+  onCategorySelect: React.PropTypes.func,
 };
