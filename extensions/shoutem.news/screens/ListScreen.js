@@ -20,6 +20,8 @@ import {
   SHOUTEM_CATEGORIES_SCHEME,
 } from '../actions';
 
+const Status = AdvancedListView.Status;
+
 export class ListScreen extends Component {
   static propTypes = {
     settings: React.PropTypes.object, // TODO(Braco) - clean up
@@ -39,6 +41,7 @@ export class ListScreen extends Component {
     super(props, context);
     props.getNewsCategories(props.parentCategoryId, props.settings);
     this.fetchNews = this.fetchNews.bind(this);
+    this.refreshNews = this.refreshNews.bind(this);
     this.openDetailsScreen = this.openDetailsScreen.bind(this);
     this.renderRow = this.renderRow.bind(this);
     this.onSearchChanged = this.onSearchChanged.bind(this);
@@ -46,7 +49,13 @@ export class ListScreen extends Component {
     this.state = {
       searchTerm: '',
       selectedCategory: null,
+      fetchStatus: null,
     };
+  }
+
+  componentWillMount() {
+    this.setState({ fetchStatus: Status.LOADING });
+    this.fetchNews();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -59,6 +68,44 @@ export class ListScreen extends Component {
     this.setState({ searchTerm });
   }
 
+  isSearch(searchTerm) {
+    return Boolean(searchTerm);
+  }
+
+  // renderHeader() {
+  //   return (<Search
+  //     style={props.style.search} // todo - add style to style :/
+  //     searchTerm={this.state.searchTerm}
+  //     onSearchTermChange={this.onSearchTermChanged}
+  //     placeholder={searchPlaceholder}
+  //   />);
+  // }
+  fetchNews() {
+    const { settings, findNews, clearSearch, searchedNews } = this.props;
+    const { selectedCategory, searchTerm } = this.state;
+    let offset;
+    if (
+      !this.isSearch(searchTerm, selectedCategory) &&
+      searchedNews.length > 0
+    ) {
+      clearSearch();
+    }
+
+    findNews(searchTerm, selectedCategory, offset, settings).then(() => {
+      this.setState({ fetchStatus: Status.IDLE });
+    });
+  }
+
+  refreshNews() {
+    this.setState({ fetchStatus: Status.REFRESHING });
+    this.fetchNews();
+  }
+
+  loadMoreNews() {
+    // TODO(Braco) - Redux Api Next
+  }
+
+
   categorySelected(category) {
     this.setState({ selectedCategory: category });
   }
@@ -66,31 +113,6 @@ export class ListScreen extends Component {
   openDetailsScreen(item) {
     const route = { screen: 'shoutem.news.DetailsScreen', props: { item } };
     this.props.navigateToRoute(route);
-  }
-
-  isSearch(searchTerm) {
-    return Boolean(searchTerm);
-  }
-
-  fetchNews(queryParams, isLoadMore) {
-    const { settings, findNews, clearSearch, searchedNews } = this.props;
-    let offset;
-    if (
-      !this.isSearch(queryParams.searchTerm, queryParams.selectedCategory) &&
-      searchedNews.length > 0
-    ) {
-      clearSearch();
-    }
-
-    if (isLoadMore) {
-      offset = 1;
-    }
-
-    if (isLoadMore) {
-      return undefined;
-    }
-
-    return findNews(queryParams.searchTerm, queryParams.selectedCategory, offset, settings);
   }
 
   renderRow(article) {
@@ -116,19 +138,17 @@ export class ListScreen extends Component {
       news,
       searchedNews,
     } = this.props;
-    const { searchTerm, selectedCategory } = this.state;
+    const { searchTerm } = this.state;
     const showSearchResults = this.isSearch(searchTerm);
-    return (<AdvancedListView
-      items={showSearchResults ? searchedNews : news}
-      search
-      infiniteScrolling
-      onRefresh={showSearchResults}
-      onSearchTermChanged={this.onSearchChanged}
-      queryParams={{ searchTerm, selectedCategory }}
-      fetch={this.fetchNews}
-      renderRow={this.renderRow}
-      style={style.listView}
-    />);
+    return (
+      <AdvancedListView
+        items={showSearchResults ? searchedNews : news}
+        onRefresh={this.refreshNews}
+        renderRow={this.renderRow}
+        style={style.listView}
+        status={this.state.fetchStatus}
+      />
+    );
   }
 
   render() {
