@@ -16,7 +16,7 @@ class AdvancedListView extends React.Component {
   constructor(props, context) {
     super(props, context);
     this[HANDLE_LIST_VIEW_REF] = this[HANDLE_LIST_VIEW_REF].bind(this);
-    this.fetch = this.fetch.bind(this);
+    this.handleFetchAction = this.handleFetchAction.bind(this);
     this.renderFooter = this.renderFooter.bind(this);
     this.onEndReached = this.onEndReached.bind(this);
     this.listView = null;
@@ -67,122 +67,63 @@ class AdvancedListView extends React.Component {
   [GET_PROPS_TO_PASS]() {
     const props = this.props;
     // TODO(Braco) - optimise omit/pick
-    const mappedProps = _.omit(props, ['style', 'fetch', 'items']);
+    const mappedProps = {};
 
-    // Default values
-    // display a loader for the first fetching
+    // Override properties
+    // Display a loader for the first fetching
     mappedProps.firstLoader = true;
-    // enable infinite scrolling using touch to load more
-    mappedProps.pagination = true;
-    // enable pull-to-refresh for iOS and touch-to-refresh for Android
-    mappedProps.refreshable = !props.notRefreshable;
-    // enable sections
-    mappedProps.withSections = !!props.renderSectionHeader;
-    // set renderSectionHeader method
-    mappedProps.renderSectionHeader = props.renderSectionHeader;
-    // react native warning
+    // GiftedListView pagination disabled - we use onLoadMore (infinite scrolling)
+    mappedProps.pagination = false;
+    // Default load more threshold
+    mappedProps.onEndReachedThreshold = 40;
+    // React native warning
     // NOTE: In react 0.23 it can't be set to false
     mappedProps.enableEmptySections = true;
-    // handle default onFetch from GiftedListView - used to override some features
-    mappedProps.onFetch = this.fetch;
-    // Tilt color
-    mappedProps.refreshableTintColor = props.style.tiltColor.backgroundColor;
-
 
     // Mapped properties
+    // Enable pull-to-refresh for iOS and touch-to-refresh for Android
+    mappedProps.refreshable = !!props.onRefresh;
+    // Enable sections
+    mappedProps.withSections = !!props.renderSectionHeader;
+    // Set renderSectionHeader method
+    mappedProps.renderSectionHeader = props.renderSectionHeader;
+    // Tilt color
+    mappedProps.refreshableTintColor = props.style.tiltColor.backgroundColor;
     // create headerView function if there is something to render in header
     mappedProps.headerView = props.renderHeader;
-    // we do not want to pass style to GiftedListView, it uses customStyle
+    // We do not want to pass style to GiftedListView, it uses customStyle
     mappedProps.customStyles = props.style.list;
+    // Map render row function
+    mappedProps.renderRow = props.renderRow;
+    // Passed contentContainerStyle
     mappedProps.contentContainerStyle = props.style.listContent;
     // Override GiftedListView renderFooter
     mappedProps.renderFooter = this.renderFooter;
     // Handle on scroll end reach
     mappedProps.onEndReached = this.onEndReached; // TODO(Braco) - status condition
-    // Default load more threshold
-    mappedProps.onEndReachedThreshold = 40;
-
+    // Handle default onFetch from GiftedListView - used to override some features
+    mappedProps.onFetch = this.handleFetchAction;
 
     return mappedProps;
   }
 
   /**
-   * Changes to be applied to fetchStatus
-   * @param diff {{}}
-   */
-  updateFetchStatus(diff) {
-    this.setState({
-      fetchStatus: {
-        ...this.state.fetchStatus,
-        ...diff,
-      },
-    });
-  }
-
-  /**
-   * Identify request type
-   * REFRESH - pull to refresh
-   * LOAD_more - load next items
-   * NEW_REQUEST - first load or query params changed
-   *
-   * @param isLoadMore
-   * @param giftedListViewRef
-   * @returns {Symbol}
-   */
-  detectRequestType(isLoadMore, giftedListViewRef) {
-    if (isLoadMore) {
-      return LOAD_MORE;
-    } else if (giftedListViewRef && giftedListViewRef.state.isRefreshing) {
-      return REFRESH;
-    }
-    return NEW_REQUEST;
-  }
-
-  /**
-   * Updates fetch status
-   *
-   * @param fetching - if fetching new data
-   * @param isLoadMore - if loading more (pagination)
-   */
-  handleFetchAction(fetching, isLoadMore) {
-    // update request number if not load more (request changed)
-    // else increase requestNumber
-    const newRequestNumber = isLoadMore ? this.state.fetchStatus.requestNumber + 1 : 1;
-    this.updateFetchStatus({
-      noMoreItems: false,
-      requestNumber: newRequestNumber,
-      fetching,
-      type: this.detectRequestType(isLoadMore, this.giftedListView),
-    });
-  }
-
-  /**
    * Called by GiftedListView with (page, callback, options) args.
-   * Calls passed fetch to get new items.
-   * By default props.queryParams are used,
-   * in case queryParams change they are passed from nextProps.
+   * Override default GiftedListView behavior.
    *
-   * If fetch returns promise it will be used to notify user.
-   * TODO(Braco) - support collection busy as other mode for notifying user of loading.
-   * Detect if isLoadMore or new data.
    */
-  fetch(page, callback, options, queryParams = this.props.queryParams, isLoadMore) {
-    if (this.props.fetch) {
-      const request = this.props.fetch(queryParams || {}, isLoadMore);
-      // TODO(Braco) - implement RAS mode without promise
-      if (request) {
-        // Request is promise
-        this.handleFetchAction(true, isLoadMore);
-        request.then(() => {
-          this.handleFetchAction(false, isLoadMore);
-        });
-      } else {
-        // Request undefined means end is reached
-        this.updateFetchStatus({
-          noMoreItems: true,
-        });
-      }
+  handleFetchAction() {
+    if (
+      // did parent provide onRefresh handle
+      this.props.onRefresh &&
+      // is pull down to refresh action
+      this.giftedListView && this.giftedListView.state.isRefreshing
+    ) {
+      this.props.onRefresh();
     }
+
+    // GiftedListView actions we do not use anymore:
+    //  - first fetch
   }
 
   /**
@@ -231,16 +172,16 @@ class AdvancedListView extends React.Component {
 
 AdvancedListView.propTypes = {
   queryParams: React.PropTypes.object,
-  notRefreshable: React.PropTypes.bool,
   fetch: React.PropTypes.func,
 
   style: React.PropTypes.object,
   items: React.PropTypes.array,
-  renderSectionHeader: React.PropTypes.bool,
   onLoadMore: React.PropTypes.func,
+  onRefresh: React.PropTypes.func,
   renderRow: React.PropTypes.func,
   renderHeader: React.PropTypes.func,
   renderFooter: React.PropTypes.func,
+  renderSectionHeader: React.PropTypes.bool,
 };
 // style: React.PropTypes.object,
 //   items: React.PropTypes.array,
