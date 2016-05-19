@@ -14,7 +14,11 @@ function createRenderRow(renderGridItem, style, columns) {
       <View style={style.gridRow}>
         {
           items.reduce((gridItems, item) => {
-            gridItems.push(<View key={'gridItem_' + item.id} style={gridItemStyle}>{renderGridItem(item)}</View>);
+            gridItems.push(
+              <View key={`gridItem_' + ${item.id}`} style={gridItemStyle}>
+                {renderGridItem(item)}
+              </View>
+            );
             return gridItems;
           }, [])
         }
