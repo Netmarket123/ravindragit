@@ -2,7 +2,6 @@ import React, {
   View,
 } from 'react-native';
 import _ from 'lodash';
-import Search from '../Search/Search';
 import GiftedListView from 'react-native-gifted-listview';
 import { connectStyle } from 'shoutem/theme';
 import { FullScreenSpinner, PlatformSpinner } from 'shoutem.ui';
@@ -18,7 +17,6 @@ class AdvancedListView extends React.Component {
     super(props, context);
     this[HANDLE_LIST_VIEW_REF] = this[HANDLE_LIST_VIEW_REF].bind(this);
     this.fetch = this.fetch.bind(this);
-    this.onSearchTermChanged = this.onSearchTermChanged.bind(this);
     this.renderFooter = this.renderFooter.bind(this);
     this.onEndReached = this.onEndReached.bind(this);
     this.listView = null;
@@ -30,7 +28,6 @@ class AdvancedListView extends React.Component {
         type: undefined,
         noMoreItems: false,
       },
-      searchTerm: '',
     };
   }
 
@@ -51,22 +48,6 @@ class AdvancedListView extends React.Component {
       this.fetch(undefined, undefined, undefined, nextProps.queryParams);
     }
     return true;
-  }
-
-  componentDidUpdate() {
-    const { searchTerm, fetchStatus } = this.state;
-    // TODO(Braco) - confirm condition
-    if (!searchTerm && fetchStatus.fetching && fetchStatus.type === NEW_REQUEST) {
-      // TODO(Braco) - scrollTo without animation
-      this.listView.scrollTo({ y: _.get(this.props, 'style.header.search.container.height') });
-    }
-  }
-
-  onSearchTermChanged(searchTerm) {
-    this.setState({ searchTerm });
-    if (this.props.onSearchTermChanged) {
-      this.props.onSearchTermChanged(searchTerm);
-    }
   }
 
   /**
@@ -90,7 +71,7 @@ class AdvancedListView extends React.Component {
   [GET_PROPS_TO_PASS]() {
     const props = this.props;
     // TODO(Braco) - optimise omit/pick
-    const mappedProps = _.omit(props, ['style', 'fetch', 'items', 'searchedItems']);
+    const mappedProps = _.omit(props, ['style', 'fetch', 'items']);
 
     // Default values
     // display a loader for the first fetching
@@ -114,7 +95,7 @@ class AdvancedListView extends React.Component {
 
     // Mapped properties
     // create headerView function if there is something to render in header
-    mappedProps.headerView = this.createHeaderView();
+    mappedProps.headerView = props.renderHeader;
     // we do not want to pass style to GiftedListView, it uses customStyle
     mappedProps.customStyles = props.style.list;
     mappedProps.contentContainerStyle = props.style.listContent;
@@ -218,13 +199,10 @@ class AdvancedListView extends React.Component {
   }
 
   /**
-   * Save RN ListView GiftedListViewRef and pass it to parent.
-   * Hide search on first load if search is present.
+   * Save RN ListView GiftedListViewRef
    * @param GiftedListViewRef
    */
   [HANDLE_LIST_VIEW_REF](GiftedListViewRef) {
-    const props = this.props;
-
     if (!GiftedListViewRef) {
       return;
     }
@@ -233,41 +211,6 @@ class AdvancedListView extends React.Component {
     this.listView = GiftedListViewRef.refs.listview;
   }
 
-  /**
-   * Creates headerView for GiftedListView.
-   * Used to prevent header render if nothing in header.
-   * @returns {*}
-   */
-  createHeaderView() {
-    const {
-      style: listViewStyle,
-      renderHeader,
-      search,
-      searchPlaceholder,
-      items,
-    } = this.props;
-    const style = listViewStyle.header;
-
-    if (!search && !renderHeader) {
-      // prevent header rendering if nothing to render
-      return undefined;
-    }
-
-    const searchComponent = search && items.length > 0 ?
-      (<Search
-        style={style.search}
-        searchTerm={this.state.searchTerm}
-        onSearchTermChange={this.onSearchTermChanged}
-        placeholder={searchPlaceholder}
-      />) : null;
-
-    return function headerView() {
-      return (<View style={style.container}>
-        {searchComponent}
-        {renderHeader ? renderHeader() : null}
-      </View>);
-    };
-  }
 
   renderFooter() {
     const fetchStatus = this.state.fetchStatus;
@@ -301,9 +244,6 @@ class AdvancedListView extends React.Component {
 
 AdvancedListView.propTypes = {
   style: React.PropTypes.object,
-  search: React.PropTypes.bool,
-  searchPlaceholder: React.PropTypes.string,
-  onSearchTermChanged: React.PropTypes.func,
   queryParams: React.PropTypes.object,
   notRefreshable: React.PropTypes.bool,
   sections: React.PropTypes.bool,
@@ -324,12 +264,12 @@ AdvancedListView.propTypes = {
 //   renderFooter: React.PropTypes.func,
 //   onLoadMore: React.PropTypes.func,
 //   onRefresh: React.PropTypes.func,
+// status
 
 
 const style = {
   header: {
     container: {},
-    search: {},
   },
   list: {},
   listContent: {},
