@@ -7,11 +7,28 @@ import { FullScreenSpinner, PlatformSpinner } from 'shoutem.ui';
 
 const GET_PROPS_TO_PASS = Symbol('getPropsToPass');
 const HANDLE_LIST_VIEW_REF = Symbol('handleListViewRef');
-const LOADING_MORE_DATA = Symbol('loadingMoreData');
-const REFRESHING_DATA = Symbol('refreshingData');
-const RESETTING_DATA = Symbol('resettingData');
+
+const Status = {
+  LOADING: 'loading',
+  LOADING_NEXT: 'loadingNext',
+  REFRESHING: 'refreshing',
+  ERROR: 'error',
+  IDLE: 'idle',
+};
 
 class AdvancedListView extends React.Component {
+  static propTypes = {
+    status: React.PropTypes.string,
+    style: React.PropTypes.object,
+    items: React.PropTypes.array,
+    onLoadMore: React.PropTypes.func,
+    onRefresh: React.PropTypes.func,
+    renderRow: React.PropTypes.func,
+    renderHeader: React.PropTypes.func,
+    renderFooter: React.PropTypes.func,
+    renderSectionHeader: React.PropTypes.bool,
+  };
+  static Status = Status;
   constructor(props, context) {
     super(props, context);
     this[HANDLE_LIST_VIEW_REF] = this[HANDLE_LIST_VIEW_REF].bind(this);
@@ -130,13 +147,13 @@ class AdvancedListView extends React.Component {
     let spinner;
 
     switch (status) {
-      case RESETTING_DATA:
+      case Status.LOADING:
         spinner = <FullScreenSpinner style={style.newDataSpinner} />;
         break;
-      case LOADING_MORE_DATA:
+      case Status.LOADING_NEXT:
         spinner = <View style={style.loadMoreSpinner}><PlatformSpinner /></View>;
         break;
-      case REFRESHING_DATA:
+      case Status.REFRESHING:
       default:
         spinner = null;
     }
@@ -157,28 +174,6 @@ class AdvancedListView extends React.Component {
     />);
   }
 }
-
-AdvancedListView.propTypes = {
-  status: React.PropTypes.string,
-  style: React.PropTypes.object,
-  items: React.PropTypes.array,
-  onLoadMore: React.PropTypes.func,
-  onRefresh: React.PropTypes.func,
-  renderRow: React.PropTypes.func,
-  renderHeader: React.PropTypes.func,
-  renderFooter: React.PropTypes.func,
-  renderSectionHeader: React.PropTypes.bool,
-};
-// style: React.PropTypes.object,
-//   items: React.PropTypes.array,
-//   renderRow: React.PropTypes.func,
-//   renderHeader: React.PropTypes.func,
-//   renderSectionHeader: React.PropTypes.func,
-//   renderFooter: React.PropTypes.func,
-//   onLoadMore: React.PropTypes.func,
-//   onRefresh: React.PropTypes.func,
-// status
-
 
 const style = {
   header: {
