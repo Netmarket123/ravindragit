@@ -12,26 +12,31 @@ export default class ListArticleView extends React.Component {
     // Item used to bind data
     article: React.PropTypes.object,
   }
+
   constructor(props) {
     super(props);
     this.onPress = this.onPress.bind(this);
   }
+
   onPress() {
     this.props.onPress(this.props.article);
   }
+
   render() {
     const {
       article,
       style,
     } = this.props;
 
-    return (<ListItem
-      description={article.title}
-      image={{ uri: _.get(article, 'image.url') }}
-      leftExtra={moment(article.timeUpdated).fromNow()}
-      id={article.id}
-      style={style}
-      onPressMethod={this.onPress}
-    />);
+    return (
+      <ListItem
+        description={article.title}
+        image={{ uri: _.get(article, 'image.url') }}
+        leftExtra={moment(article.timeUpdated).fromNow()}
+        id={article.id}
+        style={style}
+        onPressMethod={this.onPress}
+      />
+    );
   }
 }

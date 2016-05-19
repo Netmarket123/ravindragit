@@ -12,28 +12,33 @@ export default class GridArticleView extends React.Component {
     // Item used to bind data
     article: React.PropTypes.object,
   }
+
   constructor(props) {
     super(props);
     this.onPress = this.onPress.bind(this);
   }
+
   onPress() {
     this.props.onPress(this.props.article);
   }
+
   render() {
     const {
       article,
       style,
     } = this.props;
 
-    return (<ListItem
-      key={article.id}
-      description={article.title}
-      image={{ uri: _.get(article, 'image.url') }}
-      leftExtra={moment(article.timeUpdated).fromNow()}
-      id={article.id}
-      style={style}
-      onPressItem={article}
-      onPressMethod={this.onPress}
-    />);
+    return (
+      <ListItem
+        key={article.id}
+        description={article.title}
+        image={{ uri: _.get(article, 'image.url') }}
+        leftExtra={moment(article.timeUpdated).fromNow()}
+        id={article.id}
+        style={style}
+        onPressItem={article}
+        onPressMethod={this.onPress}
+      />
+    );
   }
 }

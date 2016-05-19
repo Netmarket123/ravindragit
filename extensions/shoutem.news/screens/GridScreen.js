@@ -11,6 +11,7 @@ class GridScreen extends ListScreen {
   static propTypes = Object.assign({}, ListScreen.propTypes, {
     gridColumns: React.PropTypes.number,
   });
+
   constructor(props, context) {
     super(props, context);
     this.renderItem = this.renderItem.bind(this);
@@ -19,18 +20,22 @@ class GridScreen extends ListScreen {
   renderItem(article) {
     const { style } = this.props;
     if (article.featured) {
-      return (<FeaturedArticleView
-        article={article}
-        style={style.featuredItem}
-        onPress={this.openDetailsScreen}
-      />);
+      return (
+        <FeaturedArticleView
+          article={article}
+          style={style.featuredItem}
+          onPress={this.openDetailsScreen}
+        />
+      );
     }
 
-    return (<GridArticleView
-      article={article}
-      style={style.gridColumn}
-      onPressMethod={this.openDetailsScreen}
-    />);
+    return (
+      <GridArticleView
+        article={article}
+        style={style.gridColumn}
+        onPressMethod={this.openDetailsScreen}
+      />
+    );
   }
 
   renderArticles() {
@@ -40,20 +45,18 @@ class GridScreen extends ListScreen {
       searchedNews,
       gridColumns,
     } = this.props;
-    const { searchTerm, selectedCategory } = this.state;
-    const showSearchResults = this.isSearch(searchTerm);
-    return (<AdvancedGridView
-      items={showSearchResults ? searchedNews : news}
-      gridColumns={gridColumns}
-      search
-      infiniteScrolling
-      notRefreshable={showSearchResults}
-      onSearchTermChanged={this.onSearchChanged}
-      queryParams={{ searchTerm, selectedCategory }}
-      fetch={this.fetchNews}
-      renderGridItem={this.renderItem}
-      style={style.gridView}
-    />);
+    const { searchTerm } = this.state;
+    const isSearchActive = this.isSearch(searchTerm);
+    return (
+      <AdvancedGridView
+        gridColumns={gridColumns}
+        items={isSearchActive ? searchedNews : news}
+        renderGridItem={this.renderItem}
+        onRefresh={this.refreshNews}
+        status={this.state.fetchStatus}
+        style={style.gridView}
+      />
+    );
   }
 }
 

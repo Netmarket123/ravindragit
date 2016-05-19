@@ -7,13 +7,15 @@ export default function NewsCategoriesDropDown({
   onCategorySelect,
   style,
 }) {
-  return (<DropDownMenu
-    items={categories}
-    bindings={{ text: 'name', value: 'id' }}
-    onItemSelected={onCategorySelect}
-    selectedItem={selectedCategory}
-    style={style}
-  />);
+  return (
+    <DropDownMenu
+      items={categories}
+      bindings={{ text: 'name', value: 'id' }}
+      onItemSelected={onCategorySelect}
+      selectedItem={selectedCategory}
+      style={style}
+    />
+  );
 }
 
 NewsCategoriesDropDown.propTypes = {

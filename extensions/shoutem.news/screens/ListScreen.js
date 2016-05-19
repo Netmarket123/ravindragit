@@ -19,6 +19,7 @@ import {
 import {
   DataSchemas,
   EXT,
+  Screens,
 } from '../const.js';
 
 const Status = AdvancedListView.Status;
@@ -111,26 +112,30 @@ export class ListScreen extends Component {
     this.setState({ selectedCategory: category });
   }
 
-  openDetailsScreen(item) {
-    const route = { screen: 'shoutem.news.DetailsScreen', props: { item } };
+  openDetailsScreen(article) {
+    const route = { screen: Screens.DetailsScreen, props: { article } };
     this.props.navigateToRoute(route);
   }
 
   renderRow(article) {
     const { style } = this.props;
     if (article.featured) {
-      return (<FeaturedArticleView
-        article={article}
-        style={style.featuredItem}
-        onPress={this.openDetailsScreen}
-      />);
+      return (
+        <FeaturedArticleView
+          article={article}
+          style={style.featuredItem}
+          onPress={this.openDetailsScreen}
+        />
+      );
     }
 
-    return (<ListArticleView
-      article={article}
-      style={style.listRow}
-      onPress={this.openDetailsScreen}
-    />);
+    return (
+      <ListArticleView
+        article={article}
+        style={style.listRow}
+        onPress={this.openDetailsScreen}
+      />
+    );
   }
 
   renderArticles() {
@@ -140,14 +145,14 @@ export class ListScreen extends Component {
       searchedNews,
     } = this.props;
     const { searchTerm } = this.state;
-    const showSearchResults = this.isSearch(searchTerm);
+    const isSearchActive = this.isSearch(searchTerm);
     return (
       <AdvancedListView
-        items={showSearchResults ? searchedNews : news}
-        onRefresh={this.refreshNews}
+        items={isSearchActive ? searchedNews : news}
         renderRow={this.renderRow}
-        style={style.listView}
+        onRefresh={this.refreshNews}
         status={this.state.fetchStatus}
+        style={style.listView}
       />
     );
   }
