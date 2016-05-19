@@ -16,7 +16,7 @@ const Status = {
   IDLE: 'idle',
 };
 
-class AdvancedListView extends React.Component {
+class ListView extends React.Component {
   static propTypes = {
     status: React.PropTypes.string,
     style: React.PropTypes.object,
@@ -191,4 +191,4 @@ const style = {
   },
 };
 
-export default connectStyle('shoutem.ui.AdvancedListView', style)(AdvancedListView);
+export default connectStyle('shoutem.ui.ListView', style)(ListView);

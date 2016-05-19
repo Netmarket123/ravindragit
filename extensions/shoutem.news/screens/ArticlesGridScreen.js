@@ -1,7 +1,7 @@
 import React from 'react-native';
 import { connect } from 'react-redux';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
-import { AdvancedGridView } from 'shoutem.ui';
+import { GridView } from 'shoutem.ui';
 import FeaturedArticleView from '../components/FeaturedArticleView';
 import GridArticleView from '../components/GridArticleView';
 import {
@@ -50,7 +50,7 @@ class ArticlesGridScreen extends ArticlesListScreen {
     } = this.props;
     const { searchTerm } = this.state;
     return (
-      <AdvancedGridView
+      <GridView
         gridColumns={gridColumns}
         items={searchTerm ? searchedNews : news}
         renderGridItem={this.renderItem}

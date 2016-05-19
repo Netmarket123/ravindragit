@@ -44,7 +44,7 @@ function groupItems(items, itemsPerGroup = DEFAULT_ITEMS_GROUP_SIZE) {
   }, [featuredItemsGroup]);
 }
 
-function AdvancedGridView(props) {
+function GridView(props) {
   const columns = props.gridColumns || DEFAULT_ITEMS_GROUP_SIZE;
   return (
     <AdvancedListView
@@ -55,7 +55,7 @@ function AdvancedGridView(props) {
   );
 }
 
-AdvancedGridView.propTypes = Object.assign({}, AdvancedListView.propTypes, {
+GridView.propTypes = Object.assign({}, AdvancedListView.propTypes, {
   gridColumns: React.PropTypes.number,
   renderGridItem: React.PropTypes.func,
 });
@@ -77,4 +77,4 @@ const style = {
   },
 };
 
-export default connectStyle('shoutem.ui.AdvancedGridView', style)(AdvancedGridView);
+export default connectStyle('shoutem.ui.GridView', style)(GridView);

@@ -62,7 +62,7 @@ Details.propTypes = {
 };
 
 function ArticleDetailsScreen({
-  item,
+  article,
   style,
   bottomContentOffset: bottomContentOffsetProp,
 }) {
@@ -79,9 +79,9 @@ function ArticleDetailsScreen({
       >
         <NewsGridBox
           style={style.headline}
-          headline={item.title}
-          newsDetails={[item.author, 'test']}
-          backgroundImage={{ uri: _.get(item, 'image.url'), width: 200, height: 200 }}
+          headline={article.title}
+          newsDetails={[article.author, 'test']}
+          backgroundImage={{ uri: _.get(article, 'image.url'), width: 200, height: 200 }}
         />
       </Animated.View>
       <ScrollView
@@ -90,14 +90,14 @@ function ArticleDetailsScreen({
         scrollEventThrottle={16}
         onScroll={getScrollHandle(scrollY)}
       >
-        <Details item={item} style={detailsStyle} />
+        <Details item={article} style={detailsStyle} />
       </ScrollView>
     </View>
   );
 }
 
 ArticleDetailsScreen.propTypes = {
-  item: React.PropTypes.object,
+  article: React.PropTypes.object,
   style: React.PropTypes.object,
   bottomContentOffset: React.PropTypes.number,
 };

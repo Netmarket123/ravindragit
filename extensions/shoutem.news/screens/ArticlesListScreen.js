@@ -5,7 +5,7 @@ import React, {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
-import { AdvancedListView } from 'shoutem.ui';
+import { ListView } from 'shoutem.ui';
 import ListArticleView from '../components/ListArticleView';
 import FeaturedArticleView from '../components/FeaturedArticleView';
 import NewsCategoriesDropDown from '../components/NewsCategoriesDropDown';
@@ -22,7 +22,7 @@ import {
   Screens,
 } from '../const.js';
 
-const Status = AdvancedListView.Status;
+const Status = ListView.Status;
 
 export class ArticlesListScreen extends Component {
   static propTypes = {
@@ -139,7 +139,7 @@ export class ArticlesListScreen extends Component {
     } = this.props;
     const { searchTerm } = this.state;
     return (
-      <AdvancedListView
+      <ListView
         items={searchTerm ? searchedNews : news}
         renderRow={this.renderRow}
         onRefresh={this.refreshNews}
