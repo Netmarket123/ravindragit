@@ -2,24 +2,24 @@ import {
   navigateTo,
 } from 'shoutem/navigation';
 import { find, storage, collection } from '@shoutem/redux-api-state';
-
-export const SHOUTEM_NEWS_SCHEME = 'shoutem.news.articles';
-export const SHOUTEM_IMAGES_SCHEME = 'shoutem.core.image-attachments';
-export const SHOUTEM_CATEGORIES_SCHEME = 'shoutem.core.categories';
+import {
+  DataSchemas,
+  Screens,
+} from './const.js';
 
 export const reducers = {
-  news: storage(SHOUTEM_NEWS_SCHEME),
-  categories: storage(SHOUTEM_CATEGORIES_SCHEME),
-  newsImages: storage(SHOUTEM_IMAGES_SCHEME),
-  newsCategories: collection(SHOUTEM_CATEGORIES_SCHEME, 'newsCategories'),
-  latestNews: collection(SHOUTEM_NEWS_SCHEME, 'latestNews'),
-  searchedNews: collection(SHOUTEM_NEWS_SCHEME, 'searchedNews'),
+  news: storage(DataSchemas.Articles),
+  categories: storage(DataSchemas.Categories),
+  newsImages: storage(DataSchemas.Images),
+  newsCategories: collection(DataSchemas.Categories, 'newsCategories'),
+  latestNews: collection(DataSchemas.Articles, 'latestNews'),
+  searchedNews: collection(DataSchemas.Articles, 'searchedNews'),
 };
 
 export function openListScreen(settings = {
   textCentric: false,
 }) {
-  const nextScreenName = `shoutem.news.${settings.textCentric ? 'ListScreen' : 'GridScreen'}`;
+  const nextScreenName = settings.textCentric ? Screens.ListScreen : Screens.GridScreen;
 
   const route = {
     screen: nextScreenName,
@@ -52,11 +52,11 @@ export function findNews(searchTerm, category, pageOffset = 0, settings) {
   return find(
     {
       // TODO(Braco) - use appID dynamically (the right way)
-      endpoint: `${settings.endpoint}/v1/apps/${settings.appId}/resources/${SHOUTEM_NEWS_SCHEME}?` +
+      endpoint: `${settings.endpoint}/v1/apps/${settings.appId}/resources/${DataSchemas.Articles}?` +
       `include=image${query}${offset}&page[limit]=8`,
       headers: { 'Content-Type': 'application/json' },
     },
-    SHOUTEM_NEWS_SCHEME,
+    DataSchemas.Articles,
     collectionName
   );
 }
@@ -66,10 +66,10 @@ export function getNewsCategories(parent = 'null', settings) {
     {
       // TODO(Braco) - use appID dynamically (the right way)
       endpoint: `${settings.endpoint}/v1/apps/${settings.appId}/categories` +
-      `?filter[parent]=${parent}&filter[schema]=${SHOUTEM_NEWS_SCHEME}`,
+      `?filter[parent]=${parent}&filter[schema]=${DataSchemas.Articles}`,
       headers: { 'Content-Type': 'application/json' },
     },
-    SHOUTEM_CATEGORIES_SCHEME,
+    DataSchemas.Categories,
     'newsCategories'
   );
 }

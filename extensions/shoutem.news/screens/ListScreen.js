@@ -11,14 +11,15 @@ import FeaturedArticleView from '../components/FeaturedArticleView';
 import NewsCategoriesDropDown from '../components/NewsCategoriesDropDown';
 import { bindActionCreators } from 'redux';
 import { clear, ReduxApiStateDenormalizer } from '@shoutem/redux-api-state';
-import { actions, SHOUTEM_NEWS_EXT_NAME } from '../index';
+import { actions } from '../index';
 import { navigateTo } from 'shoutem/navigation';
 import {
   getNewsCategories,
-  SHOUTEM_NEWS_SCHEME,
-  SHOUTEM_IMAGES_SCHEME,
-  SHOUTEM_CATEGORIES_SCHEME,
 } from '../actions';
+import {
+  DataSchemas,
+  EXT,
+} from '../const.js';
 
 const Status = AdvancedListView.Status;
 
@@ -222,32 +223,32 @@ const style = {
 };
 
 const schemasMap = {
-  [SHOUTEM_NEWS_SCHEME]: '["shoutem.news"]news',
-  [SHOUTEM_IMAGES_SCHEME]: '["shoutem.news"]newsImages',
-  'shoutem.core.applications': '["shoutem.news"]applications',
-  'shoutem.core.categories': '["shoutem.news"]categories',
+  [DataSchemas.Articles]: '["shoutem.news"].news',
+  [DataSchemas.Images]: '["shoutem.news"].newsImages',
+  'shoutem.core.applications': '["shoutem.news"].applications',
+  [DataSchemas.Categories]: '["shoutem.news"].categories',
 };
 
 export function newsMapStateToProps(state) {
   const denormalizer = new ReduxApiStateDenormalizer(() => state, schemasMap);
   return {
     news: denormalizer.denormalizeCollection(
-      state[SHOUTEM_NEWS_EXT_NAME].latestNews, SHOUTEM_NEWS_SCHEME
+      state[EXT].latestNews, DataSchemas.Articles
     ),
     searchedNews: denormalizer.denormalizeCollection(
-      state[SHOUTEM_NEWS_EXT_NAME].searchedNews, SHOUTEM_NEWS_SCHEME
+      state[EXT].searchedNews, DataSchemas.Articles
     ),
     categories: denormalizer.denormalizeCollection(
-      state[SHOUTEM_NEWS_EXT_NAME].newsCategories,
-      SHOUTEM_CATEGORIES_SCHEME,
-      { [SHOUTEM_CATEGORIES_SCHEME]: state[SHOUTEM_NEWS_EXT_NAME].categories }
+      state[EXT].newsCategories,
+      DataSchemas.Categories,
+      { [DataSchemas.Categories]: state[EXT].categories }
     ),
   };
 }
 
 export function newsMapDispatchToProps(dispatch) {
   return {
-    clearSearch: bindActionCreators(() => clear(SHOUTEM_NEWS_SCHEME, 'searchedNews'), dispatch),
+    clearSearch: bindActionCreators(() => clear(DataSchemas.Articles, 'searchedNews'), dispatch),
     findNews: bindActionCreators(actions.findNews, dispatch),
     navigateToRoute: bindActionCreators(navigateTo, dispatch),
     getNewsCategories: bindActionCreators(getNewsCategories, dispatch),
