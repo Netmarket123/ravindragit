@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
 import { AdvancedListView } from 'shoutem.ui';
 import ArticleListItem from '../components/ArticleListItem';
-import ArticleFeaturedItem from '../components/ArticleFeaturedItem';
+import ArticleFeaturedView from '../components/ArticleFeaturedView';
 import NewsCategories from '../components/NewsCategories';
 import { bindActionCreators } from 'redux';
 import { clear, ReduxApiStateDenormalizer } from '@shoutem/redux-api-state';
@@ -118,7 +118,7 @@ export class ListScreen extends Component {
   renderRow(article) {
     const { style } = this.props;
     if (article.featured) {
-      return (<ArticleFeaturedItem
+      return (<ArticleFeaturedView
         article={article}
         style={style}
         onPress={this.openDetailsScreen}

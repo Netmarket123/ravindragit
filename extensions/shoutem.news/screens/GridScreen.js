@@ -2,7 +2,7 @@ import React from 'react-native';
 import { connect } from 'react-redux';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
 import { AdvancedGridView } from 'shoutem.ui';
-import ArticleFeaturedItem from '../components/ArticleFeaturedItem';
+import ArticleFeaturedView from '../components/ArticleFeaturedView';
 import ArticleGridItem from '../components/ArticleGridItem';
 import { ListScreen, newsMapStateToProps, newsMapDispatchToProps } from './ListScreen';
 
@@ -19,7 +19,7 @@ class GridScreen extends ListScreen {
   renderItem(article) {
     const { style } = this.props;
     if (article.featured) {
-      return (<ArticleFeaturedItem
+      return (<ArticleFeaturedView
         article={article}
         style={style}
         onPress={this.openDetailsScreen}
