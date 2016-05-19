@@ -77,11 +77,13 @@ class AdvancedListView extends React.Component {
     // enable pull-to-refresh for iOS and touch-to-refresh for Android
     mappedProps.refreshable = !props.notRefreshable;
     // enable sections
-    mappedProps.withSections = props.sections;
+    mappedProps.withSections = !!props.renderSectionHeader;
+    // set renderSectionHeader method
+    mappedProps.renderSectionHeader = props.renderSectionHeader;
     // react native warning
     // NOTE: In react 0.23 it can't be set to false
     mappedProps.enableEmptySections = true;
-    // handle default onFetch
+    // handle default onFetch from GiftedListView - used to override some features
     mappedProps.onFetch = this.fetch;
     // Tilt color
     mappedProps.refreshableTintColor = props.style.tiltColor.backgroundColor;
@@ -230,11 +232,11 @@ class AdvancedListView extends React.Component {
 AdvancedListView.propTypes = {
   queryParams: React.PropTypes.object,
   notRefreshable: React.PropTypes.bool,
-  sections: React.PropTypes.bool,
   fetch: React.PropTypes.func,
 
   style: React.PropTypes.object,
   items: React.PropTypes.array,
+  renderSectionHeader: React.PropTypes.bool,
   onLoadMore: React.PropTypes.func,
   renderRow: React.PropTypes.func,
   renderHeader: React.PropTypes.func,
