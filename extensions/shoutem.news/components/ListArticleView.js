@@ -30,7 +30,7 @@ export default class ListArticleView extends React.Component {
       image={{ uri: _.get(article, 'image.url') }}
       leftExtra={moment(article.timeUpdated).fromNow()}
       id={article.id}
-      style={style.listRow}
+      style={style}
       onPressMethod={this.onPress}
     />);
   }

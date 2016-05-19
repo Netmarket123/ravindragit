@@ -31,7 +31,7 @@ export default class GridArticleView extends React.Component {
       image={{ uri: _.get(article, 'image.url') }}
       leftExtra={moment(article.timeUpdated).fromNow()}
       id={article.id}
-      style={style.gridColumn}
+      style={style}
       onPressItem={article}
       onPressMethod={this.onPress}
     />);

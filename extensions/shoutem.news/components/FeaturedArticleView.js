@@ -36,7 +36,7 @@ export default class FeaturedArticleView extends React.Component {
         <NewsGridBox
           backgroundImage={{ uri: _.get(article, 'image.url') }}
           headline={article.title.toUpperCase()}
-          style={style.featuredItem}
+          style={style}
         />
       </TouchableOpacity>
     );

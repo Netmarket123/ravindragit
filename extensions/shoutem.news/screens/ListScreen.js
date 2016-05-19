@@ -120,14 +120,14 @@ export class ListScreen extends Component {
     if (article.featured) {
       return (<FeaturedArticleView
         article={article}
-        style={style}
+        style={style.featuredItem}
         onPress={this.openDetailsScreen}
       />);
     }
 
     return (<ListArticleView
       article={article}
-      style={style}
+      style={style.listRow}
       onPress={this.openDetailsScreen}
     />);
   }

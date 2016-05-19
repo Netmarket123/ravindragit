@@ -21,14 +21,14 @@ class GridScreen extends ListScreen {
     if (article.featured) {
       return (<FeaturedArticleView
         article={article}
-        style={style}
+        style={style.featuredItem}
         onPress={this.openDetailsScreen}
       />);
     }
 
     return (<GridArticleView
       article={article}
-      style={style}
+      style={style.gridColumn}
       onPressMethod={this.openDetailsScreen}
     />);
   }
