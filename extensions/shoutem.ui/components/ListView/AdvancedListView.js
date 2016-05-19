@@ -54,12 +54,8 @@ class AdvancedListView extends React.Component {
    * Triggered when list end threshold reached (scrolled to)
    */
   onEndReached() {
-    if (this.props.onEndReached) {
-      this.props.onEndReached();
-      return;
-    }
-    if (this.props.infiniteScrolling) {
-      this.loadMore();
+    if (this.props.onLoadMore) {
+      this.onLoadMore();
     }
   }
 
@@ -89,8 +85,6 @@ class AdvancedListView extends React.Component {
     mappedProps.onFetch = this.fetch;
     // Tilt color
     mappedProps.refreshableTintColor = props.style.tiltColor.backgroundColor;
-    // Default load more threshold
-    mappedProps.onEndReachedThreshold = props.onEndReachedThreshold || 40;
 
 
     // Mapped properties
@@ -102,7 +96,10 @@ class AdvancedListView extends React.Component {
     // Override GiftedListView renderFooter
     mappedProps.renderFooter = this.renderFooter;
     // Handle on scroll end reach
-    mappedProps.onEndReached = this.state.fetchStatus.noMoreItems ? null : this.onEndReached;
+    mappedProps.onEndReached = this.onEndReached; // TODO(Braco) - status condition
+    // Default load more threshold
+    mappedProps.onEndReachedThreshold = 40;
+
 
     return mappedProps;
   }
@@ -187,18 +184,6 @@ class AdvancedListView extends React.Component {
   }
 
   /**
-   * Used to load more data.
-   * It is called always.
-   */
-  loadMore() {
-    const { requestNumber, fetching } = this.state.fetchStatus;
-    if (requestNumber > 0 && !fetching && this.props.items.length > 0) {
-      // Load more if not first request, if not already fetching and if not empty list
-      this.fetch(undefined, undefined, undefined, undefined, true);
-    }
-  }
-
-  /**
    * Save RN ListView GiftedListViewRef
    * @param GiftedListViewRef
    */
@@ -243,18 +228,17 @@ class AdvancedListView extends React.Component {
 }
 
 AdvancedListView.propTypes = {
-  style: React.PropTypes.object,
   queryParams: React.PropTypes.object,
   notRefreshable: React.PropTypes.bool,
   sections: React.PropTypes.bool,
+  fetch: React.PropTypes.func,
+
+  style: React.PropTypes.object,
+  items: React.PropTypes.array,
+  onLoadMore: React.PropTypes.func,
   renderRow: React.PropTypes.func,
   renderHeader: React.PropTypes.func,
-  renderFooter: React.PropTypes.bool,
-  fetch: React.PropTypes.func,
-  items: React.PropTypes.array,
-  infiniteScrolling: React.PropTypes.bool,
-  onEndReachedThreshold: React.PropTypes.number,
-  onEndReached: React.PropTypes.func,
+  renderFooter: React.PropTypes.func,
 };
 // style: React.PropTypes.object,
 //   items: React.PropTypes.array,
