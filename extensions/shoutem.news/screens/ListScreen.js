@@ -6,7 +6,7 @@ import React, {
 import { connect } from 'react-redux';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
 import { AdvancedListView } from 'shoutem.ui';
-import ArticleListItem from '../components/ArticleListItem';
+import ListArticleView from '../components/ListArticleView';
 import ArticleFeaturedView from '../components/ArticleFeaturedView';
 import NewsCategoriesDropDown from '../components/NewsCategoriesDropDown';
 import { bindActionCreators } from 'redux';
@@ -125,7 +125,7 @@ export class ListScreen extends Component {
       />);
     }
 
-    return (<ArticleListItem
+    return (<ListArticleView
       article={article}
       style={style}
       onPress={this.openDetailsScreen}

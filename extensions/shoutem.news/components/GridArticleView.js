@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { ListItem } from 'shoutem.ui';
 import moment from 'moment';
 
-export default class ArticleGridItem extends React.Component {
+export default class GridArticleView extends React.Component {
   static propTypes = {
     style: React.PropTypes.object,
     onPress: React.PropTypes.func,

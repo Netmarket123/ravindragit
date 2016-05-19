@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
 import { AdvancedGridView } from 'shoutem.ui';
 import ArticleFeaturedView from '../components/ArticleFeaturedView';
-import ArticleGridItem from '../components/ArticleGridItem';
+import GridArticleView from '../components/GridArticleView';
 import { ListScreen, newsMapStateToProps, newsMapDispatchToProps } from './ListScreen';
 
 
@@ -26,7 +26,7 @@ class GridScreen extends ListScreen {
       />);
     }
 
-    return (<ArticleGridItem
+    return (<GridArticleView
       article={article}
       style={style}
       onPressMethod={this.openDetailsScreen}

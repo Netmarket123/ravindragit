@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { ListItem } from 'shoutem.ui';
 import moment from 'moment';
 
-export default class ArticleListItem extends React.Component {
+export default class ListArticleView extends React.Component {
   static propTypes = {
     style: React.PropTypes.object,
     onPress: React.PropTypes.func,
@@ -28,7 +28,6 @@ export default class ArticleListItem extends React.Component {
       leftExtra={moment(article.timeUpdated).fromNow()}
       id={article.id}
       style={style.listRow}
-      onPressItem={article}
       onPressMethod={this.onPress}
     />);
   }
