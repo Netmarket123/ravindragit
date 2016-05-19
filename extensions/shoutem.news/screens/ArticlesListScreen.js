@@ -24,7 +24,7 @@ import {
 
 const Status = AdvancedListView.Status;
 
-export class ListScreen extends Component {
+export class ArticlesListScreen extends Component {
   static propTypes = {
     settings: React.PropTypes.object, // TODO(Braco) - clean up
     findNews: React.PropTypes.func,
@@ -70,10 +70,6 @@ export class ListScreen extends Component {
     this.setState({ searchTerm });
   }
 
-  isSearch(searchTerm) {
-    return Boolean(searchTerm);
-  }
-
   // renderHeader() {
   //   return (<Search
   //     style={props.style.search} // todo - add style to style :/
@@ -86,10 +82,7 @@ export class ListScreen extends Component {
     const { settings, findNews, clearSearch, searchedNews } = this.props;
     const { selectedCategory, searchTerm } = this.state;
     let offset;
-    if (
-      !this.isSearch(searchTerm, selectedCategory) &&
-      searchedNews.length > 0
-    ) {
+    if (searchTerm && searchedNews.length > 0) {
       clearSearch();
     }
 
@@ -113,7 +106,7 @@ export class ListScreen extends Component {
   }
 
   openDetailsScreen(article) {
-    const route = { screen: Screens.DetailsScreen, props: { article } };
+    const route = { screen: Screens.ArticleDetailsScreen, props: { article } };
     this.props.navigateToRoute(route);
   }
 
@@ -145,10 +138,9 @@ export class ListScreen extends Component {
       searchedNews,
     } = this.props;
     const { searchTerm } = this.state;
-    const isSearchActive = this.isSearch(searchTerm);
     return (
       <AdvancedListView
-        items={isSearchActive ? searchedNews : news}
+        items={searchTerm ? searchedNews : news}
         renderRow={this.renderRow}
         onRefresh={this.refreshNews}
         status={this.state.fetchStatus}
@@ -244,9 +236,7 @@ export function newsMapStateToProps(state) {
       state[EXT].searchedNews, DataSchemas.Articles
     ),
     categories: denormalizer.denormalizeCollection(
-      state[EXT].newsCategories,
-      DataSchemas.Categories,
-      { [DataSchemas.Categories]: state[EXT].categories }
+      state[EXT].newsCategories, DataSchemas.Categories
     ),
   };
 }
@@ -261,5 +251,5 @@ export function newsMapDispatchToProps(dispatch) {
 }
 
 export default connect(newsMapStateToProps, newsMapDispatchToProps)(
-  connectStyle('shoutem.news.ListScreen', style)(ListScreen)
+  connectStyle('shoutem.news.ListScreen', style)(ArticlesListScreen)
 );

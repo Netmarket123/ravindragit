@@ -19,7 +19,8 @@ export const reducers = {
 export function openListScreen(settings = {
   textCentric: false,
 }) {
-  const nextScreenName = settings.textCentric ? Screens.ListScreen : Screens.GridScreen;
+  const nextScreenName = settings.textCentric ?
+    Screens.ArticlesListScreen : Screens.ArticlesGridScreen;
 
   const route = {
     screen: nextScreenName,
@@ -52,8 +53,9 @@ export function findNews(searchTerm, category, pageOffset = 0, settings) {
   return find(
     {
       // TODO(Braco) - use appID dynamically (the right way)
-      endpoint: `${settings.endpoint}/v1/apps/${settings.appId}/resources/${DataSchemas.Articles}?` +
-      `include=image${query}${offset}&page[limit]=8`,
+      endpoint:
+        `${settings.endpoint}/v1/apps/${settings.appId}/resources/${DataSchemas.Articles}?` +
+        `include=image${query}${offset}&page[limit]=8`,
       headers: { 'Content-Type': 'application/json' },
     },
     DataSchemas.Articles,

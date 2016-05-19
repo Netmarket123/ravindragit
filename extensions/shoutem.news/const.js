@@ -1,9 +1,9 @@
 export const EXT = 'shoutem.news';
 
 export const Screens = {
-  GridScreen: `${EXT}.GridScreen`,
-  ListScreen: `${EXT}.ListScreen`,
-  DetailsScreen: `${EXT}.DetailsScreen`,
+  ArticlesGridScreen: `${EXT}.ArticlesGridScreen`,
+  ArticlesListScreen: `${EXT}.ArticlesListScreen`,
+  ArticleDetailsScreen: `${EXT}.ArticleDetailsScreen`,
 };
 
 export const DataSchemas = {

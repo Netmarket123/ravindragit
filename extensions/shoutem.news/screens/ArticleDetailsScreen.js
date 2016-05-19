@@ -61,7 +61,7 @@ Details.propTypes = {
   style: React.PropTypes.object,
 };
 
-function DetailsScreen({
+function ArticleDetailsScreen({
   item,
   style,
   bottomContentOffset: bottomContentOffsetProp,
@@ -96,7 +96,7 @@ function DetailsScreen({
   );
 }
 
-DetailsScreen.propTypes = {
+ArticleDetailsScreen.propTypes = {
   item: React.PropTypes.object,
   style: React.PropTypes.object,
   bottomContentOffset: React.PropTypes.number,
@@ -146,4 +146,4 @@ const style = {
   },
 };
 
-export default connectStyle('shoutem.news.DetailsScreen', style)(DetailsScreen);
+export default connectStyle('shoutem.news.DetailsScreen', style)(ArticleDetailsScreen);

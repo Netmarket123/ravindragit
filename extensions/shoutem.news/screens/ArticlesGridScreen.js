@@ -4,11 +4,14 @@ import { connectStyle, INCLUDE } from 'shoutem/theme';
 import { AdvancedGridView } from 'shoutem.ui';
 import FeaturedArticleView from '../components/FeaturedArticleView';
 import GridArticleView from '../components/GridArticleView';
-import { ListScreen, newsMapStateToProps, newsMapDispatchToProps } from './ListScreen';
+import {
+  ArticlesListScreen,
+  newsMapStateToProps,
+  newsMapDispatchToProps,
+} from './ArticlesListScreen';
 
-
-class GridScreen extends ListScreen {
-  static propTypes = Object.assign({}, ListScreen.propTypes, {
+class ArticlesGridScreen extends ArticlesListScreen {
+  static propTypes = Object.assign({}, ArticlesListScreen.propTypes, {
     gridColumns: React.PropTypes.number,
   });
 
@@ -46,11 +49,10 @@ class GridScreen extends ListScreen {
       gridColumns,
     } = this.props;
     const { searchTerm } = this.state;
-    const isSearchActive = this.isSearch(searchTerm);
     return (
       <AdvancedGridView
         gridColumns={gridColumns}
-        items={isSearchActive ? searchedNews : news}
+        items={searchTerm ? searchedNews : news}
         renderGridItem={this.renderItem}
         onRefresh={this.refreshNews}
         status={this.state.fetchStatus}
@@ -122,7 +124,5 @@ const style = {
 };
 
 export default connect(newsMapStateToProps, newsMapDispatchToProps)(
-  connectStyle('shoutem.news.GridScreen', style)(GridScreen)
+  connectStyle('shoutem.news.GridScreen', style)(ArticlesGridScreen)
 );
-
-
