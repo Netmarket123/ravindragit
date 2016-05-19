@@ -8,7 +8,7 @@ import { connectStyle, INCLUDE } from 'shoutem/theme';
 import { AdvancedListView } from 'shoutem.ui';
 import ArticleListItem from '../components/ArticleListItem';
 import ArticleFeaturedView from '../components/ArticleFeaturedView';
-import NewsCategories from '../components/NewsCategories';
+import NewsCategoriesDropDown from '../components/NewsCategoriesDropDown';
 import { bindActionCreators } from 'redux';
 import { clear, ReduxApiStateDenormalizer } from '@shoutem/redux-api-state';
 import { actions, SHOUTEM_NEWS_EXT_NAME } from '../index';
@@ -160,7 +160,7 @@ export class ListScreen extends Component {
     const { selectedCategory } = this.state;
 
     setNavBarProps({
-      rightComponent: categories.length > 1 ? <NewsCategories
+      rightComponent: categories.length > 1 ? <NewsCategoriesDropDown
         categories={categories}
         selectedCategory={selectedCategory}
         categorySelected={this.categorySelected}

@@ -1,7 +1,7 @@
 import React from 'react-native';
 import { DropDownMenu } from 'shoutem.ui';
 
-export default function NewsCategories({
+export default function NewsCategoriesDropDown({
   categories,
   selectedCategory,
   onCategorySelect,
