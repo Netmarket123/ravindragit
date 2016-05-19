@@ -1,16 +1,15 @@
 import React, {
   View,
 } from 'react-native';
-import _ from 'lodash';
 import GiftedListView from 'react-native-gifted-listview';
 import { connectStyle } from 'shoutem/theme';
 import { FullScreenSpinner, PlatformSpinner } from 'shoutem.ui';
 
 const GET_PROPS_TO_PASS = Symbol('getPropsToPass');
 const HANDLE_LIST_VIEW_REF = Symbol('handleListViewRef');
-const LOAD_MORE = Symbol('loadMore');
-const REFRESH = Symbol('refresh');
-const NEW_REQUEST = Symbol('newRequest');
+const LOADING_MORE_DATA = Symbol('loadingMoreData');
+const REFRESHING_DATA = Symbol('refreshingData');
+const RESETTING_DATA = Symbol('resettingData');
 
 class AdvancedListView extends React.Component {
   constructor(props, context) {
@@ -21,18 +20,10 @@ class AdvancedListView extends React.Component {
     this.onEndReached = this.onEndReached.bind(this);
     this.listView = null;
     this.giftedListView = null;
-    this.state = {
-      fetchStatus: {
-        requestNumber: 0, // Maybe only did request ?
-        fetching: false,
-        type: undefined,
-        noMoreItems: false,
-      },
-    };
   }
 
   shouldComponentUpdate(nextProps) {
-    const { items, queryParams } = this.props;
+    const { items } = this.props;
     if (this.giftedListView && nextProps.items !== items) {
       // GiftedListView use _updateRows to handle data to show and update internal state
       // such as loading status and other.
@@ -41,11 +32,6 @@ class AdvancedListView extends React.Component {
       // and work with callbacks as GiftedListView does
       // https://github.com/FaridSafi/react-native-gifted-listview/blob/master/GiftedListViewExample/example_simple.js#L26
       this.giftedListView._updateRows(nextProps.items);
-    }
-    if (!_.isEqual(nextProps.queryParams, queryParams)) {
-      // Compare current query params and new, if different make new request
-      // QueryParams can be changed from outside
-      this.fetch(undefined, undefined, undefined, nextProps.queryParams);
     }
     return true;
   }
@@ -139,26 +125,28 @@ class AdvancedListView extends React.Component {
     this.listView = GiftedListViewRef.refs.listview;
   }
 
-
   renderFooter() {
-    const fetchStatus = this.state.fetchStatus;
-    const { style, renderFooter } = this.props;
+    const { status, style, renderFooter } = this.props;
+    let spinner;
 
-    if (renderFooter) {
-      // Render customized footer
-      return renderFooter(fetchStatus);
-    } else if (fetchStatus.fetching) {
-      switch (fetchStatus.type) {
-        case NEW_REQUEST:
-          return <FullScreenSpinner style={style.newDataSpinner} />;
-        case LOAD_MORE:
-          return <View style={style.loadMoreSpinner}><PlatformSpinner /></View>;
-        case REFRESH:
-        default:
-          return null;
-      }
+    switch (status) {
+      case RESETTING_DATA:
+        spinner = <FullScreenSpinner style={style.newDataSpinner} />;
+        break;
+      case LOADING_MORE_DATA:
+        spinner = <View style={style.loadMoreSpinner}><PlatformSpinner /></View>;
+        break;
+      case REFRESHING_DATA:
+      default:
+        spinner = null;
     }
-    return null;
+
+    return (
+      <View>
+        {spinner}
+        {renderFooter ? renderFooter() : null}
+      </View>
+    );
   }
 
   render() {
@@ -171,9 +159,7 @@ class AdvancedListView extends React.Component {
 }
 
 AdvancedListView.propTypes = {
-  queryParams: React.PropTypes.object,
-  fetch: React.PropTypes.func,
-
+  status: React.PropTypes.string,
   style: React.PropTypes.object,
   items: React.PropTypes.array,
   onLoadMore: React.PropTypes.func,
