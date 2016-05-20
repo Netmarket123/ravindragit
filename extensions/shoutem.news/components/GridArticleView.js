@@ -36,7 +36,6 @@ export default class GridArticleView extends React.Component {
         leftExtra={moment(article.timeUpdated).fromNow()}
         id={article.id}
         style={style}
-        onPressItem={article}
         onPressMethod={this.onPress}
       />
     );
