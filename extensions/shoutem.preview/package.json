@@ -3,5 +3,8 @@
   "version": "0.0.1",
   "description": "Shoutem preview extension",
   "main": "index.js",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@shoutem/redux-api-state": "^0.0.9"
+  }
 }

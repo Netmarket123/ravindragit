@@ -52,7 +52,9 @@ function openInitialScreen(app) {
   const configurationFromState = store.getState()['shoutem.application'].configuration;
   const shortcuts = store.getState()['shoutem.application'].shortcuts;
   const firstShortcut = getFirstShortcut(configurationFromState, shortcuts);
-  store.dispatch(executeShortcut(firstShortcut));
+  if (firstShortcut) {
+    store.dispatch(executeShortcut(firstShortcut));
+  }
 }
 
 function appDidMount(app) {
