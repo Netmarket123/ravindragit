@@ -9,13 +9,17 @@ const DEFAULT_ITEMS_GROUP_SIZE = 2;
 function createRenderRow(renderGridItem, style, columns) {
   return function renderRow(items) {
     const columnsDiff = columns - items.length;
-    const gridItemStyle = items.featured ? style.gridFeaturedItemWrapper : style.gridItemWrapper;
+    const gridRowStyle = items.featured ? style.featuredGridRow : style.gridRow;
+    // Featured row (view) must have flex direction column so child can center text properly (bug?)
+    // Single grid item wrapper is used to set margin between each grid item and so last item
+    // if single in row can be aligned properly with others.
+    // TODO(Braco) - calculate last item margin fix
     return (
-      <View style={style.gridRow}>
+      <View style={gridRowStyle.container}>
         {
           items.reduce((gridItems, item) => {
             gridItems.push(
-              <View key={`gridItem_' + ${item.id}`} style={gridItemStyle}>
+              <View key={`gridItem_' + ${item.id}`} style={gridRowStyle.gridItemContainer}>
                 {renderGridItem(item)}
               </View>
             );
@@ -67,13 +71,20 @@ const style = {
   },
   list: {},
   gridRow: {
-    flexDirection: 'row',
+    container: {
+      flexDirection: 'row',
+    },
+    gridItemContainer: {
+      flex: 1,
+    },
   },
-  gridItemWrapper: {
-    flex: 1,
-  },
-  gridFeaturedItemWrapper: {
-    flex: 1,
+  featuredGridRow: {
+    container: {
+      flexDirection: 'column',
+    },
+    gridItemContainer: {
+      flex: 1,
+    },
   },
 };
 
