@@ -76,7 +76,7 @@ export default (variables) => ({
       bottom: 0,
       alignItems: 'center',
     },
-    itemDescription: {
+    itemTitle: {
       flex: 1,
       fontSize: 15,
       color: '#222',
@@ -103,10 +103,6 @@ export default (variables) => ({
   },
   'shoutem.ui.ListItem.photoCentric': {
     gridBox: {
-      container: {
-        marginTop: 5,
-        marginLeft: 5,
-      },
       imageOverlay: {
         alignItems: 'stretch',
         flexDirection: 'row',
@@ -138,11 +134,12 @@ export default (variables) => ({
       position: 'relative',
     },
     itemExtras: {
+      position: 'absolute',
       flexDirection: 'row',
       bottom: 0,
       alignItems: 'center',
     },
-    itemDescription: {
+    itemTitle: {
       flex: 1,
       fontSize: 15,
       color: '#222',
