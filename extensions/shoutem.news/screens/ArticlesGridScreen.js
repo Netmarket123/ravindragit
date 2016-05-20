@@ -83,8 +83,10 @@ const style = {
       },
     },
     listContent: {},
-    gridItemWrapper: {
-      padding: 5,
+    gridRow: {
+      gridItemContainer: {
+        padding: 5,
+      },
     },
   },
   navigationBar: {
@@ -110,7 +112,6 @@ const style = {
       },
       contentWrapper: {
         flexWrap: 'wrap',
-        margin: 50,
         alignItems: 'center',
         justifyContent: 'center',
         height: 330,
