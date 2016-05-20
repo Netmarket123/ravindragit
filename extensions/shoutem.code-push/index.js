@@ -32,9 +32,9 @@ export function appDidMount(app) {
       const deployment = _.find(deployments, { name: 'Staging' });
       if (oldDeploymentKey !== deployment.key || _.difference(extensionIds, oldExtensionIds).length > 0) {
         // Update package if there are any new changes.
-        syncPackage(deployment.key, true);
         oldExtensionIds = extensionIds;
         oldDeploymentKey = deployment.key;
+        syncPackage(deployment.key, true);
       }
     }
   });
