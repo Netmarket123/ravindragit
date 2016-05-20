@@ -89,7 +89,11 @@
         "iconUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488005&timestamp=635932174426170000&custom_layout=true&highlighted=false&version=58",
         "action": "shoutem.news.openListScreen",
         "settings": {
-          "textCentric": true
+          "textCentric": true,
+          "screen": 2,
+          "appId": "2056",
+          "endpoint": "http://api.dev.sauros.hr",
+          "parentCategoryId": "49"
         }
       }
     },
@@ -100,7 +104,13 @@
         "canonicalName": "shoutem.news.openListScreen",
         "title": "Shoutem news list screen",
         "iconUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488005&timestamp=635932174426170000&custom_layout=true&highlighted=false&version=58",
-        "action": "shoutem.news.openListScreen"
+        "action": "shoutem.news.openListScreen",
+        "settings": {
+          "screen": 2,
+          "appId": "2056",
+          "endpoint": "http://api.dev.sauros.hr",
+          "parentCategoryId": "49"
+        }
       }
     },
     {
