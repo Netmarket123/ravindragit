@@ -2,6 +2,7 @@ import {
   navigateTo,
 } from 'shoutem/navigation';
 import { find, storage, collection } from '@shoutem/redux-api-state';
+import _ from 'lodash';
 import {
   DataSchemas,
   Screens,
@@ -16,6 +17,48 @@ export const reducers = {
   searchedNews: collection(DataSchemas.Articles, 'searchedNews'),
 };
 
+/**
+ * Parse query object to JSON query string
+ *
+ * @param queryObject
+ * @param parentFieldName
+ * @returns {string|*}
+ */
+function parseQueryObject(queryObject, parentFieldName) {
+  return _.reduce(queryObject, (queryParams, fieldValue, fieldName) => {
+    let queryParam;
+    if (_.isPlainObject(fieldValue)) {
+      const newFieldName = parentFieldName ? `${parentFieldName}[${fieldName}]` : fieldName;
+      queryParam = parseQueryObject(fieldValue, newFieldName);
+    } else if (parentFieldName) {
+      queryParam = [`${parentFieldName}[${fieldName}]=${fieldValue}`];
+    } else {
+      queryParam = [`${fieldName}=${fieldValue}`];
+    }
+    return queryParams.concat(queryParam);
+  }, [])
+    .join('&');
+}
+
+function createQueryString(options) {
+  return `?${parseQueryObject(options)}`;
+}
+
+function createEndpoint(settings, path) {
+  return `${settings.endpoint}/v1/apps/${settings.appId}/${path}`;
+}
+
+function getResourceUrl(schema, options = {}, settings) {
+  const endpoint = createEndpoint(settings, `resources/${schema}`);
+  const queryString = createQueryString(options);
+
+  return endpoint + queryString;
+}
+
+function getCategoryUrl(options, settings) {
+  return createEndpoint(settings, 'categories') + parseQueryObject(options, '?');
+}
+
 export function openListScreen(settings = {
   textCentric: false,
 }) {
@@ -26,9 +69,9 @@ export function openListScreen(settings = {
     screen: nextScreenName,
     props: {
       settings: {
-        appId: settings.appId || '2056',
-        endpoint: settings.endpoint || 'http://api.dev.sauros.hr',
-        parentCategoryId: settings.parentCategoryId || '49',
+        appId: settings.appId,
+        endpoint: settings.endpoint,
+        parentCategoryId: settings.parentCategoryId,
       },
     },
   };
@@ -37,25 +80,25 @@ export function openListScreen(settings = {
 }
 
 export function findNews(searchTerm, category, pageOffset = 0, settings) {
-  let query = '';
-  let collectionName = 'latestNews';
-  const offset = `&page[offset]=${pageOffset}`;
-
+  const collectionName = searchTerm ? 'searchedNews' : 'latestNews';
+  const options = {
+    include: 'image',
+    page: {
+      limit: 10,
+      offset: pageOffset,
+    },
+  };
   if (searchTerm) {
-    query += `&query=${searchTerm}`;
-    collectionName = 'searchedNews';
+    options.query = searchTerm;
   }
-
   if (category) {
-    query += `&filter[categories]=${category.id}`;
+    options.filter = {
+      categories: category.id,
+    };
   }
-
   return find(
     {
-      // TODO(Braco) - use appID dynamically (the right way)
-      endpoint:
-        `${settings.endpoint}/v1/apps/${settings.appId}/resources/${DataSchemas.Articles}?` +
-        `include=image${query}${offset}&page[limit]=8`,
+      endpoint: getResourceUrl(DataSchemas.Articles, options, settings),
       headers: { 'Content-Type': 'application/json' },
     },
     DataSchemas.Articles,
@@ -64,14 +107,18 @@ export function findNews(searchTerm, category, pageOffset = 0, settings) {
 }
 
 export function getNewsCategories(parent = 'null', settings) {
+  const options = {
+    filter: {
+      parent,
+      schema: DataSchemas.Articles,
+    },
+  };
   return find(
     {
-      // TODO(Braco) - use appID dynamically (the right way)
-      endpoint: `${settings.endpoint}/v1/apps/${settings.appId}/categories` +
-      `?filter[parent]=${parent}&filter[schema]=${DataSchemas.Articles}`,
+      endpoint: getCategoryUrl(options, settings),
       headers: { 'Content-Type': 'application/json' },
     },
     DataSchemas.Categories,
-    'newsCategories'
+    'newsCategories' // collection
   );
 }
