@@ -55,11 +55,11 @@ export default (variables) => ({
       height: 95,
       borderBottomWidth: 0.5,
       borderBottomColor: '#ccc',
+      overflow: 'hidden',
     },
     itemImage: {
       width: 65,
       height: null,
-      borderRadius: 2,
       marginRight: 15,
       resizeMode: 'cover',
     },
@@ -117,6 +117,7 @@ export default (variables) => ({
       alignSelf: 'stretch',
       backgroundColor: '#fff',
       borderRadius: 2,
+      overflow: 'hidden',
       shadowColor: 'black',
       shadowRadius: 9,
       shadowOpacity: 0.3,
@@ -125,7 +126,6 @@ export default (variables) => ({
     itemImage: {
       alignSelf: 'stretch',
       height: 85,
-      borderRadius: 2,
     },
     itemInfo: {
       flexDirection: 'column',
