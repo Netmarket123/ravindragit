@@ -1,19 +1,17 @@
 {
-    "appId": 167875047,
-    "serverApiEndpoint": "apps.aperfector.com",
+    "appId": 2071,
+    "serverApiEndpoint": "apps.dev.sauros.hr",
     "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkMGYxOGYzMy04MzI1LTQxOTUtYmMwNi1jMmYxOWE0Y2RhOTciLCJpc3MiOiJzaG91dGVtIiwic3ViIjoidXNlcjoxIiwidXNyIjoic3NhcnVuaWNAZ21haWwuY29tIiwiaWF0IjoxNDU4MzA3NjYxLCJybG0iOiJhcHAtYnVpbGRlciIsImFjbCI6eyJ1c2VyOjEvKiI6WyJyZWFkIiwid3JpdGUiXX0sInZzaSI6eyJ0eXAiOiJ2IiwidiI6MH19.fZk_KPQtkKkiTht5LrJJpreLBJddbxdHPWX2p5lIfs4",
     "production": false,
     "designMode": true,
     "offlineMode": false,
     "configurationFilePath": "../extensions/shoutem.application/configuration.json",
     "workingDirectories": [
-      "../extensions/shoutem.test",
       "../extensions/shoutem.homescreen",
       "../extensions/shoutem.application",
       "../extensions/shoutem.code-push",
       "../extensions/shoutem.preview",
       "../extensions/shoutem.ui",
-      "../extensions/shoutem.news",
       "../framework"
     ],
     "extensionsJsPath": "./extensions.js"
