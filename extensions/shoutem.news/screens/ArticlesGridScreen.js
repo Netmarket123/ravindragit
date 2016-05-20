@@ -85,7 +85,7 @@ const style = {
     listContent: {},
     gridRow: {
       gridItemContainer: {
-        padding: 5,
+        margin: 5,
       },
     },
   },
