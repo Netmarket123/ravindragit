@@ -36,6 +36,8 @@ component style (i.e. default style has `margin: 15`, new style doesn't have any
 
 Todo(Braco) - example & finish description
 
+Todo(Braco) - document https://github.com/5minutes/mobile-app/pull/74#discussion_r64136434
+
 ## Testing
 Mocha (test framework), Chai (assertion lib) and Enzyme (utility for react) are used for unit testing.
 
