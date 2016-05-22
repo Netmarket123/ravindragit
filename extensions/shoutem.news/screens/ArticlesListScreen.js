@@ -6,10 +6,9 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
-import { ListView } from 'shoutem.ui';
+import { ListView, DropDownMenu } from 'shoutem.ui';
 import ListArticleView from '../components/ListArticleView';
 import FeaturedArticleView from '../components/FeaturedArticleView';
-import NewsCategoriesDropDown from '../components/NewsCategoriesDropDown';
 import { bindActionCreators } from 'redux';
 import { clear, ReduxApiStateDenormalizer } from '@shoutem/redux-api-state';
 import { actions } from '../index';
@@ -99,7 +98,13 @@ export class ArticlesListScreen extends Component {
   }
 
   categorySelected(category) {
-    this.setState({ selectedCategory: category }, this.fetchNews);
+    this.setState(
+      {
+        selectedCategory: category,
+        fetchStatus: Status.LOADING,
+      },
+      this.fetchNews
+    );
   }
 
   openDetailsScreen(article) {
@@ -128,6 +133,22 @@ export class ArticlesListScreen extends Component {
     );
   }
 
+  renderCategoriesDropDown() {
+    const { categories, style } = this.props;
+    if (categories.length < 1) {
+      return null;
+    }
+    return (
+      <DropDownMenu
+        items={categories}
+        bindings={{ text: 'name', value: 'id' }}
+        onItemSelected={this.categorySelected}
+        selectedItem={this.state.selectedCategory}
+        style={style.categoriesDropDown}
+      />
+    );
+  }
+
   renderArticles() {
     const {
       style,
@@ -150,17 +171,10 @@ export class ArticlesListScreen extends Component {
     const {
       style,
       setNavBarProps,
-      categories,
     } = this.props;
-    const { selectedCategory } = this.state;
 
     setNavBarProps({
-      rightComponent: categories.length > 1 ? <NewsCategoriesDropDown
-        categories={categories}
-        selectedCategory={selectedCategory}
-        categorySelected={this.categorySelected}
-        style={style.categoriesDropDown}
-      /> : null,
+      rightComponent: this.renderCategoriesDropDown(),
       centerComponent: (<Text style={style.navBarTitle}>News</Text>),
       style: style.navigationBar,
     });
