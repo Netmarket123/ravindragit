@@ -1,4 +1,5 @@
-import React, {
+import React from 'react';
+import {
   View,
   Component,
   Text,
@@ -16,6 +17,7 @@ import { navigateTo } from 'shoutem/navigation';
 import {
   getNewsCategories,
 } from '../actions';
+
 import {
   DataSchemas,
   EXT,
@@ -26,7 +28,7 @@ const Status = ListView.Status;
 
 export class ArticlesListScreen extends Component {
   static propTypes = {
-    settings: React.PropTypes.object, // TODO(Braco) - clean up
+    settings: React.PropTypes.object,
     findNews: React.PropTypes.func,
     clearSearch: React.PropTypes.func,
     parentCategoryId: React.PropTypes.any,
@@ -36,12 +38,11 @@ export class ArticlesListScreen extends Component {
     style: React.PropTypes.object,
     setNavBarProps: React.PropTypes.func,
     navigateToRoute: React.PropTypes.func,
-    getNewsCategories: React.PropTypes.func,
+    fetchNewsCategories: React.PropTypes.func,
   };
 
   constructor(props, context) {
     super(props, context);
-    props.getNewsCategories(props.parentCategoryId, props.settings);
     this.fetchNews = this.fetchNews.bind(this);
     this.refreshNews = this.refreshNews.bind(this);
     this.openDetailsScreen = this.openDetailsScreen.bind(this);
@@ -56,8 +57,12 @@ export class ArticlesListScreen extends Component {
   }
 
   componentWillMount() {
+    const {
+      fetchNewsCategories,
+      settings,
+    } = this.props;
+    fetchNewsCategories(settings.parentCategoryId, settings);
     this.setState({ fetchStatus: Status.LOADING });
-    this.fetchNews();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -70,14 +75,6 @@ export class ArticlesListScreen extends Component {
     this.setState({ searchTerm });
   }
 
-  // renderHeader() {
-  //   return (<Search
-  //     style={props.style.search} // todo - add style to style :/
-  //     searchTerm={this.state.searchTerm}
-  //     onSearchTermChange={this.onSearchTermChanged}
-  //     placeholder={searchPlaceholder}
-  //   />);
-  // }
   fetchNews() {
     const { settings, findNews, clearSearch, searchedNews } = this.props;
     const { selectedCategory, searchTerm } = this.state;
@@ -93,7 +90,6 @@ export class ArticlesListScreen extends Component {
 
   refreshNews() {
     this.setState({ fetchStatus: Status.REFRESHING });
-    this.fetchNews();
   }
 
   loadMoreNews() {
@@ -170,7 +166,7 @@ export class ArticlesListScreen extends Component {
 
     return (
       <View style={style.screen}>
-        {selectedCategory ? this.renderArticles() : null}
+        {this.renderArticles()}
       </View>
     );
   }
@@ -225,8 +221,8 @@ const schemasMap = {
   'shoutem.core.applications': '["shoutem.news"].applications',
   [DataSchemas.Categories]: '["shoutem.news"].categories',
 };
-
-export function newsMapStateToProps(state) {
+// written as variable to be able to debug in Chrome debugger
+export const newsMapStateToProps = function (state) {
   const denormalizer = new ReduxApiStateDenormalizer(() => state, schemasMap);
   return {
     news: denormalizer.denormalizeCollection(
@@ -239,16 +235,16 @@ export function newsMapStateToProps(state) {
       state[EXT].newsCategories, DataSchemas.Categories
     ),
   };
-}
-
-export function newsMapDispatchToProps(dispatch) {
+};
+// written as variable to be able to debug in Chrome debugger
+export const newsMapDispatchToProps = function (dispatch) {
   return {
     clearSearch: bindActionCreators(() => clear(DataSchemas.Articles, 'searchedNews'), dispatch),
     findNews: bindActionCreators(actions.findNews, dispatch),
     navigateToRoute: bindActionCreators(navigateTo, dispatch),
-    getNewsCategories: bindActionCreators(getNewsCategories, dispatch),
+    fetchNewsCategories: bindActionCreators(getNewsCategories, dispatch),
   };
-}
+};
 
 export default connect(newsMapStateToProps, newsMapDispatchToProps)(
   connectStyle('shoutem.news.ListScreen', style)(ArticlesListScreen)
