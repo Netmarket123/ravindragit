@@ -3,6 +3,9 @@ import _ from 'lodash';
 import { ListItem } from 'shoutem.ui';
 import moment from 'moment';
 
+/**
+ * Component used to render single list article item
+ */
 export default class ListArticleView extends React.Component {
   static propTypes = {
     // Custom ListArticleView style

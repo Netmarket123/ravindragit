@@ -5,7 +5,9 @@ import {
 import _ from 'lodash';
 import { NewsGridBox } from 'shoutem.ui';
 
-// Component used to render featured news articles
+/**
+ * Component used to render featured news articles
+  */
 export default class FeaturedArticleView extends React.Component {
   static propTypes = {
     // Custom FeaturedArticleView style
@@ -35,7 +37,7 @@ export default class FeaturedArticleView extends React.Component {
       <TouchableOpacity onPress={this.onPress} key={article.id}>
         <NewsGridBox
           backgroundImage={{ uri: _.get(article, 'image.url') }}
-          headline={article.title.toUpperCase()}
+          headline={(article.title || '').toUpperCase()}
           style={style}
         />
       </TouchableOpacity>

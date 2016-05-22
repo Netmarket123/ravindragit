@@ -3,6 +3,9 @@ import _ from 'lodash';
 import { ListItem } from 'shoutem.ui';
 import moment from 'moment';
 
+/**
+ * Component used to render single grid article item
+ */
 export default class GridArticleView extends React.Component {
   static propTypes = {
     // Custom GridArticleView style
