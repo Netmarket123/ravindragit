@@ -58,7 +58,7 @@ function getResourceUrl(schema, options = {}, settings) {
 }
 
 function getCategoryUrl(options, settings) {
-  return createEndpoint(settings, 'categories') + parseQueryObject(options, '?');
+  return createEndpoint(settings, 'categories') + createQueryString(options);
 }
 
 export const openListScreen = function (settings = {
