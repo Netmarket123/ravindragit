@@ -1,7 +1,7 @@
 import React, {
   View,
 } from 'react-native';
-import AdvancedListView from '../ListView/AdvancedListView';
+import ListView from '../ListView/ListView';
 import { connectStyle } from 'shoutem/theme';
 
 const DEFAULT_ITEMS_GROUP_SIZE = 2;
@@ -51,7 +51,7 @@ function groupItems(items, itemsPerGroup = DEFAULT_ITEMS_GROUP_SIZE) {
 function GridView(props) {
   const columns = props.gridColumns || DEFAULT_ITEMS_GROUP_SIZE;
   return (
-    <AdvancedListView
+    <ListView
       {...props}
       items={groupItems(props.items, columns)}
       renderRow={createRenderRow(props.renderGridItem, props.style, columns)}
@@ -59,7 +59,7 @@ function GridView(props) {
   );
 }
 
-GridView.propTypes = Object.assign({}, AdvancedListView.propTypes, {
+GridView.propTypes = Object.assign({}, ListView.propTypes, {
   gridColumns: React.PropTypes.number,
   renderGridItem: React.PropTypes.func,
 });
