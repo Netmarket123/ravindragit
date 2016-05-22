@@ -61,7 +61,7 @@ function getCategoryUrl(options, settings) {
   return createEndpoint(settings, 'categories') + parseQueryObject(options, '?');
 }
 
-export function openListScreen(settings = {
+export const openListScreen = function (settings = {
   textCentric: false,
 }) {
   const nextScreenName = settings.textCentric ?
@@ -79,9 +79,9 @@ export function openListScreen(settings = {
   };
 
   return navigateTo(route);
-}
+};
 
-export function findNews(searchTerm, category, pageOffset = 0, settings) {
+export const findNews = function (searchTerm, category, pageOffset = 0, settings) {
   const collectionName = searchTerm ? 'searchedNews' : 'latestNews';
   const options = {
     include: 'image',
@@ -106,9 +106,9 @@ export function findNews(searchTerm, category, pageOffset = 0, settings) {
     DataSchemas.Articles,
     collectionName
   );
-}
+};
 
-export function getNewsCategories(parent = 'null', settings) {
+export const getNewsCategories = function (parent, settings) {
   const options = {
     filter: {
       parent,
@@ -123,4 +123,4 @@ export function getNewsCategories(parent = 'null', settings) {
     DataSchemas.Categories,
     'newsCategories' // collection
   );
-}
+};
