@@ -24,13 +24,7 @@ class ArticlesGridScreen extends ArticlesListScreen {
   renderItem(article) {
     const { style } = this.props;
     if (article.featured) {
-      return (
-        <FeaturedArticleView
-          article={article}
-          style={style.featuredItem}
-          onPress={this.openDetailsScreen}
-        />
-      );
+      return this.renderFeaturedArticle(article);
     }
 
     return (

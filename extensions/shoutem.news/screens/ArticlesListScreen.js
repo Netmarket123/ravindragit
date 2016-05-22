@@ -112,16 +112,20 @@ export class ArticlesListScreen extends Component {
     this.props.navigateToRoute(route);
   }
 
+  renderFeaturedArticle(article) {
+    return (
+      <FeaturedArticleView
+        article={article}
+        style={this.props.style.featuredItem}
+        onPress={this.openDetailsScreen}
+      />
+    );
+  }
+
   renderRow(article) {
     const { style } = this.props;
     if (article.featured) {
-      return (
-        <FeaturedArticleView
-          article={article}
-          style={style.featuredItem}
-          onPress={this.openDetailsScreen}
-        />
-      );
+      return this.renderFeaturedArticle(article, style);
     }
 
     return (
