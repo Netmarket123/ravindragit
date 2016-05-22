@@ -11,9 +11,10 @@ import {
 } from './ArticlesListScreen';
 
 class ArticlesGridScreen extends ArticlesListScreen {
-  static propTypes = Object.assign({}, ArticlesListScreen.propTypes, {
+  static propTypes = {
+    ...ArticlesListScreen.propTypes,
     gridColumns: React.PropTypes.number,
-  });
+  };
 
   constructor(props, context) {
     super(props, context);
