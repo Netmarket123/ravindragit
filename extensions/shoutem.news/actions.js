@@ -19,6 +19,15 @@ const reducers = {
 };
 export default combineReducers(reducers);
 
+// Redux api state denormalizer storage to schema map
+export const schemasMap = {
+  [DataSchemas.Articles]: '["shoutem.news"].news',
+  [DataSchemas.Images]: '["shoutem.news"].newsImages',
+  'shoutem.core.applications': '["shoutem.news"].applications',
+  [DataSchemas.Categories]: '["shoutem.news"].categories',
+};
+
+
 /**
  * Parse query object to JSON query string
  *

@@ -15,6 +15,7 @@ import { actions } from '../index';
 import { navigateTo } from 'shoutem/navigation';
 import {
   getNewsCategories,
+  schemasMap,
 } from '../actions';
 
 import {
@@ -234,12 +235,6 @@ const style = {
   },
 };
 
-const schemasMap = {
-  [DataSchemas.Articles]: '["shoutem.news"].news',
-  [DataSchemas.Images]: '["shoutem.news"].newsImages',
-  'shoutem.core.applications': '["shoutem.news"].applications',
-  [DataSchemas.Categories]: '["shoutem.news"].categories',
-};
 // written as variable to be able to debug in Chrome debugger
 export const newsMapStateToProps = function (state) {
   const denormalizer = new ReduxApiStateDenormalizer(() => state, schemasMap);
