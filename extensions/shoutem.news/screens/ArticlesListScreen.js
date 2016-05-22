@@ -66,7 +66,7 @@ export class ArticlesListScreen extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.categories.length > 0 && !nextProps.selectedCategory) {
+    if (nextProps.categories.length > 0 && !this.state.selectedCategory) {
       this.categorySelected(nextProps.categories[0]);
     }
   }
@@ -78,7 +78,9 @@ export class ArticlesListScreen extends Component {
   fetchNews() {
     const { settings, findNews, clearSearch, searchedNews } = this.props;
     const { selectedCategory, searchTerm } = this.state;
+
     let offset;
+
     if (searchTerm && searchedNews.length > 0) {
       clearSearch();
     }
@@ -89,16 +91,15 @@ export class ArticlesListScreen extends Component {
   }
 
   refreshNews() {
-    this.setState({ fetchStatus: Status.REFRESHING });
+    this.setState({ fetchStatus: Status.REFRESHING }, this.fetchNews);
   }
 
   loadMoreNews() {
     // TODO(Braco) - Redux Api Next
   }
 
-
   categorySelected(category) {
-    this.setState({ selectedCategory: category });
+    this.setState({ selectedCategory: category }, this.fetchNews);
   }
 
   openDetailsScreen(article) {
