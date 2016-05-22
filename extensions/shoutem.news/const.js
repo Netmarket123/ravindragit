@@ -6,6 +6,12 @@ export const Screens = {
   ArticleDetailsScreen: `${EXT}.ArticleDetailsScreen`,
 };
 
+export const Collections = {
+  SearchedNews: 'searchedNews',
+  LatestNews: 'latestNews',
+  NewsCategories: 'newsCategories',
+};
+
 // TODO(Braco) - move core schemas to shoutem cms/core extensions
 export const DataSchemas = {
   Articles: `${EXT}.articles`,

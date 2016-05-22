@@ -16,6 +16,7 @@ import { navigateTo } from 'shoutem/navigation';
 import {
   getNewsCategories,
   schemasMap,
+  Collections,
 } from '../actions';
 
 import {
@@ -253,7 +254,9 @@ export const newsMapStateToProps = function (state) {
 // written as variable to be able to debug in Chrome debugger
 export const newsMapDispatchToProps = function (dispatch) {
   return {
-    clearSearch: bindActionCreators(() => clear(DataSchemas.Articles, 'searchedNews'), dispatch),
+    clearSearch: bindActionCreators(
+      () => clear(DataSchemas.Articles, Collections.SearchedNews), dispatch
+    ),
     findNews: bindActionCreators(actions.findNews, dispatch),
     navigateToRoute: bindActionCreators(navigateTo, dispatch),
     fetchNewsCategories: bindActionCreators(getNewsCategories, dispatch),

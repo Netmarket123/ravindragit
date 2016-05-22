@@ -7,15 +7,16 @@ import _ from 'lodash';
 import {
   DataSchemas,
   Screens,
+  Collections,
 } from './const.js';
 
 const reducers = {
   news: storage(DataSchemas.Articles),
   categories: storage(DataSchemas.Categories),
   newsImages: storage(DataSchemas.Images),
-  newsCategories: collection(DataSchemas.Categories, 'newsCategories'),
-  latestNews: collection(DataSchemas.Articles, 'latestNews'),
-  searchedNews: collection(DataSchemas.Articles, 'searchedNews'),
+  newsCategories: collection(DataSchemas.Categories, Collections.NewsCategories),
+  latestNews: collection(DataSchemas.Articles, Collections.LatestNews),
+  searchedNews: collection(DataSchemas.Articles, Collections.SearchedNews),
 };
 export default combineReducers(reducers);
 
@@ -91,7 +92,7 @@ export const openListScreen = function (settings = {
 };
 
 export const findNews = function (searchTerm, category, pageOffset = 0, settings) {
-  const collectionName = searchTerm ? 'searchedNews' : 'latestNews';
+  const collectionName = searchTerm ? Collections.SearchedNews : Collections.LatestNews;
   const options = {
     include: 'image',
     page: {
@@ -130,6 +131,6 @@ export const getNewsCategories = function (parent, settings) {
       headers: { 'Content-Type': 'application/json' },
     },
     DataSchemas.Categories,
-    'newsCategories' // collection
+    Collections.NewsCategories
   );
 };
