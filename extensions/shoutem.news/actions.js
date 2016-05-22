@@ -1,6 +1,7 @@
 import {
   navigateTo,
 } from 'shoutem/navigation';
+import { combineReducers } from 'redux';
 import { find, storage, collection } from '@shoutem/redux-api-state';
 import _ from 'lodash';
 import {
@@ -8,7 +9,7 @@ import {
   Screens,
 } from './const.js';
 
-export const reducers = {
+const reducers = {
   news: storage(DataSchemas.Articles),
   categories: storage(DataSchemas.Categories),
   newsImages: storage(DataSchemas.Images),
@@ -16,6 +17,7 @@ export const reducers = {
   latestNews: collection(DataSchemas.Articles, 'latestNews'),
   searchedNews: collection(DataSchemas.Articles, 'searchedNews'),
 };
+export default combineReducers(reducers);
 
 /**
  * Parse query object to JSON query string

@@ -1,19 +1,21 @@
 import ArticlesGridScreen from './screens/ArticlesGridScreen';
 import ArticleDetailsScreen from './screens/ArticleDetailsScreen';
 import ArticlesListScreen from './screens/ArticlesListScreen';
-import { combineReducers } from 'redux';
-import { openListScreen, reducers, findNews } from './actions';
+import reducer, { openListScreen, findNews } from './actions';
 
-export const reducer = combineReducers({ ...reducers });
-
-export const actions = {
+const actions = {
   openListScreen,
   findNews,
 };
 
-export const screens = {
+const screens = {
   ArticlesListScreen,
   ArticlesGridScreen,
   ArticleDetailsScreen,
 };
 
+export {
+  reducer,
+  actions,
+  screens,
+};
