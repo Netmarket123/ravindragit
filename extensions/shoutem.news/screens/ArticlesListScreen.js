@@ -234,6 +234,9 @@ const style = {
         justifyContent: 'center',
         height: 330,
       },
+      backgroundImage: {
+        borderRadius: 2,
+      },
     },
   },
   listRow: {
