@@ -7,7 +7,6 @@ import { connectStyle } from 'shoutem/theme';
 import { FullScreenSpinner, PlatformSpinner } from 'shoutem.ui';
 
 const GET_PROPS_TO_PASS = Symbol('getPropsToPass');
-const HANDLE_LIST_VIEW_REF = Symbol('handleListViewRef');
 
 const Status = {
   LOADING: 'loading',
@@ -32,12 +31,11 @@ class ListView extends React.Component {
   static Status = Status;
   constructor(props, context) {
     super(props, context);
-    this[HANDLE_LIST_VIEW_REF] = this[HANDLE_LIST_VIEW_REF].bind(this);
+    this.handleListViewRef = this.handleListViewRef.bind(this);
     this.renderFooter = this.renderFooter.bind(this);
     this.onEndReached = this.onEndReached.bind(this);
     this.onRefresh = this.onRefresh.bind(this);
     this.listView = null;
-    this.giftedListView = null;
     const dataSource = new RNListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
     this.state = {
@@ -47,7 +45,7 @@ class ListView extends React.Component {
 
   shouldComponentUpdate(nextProps) {
     const { items } = this.props;
-    if (this.giftedListView && nextProps.items !== items) {
+    if (nextProps.items !== items) {
       this.setState({ dataSource: this.state.dataSource.cloneWithRows(items) });
     }
     return true;
@@ -113,21 +111,21 @@ class ListView extends React.Component {
 
     mappedProps.dataSource = this.state.dataSource;
     mappedProps.refreshControl = props.onRefresh && this.renderRefreshControl();
+    mappedProps.ref = this.handleListViewRef;
 
     return mappedProps;
   }
 
   /**
-   * Save RN ListView GiftedListViewRef
-   * @param GiftedListViewRef
+   * Save RN ListView ref
+   * @param React native ListView ref
    */
-  [HANDLE_LIST_VIEW_REF](GiftedListViewRef) {
-    if (!GiftedListViewRef) {
+  handleListViewRef(listView) {
+    if (!listView) {
       return;
     }
 
-    this.giftedListView = GiftedListViewRef;
-    this.listView = GiftedListViewRef.refs.listview;
+    this.listView = listView;
   }
 
   renderFooter() {
@@ -167,10 +165,7 @@ class ListView extends React.Component {
 
   render() {
     // TODO(Braco) - handle no results view
-    return (<RNListView
-      ref={this[HANDLE_LIST_VIEW_REF]}
-      {...this[GET_PROPS_TO_PASS]()}
-    />);
+    return <RNListView {...this[GET_PROPS_TO_PASS]()} />;
   }
 }
 
