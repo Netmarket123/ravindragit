@@ -1,10 +1,9 @@
 import configuration from './configuration';
-
 import { createExecuteShortcutMiddleware } from './middleware';
-
 import { combineReducers } from 'redux';
-
-import { loaded, storage } from '@shoutem/redux-api-state';
+import { loaded, storage, apiStateMiddleware } from '@shoutem/redux-api-state';
+import { apiMiddleware } from 'redux-api-middleware';
+import thunk from 'redux-thunk';
 
 import {
   configurationReducer,
@@ -62,6 +61,9 @@ function appDidMount(app) {
 
 const middleware = [
   createExecuteShortcutMiddleware(appActions),
+  thunk,
+  apiMiddleware,
+  apiStateMiddleware,
 ];
 
 export {

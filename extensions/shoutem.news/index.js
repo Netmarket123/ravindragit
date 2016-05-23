@@ -1,29 +1,21 @@
-import GridScreen from './screens/GridScreen';
-import DetailsScreen from './screens/DetailsScreen';
-import ListScreen from './screens/ListScreen';
-import { apiMiddleware } from 'redux-api-middleware';
-import thunk from 'redux-thunk';
-import { combineReducers } from 'redux';
-import { openListScreen, reducers, findNews } from './actions';
-import { apiStateMiddleware } from '@shoutem/redux-api-state';
+import ArticlesGridScreen from './screens/ArticlesGridScreen';
+import ArticleDetailsScreen from './screens/ArticleDetailsScreen';
+import ArticlesListScreen from './screens/ArticlesListScreen';
+import reducer, { openListScreen, findNews } from './actions';
 
-const SHOUTEM_NEWS_EXT_NAME = 'shoutem.news';
-const reducer = combineReducers({ ...reducers });
-
-export const actions = {
+const actions = {
   openListScreen,
   findNews,
 };
 
+const screens = {
+  ArticlesListScreen,
+  ArticlesGridScreen,
+  ArticleDetailsScreen,
+};
+
 export {
   reducer,
-  SHOUTEM_NEWS_EXT_NAME,
+  actions,
+  screens,
 };
-
-export const screens = {
-  ListScreen,
-  GridScreen,
-  DetailsScreen,
-};
-
-export const middleware = [thunk, apiMiddleware, apiStateMiddleware];

@@ -1,9 +1,6 @@
 import React, { Children, PropTypes } from 'react-native';
 import Theme, { ThemeShape } from './Theme';
 
-// Privates
-const THEME = Symbol('theme');
-
 /**
  *  Provides Theme instance trough context.
  *  Constructor props expect theme instance!

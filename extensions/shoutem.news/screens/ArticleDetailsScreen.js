@@ -61,8 +61,8 @@ Details.propTypes = {
   style: React.PropTypes.object,
 };
 
-function DetailsScreen({
-  item,
+function ArticleDetailsScreen({
+  article,
   style,
   bottomContentOffset: bottomContentOffsetProp,
 }) {
@@ -79,9 +79,9 @@ function DetailsScreen({
       >
         <NewsGridBox
           style={style.headline}
-          headline={item.title}
-          newsDetails={[item.author, 'test']}
-          backgroundImage={{ uri: _.get(item, 'image.url'), width: 200, height: 200 }}
+          headline={article.title}
+          newsDetails={[article.author, 'test']}
+          backgroundImage={{ uri: _.get(article, 'image.url'), width: 200, height: 200 }}
         />
       </Animated.View>
       <ScrollView
@@ -90,14 +90,14 @@ function DetailsScreen({
         scrollEventThrottle={16}
         onScroll={getScrollHandle(scrollY)}
       >
-        <Details item={item} style={detailsStyle} />
+        <Details item={article} style={detailsStyle} />
       </ScrollView>
     </View>
   );
 }
 
-DetailsScreen.propTypes = {
-  item: React.PropTypes.object,
+ArticleDetailsScreen.propTypes = {
+  article: React.PropTypes.object,
   style: React.PropTypes.object,
   bottomContentOffset: React.PropTypes.number,
 };
@@ -111,6 +111,7 @@ const style = {
   },
   screen: {
     position: 'relative',
+    backgroundColor: '#fff',
   },
   detailsText: {},
   detailsTitle: {
@@ -145,4 +146,4 @@ const style = {
   },
 };
 
-export default connectStyle('shoutem.news.DetailsScreen', style)(DetailsScreen);
+export default connectStyle('shoutem.news.DetailsScreen', style)(ArticleDetailsScreen);
