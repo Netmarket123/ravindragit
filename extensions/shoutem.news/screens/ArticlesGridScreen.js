@@ -88,14 +88,24 @@ const style = {
       backgroundColor: '#2c2c2c',
     },
   },
-  categoriesDropDown: {
-    popUpButton: {
-      buttonText: {
-        [INCLUDE]: ['navBarTitle'],
+  navigation: {
+    navigationBar: {
+      backgroundImage: {
+        backgroundColor: '#2c2c2c',
       },
     },
+    categoriesDropDown: {
+      popUpButton: {
+        buttonText: {
+          [INCLUDE]: ['navigationBarTextColor'],
+        },
+      },
+    },
+    navigationBarTitle: {
+      [INCLUDE]: ['navigationBarTextColor'],
+    },
   },
-  navBarTitle: {
+  navigationBarTextColor: {
     color: '#fff',
   },
   featuredItem: {

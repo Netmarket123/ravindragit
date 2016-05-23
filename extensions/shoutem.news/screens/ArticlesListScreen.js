@@ -150,7 +150,7 @@ export class ArticlesListScreen extends Component {
         bindings={{ text: 'name', value: 'id' }}
         onItemSelected={this.categorySelected}
         selectedItem={this.state.selectedCategory}
-        style={style.categoriesDropDown}
+        style={style.navigation.categoriesDropDown}
       />
     );
   }
@@ -181,8 +181,8 @@ export class ArticlesListScreen extends Component {
 
     setNavBarProps({
       rightComponent: this.renderCategoriesDropDown(),
-      centerComponent: (<Text style={style.navBarTitle}>News</Text>),
-      style: style.navigationBar,
+      centerComponent: (<Text style={style.navigation.navigationBarTitle}>News</Text>),
+      style: style.navigation.navigationBar,
     });
 
     return (
@@ -194,19 +194,24 @@ export class ArticlesListScreen extends Component {
 }
 
 const style = {
-  navigationBar: {
-    backgroundImage: {
-      backgroundColor: '#2c2c2c',
-    },
-  },
-  categoriesDropDown: {
-    popUpButton: {
-      buttonText: {
-        [INCLUDE]: ['navBarTitle'],
+  navigation: {
+    navigationBar: {
+      backgroundImage: {
+        backgroundColor: '#2c2c2c',
       },
     },
+    categoriesDropDown: {
+      popUpButton: {
+        buttonText: {
+          [INCLUDE]: ['navigationBarTextColor'],
+        },
+      },
+    },
+    navigationBarTitle: {
+      [INCLUDE]: ['navigationBarTextColor'],
+    },
   },
-  navBarTitle: {
+  navigationBarTextColor: {
     color: '#fff',
   },
   listView: {
