@@ -1,76 +1,134 @@
 import {
   navigateTo,
 } from 'shoutem/navigation';
+import { combineReducers } from 'redux';
 import { find, storage, collection } from '@shoutem/redux-api-state';
+import _ from 'lodash';
+import {
+  DataSchemas,
+  Screens,
+  Collections,
+} from './const.js';
 
-export const SHOUTEM_NEWS_SCHEME = 'shoutem.news.articles';
-export const SHOUTEM_IMAGES_SCHEME = 'shoutem.core.image-attachments';
-export const SHOUTEM_CATEGORIES_SCHEME = 'shoutem.core.categories';
-export const CATEGORY_SELECTED = Symbol('categorySelected');
+const reducers = {
+  news: storage(DataSchemas.Articles),
+  categories: storage(DataSchemas.Categories),
+  newsImages: storage(DataSchemas.Images),
+  newsCategories: collection(DataSchemas.Categories, Collections.NewsCategories),
+  latestNews: collection(DataSchemas.Articles, Collections.LatestNews),
+  searchedNews: collection(DataSchemas.Articles, Collections.SearchedNews),
+};
+export default combineReducers(reducers);
 
-export const reducers = {
-  news: storage(SHOUTEM_NEWS_SCHEME),
-  categories: storage(SHOUTEM_CATEGORIES_SCHEME),
-  newsImages: storage(SHOUTEM_IMAGES_SCHEME),
-  newsCategories: collection(SHOUTEM_CATEGORIES_SCHEME, 'newsCategories'),
-  latestNews: collection(SHOUTEM_NEWS_SCHEME, 'latestNews'),
-  searchedNews: collection(SHOUTEM_NEWS_SCHEME, 'searchedNews'),
+// Redux api state denormalizer storage to schema map
+export const schemasMap = {
+  [DataSchemas.Articles]: '["shoutem.news"].news',
+  [DataSchemas.Images]: '["shoutem.news"].newsImages',
+  'shoutem.core.applications': '["shoutem.news"].applications',
+  [DataSchemas.Categories]: '["shoutem.news"].categories',
 };
 
-export function openListScreen(settings = {
-  textCentric: false,
-}) {
-  const nextScreenName = `shoutem.news.${settings.textCentric ? 'GridScreen' : 'ListScreen'}`;
+
+/**
+ * Parse query object to JSON query string
+ *
+ * @param queryObject
+ * @param parentFieldName
+ * @returns {string|*}
+ */
+function parseQueryObject(queryObject, parentFieldName) {
+  return _.reduce(queryObject, (queryParams, fieldValue, fieldName) => {
+    let queryParam;
+    if (_.isPlainObject(fieldValue)) {
+      const newFieldName = parentFieldName ? `${parentFieldName}[${fieldName}]` : fieldName;
+      queryParam = parseQueryObject(fieldValue, newFieldName);
+    } else if (parentFieldName) {
+      queryParam = [`${parentFieldName}[${fieldName}]=${fieldValue}`];
+    } else {
+      queryParam = [`${fieldName}=${fieldValue}`];
+    }
+    return queryParams.concat(queryParam);
+  }, [])
+    .join('&');
+}
+
+function createQueryString(options) {
+  return `?${parseQueryObject(options)}`;
+}
+
+function createEndpoint(settings, path) {
+  return `${settings.endpoint}/v1/apps/${settings.appId}/${path}`;
+}
+
+function getResourceUrl(schema, options = {}, settings) {
+  const endpoint = createEndpoint(settings, `resources/${schema}`);
+  const queryString = createQueryString(options);
+
+  return endpoint + queryString;
+}
+
+function getCategoryUrl(options, settings) {
+  return createEndpoint(settings, 'categories') + createQueryString(options);
+}
+
+export const openListScreen = (settings) => {
+  const nextScreenName = settings.textCentric ?
+    Screens.ArticlesListScreen : Screens.ArticlesGridScreen;
 
   const route = {
     screen: nextScreenName,
     props: {
       settings: {
-        appId: settings.appId || '167875094',
-        endpoint: settings.endpoint || 'http://api.aperfector.com',
-        parentCategoryId: settings.parentCategoryId || '2251460',
+        appId: settings.appId,
+        endpoint: settings.endpoint,
+        parentCategoryId: settings.parentCategoryId,
       },
     },
   };
 
   return navigateTo(route);
-}
+};
 
-export function findNews(searchTerm, category, pageOffset = 0, settings) {
-  let query = '';
-  let collectionName = 'latestNews';
-  const offset = `&page[offset]=${pageOffset}`;
-
+export const findNews = (searchTerm, category, pageOffset = 0, settings) => {
+  const collectionName = searchTerm ? Collections.SearchedNews : Collections.LatestNews;
+  const options = {
+    include: 'image',
+    page: {
+      limit: 10,
+      offset: pageOffset,
+    },
+  };
   if (searchTerm) {
-    query += `&query=${searchTerm}`;
-    collectionName = 'searchedNews';
+    options.query = searchTerm;
   }
-
   if (category) {
-    query += `&filter[categories]=${category.id}`;
+    options.filter = {
+      categories: category.id,
+    };
   }
-
   return find(
     {
-      // TODO(Braco) - use appID dynamically (the right way)
-      endpoint: `${settings.endpoint}/v1/apps/${settings.appId}/resources/${SHOUTEM_NEWS_SCHEME}?` +
-      `include=image${query}${offset}&page[limit]=8`,
+      endpoint: getResourceUrl(DataSchemas.Articles, options, settings),
       headers: { 'Content-Type': 'application/json' },
     },
-    SHOUTEM_NEWS_SCHEME,
+    DataSchemas.Articles,
     collectionName
   );
-}
+};
 
-export function getNewsCategories(parent = 'null', settings) {
+export const getNewsCategories = (parent, settings) => {
+  const options = {
+    filter: {
+      parent,
+      schema: DataSchemas.Articles,
+    },
+  };
   return find(
     {
-      // TODO(Braco) - use appID dynamically (the right way)
-      endpoint: `${settings.endpoint}/v1/apps/${settings.appId}/categories` +
-      `?filter[parent]=${parent}&filter[schema]=${SHOUTEM_NEWS_SCHEME}`,
+      endpoint: getCategoryUrl(options, settings),
       headers: { 'Content-Type': 'application/json' },
     },
-    SHOUTEM_CATEGORIES_SCHEME,
-    'newsCategories'
+    DataSchemas.Categories,
+    Collections.NewsCategories
   );
-}
+};

@@ -33,6 +33,7 @@ function ListItem({
   buttonIcon,
   onPressMethod,
   numberOfLines,
+  fallbackImage,
 }) {
   let separatorImage = null;
   if (extrasSeparatorImage) {
@@ -55,7 +56,9 @@ function ListItem({
   return (
     <GridBox style={style.gridBox}>
       <TouchableOpacity style={style.container} onPress={onPress} key={id}>
-        <Image style={style.itemImage} source={image} />
+        <Image style={style.itemImage} source={fallbackImage}>
+          <Image style={{ flex: 1 }} source={image} />
+        </Image>
         <View style={style.itemInfo}>
           <Text
             numberOfLines={numberOfLines || DEFAULT_NUMBER_OF_LINES}
@@ -82,6 +85,7 @@ ListItem.propTypes = {
   leftExtra: React.PropTypes.string,
   rightExtra: React.PropTypes.string,
   image: Image.propTypes.source,
+  fallbackImage: Image.propTypes.source,
   extrasSeparatorImage: Image.propTypes.source,
   buttonIcon: React.PropTypes.any,
   onPressMethod: React.PropTypes.func,
