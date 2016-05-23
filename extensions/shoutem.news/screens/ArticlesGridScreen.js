@@ -76,10 +76,12 @@ const style = {
         backgroundColor: 'red',
       },
     },
-    listContent: {},
     gridRow: {
+      container: {
+        paddingHorizontal: 2.5,
+      },
       gridItemContainer: {
-        margin: 5,
+        margin: 2.5,
       },
     },
   },
@@ -119,6 +121,7 @@ const style = {
         alignItems: 'center',
         justifyContent: 'center',
         height: 330,
+        padding: 20,
       },
       backgroundImage: {
         borderRadius: 2,

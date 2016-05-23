@@ -233,6 +233,7 @@ const style = {
         alignItems: 'center',
         justifyContent: 'center',
         height: 330,
+        padding: 20,
       },
       backgroundImage: {
         borderRadius: 2,
