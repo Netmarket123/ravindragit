@@ -6,8 +6,6 @@ import React, {
 import { connectStyle } from 'shoutem/theme';
 import { FullScreenSpinner, PlatformSpinner } from 'shoutem.ui';
 
-const GET_PROPS_TO_PASS = Symbol('getPropsToPass');
-
 const Status = {
   LOADING: 'loading',
   LOADING_NEXT: 'loadingNext',
@@ -33,9 +31,9 @@ class ListView extends React.Component {
     super(props, context);
     this.handleListViewRef = this.handleListViewRef.bind(this);
     this.renderFooter = this.renderFooter.bind(this);
-    this.onEndReached = this.onEndReached.bind(this);
-    this.onRefresh = this.onRefresh.bind(this);
     this.listView = null;
+
+    // Create list data source
     const dataSource = new RNListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
     this.state = {
@@ -52,65 +50,41 @@ class ListView extends React.Component {
   }
 
   /**
-   * Triggered when list end threshold reached (scrolled to)
-   */
-  onEndReached() {
-    if (this.props.onLoadMore) {
-      this.onLoadMore();
-    }
-  }
-
-  onRefresh() {
-    this.props.onRefresh();
-  }
-
-  /**
    * Used to map props we are passing to GiftedListView from our ListView.
    * Setting default values.
    * @returns {{}}
    */
-  [GET_PROPS_TO_PASS]() {
+  getPropsToPass() {
     const props = this.props;
-    // TODO(Braco) - optimise omit/pick
     const mappedProps = {};
 
-    // Override properties
-    // Display a loader for the first fetching
-    mappedProps.firstLoader = true;
-    // GiftedListView pagination disabled - we use onLoadMore (infinite scrolling)
-    mappedProps.pagination = false;
-    // Default load more threshold
+    // configuration
+    // default load more threshold
     mappedProps.onEndReachedThreshold = 40;
     // React native warning
     // NOTE: In react 0.23 it can't be set to false
     mappedProps.enableEmptySections = true;
 
-    // Mapped properties
-    // Enable pull-to-refresh for iOS and touch-to-refresh for Android
-    mappedProps.refreshable = !!props.onRefresh;
-    // Enable sections
-    mappedProps.withSections = !!props.renderSectionHeader;
-    // Set renderSectionHeader method
-    mappedProps.renderSectionHeader = props.renderSectionHeader;
-    // Tilt color
-    mappedProps.refreshableTintColor = props.style.tiltColor.backgroundColor;
-    // create headerView function if there is something to render in header
-    mappedProps.renderHeader = props.renderHeader;
-    // We do not want to pass style to GiftedListView, it uses customStyle
+    // style
     mappedProps.customStyles = props.style.list;
-    // Map render row function
-    mappedProps.renderRow = props.renderRow;
-    // Passed contentContainerStyle
     mappedProps.contentContainerStyle = props.style.listContent;
-    // Override GiftedListView renderFooter
-    mappedProps.renderFooter = this.renderFooter;
-    // Handle on scroll end reach
-    mappedProps.onEndReached = this.onEndReached; // TODO(Braco) - status condition
-    // Handle default onFetch from GiftedListView - used to override some features
-    mappedProps.onFetch = this.handleFetchAction;
 
+    // rendering
+    mappedProps.renderHeader = props.renderHeader;
+    mappedProps.renderRow = props.renderRow;
+    mappedProps.renderFooter = this.renderFooter;
+    mappedProps.renderSectionHeader = props.renderSectionHeader;
+
+    // events
+    mappedProps.onEndReached = props.onLoadMore;
+
+    // data to display
     mappedProps.dataSource = this.state.dataSource;
+
+    // refresh control
     mappedProps.refreshControl = props.onRefresh && this.renderRefreshControl();
+
+    // reference
     mappedProps.ref = this.handleListViewRef;
 
     return mappedProps;
@@ -153,10 +127,10 @@ class ListView extends React.Component {
   }
 
   renderRefreshControl() {
-    const { status, style } = this.props;
+    const { status, style, onRefresh } = this.props;
     return (
       <RefreshControl
-        onRefresh={this.onRefresh}
+        onRefresh={onRefresh}
         refreshing={status === Status.REFRESHING}
         tintColor={style.tiltColor.backgroundColor}
       />
@@ -165,7 +139,9 @@ class ListView extends React.Component {
 
   render() {
     // TODO(Braco) - handle no results view
-    return <RNListView {...this[GET_PROPS_TO_PASS]()} />;
+    // TODO(Braco) - handle no more results view
+    // TODO(Braco) - handle error view
+    return <RNListView {...this.getPropsToPass()} />;
   }
 }
 
