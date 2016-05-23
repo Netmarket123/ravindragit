@@ -39,6 +39,7 @@ export default class ListArticleView extends React.Component {
         id={article.id}
         style={style}
         onPressMethod={this.onPress}
+        fallbackImage={x}
       />
     );
   }

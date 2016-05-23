@@ -40,6 +40,7 @@ export default class GridArticleView extends React.Component {
         id={article.id}
         style={style}
         onPressMethod={this.onPress}
+        fallbackImage={require('../assets/images/image-fallback.png')}
       />
     );
   }
