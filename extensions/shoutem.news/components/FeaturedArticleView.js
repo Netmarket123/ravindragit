@@ -15,7 +15,7 @@ export default class FeaturedArticleView extends React.Component {
     // onPress callback function, activated on View press
     onPress: React.PropTypes.func,
     // Item used to bind data
-    article: React.PropTypes.object,
+    article: React.PropTypes.object.isRequired,
   }
 
   constructor(props) {
