@@ -2,7 +2,6 @@ import React from 'react-native';
 import { connect } from 'react-redux';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
 import { GridView } from 'shoutem.ui';
-import FeaturedArticleView from '../components/FeaturedArticleView';
 import GridArticleView from '../components/GridArticleView';
 import {
   ArticlesListScreen,

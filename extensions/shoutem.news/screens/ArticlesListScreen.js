@@ -237,7 +237,7 @@ const style = {
 };
 
 // written as variable to be able to debug in Chrome debugger
-export const newsMapStateToProps = function (state) {
+export const newsMapStateToProps = (state) => {
   const denormalizer = new ReduxApiStateDenormalizer(() => state, schemasMap);
   return {
     news: denormalizer.denormalizeCollection(
@@ -252,16 +252,14 @@ export const newsMapStateToProps = function (state) {
   };
 };
 // written as variable to be able to debug in Chrome debugger
-export const newsMapDispatchToProps = function (dispatch) {
-  return {
-    clearSearch: bindActionCreators(
-      () => clear(DataSchemas.Articles, Collections.SearchedNews), dispatch
-    ),
-    findNews: bindActionCreators(actions.findNews, dispatch),
-    navigateToRoute: bindActionCreators(navigateTo, dispatch),
-    fetchNewsCategories: bindActionCreators(getNewsCategories, dispatch),
-  };
-};
+export const newsMapDispatchToProps = (dispatch) => ({
+  clearSearch: bindActionCreators(
+    () => clear(DataSchemas.Articles, Collections.SearchedNews), dispatch
+  ),
+  findNews: bindActionCreators(actions.findNews, dispatch),
+  navigateToRoute: bindActionCreators(navigateTo, dispatch),
+  fetchNewsCategories: bindActionCreators(getNewsCategories, dispatch),
+});
 
 export default connect(newsMapStateToProps, newsMapDispatchToProps)(
   connectStyle('shoutem.news.ListScreen', style)(ArticlesListScreen)
