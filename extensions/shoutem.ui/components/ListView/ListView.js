@@ -1,7 +1,8 @@
 import React, {
   View,
+  ListView as RNListView,
+  RefreshControl,
 } from 'react-native';
-import GiftedListView from 'react-native-gifted-listview';
 import { connectStyle } from 'shoutem/theme';
 import { FullScreenSpinner, PlatformSpinner } from 'shoutem.ui';
 
@@ -32,23 +33,22 @@ class ListView extends React.Component {
   constructor(props, context) {
     super(props, context);
     this[HANDLE_LIST_VIEW_REF] = this[HANDLE_LIST_VIEW_REF].bind(this);
-    this.handleFetchAction = this.handleFetchAction.bind(this);
     this.renderFooter = this.renderFooter.bind(this);
     this.onEndReached = this.onEndReached.bind(this);
+    this.onRefresh = this.onRefresh.bind(this);
     this.listView = null;
     this.giftedListView = null;
+    const dataSource = new RNListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+
+    this.state = {
+      dataSource: dataSource.cloneWithRows([]),
+    };
   }
 
   shouldComponentUpdate(nextProps) {
     const { items } = this.props;
     if (this.giftedListView && nextProps.items !== items) {
-      // GiftedListView use _updateRows to handle data to show and update internal state
-      // such as loading status and other.
-      // Second argument (options) can be passed to mark last page and things like that.
-      // This function is used here so we do not need to implement callback onFetch method
-      // and work with callbacks as GiftedListView does
-      // https://github.com/FaridSafi/react-native-gifted-listview/blob/master/GiftedListViewExample/example_simple.js#L26
-      this.giftedListView._updateRows(nextProps.items);
+      this.setState({ dataSource: this.state.dataSource.cloneWithRows(items) });
     }
     return true;
   }
@@ -60,6 +60,10 @@ class ListView extends React.Component {
     if (this.props.onLoadMore) {
       this.onLoadMore();
     }
+  }
+
+  onRefresh() {
+    this.props.onRefresh();
   }
 
   /**
@@ -93,7 +97,7 @@ class ListView extends React.Component {
     // Tilt color
     mappedProps.refreshableTintColor = props.style.tiltColor.backgroundColor;
     // create headerView function if there is something to render in header
-    mappedProps.headerView = props.renderHeader;
+    mappedProps.renderHeader = props.renderHeader;
     // We do not want to pass style to GiftedListView, it uses customStyle
     mappedProps.customStyles = props.style.list;
     // Map render row function
@@ -107,26 +111,10 @@ class ListView extends React.Component {
     // Handle default onFetch from GiftedListView - used to override some features
     mappedProps.onFetch = this.handleFetchAction;
 
+    mappedProps.dataSource = this.state.dataSource;
+    mappedProps.refreshControl = props.onRefresh && this.renderRefreshControl();
+
     return mappedProps;
-  }
-
-  /**
-   * Called by GiftedListView with (page, callback, options) args.
-   * Override default GiftedListView behavior.
-   *
-   */
-  handleFetchAction() {
-    if (
-      // did parent provide onRefresh handle
-      this.props.onRefresh &&
-      // is pull down to refresh action
-      this.giftedListView && this.giftedListView.state.isRefreshing
-    ) {
-      this.props.onRefresh();
-    }
-
-    // GiftedListView actions we do not use anymore:
-    //  - first fetch
   }
 
   /**
@@ -166,9 +154,20 @@ class ListView extends React.Component {
     );
   }
 
+  renderRefreshControl() {
+    const { status, style } = this.props;
+    return (
+      <RefreshControl
+        onRefresh={this.onRefresh}
+        refreshing={status === Status.REFRESHING}
+        tintColor={style.tiltColor.backgroundColor}
+      />
+    );
+  }
+
   render() {
     // TODO(Braco) - handle no results view
-    return (<GiftedListView
+    return (<RNListView
       ref={this[HANDLE_LIST_VIEW_REF]}
       {...this[GET_PROPS_TO_PASS]()}
     />);
