@@ -194,6 +194,9 @@ export class ArticlesListScreen extends Component {
 }
 
 const style = {
+  navigationBarTextColor: {
+    color: '#fff',
+  },
   navigation: {
     navigationBar: {
       backgroundImage: {
@@ -210,9 +213,6 @@ const style = {
     navigationBarTitle: {
       [INCLUDE]: ['navigationBarTextColor'],
     },
-  },
-  navigationBarTextColor: {
-    color: '#fff',
   },
   listView: {
     header: {

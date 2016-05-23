@@ -57,6 +57,9 @@ class ArticlesGridScreen extends ArticlesListScreen {
 }
 
 const style = {
+  navigationBarTextColor: {
+    color: '#fff',
+  },
   gridView: {
     header: {
       container: {},
@@ -106,9 +109,6 @@ const style = {
     navigationBarTitle: {
       [INCLUDE]: ['navigationBarTextColor'],
     },
-  },
-  navigationBarTextColor: {
-    color: '#fff',
   },
   featuredItem: {
     gridBox: {
