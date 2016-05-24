@@ -16,8 +16,8 @@ function includeSymbolMergeHandler(objVal, srcVal) {
       [...newObjVal[INCLUDE], ...srcVal[INCLUDE]] : srcVal[INCLUDE];
   }
 
-  // if objVal doesn't exists create new from source if INCLUDE exists
-  if (_.isUndefined(newObjVal) && include) {
+  // if objVal doesn't exists create new from source
+  if (_.isUndefined(newObjVal) && _.isPlainObject(srcVal)) {
     // Copy symbol fix.
     // { ...srcVal } copies symbol wrong, it adds symbol value to the property defined just after it
     // Problem example: { SYMBOL: ['Test'], someProp: 10 } => { someProp: ['Test'] }
@@ -31,7 +31,9 @@ function includeSymbolMergeHandler(objVal, srcVal) {
     // TODO(Braco) - once Object.assign polyfill is no longer used use commented code bellow
     // Check if `customizer` is needed still at all after polyfill is removed!
     // return { ...srcVal, [INCLUDE]: include }; // add new lines for each property
-    newObj[INCLUDE] = include;
+    if (include) {
+      newObj[INCLUDE] = include;
+    }
     return newObj;
   }
 

@@ -1,8 +1,8 @@
 export { default as NavigationBar } from './components/NavigationBar/NavigationBar';
 
-export { default as AdvancedListView } from './components/ListView/AdvancedListView';
+export { default as ListView } from './components/ListView/ListView';
 
-export { default as AdvancedGridView } from './components/GridView/AdvancedGridView';
+export { default as GridView } from './components/GridView/GridView';
 
 export { default as Button } from './components/Button/Button';
 export { default as MaterialIconButton } from './components/Button/MaterialIconButton';
