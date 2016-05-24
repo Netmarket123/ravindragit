@@ -4,20 +4,18 @@ import React, {
   Text,
 } from 'react-native';
 
-import Icon from 'react-native-vector-icons/MaterialIcons';
-
 import { connectStyle, INCLUDE } from 'shoutem/theme';
 
 function Button({
   style,
-  icon,
+  renderIcon,
   showIconOnRight,
   text,
   onPress,
 }) {
   let buttonIcon = null;
-  if (icon) {
-    buttonIcon = <Icon key="icon" name={icon} style={style.buttonIcon} />;
+  if (renderIcon) {
+    buttonIcon = renderIcon();
   }
   const buttonText = text ?
     <Text key="text" style={style.buttonText}>{text}</Text> : null;
@@ -42,7 +40,7 @@ function Button({
 }
 
 Button.propTypes = {
-  icon: React.PropTypes.string,
+  renderIcon: React.PropTypes.func,
   showIconOnRight: React.PropTypes.boolean,
   text: React.PropTypes.string,
   style: React.PropTypes.object,
@@ -67,4 +65,4 @@ const style = {
   },
 };
 
-export default connectStyle('dev.ext.Button', style)(Button);
+export default connectStyle('shoutem.ui.Button', style)(Button);

@@ -10,6 +10,7 @@ const cli = commandLineArgs([
   { name: 'production', type: Boolean },
   { name: 'codePushAccessKey', type: String },
   { name: 'platform', type: String },
+  { name: 'releaseForPreview', type: Boolean },
 ]);
 
 // merge command line arguments and config.json

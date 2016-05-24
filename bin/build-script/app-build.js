@@ -75,7 +75,7 @@ class AppBuild {
   removeBabelrcFiles() {
     console.time('removing .babelrc files');
 
-    rimraf.sync('./node_modules/*/.babelrc');
+    rimraf.sync(path.join('.', '/node_modules/', '*/', '.babelrc'));
 
     console.timeEnd('removing .babelrc files');
   }

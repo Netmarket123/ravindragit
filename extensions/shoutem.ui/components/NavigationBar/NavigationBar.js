@@ -3,9 +3,20 @@ import React, {
   Image,
   Text,
   TouchableOpacity,
+  StatusBar,
 } from 'react-native';
 
+import color from 'tinycolor2';
+
+import MaterialIconButton from '../Button/MaterialIconButton';
+
 import { connectStyle, INCLUDE } from 'shoutem/theme';
+
+function getBackgroundColor(style) {
+  return _.find(style, (styleDef) =>
+    styleDef.backgroundColor && styleDef.backgroundColor !== 'transparent'
+  ).backgroundColor;
+}
 
 function navigationBarBackButton(hasHistory, navigateBack, style) {
   /**
@@ -18,9 +29,11 @@ function navigationBarBackButton(hasHistory, navigateBack, style) {
   }
 
   const backButton = hasHistory ? (
-    <TouchableOpacity onPress={navigateBackWithoutEventParameter}>
-      <Text style={style.defaultBackButton}>Back</Text>
-    </TouchableOpacity>
+    <MaterialIconButton
+      onPress={navigateBackWithoutEventParameter}
+      style={style.defaultBackButton}
+      iconName="arrow-back"
+    />
   ) : null;
 
   return backButton;
@@ -38,8 +51,15 @@ function NavigationBar({
   const leftComponent = leftComponentProp ||
     navigationBarBackButton(hasHistory, navigateBack, style);
 
+  const bg = getBackgroundColor(style);
+  const statusBarStyle = bg && color(bg).isDark() ? 'light-content' : 'default';
+
   return (
     <View style={style.container}>
+      <StatusBar
+        barStyle={statusBarStyle}
+        transculent
+      />
       <Image source={backgroundImage} style={style.backgroundImage}>
         <View style={style.componentsContainer}>
           <View style={style.leftComponent}>{leftComponent}</View>
@@ -100,6 +120,12 @@ const style = {
   },
   defaultBackButton: {
     [INCLUDE]: ['baseFont'],
+    fontSize: 24,
+    buttonIcon: {
+      color: 'white',
+      width: 40,
+      height: 40,
+    },
   },
 };
 
