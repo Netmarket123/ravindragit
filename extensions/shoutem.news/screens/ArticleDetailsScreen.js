@@ -5,8 +5,9 @@ import React, {
   Animated,
 } from 'react-native';
 import { INCLUDE, connectStyle } from 'shoutem/theme';
-import { NewsGridBox, RichMedia } from 'shoutem.ui';
+import { NewsGridBox, RichMedia, Button } from 'shoutem.ui';
 import * as _ from 'lodash';
+import Share from 'react-native-share';
 
 const DEFAULT_BOTTOM_CONTENT_OFFSET = 50;
 
@@ -65,12 +66,30 @@ function ArticleDetailsScreen({
   article,
   style,
   bottomContentOffset: bottomContentOffsetProp,
+  setNavBarProps,
 }) {
   const bottomContentOffset = bottomContentOffsetProp || DEFAULT_BOTTOM_CONTENT_OFFSET;
   const scrollY = new Animated.Value(0);
   const detailsTopOffset = getOffsetHeight(bottomContentOffset);
   const headerStyle = createAnimatedHeaderStyle(style.header, scrollY, detailsTopOffset);
   const detailsStyle = createDetailsStyle(detailsTopOffset, style);
+
+  function onShare() {
+    Share.open({
+      share_text: article.title,
+      share_URL: 'http://google.cl', // TODO(Vladimir)-determine the share link
+      title: article.title,
+    }, (e) => {
+      console.log(e);
+    });
+  }
+
+  // TODO(Vladimir)-find an icon resembling the design specification (apple share)
+  const shareButton = <Button icon="share" onPress={onShare} style={style.shareButton} />;
+
+  setNavBarProps({
+    rightComponent: shareButton,
+  });
 
   return (
     <View style={style.screen}>
@@ -100,6 +119,7 @@ ArticleDetailsScreen.propTypes = {
   article: React.PropTypes.object,
   style: React.PropTypes.object,
   bottomContentOffset: React.PropTypes.number,
+  setNavBarProps: React.PropTypes.func,
 };
 
 const style = {
@@ -143,6 +163,12 @@ const style = {
     bottom: 0,
     height: null,
     width: null,
+  },
+  shareButton: {
+    buttonIcon: {
+      fontSize: 24,
+      marginBottom: 3,
+    },
   },
 };
 
