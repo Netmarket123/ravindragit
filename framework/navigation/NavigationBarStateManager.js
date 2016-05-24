@@ -37,7 +37,9 @@ export default class NavigationBarStateManager {
     const newState = _.assign({}, state);
 
     if (route !== this.deletedRoute
-      && (this.routeStates.size < 1 || state !== this.routeStates.get(route))) {
+      && (!this.routeStates.get(route)
+        || this.routeStates.size < 1
+        || state !== this.routeStates.get(route))) {
       this.routeStates.set(route, newState);
       this.state = newState;
       this.triggerStateChangeListener(oldState, newState);
