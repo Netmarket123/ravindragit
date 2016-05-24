@@ -4,18 +4,12 @@ const CodePush = require('code-push');
 const codePushExec = require('code-push-cli/script/command-executor');
 const codePushCli = require('code-push-cli/definitions/cli');
 const request = require('request');
-const rimraf = require('rimraf');
-const path = require('path');
 const _ = require('lodash');
 
 const deploymentNames = {
   production: 'Production',
   staging: 'Staging',
 };
-
-function deleteFile() {
-
-}
 
 class AppRelease {
   constructor(config) {
@@ -104,10 +98,6 @@ class AppRelease {
   }
 
   release() {
-    if (this.releaseForPreview) {
-      rimraf.sync(path.join('.', 'node_modules', 'shoutem.application', 'configuration.json'));
-    }
-
     codePushExec.execute({
       type: codePushCli.CommandType.releaseReact,
       appName: `${this.appId}`,
