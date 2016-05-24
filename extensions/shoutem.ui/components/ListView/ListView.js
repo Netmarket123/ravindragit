@@ -14,6 +14,34 @@ const Status = {
   IDLE: 'idle',
 };
 
+class ListDataSource {
+  constructor(config, getSectionId) {
+    this.getSectionId = getSectionId;
+    this.withSections = !!config.sectionHeaderHasChanged;
+    this.dataSource = new RNListView.DataSource(config);
+  }
+
+  group(data) {
+    let prevSectionId;
+    return data.reduce((sections, item) => {
+      const sectionId = this.getSectionId(item);
+      if (prevSectionId !== sectionId) {
+        prevSectionId = sectionId;
+        sections.push([]);
+      }
+      sections[sections.length - 1].push(item);
+      return sections;
+    }, []);
+  }
+
+  clone(data) {
+    if (this.withSections) {
+      return this.dataSource.cloneWithRowsAndSections(this.group(data));
+    }
+    return this.dataSource.cloneWithRows(data);
+  }
+}
+
 class ListView extends React.Component {
   static propTypes = {
     status: React.PropTypes.string,
@@ -21,30 +49,37 @@ class ListView extends React.Component {
     items: React.PropTypes.array,
     onLoadMore: React.PropTypes.func,
     onRefresh: React.PropTypes.func,
+    getSectionId: React.PropTypes.func,
     renderRow: React.PropTypes.func,
     renderHeader: React.PropTypes.func,
     renderFooter: React.PropTypes.func,
     renderSectionHeader: React.PropTypes.func,
   };
   static Status = Status;
+
   constructor(props, context) {
     super(props, context);
     this.handleListViewRef = this.handleListViewRef.bind(this);
     this.renderFooter = this.renderFooter.bind(this);
     this.listView = null;
 
-    // Create list data source
-    const dataSource = new RNListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+
+    this.listDataSource = new ListDataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2,
+      sectionHeaderHasChanged: props.renderSectionHeader ? (s1, s2) => s1 !== s2 : undefined,
+      getSectionHeaderData: (dataBlob, sectionId) => props.getSectionId(dataBlob[sectionId][0]),
+    }, props.getSectionId);
+
 
     this.state = {
-      dataSource: dataSource.cloneWithRows([]),
+      dataSource: this.listDataSource.clone(props.items),
     };
   }
 
   shouldComponentUpdate(nextProps) {
     const { items } = this.props;
     if (nextProps.items !== items) {
-      this.setState({ dataSource: this.state.dataSource.cloneWithRows(items) });
+      this.setState({ dataSource: this.listDataSource.clone(nextProps.items) });
     }
     return true;
   }
@@ -108,7 +143,7 @@ class ListView extends React.Component {
 
     switch (status) {
       case Status.LOADING:
-        spinner = <FullScreenSpinner style={style.newDataSpinner} />;
+        spinner = <FullScreenSpinner style={style.newDataSpinner}/>;
         break;
       case Status.LOADING_NEXT:
         spinner = <View style={style.loadMoreSpinner}><PlatformSpinner /></View>;
