@@ -84,8 +84,12 @@ function ArticleDetailsScreen({
     });
   }
 
-  // TODO(Vladimir)-find an icon resembling the design specification (apple share)
-  const shareButton = <Button icon="share" onPress={onShare} style={style.shareButton} />;
+  const shareButton = (<Button
+    iconType={Button.iconTypes.EVIL_ICON}
+    icon="share-apple"
+    onPress={onShare}
+    style={style.shareButton}
+  />);
 
   setNavBarProps({
     rightComponent: shareButton,
