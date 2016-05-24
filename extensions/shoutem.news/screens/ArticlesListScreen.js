@@ -228,8 +228,8 @@ const style = {
     color: '#888888',
     paddingHorizontal: 15,
     paddingTop: 25,
-    paddingBottom: 15,
-    fontSize: 14,
+    paddingBottom: 10,
+    fontSize: 13,
   },
   screen: {},
   featuredItem: {
