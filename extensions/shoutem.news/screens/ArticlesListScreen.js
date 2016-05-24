@@ -10,13 +10,12 @@ import { ListView, DropDownMenu } from 'shoutem.ui';
 import ListArticleView from '../components/ListArticleView';
 import FeaturedArticleView from '../components/FeaturedArticleView';
 import { bindActionCreators } from 'redux';
-import { clear, ReduxApiStateDenormalizer } from '@shoutem/redux-api-state';
+import { ReduxApiStateDenormalizer } from '@shoutem/redux-api-state';
 import { actions } from '../index';
 import { navigateTo } from 'shoutem/navigation';
 import {
   getNewsCategories,
   schemasMap,
-  Collections,
 } from '../actions';
 
 import {
@@ -45,13 +44,12 @@ export class ArticlesListScreen extends Component {
   constructor(props, context) {
     super(props, context);
     this.fetchNews = this.fetchNews.bind(this);
-    this.refreshNews = this.refreshNews.bind(this);
+    this.renderSectionHeader = this.renderSectionHeader.bind(this);
     this.openDetailsScreen = this.openDetailsScreen.bind(this);
     this.renderRow = this.renderRow.bind(this);
-    this.onSearchChanged = this.onSearchChanged.bind(this);
     this.categorySelected = this.categorySelected.bind(this);
+    this.renderArticle = this.renderArticle.bind(this);
     this.state = {
-      searchTerm: '',
       selectedCategory: null,
       fetchStatus: null,
     };
@@ -62,8 +60,10 @@ export class ArticlesListScreen extends Component {
       fetchNewsCategories,
       settings,
     } = this.props;
-    fetchNewsCategories(settings.parentCategoryId, settings);
-    this.setState({ fetchStatus: Status.LOADING });
+    this.setState(
+      { fetchStatus: Status.LOADING },
+      () => fetchNewsCategories(settings.parentCategoryId, settings)
+    );
   }
 
   componentWillReceiveProps(nextProps) {
@@ -72,31 +72,21 @@ export class ArticlesListScreen extends Component {
     }
   }
 
-  onSearchChanged(searchTerm) {
-    this.setState({ searchTerm });
+  getSectionId(item) {
+    return item.featured ? 'Featured' : 'Recent';
   }
 
   fetchNews() {
     const { settings, findNews, clearSearch, searchedNews } = this.props;
-    const { selectedCategory, searchTerm } = this.state;
+    const { selectedCategory } = this.state;
 
-    let offset;
-
-    if (searchTerm && searchedNews.length > 0) {
-      clearSearch();
-    }
-
-    findNews(searchTerm, selectedCategory, offset, settings).then(() => {
+    findNews(selectedCategory, settings).then(() => {
       this.setState({ fetchStatus: Status.IDLE });
     });
   }
 
   refreshNews() {
     this.setState({ fetchStatus: Status.REFRESHING }, this.fetchNews);
-  }
-
-  loadMoreNews() {
-    // TODO(Braco) - Redux Api Next
   }
 
   categorySelected(category) {
@@ -114,29 +104,9 @@ export class ArticlesListScreen extends Component {
     this.props.navigateToRoute(route);
   }
 
-  renderFeaturedArticle(article) {
-    return (
-      <FeaturedArticleView
-        article={article}
-        style={this.props.style.featuredItem}
-        onPress={this.openDetailsScreen}
-      />
-    );
-  }
-
-  renderRow(article) {
+  renderSectionHeader(section) {
     const { style } = this.props;
-    if (article.featured) {
-      return this.renderFeaturedArticle(article, style);
-    }
-
-    return (
-      <ListArticleView
-        article={article}
-        style={style.listRow}
-        onPress={this.openDetailsScreen}
-      />
-    );
+    return section === 'Recent' && <Text style={style.sectionHeader}>{section.toUpperCase()}</Text>;
   }
 
   renderCategoriesDropDown() {
@@ -155,20 +125,48 @@ export class ArticlesListScreen extends Component {
     );
   }
 
+  renderArticle(article, style) {
+    return (
+      <ListArticleView
+        article={article}
+        style={style.listRow}
+        onPress={this.openDetailsScreen}
+      />
+    );
+  }
+
+  renderFeaturedArticle(article) {
+    return (
+      <FeaturedArticleView
+        article={article}
+        style={this.props.style.featuredItem}
+        onPress={this.openDetailsScreen}
+      />
+    );
+  }
+
+  renderRow(article) {
+    const { style } = this.props;
+    if (article.featured) {
+      return this.renderFeaturedArticle(article, style);
+    }
+
+    return this.renderArticle(article, style);
+  }
+
   renderArticles() {
     const {
       style,
       news,
-      searchedNews,
     } = this.props;
-    const { searchTerm } = this.state;
     return (
       <ListView
-        items={searchTerm ? searchedNews : news}
+        items={news}
         renderRow={this.renderRow}
-        onRefresh={this.refreshNews}
         status={this.state.fetchStatus}
         style={style.listView}
+        getSectionId={this.getSectionId}
+        renderSectionHeader={this.renderSectionHeader}
       />
     );
   }
@@ -226,6 +224,13 @@ const style = {
     list: {},
     listContent: {},
   },
+  sectionHeader: {
+    color: '#888888',
+    paddingHorizontal: 15,
+    paddingTop: 25,
+    paddingBottom: 15,
+    fontSize: 14,
+  },
   screen: {},
   featuredItem: {
     gridBox: {
@@ -252,19 +257,14 @@ export const newsMapStateToProps = (state) => {
     news: denormalizer.denormalizeCollection(
       state[EXT].latestNews, DataSchemas.Articles
     ),
-    searchedNews: denormalizer.denormalizeCollection(
-      state[EXT].searchedNews, DataSchemas.Articles
-    ),
     categories: denormalizer.denormalizeCollection(
       state[EXT].newsCategories, DataSchemas.Categories
     ),
   };
 };
+
 // written as variable to be able to debug in Chrome debugger
 export const newsMapDispatchToProps = (dispatch) => ({
-  clearSearch: bindActionCreators(
-    () => clear(DataSchemas.Articles, Collections.SearchedNews), dispatch
-  ),
   findNews: bindActionCreators(actions.findNews, dispatch),
   navigateToRoute: bindActionCreators(navigateTo, dispatch),
   fetchNewsCategories: bindActionCreators(getNewsCategories, dispatch),
