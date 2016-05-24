@@ -31,12 +31,12 @@ export default class NavigationBarStateManager {
 
     listener(_.assign({}, oldState), _.assign({}, newState));
   }
-
+  
   setState(state, route) {
     const oldState = this.state;
     const newState = _.assign({}, state);
 
-    if (route !== this.deletedRoute
+    if ((!this.deletedRoute || route !== this.deletedRoute)
       && (!this.routeStates.get(route)
         || this.routeStates.size < 1
         || state !== this.routeStates.get(route))) {

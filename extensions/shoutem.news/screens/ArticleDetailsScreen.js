@@ -62,6 +62,7 @@ Details.propTypes = {
 };
 
 function ArticleDetailsScreen({
+  setNavBarProps,
   article,
   style,
   bottomContentOffset: bottomContentOffsetProp,
@@ -72,6 +73,13 @@ function ArticleDetailsScreen({
   const headerStyle = createAnimatedHeaderStyle(style.header, scrollY, detailsTopOffset);
   const detailsStyle = createDetailsStyle(detailsTopOffset, style);
 
+  setNavBarProps({
+    style: {
+      container: {
+        backgroundColor: 'rgba(0, 0, 0, 0)'
+      }
+    }
+  });
   return (
     <View style={style.screen}>
       <Animated.View
@@ -87,7 +95,7 @@ function ArticleDetailsScreen({
       <ScrollView
         automaticallyAdjustContentInsets={false}
         style={style.container}
-        scrollEventThrottle={16}
+        scrollEventThrottle={1}
         onScroll={getScrollHandle(scrollY)}
       >
         <Details item={article} style={detailsStyle} />
@@ -112,6 +120,7 @@ const style = {
   screen: {
     position: 'relative',
     backgroundColor: '#fff',
+    paddingTop: 0,
   },
   detailsText: {},
   detailsTitle: {

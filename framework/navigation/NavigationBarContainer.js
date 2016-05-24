@@ -14,7 +14,7 @@ export default class NavigationBarContainer extends Component {
   }
 
   onStateChange(oldState, newState) {
-    this.state = newState;
+    this.state = _.assign({}, newState);
   }
 
   render() {
