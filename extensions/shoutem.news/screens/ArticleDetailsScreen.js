@@ -76,9 +76,9 @@ function ArticleDetailsScreen({
 
   function onShare() {
     Share.open({
-      share_text: article.title,
-      share_URL: 'http://google.cl', // TODO(Vladimir)-determine the share link
       title: article.title,
+      share_text: article.summary,
+      share_URL: article.link,
     }, (e) => {
       console.log(e);
     });
