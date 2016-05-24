@@ -24,7 +24,7 @@ class ListView extends React.Component {
     renderRow: React.PropTypes.func,
     renderHeader: React.PropTypes.func,
     renderFooter: React.PropTypes.func,
-    renderSectionHeader: React.PropTypes.bool,
+    renderSectionHeader: React.PropTypes.func,
   };
   static Status = Status;
   constructor(props, context) {
