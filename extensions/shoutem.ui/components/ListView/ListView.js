@@ -1,12 +1,10 @@
 import React, {
   View,
+  ListView as RNListView,
+  RefreshControl,
 } from 'react-native';
-import GiftedListView from 'react-native-gifted-listview';
 import { connectStyle } from 'shoutem/theme';
 import { FullScreenSpinner, PlatformSpinner } from 'shoutem.ui';
-
-const GET_PROPS_TO_PASS = Symbol('getPropsToPass');
-const HANDLE_LIST_VIEW_REF = Symbol('handleListViewRef');
 
 const Status = {
   LOADING: 'loading',
@@ -16,6 +14,34 @@ const Status = {
   IDLE: 'idle',
 };
 
+class ListDataSource {
+  constructor(config, getSectionId) {
+    this.getSectionId = getSectionId;
+    this.withSections = !!config.sectionHeaderHasChanged;
+    this.dataSource = new RNListView.DataSource(config);
+  }
+
+  group(data) {
+    let prevSectionId;
+    return data.reduce((sections, item) => {
+      const sectionId = this.getSectionId(item);
+      if (prevSectionId !== sectionId) {
+        prevSectionId = sectionId;
+        sections.push([]);
+      }
+      sections[sections.length - 1].push(item);
+      return sections;
+    }, []);
+  }
+
+  clone(data) {
+    if (this.withSections) {
+      return this.dataSource.cloneWithRowsAndSections(this.group(data));
+    }
+    return this.dataSource.cloneWithRows(data);
+  }
+}
+
 class ListView extends React.Component {
   static propTypes = {
     status: React.PropTypes.string,
@@ -23,43 +49,39 @@ class ListView extends React.Component {
     items: React.PropTypes.array,
     onLoadMore: React.PropTypes.func,
     onRefresh: React.PropTypes.func,
+    getSectionId: React.PropTypes.func,
     renderRow: React.PropTypes.func,
     renderHeader: React.PropTypes.func,
     renderFooter: React.PropTypes.func,
-    renderSectionHeader: React.PropTypes.bool,
+    renderSectionHeader: React.PropTypes.func,
   };
   static Status = Status;
+
   constructor(props, context) {
     super(props, context);
-    this[HANDLE_LIST_VIEW_REF] = this[HANDLE_LIST_VIEW_REF].bind(this);
-    this.handleFetchAction = this.handleFetchAction.bind(this);
+    this.handleListViewRef = this.handleListViewRef.bind(this);
     this.renderFooter = this.renderFooter.bind(this);
-    this.onEndReached = this.onEndReached.bind(this);
     this.listView = null;
-    this.giftedListView = null;
+
+
+    this.listDataSource = new ListDataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2,
+      sectionHeaderHasChanged: props.renderSectionHeader ? (s1, s2) => s1 !== s2 : undefined,
+      getSectionHeaderData: (dataBlob, sectionId) => props.getSectionId(dataBlob[sectionId][0]),
+    }, props.getSectionId);
+
+
+    this.state = {
+      dataSource: this.listDataSource.clone(props.items),
+    };
   }
 
   shouldComponentUpdate(nextProps) {
     const { items } = this.props;
-    if (this.giftedListView && nextProps.items !== items) {
-      // GiftedListView use _updateRows to handle data to show and update internal state
-      // such as loading status and other.
-      // Second argument (options) can be passed to mark last page and things like that.
-      // This function is used here so we do not need to implement callback onFetch method
-      // and work with callbacks as GiftedListView does
-      // https://github.com/FaridSafi/react-native-gifted-listview/blob/master/GiftedListViewExample/example_simple.js#L26
-      this.giftedListView._updateRows(nextProps.items);
+    if (nextProps.items !== items) {
+      this.setState({ dataSource: this.listDataSource.clone(nextProps.items) });
     }
     return true;
-  }
-
-  /**
-   * Triggered when list end threshold reached (scrolled to)
-   */
-  onEndReached() {
-    if (this.props.onLoadMore) {
-      this.onLoadMore();
-    }
   }
 
   /**
@@ -67,79 +89,52 @@ class ListView extends React.Component {
    * Setting default values.
    * @returns {{}}
    */
-  [GET_PROPS_TO_PASS]() {
+  getPropsToPass() {
     const props = this.props;
-    // TODO(Braco) - optimise omit/pick
     const mappedProps = {};
 
-    // Override properties
-    // Display a loader for the first fetching
-    mappedProps.firstLoader = true;
-    // GiftedListView pagination disabled - we use onLoadMore (infinite scrolling)
-    mappedProps.pagination = false;
-    // Default load more threshold
+    // configuration
+    // default load more threshold
     mappedProps.onEndReachedThreshold = 40;
     // React native warning
     // NOTE: In react 0.23 it can't be set to false
     mappedProps.enableEmptySections = true;
 
-    // Mapped properties
-    // Enable pull-to-refresh for iOS and touch-to-refresh for Android
-    mappedProps.refreshable = !!props.onRefresh;
-    // Enable sections
-    mappedProps.withSections = !!props.renderSectionHeader;
-    // Set renderSectionHeader method
-    mappedProps.renderSectionHeader = props.renderSectionHeader;
-    // Tilt color
-    mappedProps.refreshableTintColor = props.style.tiltColor.backgroundColor;
-    // create headerView function if there is something to render in header
-    mappedProps.headerView = props.renderHeader;
-    // We do not want to pass style to GiftedListView, it uses customStyle
+    // style
     mappedProps.customStyles = props.style.list;
-    // Map render row function
-    mappedProps.renderRow = props.renderRow;
-    // Passed contentContainerStyle
     mappedProps.contentContainerStyle = props.style.listContent;
-    // Override GiftedListView renderFooter
+
+    // rendering
+    mappedProps.renderHeader = props.renderHeader;
+    mappedProps.renderRow = props.renderRow;
     mappedProps.renderFooter = this.renderFooter;
-    // Handle on scroll end reach
-    mappedProps.onEndReached = this.onEndReached; // TODO(Braco) - status condition
-    // Handle default onFetch from GiftedListView - used to override some features
-    mappedProps.onFetch = this.handleFetchAction;
+    mappedProps.renderSectionHeader = props.renderSectionHeader;
+
+    // events
+    mappedProps.onEndReached = props.onLoadMore;
+
+    // data to display
+    mappedProps.dataSource = this.state.dataSource;
+
+    // refresh control
+    mappedProps.refreshControl = props.onRefresh && this.renderRefreshControl();
+
+    // reference
+    mappedProps.ref = this.handleListViewRef;
 
     return mappedProps;
   }
 
   /**
-   * Called by GiftedListView with (page, callback, options) args.
-   * Override default GiftedListView behavior.
-   *
+   * Save RN ListView ref
+   * @param React native ListView ref
    */
-  handleFetchAction() {
-    if (
-      // did parent provide onRefresh handle
-      this.props.onRefresh &&
-      // is pull down to refresh action
-      this.giftedListView && this.giftedListView.state.isRefreshing
-    ) {
-      this.props.onRefresh();
-    }
-
-    // GiftedListView actions we do not use anymore:
-    //  - first fetch
-  }
-
-  /**
-   * Save RN ListView GiftedListViewRef
-   * @param GiftedListViewRef
-   */
-  [HANDLE_LIST_VIEW_REF](GiftedListViewRef) {
-    if (!GiftedListViewRef) {
+  handleListViewRef(listView) {
+    if (!listView) {
       return;
     }
 
-    this.giftedListView = GiftedListViewRef;
-    this.listView = GiftedListViewRef.refs.listview;
+    this.listView = listView;
   }
 
   renderFooter() {
@@ -148,7 +143,7 @@ class ListView extends React.Component {
 
     switch (status) {
       case Status.LOADING:
-        spinner = <FullScreenSpinner style={style.newDataSpinner} />;
+        spinner = <FullScreenSpinner style={style.newDataSpinner}/>;
         break;
       case Status.LOADING_NEXT:
         spinner = <View style={style.loadMoreSpinner}><PlatformSpinner /></View>;
@@ -166,12 +161,22 @@ class ListView extends React.Component {
     );
   }
 
+  renderRefreshControl() {
+    const { status, style, onRefresh } = this.props;
+    return (
+      <RefreshControl
+        onRefresh={onRefresh}
+        refreshing={status === Status.REFRESHING}
+        tintColor={style.tiltColor.backgroundColor}
+      />
+    );
+  }
+
   render() {
     // TODO(Braco) - handle no results view
-    return (<GiftedListView
-      ref={this[HANDLE_LIST_VIEW_REF]}
-      {...this[GET_PROPS_TO_PASS]()}
-    />);
+    // TODO(Braco) - handle no more results view
+    // TODO(Braco) - handle error view
+    return <RNListView {...this.getPropsToPass()} />;
   }
 }
 

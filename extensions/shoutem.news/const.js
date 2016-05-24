@@ -7,7 +7,6 @@ export const Screens = {
 };
 
 export const Collections = {
-  SearchedNews: 'searchedNews',
   LatestNews: 'latestNews',
   NewsCategories: 'newsCategories',
 };

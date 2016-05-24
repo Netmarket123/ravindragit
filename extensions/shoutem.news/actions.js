@@ -16,7 +16,6 @@ const reducers = {
   newsImages: storage(DataSchemas.Images),
   newsCategories: collection(DataSchemas.Categories, Collections.NewsCategories),
   latestNews: collection(DataSchemas.Articles, Collections.LatestNews),
-  searchedNews: collection(DataSchemas.Articles, Collections.SearchedNews),
 };
 export default combineReducers(reducers);
 
@@ -89,18 +88,14 @@ export const openListScreen = (settings) => {
   return navigateTo(route);
 };
 
-export const findNews = (searchTerm, category, pageOffset = 0, settings) => {
-  const collectionName = searchTerm ? Collections.SearchedNews : Collections.LatestNews;
+export const findNews = (category, settings) => {
   const options = {
     include: 'image',
     page: {
       limit: 10,
-      offset: pageOffset,
+      offset: 0,
     },
   };
-  if (searchTerm) {
-    options.query = searchTerm;
-  }
   if (category) {
     options.filter = {
       categories: category.id,
@@ -112,7 +107,7 @@ export const findNews = (searchTerm, category, pageOffset = 0, settings) => {
       headers: { 'Content-Type': 'application/json' },
     },
     DataSchemas.Articles,
-    collectionName
+    Collections.LatestNews
   );
 };
 
