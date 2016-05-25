@@ -54,10 +54,15 @@ function getScrollerComponentForScrollType(type) {
   return type === 'paged' ? PagedScroller : ContinuousScroller;
 }
 
-
 export default class HomeScreen extends Component {
   hideNavigationBar() {
-    this.props.setNavBarProps({});
+    this.props.setNavBarProps({
+      style: {
+        container: {
+          height: 0,
+        },
+      },
+    });
   }
 
   renderShortcuts(propsCreator, shortcuts) {
