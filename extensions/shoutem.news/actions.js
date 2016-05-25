@@ -77,18 +77,20 @@ export const openListScreen = (settings) => {
   const route = {
     screen: nextScreenName,
     props: {
-      settings: {
-        appId: settings.appId,
-        endpoint: settings.endpoint,
-        parentCategoryId: settings.parentCategoryId,
-      },
+      settings,
     },
   };
 
   return navigateTo(route);
 };
 
-export const findNews = (category, settings) => {
+/**
+ *
+ * @param categoryIds {string}
+ * @param settings {{}}
+ * @returns {*}
+ */
+export const findNews = (categoryIds, settings) => {
   const options = {
     include: 'image',
     page: {
@@ -96,9 +98,9 @@ export const findNews = (category, settings) => {
       offset: 0,
     },
   };
-  if (category) {
+  if (categoryIds && categoryIds.length > 0) {
     options.filter = {
-      categories: category.id,
+      categories: categoryIds.join(','),
     };
   }
   return find(
