@@ -7,7 +7,7 @@ import React, {
   Component,
 } from 'react-native';
 
-import Button from '../Button/Button';
+import MaterialIconButton from '../Button/MaterialIconButton';
 
 import { connectStyle, INCLUDE } from 'shoutem/theme';
 
@@ -93,7 +93,7 @@ class DropDownMenu extends Component {
     } = this.state;
     const { items, style } = this.props;
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-    const button = selectedItem ? <Button
+    const button = selectedItem ? <MaterialIconButton
       showIconOnRight
       icon="arrow-drop-down"
       text={selectedItem[bindings.text]}
@@ -117,7 +117,7 @@ class DropDownMenu extends Component {
                 renderRow={this[RENDER_ROW]}
               />
             </View>
-            <Button icon="clear" onPress={this.close} style={style.modalCloseButton} />
+            <MaterialIconButton icon="clear" onPress={this.close} style={style.modalCloseButton} />
           </View>
         </Modal>
       </View>
