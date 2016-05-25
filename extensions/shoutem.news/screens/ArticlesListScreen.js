@@ -77,7 +77,7 @@ export class ArticlesListScreen extends Component {
   }
 
   fetchNews() {
-    const { settings, findNews, clearSearch, searchedNews } = this.props;
+    const { settings, findNews } = this.props;
     const { selectedCategory } = this.state;
 
     findNews(selectedCategory, settings).then(() => {
@@ -228,8 +228,9 @@ const style = {
     color: '#888888',
     paddingHorizontal: 15,
     paddingTop: 25,
-    paddingBottom: 15,
-    fontSize: 14,
+    paddingBottom: 10,
+    fontSize: 12,
+    [INCLUDE]: ['baseFont'],
   },
   screen: {},
   featuredItem: {
