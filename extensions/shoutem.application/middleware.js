@@ -1,5 +1,19 @@
 import * as _ from 'lodash';
 
+/**
+ * Creates screen settings for given shortcut.
+ * Combines settings with other needed shortcut attributes.
+ *
+ * @param shortcut {{}}
+ * @returns {{title: *}}
+ */
+function createScreenSettings(shortcut) {
+  return {
+    title: shortcut.title,
+    ..._.get(shortcut, 'attributes.settings', {}),
+  };
+}
+
 export function createExecuteShortcutMiddleware(actions) {
   return store => next => action => {
     const actionName = _.get(action, 'shortcut.attributes.action');
@@ -8,7 +22,7 @@ export function createExecuteShortcutMiddleware(actions) {
       return next(action);
     }
 
-    const settings = _.get(action.shortcut, 'attributes.settings');
+    const settings = createScreenSettings(action.shortcut);
     const children = _.get(action.shortcut, 'relationships.children.data');
     const shortcutAction = actions[actionName];
 
