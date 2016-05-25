@@ -143,7 +143,7 @@ class ListView extends React.Component {
 
     switch (status) {
       case Status.LOADING:
-        spinner = <FullScreenSpinner style={style.newDataSpinner}/>;
+        spinner = <FullScreenSpinner style={style.newDataSpinner} />;
         break;
       case Status.LOADING_NEXT:
         spinner = <View style={style.loadMoreSpinner}><PlatformSpinner /></View>;
