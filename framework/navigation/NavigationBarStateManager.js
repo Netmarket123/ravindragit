@@ -3,9 +3,7 @@ import * as _ from 'lodash';
 export default class NavigationBarStateManager {
   constructor() {
     this.setStateChangeListener = this.setStateChangeListener.bind(this);
-    this.state = {
-      title: 'Initial title',
-    };
+    this.state = {};
 
     this.routeStates = new Map();
   }
@@ -31,15 +29,22 @@ export default class NavigationBarStateManager {
 
     listener(_.assign({}, oldState), _.assign({}, newState));
   }
-  
+
+  isRouteRemoved(route) {
+    return this.deletedRoute && route === this.deletedRoute;
+  }
+
+  stateShouldChange(route, newState) {
+    return (!this.routeStates.get(route) ||
+    this.routeStates.size < 1 ||
+    newState !== this.routeStates.get(route));
+  }
+
   setState(state, route) {
     const oldState = this.state;
     const newState = _.assign({}, state);
 
-    if ((!this.deletedRoute || route !== this.deletedRoute)
-      && (!this.routeStates.get(route)
-        || this.routeStates.size < 1
-        || state !== this.routeStates.get(route))) {
+    if (!this.isRouteRemoved(route) && this.stateShouldChange(route, newState)) {
       this.routeStates.set(route, newState);
       this.state = newState;
       this.triggerStateChangeListener(oldState, newState);
