@@ -1,4 +1,4 @@
-import React from 'react-native';
+import React, { Animated } from 'react-native';
 import Button from './Button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
@@ -10,9 +10,9 @@ function AwesomeIconButton({
   text,
   onPress,
 }) {
+  const AnimatedIcon = Animated.createAnimatedComponent(Icon);
   const renderIcon = () =>
-      <Icon name={iconName} style={style.buttonIcon} />
-    ;
+    <AnimatedIcon name={iconName} style={style.buttonIcon} key="icon" />;
 
   return (
     <Button

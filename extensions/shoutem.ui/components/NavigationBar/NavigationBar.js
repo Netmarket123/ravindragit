@@ -4,6 +4,7 @@ import React, {
   Text,
   TouchableOpacity,
   StatusBar,
+  Animated,
 } from 'react-native';
 
 import color from 'tinycolor2';
@@ -13,9 +14,11 @@ import MaterialIconButton from '../Button/MaterialIconButton';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
 
 function getBackgroundColor(style) {
-  return _.find(style, (styleDef) =>
+  const styleWithBg = _.find(style, (styleDef) =>
     styleDef.backgroundColor && styleDef.backgroundColor !== 'transparent'
-  ).backgroundColor;
+  );
+
+  return styleWithBg && styleWithBg.backgroundColor;
 }
 
 function navigationBarBackButton(hasHistory, navigateBack, style) {
@@ -55,7 +58,7 @@ function NavigationBar({
   const statusBarStyle = bg && color(bg).isDark() ? 'light-content' : 'default';
 
   return (
-    <View style={style.container}>
+    <Animated.View style={style.container}>
       <StatusBar
         barStyle={statusBarStyle}
         transculent
@@ -67,7 +70,7 @@ function NavigationBar({
           <View style={style.rightComponent}>{rightComponent}</View>
         </View>
       </Image>
-    </View>
+    </Animated.View>
   );
 }
 
@@ -120,11 +123,11 @@ const style = {
   },
   defaultBackButton: {
     [INCLUDE]: ['baseFont'],
-    fontSize: 24,
     buttonIcon: {
       color: 'white',
       width: 40,
       height: 40,
+      fontSize: 24,
     },
   },
 };
