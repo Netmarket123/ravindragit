@@ -9,6 +9,7 @@ import React, {
 import { actions } from 'shoutem.application';
 import shortcutDataShape from './ShortcutDataShape';
 import buttonConfigShape from './ButtonConfigShape';
+import { connect } from 'react-redux';
 
 const propTypes = {
   shortcutData: PropTypes.shape(shortcutDataShape),
@@ -54,7 +55,13 @@ export function generateStyle(configuration) {
   };
 }
 
-export default function Shortcut({
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch,
+  };
+}
+
+function Shortcut({
   shortcutData,
   buttonConfig,
   dispatch,
@@ -64,7 +71,7 @@ export default function Shortcut({
   }
 
   const { shortcut, buttonIcon } = generateStyle(buttonConfig);
-  const { iconUrl, highlightedIconUrl } = shortcutData;
+  const { iconUrl, highlightedIconUrl } = shortcutData.attributes;
 
   return (
     <View style={[styles.shortcut, shortcut]}>
@@ -86,3 +93,5 @@ export default function Shortcut({
 }
 
 Shortcut.propTypes = propTypes;
+
+export default connect(undefined, mapDispatchToProps)(Shortcut);

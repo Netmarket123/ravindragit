@@ -3,6 +3,8 @@ import {
 } from 'react-native';
 
 export default {
-  iconUrl: PropTypes.string.isRequired,
-  highlightedIconUrl: PropTypes.string,
+  attributes: {
+    iconUrl: PropTypes.string.isRequired,
+    highlightedIconUrl: PropTypes.string,
+  },
 };

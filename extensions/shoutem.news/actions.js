@@ -16,7 +16,6 @@ const reducers = {
   newsImages: storage(DataSchemas.Images),
   newsCategories: collection(DataSchemas.Categories, Collections.NewsCategories),
   latestNews: collection(DataSchemas.Articles, Collections.LatestNews),
-  searchedNews: collection(DataSchemas.Articles, Collections.SearchedNews),
 };
 export default combineReducers(reducers);
 
@@ -78,32 +77,30 @@ export const openListScreen = (settings) => {
   const route = {
     screen: nextScreenName,
     props: {
-      settings: {
-        appId: settings.appId,
-        endpoint: settings.endpoint,
-        parentCategoryId: settings.parentCategoryId,
-      },
+      settings,
     },
   };
 
   return navigateTo(route);
 };
 
-export const findNews = (searchTerm, category, pageOffset = 0, settings) => {
-  const collectionName = searchTerm ? Collections.SearchedNews : Collections.LatestNews;
+/**
+ *
+ * @param categoryIds {string}
+ * @param settings {{}}
+ * @returns {*}
+ */
+export const findNews = (categoryIds, settings) => {
   const options = {
     include: 'image',
     page: {
       limit: 10,
-      offset: pageOffset,
+      offset: 0,
     },
   };
-  if (searchTerm) {
-    options.query = searchTerm;
-  }
-  if (category) {
+  if (categoryIds && categoryIds.length > 0) {
     options.filter = {
-      categories: category.id,
+      categories: categoryIds.join(','),
     };
   }
   return find(
@@ -112,7 +109,7 @@ export const findNews = (searchTerm, category, pageOffset = 0, settings) => {
       headers: { 'Content-Type': 'application/json' },
     },
     DataSchemas.Articles,
-    collectionName
+    Collections.LatestNews
   );
 };
 

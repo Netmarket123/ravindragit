@@ -7,7 +7,6 @@ export const Screens = {
 };
 
 export const Collections = {
-  SearchedNews: 'searchedNews',
   LatestNews: 'latestNews',
   NewsCategories: 'newsCategories',
 };
@@ -17,4 +16,9 @@ export const DataSchemas = {
   Articles: `${EXT}.articles`,
   Categories: 'shoutem.core.categories',
   Images: 'shoutem.core.image-attachments',
+};
+
+export const Sections = {
+  RECENT: 'Recent',
+  FEATURED: 'Featured',
 };

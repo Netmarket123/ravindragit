@@ -19,6 +19,7 @@ class DropDownMenu extends Component {
     this.state = Object.assign({}, props);
     this.collapse = this.collapse.bind(this);
     this.close = this.close.bind(this);
+    this.emitOnItemSelectedEvent = this.emitOnItemSelectedEvent.bind(this);
     this[RENDER_ROW] = this[RENDER_ROW].bind(this);
   }
 
@@ -54,7 +55,7 @@ class DropDownMenu extends Component {
    */
   autoSelect(items, selectedItem) {
     if (!selectedItem && !this.state.selectedItem && items.length > 0) {
-      this.setState({ selectedItem: items[0] });
+      this.setState({ selectedItem: items[0] }, this.emitOnItemSelectedEvent);
     }
   }
 
@@ -66,17 +67,19 @@ class DropDownMenu extends Component {
     this.setState({ collapsed: false });
   }
 
+  emitOnItemSelectedEvent() {
+    if (this.props.onItemSelected) {
+      this.props.onItemSelected(this.state.selectedItem);
+    }
+  }
+
   [RENDER_ROW](item) {
     const {
       style,
-      onItemSelected,
     } = this.props;
     const onPress = () => {
       this.close();
-      this.setState({ selectedItem: item });
-      if (onItemSelected) {
-        onItemSelected(item);
-      }
+      this.setState({ selectedItem: item }, this.emitOnItemSelectedEvent);
     };
     return (
       <TouchableOpacity onPress={onPress} style={style.modalItem}>

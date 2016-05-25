@@ -20,19 +20,23 @@ class ArticlesGridScreen extends ArticlesListScreen {
     this.renderItem = this.renderItem.bind(this);
   }
 
+  renderArticle(article, style) {
+    return (
+      <GridArticleView
+        article={article}
+        style={style.gridColumn}
+        onPress={this.openDetailsScreen}
+      />
+    );
+  }
+
   renderItem(article) {
     const { style } = this.props;
     if (article.featured) {
       return this.renderFeaturedArticle(article);
     }
 
-    return (
-      <GridArticleView
-        article={article}
-        style={style.gridColumn}
-        onPressMethod={this.openDetailsScreen}
-      />
-    );
+    return this.renderArticle(article, style);
   }
 
   renderArticles() {
