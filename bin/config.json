@@ -8,12 +8,10 @@
     "configurationFilePath": "../extensions/shoutem.application/configuration.json",
     "workingDirectories": [
       "../extensions/shoutem.test",
-      "../extensions/shoutem.homescreen",
       "../extensions/shoutem.application",
       "../extensions/shoutem.code-push",
       "../extensions/shoutem.preview",
       "../extensions/shoutem.ui",
-      "../extensions/shoutem.news",
       "../framework"
     ],
     "extensionsJsPath": "./extensions.js"
