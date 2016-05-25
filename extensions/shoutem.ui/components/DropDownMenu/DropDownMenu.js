@@ -95,7 +95,7 @@ class DropDownMenu extends Component {
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     const button = selectedItem ? <MaterialIconButton
       showIconOnRight
-      icon="arrow-drop-down"
+      iconName="arrow-drop-down"
       text={selectedItem[bindings.text]}
       onPress={this.collapse}
       style={style.popUpButton}
@@ -117,7 +117,7 @@ class DropDownMenu extends Component {
                 renderRow={this[RENDER_ROW]}
               />
             </View>
-            <MaterialIconButton icon="clear" onPress={this.close} style={style.modalCloseButton} />
+            <MaterialIconButton iconName="clear" onPress={this.close} style={style.modalCloseButton} />
           </View>
         </Modal>
       </View>

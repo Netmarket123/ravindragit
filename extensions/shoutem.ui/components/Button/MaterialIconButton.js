@@ -12,7 +12,7 @@ function MaterialIconButton({
 }) {
   const AnimatedIcon = Animated.createAnimatedComponent(Icon);
   const renderIcon = () =>
-    <AnimatedIcon name={iconName} style={style.buttonIcon} key="icon" />;
+    <AnimatedIcon name={iconName} style={[style.buttonIcon, style.color]} key="icon" />;
 
   return (
     <Button
