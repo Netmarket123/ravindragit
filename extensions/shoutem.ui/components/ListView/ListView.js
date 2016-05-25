@@ -14,6 +14,10 @@ const Status = {
   IDLE: 'idle',
 };
 
+/**
+ * Provides dataSource to ListView.
+ * Clones items and group them by section if needed.
+ */
 class ListDataSource {
   constructor(config, getSectionId) {
     this.getSectionId = getSectionId;
@@ -21,24 +25,35 @@ class ListDataSource {
     this.dataSource = new RNListView.DataSource(config);
   }
 
-  group(data) {
+  /**
+   * Transforms items list ([...items]) to [[...sectionItems], [...sectionItems]]
+   * @param data
+   * @returns {*}
+   */
+  groupItemsIntoSections(items) {
     let prevSectionId;
-    return data.reduce((sections, item) => {
+    return items.reduce((sections, item) => {
       const sectionId = this.getSectionId(item);
       if (prevSectionId !== sectionId) {
         prevSectionId = sectionId;
         sections.push([]);
       }
-      sections[sections.length - 1].push(item);
+      const lastSectionIndex = sections.length - 1;
+      sections[lastSectionIndex].push(item);
       return sections;
     }, []);
   }
 
-  clone(data) {
+  /**
+   * Transforms items list [<item>, <item>]
+   * @param data
+   * @returns {*}
+   */
+  clone(items) {
     if (this.withSections) {
-      return this.dataSource.cloneWithRowsAndSections(this.group(data));
+      return this.dataSource.cloneWithRowsAndSections(this.groupItemsIntoSections(items));
     }
-    return this.dataSource.cloneWithRows(data);
+    return this.dataSource.cloneWithRows(items);
   }
 }
 
