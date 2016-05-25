@@ -76,9 +76,21 @@ function ArticleDetailsScreen({
   setNavBarProps({
     style: {
       container: {
-        backgroundColor: 'rgba(0, 0, 0, 0)'
+        backgroundColor: scrollY.interpolate({
+          inputRange: [0, detailsTopOffset / 3],
+          outputRange: ['rgba(0,0,0,0)', 'rgba(255,255,255, 1)'],
+          extrapolate: 'clamp',
+        }),
+      },
+      defaultBackButton: {
+        buttonIcon: {
+          color: scrollY.interpolate({
+            inputRange: [0, detailsTopOffset / 3],
+            outputRange: ['rgba(255,255,255,1)', 'rgba(0,0,0,1)'],
+          }),
+        }
       }
-    }
+    },
   });
   return (
     <View style={style.screen}>
