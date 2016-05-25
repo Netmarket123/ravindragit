@@ -22,6 +22,7 @@ import {
   DataSchemas,
   EXT,
   Screens,
+  Sections,
 } from '../const.js';
 
 const Status = ListView.Status;
@@ -60,27 +61,32 @@ export class ArticlesListScreen extends Component {
       fetchNewsCategories,
       settings,
     } = this.props;
-    this.setState(
-      { fetchStatus: Status.LOADING },
-      () => fetchNewsCategories(settings.parentCategoryId, settings)
-    );
-  }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.categories.length > 0 && !this.state.selectedCategory) {
-      this.categorySelected(nextProps.categories[0]);
+    if (settings.categoryIds && settings.categoryIds.length > 0) {
+      this.setState({ fetchStatus: Status.LOADING }, this.fetchNews);
+    } else {
+      this.setState(
+        { fetchStatus: Status.LOADING },
+        () => fetchNewsCategories(settings.parentCategoryId, settings)
+      );
     }
   }
 
   getSectionId(item) {
-    return item.featured ? 'Featured' : 'Recent';
+    return item.featured ? Sections.FEATURED : Sections.RECENT;
+  }
+
+  shouldRenderCategoriesDropDown(categories, categoriesIds) {
+    return categories.length > 1 && (!categoriesIds || categoriesIds.length === 0);
   }
 
   fetchNews() {
     const { settings, findNews } = this.props;
     const { selectedCategory } = this.state;
 
-    findNews(selectedCategory, settings).then(() => {
+    const categories = settings.categoryIds ? settings.categoryIds : [selectedCategory.id];
+
+    findNews(categories, settings).then(() => {
       this.setState({ fetchStatus: Status.IDLE });
     });
   }
@@ -106,12 +112,15 @@ export class ArticlesListScreen extends Component {
 
   renderSectionHeader(section) {
     const { style } = this.props;
-    return section === 'Recent' && <Text style={style.sectionHeader}>{section.toUpperCase()}</Text>;
+    if (section === Sections.RECENT) {
+      return <Text style={style.sectionHeader}>Recent</Text>;
+    }
+    return null;
   }
 
   renderCategoriesDropDown() {
-    const { categories, style } = this.props;
-    if (categories.length < 1) {
+    const { categories, style, settings } = this.props;
+    if (!this.shouldRenderCategoriesDropDown(categories, settings.categoryIds)) {
       return null;
     }
     return (

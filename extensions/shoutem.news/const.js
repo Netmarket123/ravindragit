@@ -17,3 +17,8 @@ export const DataSchemas = {
   Categories: 'shoutem.core.categories',
   Images: 'shoutem.core.image-attachments',
 };
+
+export const Sections = {
+  RECENT: 'Recent',
+  FEATURED: 'Featured',
+};
