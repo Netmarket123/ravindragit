@@ -6,6 +6,7 @@ import React, {
 import _ from 'lodash';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 import { connectStyle, INCLUDE } from 'shoutem/theme';
 
@@ -18,7 +19,16 @@ function Button({
   iconType,
 }) {
   let buttonIcon = null;
-  const IconComponent = iconType === Button.iconTypes.AWESOME_ICON ? AwesomeIcon : MaterialIcon;
+
+  function selectIconComponent(type) {
+    return ({
+      [Button.iconTypes.AWESOME_ICON]: AwesomeIcon,
+      [Button.iconTypes.EVIL_ICON]: EvilIcons,
+      [Button.iconTypes.MATERIAL_ICON]: MaterialIcon,
+    })[type] || MaterialIcon;
+  }
+
+  const IconComponent = selectIconComponent(iconType);
   if (icon) {
     buttonIcon = <IconComponent key="icon" name={icon} style={style.buttonIcon} />;
   }
@@ -47,6 +57,7 @@ function Button({
 Button.iconTypes = {
   MATERIAL_ICON: 'MaterialIcon',
   AWESOME_ICON: 'AwesomeIcon',
+  EVIL_ICON: 'EvilIcon',
 };
 
 Button.propTypes = {
