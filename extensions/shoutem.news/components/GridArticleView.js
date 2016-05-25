@@ -39,7 +39,7 @@ export default class GridArticleView extends React.Component {
         leftExtra={moment(article.timeUpdated).fromNow()}
         id={article.id}
         style={style}
-        onPressMethod={this.onPress}
+        onPress={this.onPress}
         fallbackImage={require('../assets/images/image-fallback.png')}
       />
     );

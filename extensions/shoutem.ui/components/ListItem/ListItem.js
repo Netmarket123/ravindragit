@@ -31,7 +31,7 @@ function ListItem({
   image,
   extrasSeparatorImage,
   buttonIcon,
-  onPressMethod,
+  onPress,
   numberOfLines,
   fallbackImage,
 }) {
@@ -43,14 +43,6 @@ function ListItem({
         source={extrasSeparatorImage}
       />
     );
-  }
-
-  function onPress() {
-    if (!onPressMethod) {
-      return;
-    }
-
-    onPressMethod();
   }
 
   return (
@@ -88,7 +80,7 @@ ListItem.propTypes = {
   fallbackImage: Image.propTypes.source,
   extrasSeparatorImage: Image.propTypes.source,
   buttonIcon: React.PropTypes.any,
-  onPressMethod: React.PropTypes.func,
+  onPress: React.PropTypes.func,
   numberOfLines: React.PropTypes.number,
 };
 
