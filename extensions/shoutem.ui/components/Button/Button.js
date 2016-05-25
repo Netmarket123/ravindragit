@@ -90,4 +90,4 @@ const style = {
   },
 };
 
-export default connectStyle('dev.ext.Button', style)(Button);
+export default connectStyle('shoutem.ui.Button', style)(Button);

@@ -65,4 +65,4 @@ const style = {
   },
 };
 
-export default connectStyle('dev.ext.InfoFields', style)(InfoFields);
+export default connectStyle('shoutem.ui.InfoFields', style)(InfoFields);
