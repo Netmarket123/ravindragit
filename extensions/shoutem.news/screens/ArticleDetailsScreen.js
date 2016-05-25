@@ -79,8 +79,8 @@ function ArticleDetailsScreen({
       title: article.title,
       share_text: article.summary,
       share_URL: article.link,
-    }, (e) => {
-      console.log(e);
+    }, (sharingError) => {
+      console.error(sharingError);
     });
   }
 
