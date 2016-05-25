@@ -114,6 +114,14 @@ const style = {
       [INCLUDE]: ['navigationBarTextColor'],
     },
   },
+  sectionHeader: {
+    color: '#888888',
+    paddingHorizontal: 15,
+    paddingTop: 25,
+    paddingBottom: 10,
+    fontSize: 12,
+    [INCLUDE]: ['baseFont'],
+  },
   featuredItem: {
     gridBox: {
       container: {
