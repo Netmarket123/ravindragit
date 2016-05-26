@@ -30,9 +30,9 @@ export class ScreenNavigator extends Component {
     this.renderScene = this.renderScene.bind(this);
     this.configureScene = this.configureScene.bind(this);
     this.renderNavigationBar = this.renderNavigationBar.bind(this);
+    this.onRouteChange = this.onRouteChange.bind(this);
     this.captureNavigatorRef = this.captureNavigatorRef.bind(this);
     this.setNavigationBarState = this.setNavigationBarState.bind(this);
-    this.onRouteChanged = this.onRouteChanged.bind(this);
 
     this.initialRoute = props.initialRoute;
     this.navBarManager = props.renderNavigationBar ? new NavigationBarStateManager()
@@ -64,6 +64,10 @@ export class ScreenNavigator extends Component {
     return !!nextProps.action;
   }
 
+  onRouteChange(route) {
+    this.navBarManager.onRouteChange(route);
+  }
+
   getCurrentRoute() {
     const navigator = this.navigator;
     if (navigator) {
@@ -74,8 +78,8 @@ export class ScreenNavigator extends Component {
     return undefined;
   }
 
-  setNavigationBarState(state, route) {
-    this.navBarManager.setState(state, route);
+  setNavigationBarState(state) {
+    this.navBarManager.setState(state);
   }
 
   /**
@@ -115,11 +119,7 @@ export class ScreenNavigator extends Component {
   }
 
   configureScene(route) {
-    return route.sceneConfig || Navigator.SceneConfigs.PushFromRight;
-  }
-
-  onRouteChanged(route) {
-    this.navBarManager.onRouteChanged(route);
+    return route.sceneConfig || Navigator.SceneConfigs.FloatFromRight;
   }
 
   renderNavigationBar() {
@@ -147,7 +147,7 @@ export class ScreenNavigator extends Component {
     return (
       <Screen
         {...route.props}
-        setNavBarProps={(state) => { this.setNavigationBarState(state, route)}}
+        setNavBarProps={this.setNavigationBarState}
       />
     );
   }
@@ -160,7 +160,7 @@ export class ScreenNavigator extends Component {
         configureScene={this.configureScene}
         renderScene={this.renderScene}
         navigationBar={this.renderNavigationBar()}
-        onDidFocus={this.onRouteChanged}
+        onWillFocus={this.onRouteChange}
       />
     ) : null;
 

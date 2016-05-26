@@ -7,7 +7,7 @@ import React, {
   Component,
 } from 'react-native';
 
-import MaterialIconButton from '../Button/MaterialIconButton';
+import Button from '../Button/Button';
 
 import { connectStyle, INCLUDE } from 'shoutem/theme';
 
@@ -83,9 +83,7 @@ class DropDownMenu extends Component {
     };
     return (
       <TouchableOpacity onPress={onPress} style={style.modalItem}>
-        <Text style={style.modalItemText}>
-          {item[this.state.bindings.text].toUpperCase()}
-        </Text>
+        <Text style={style.modalItemText}>{item[this.state.bindings.text].toUpperCase()}</Text>
       </TouchableOpacity>
     );
   }
@@ -98,9 +96,9 @@ class DropDownMenu extends Component {
     } = this.state;
     const { items, style } = this.props;
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-    const button = selectedItem ? <MaterialIconButton
+    const button = selectedItem ? <Button
       showIconOnRight
-      iconName="arrow-drop-down"
+      icon="arrow-drop-down"
       text={selectedItem[bindings.text]}
       onPress={this.collapse}
       style={style.popUpButton}
@@ -122,11 +120,7 @@ class DropDownMenu extends Component {
                 renderRow={this[RENDER_ROW]}
               />
             </View>
-            <MaterialIconButton
-              iconName="clear"
-              onPress={this.close}
-              style={style.modalCloseButton}
-            />
+            <Button icon="clear" onPress={this.close} style={style.modalCloseButton} />
           </View>
         </Modal>
       </View>

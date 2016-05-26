@@ -3,22 +3,32 @@ import * as _ from 'lodash';
 export default class NavigationBarStateManager {
   constructor() {
     this.setStateChangeListener = this.setStateChangeListener.bind(this);
-    this.state = {};
+    this.state = {
+      title: 'Initial title',
+    };
 
     this.routeStates = new Map();
   }
 
-  onRouteChanged(route) {
+  onRouteChange(route) {
+    const forceNewState = true;
+    this.currentRoute = route;
+
     const state = this.routeStates.get(route);
-    this.setState(state, route);
+    if (forceNewState) {
+      // Restore the navigation bar props that
+      // are linked to the next route, if they exist.
+      // This is necessary so that the navigation bar
+      // props are restored when navigating back to
+      // the screens that are already rendered, because
+      // the navigator will not re-render the screen in
+      // that case.
+      this.setState(state);
+    }
   }
 
   onRouteRemoved(route) {
     this.routeStates.delete(route);
-    // we need to save this route, because render method of
-    // outgoing screen is called one more time after back action is performed
-    // so, we want to escape possible addition of deleted route to routeStates again
-    this.deletedRoute = route;
   }
 
   setStateChangeListener(listener) {
@@ -32,30 +42,19 @@ export default class NavigationBarStateManager {
       return;
     }
 
-    if (!_.isEqual(oldState, newState)) {
-      _.defer(() => listener(_.assign({}, oldState), _.assign({}, newState)));
-    }
+    // we need to defer it until new screen is rendered.
+    _.defer(() => {
+      listener(_.assign({}, oldState), _.assign({}, newState));
+    });
   }
 
-  isRouteRemoved(route) {
-    return this.deletedRoute && route === this.deletedRoute;
-  }
-
-  stateShouldChange(route, newState) {
-    return (!this.routeStates.get(route) ||
-    this.routeStates.size < 1 ||
-    newState !== this.routeStates.get(route));
-  }
-
-  setState(state, route) {
+  setState(state) {
     const oldState = this.state;
     const newState = _.assign({}, state);
 
-    if (!this.isRouteRemoved(route) && this.stateShouldChange(route, newState)) {
-      this.routeStates.set(route, newState);
-      this.state = newState;
-      this.triggerStateChangeListener(oldState, newState);
-      this.currentRoute = route;
-    }
+    this.state = newState;
+    const route = this.currentRoute;
+    this.routeStates.set(route, newState);
+    this.triggerStateChangeListener(oldState, newState);
   }
 }
