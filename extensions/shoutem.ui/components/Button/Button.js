@@ -3,34 +3,19 @@ import React, {
   View,
   Text,
 } from 'react-native';
-import _ from 'lodash';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 import { connectStyle, INCLUDE } from 'shoutem/theme';
 
 function Button({
   style,
-  icon,
+  renderIcon,
   showIconOnRight,
   text,
   onPress,
-  iconType,
 }) {
   let buttonIcon = null;
-
-  function selectIconComponent(type) {
-    return ({
-      [Button.iconTypes.AWESOME_ICON]: AwesomeIcon,
-      [Button.iconTypes.EVIL_ICON]: EvilIcons,
-      [Button.iconTypes.MATERIAL_ICON]: MaterialIcon,
-    })[type] || MaterialIcon;
-  }
-
-  const IconComponent = selectIconComponent(iconType);
-  if (icon) {
-    buttonIcon = <IconComponent key="icon" name={icon} style={style.buttonIcon} />;
+  if (renderIcon) {
+    buttonIcon = renderIcon();
   }
   const buttonText = text ?
     <Text key="text" style={style.buttonText}>{text}</Text> : null;
@@ -54,21 +39,13 @@ function Button({
   );
 }
 
-Button.iconTypes = {
-  MATERIAL_ICON: 'MaterialIcon',
-  AWESOME_ICON: 'AwesomeIcon',
-  EVIL_ICON: 'EvilIcon',
-};
-
 Button.propTypes = {
-  iconType: React.PropTypes.oneOf(_.reduce(Button.iconTypes, (res, val) => res.concat([val]), [])),
-  icon: React.PropTypes.string,
+  renderIcon: React.PropTypes.func,
   showIconOnRight: React.PropTypes.boolean,
   text: React.PropTypes.string,
   style: React.PropTypes.object,
   onPress: React.PropTypes.func,
 };
-
 
 const style = {
   buttonContainer: {
@@ -82,9 +59,7 @@ const style = {
   buttonActive: {
     backgroundColor: '#ccc',
   },
-  buttonIcon: {
-    backgroundColor: 'transparent',
-  },
+  buttonIcon: {},
   buttonText: {
     [INCLUDE]: ['baseFont'],
   },

@@ -40,6 +40,26 @@ function createAnimatedHeaderStyle(headerStyle, animatedValue, headerHeight) {
   }];
 }
 
+function createNavigationBarStyle(scrollY, detailsTopOffset) {
+  return {
+    container: {
+      backgroundColor: scrollY.interpolate({
+        inputRange: [0, detailsTopOffset / 3],
+        outputRange: ['rgba(0,0,0,0)', 'rgba(255,255,255, 1)'],
+        extrapolate: 'clamp',
+      }),
+    },
+    defaultBackButton: {
+      buttonIcon: {
+        color: scrollY.interpolate({
+          inputRange: [0, detailsTopOffset / 3],
+          outputRange: ['rgba(255,255,255,1)', 'rgba(0,0,0,1)'],
+        }),
+      },
+    },
+  };
+}
+
 function getScrollHandle(scrollY) {
   return Animated.event(
     [{ nativeEvent: { contentOffset: { y: scrollY } } }]
@@ -63,15 +83,16 @@ Details.propTypes = {
 };
 
 function ArticleDetailsScreen({
+  setNavBarProps,
   article,
   style,
   bottomContentOffset: bottomContentOffsetProp,
-  setNavBarProps,
 }) {
   const bottomContentOffset = bottomContentOffsetProp || DEFAULT_BOTTOM_CONTENT_OFFSET;
   const scrollY = new Animated.Value(0);
   const detailsTopOffset = getOffsetHeight(bottomContentOffset);
   const headerStyle = createAnimatedHeaderStyle(style.header, scrollY, detailsTopOffset);
+  const navigationBarStyle = createNavigationBarStyle(scrollY, detailsTopOffset);
   const detailsStyle = createDetailsStyle(detailsTopOffset, style);
 
   function onShare() {
@@ -84,15 +105,16 @@ function ArticleDetailsScreen({
     });
   }
 
-  const shareButton = (<Button
-    iconType={Button.iconTypes.EVIL_ICON}
-    icon="share-apple"
-    onPress={onShare}
-    style={style.shareButton}
-  />);
+  // const shareButton = (<Button
+  //   iconType={Button.iconTypes.EVIL_ICON}
+  //   icon="share-apple"
+  //   onPress={onShare}
+  //   style={style.shareButton}
+  // />);
 
   setNavBarProps({
-    rightComponent: shareButton,
+    style: navigationBarStyle,
+    // rightComponent: shareButton,
   });
 
   return (
@@ -110,7 +132,7 @@ function ArticleDetailsScreen({
       <ScrollView
         automaticallyAdjustContentInsets={false}
         style={style.container}
-        scrollEventThrottle={16}
+        scrollEventThrottle={1}
         onScroll={getScrollHandle(scrollY)}
       >
         <Details item={article} style={detailsStyle} />
@@ -136,6 +158,7 @@ const style = {
   screen: {
     position: 'relative',
     backgroundColor: '#fff',
+    paddingTop: 0,
   },
   detailsText: {},
   detailsTitle: {
