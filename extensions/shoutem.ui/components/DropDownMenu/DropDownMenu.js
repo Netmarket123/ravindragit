@@ -83,7 +83,9 @@ class DropDownMenu extends Component {
     };
     return (
       <TouchableOpacity onPress={onPress} style={style.modalItem}>
-        <Text style={style.modalItemText}>{item[this.state.bindings.text].toUpperCase()}</Text>
+        <Text style={style.modalItemText}>
+          {item[this.state.bindings.text].toUpperCase()}
+        </Text>
       </TouchableOpacity>
     );
   }
@@ -120,7 +122,11 @@ class DropDownMenu extends Component {
                 renderRow={this[RENDER_ROW]}
               />
             </View>
-            <MaterialIconButton iconName="clear" onPress={this.close} style={style.modalCloseButton} />
+            <MaterialIconButton
+              iconName="clear"
+              onPress={this.close}
+              style={style.modalCloseButton}
+            />
           </View>
         </Modal>
       </View>

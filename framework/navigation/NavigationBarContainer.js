@@ -14,7 +14,8 @@ export default class NavigationBarContainer extends Component {
   }
 
   onStateChange(oldState, newState) {
-    this.state = _.assign({}, newState);
+    this.newState = newState;
+    this.setState(_.assign({}, newState));
   }
 
   render() {
@@ -22,7 +23,7 @@ export default class NavigationBarContainer extends Component {
     // navigationBar could take advantage of this to show back button
     const hasHistory = manager.routeStates.size > 1;
     return (
-      this.props.renderNavigationBar({ ...this.state, hasHistory, navigateBack })
+      this.props.renderNavigationBar({ ...this.newState, hasHistory, navigateBack })
     );
   }
 }

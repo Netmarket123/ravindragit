@@ -40,6 +40,26 @@ function createAnimatedHeaderStyle(headerStyle, animatedValue, headerHeight) {
   }];
 }
 
+function createNavigationBarStyle(scrollY, detailsTopOffset) {
+  return {
+    container: {
+      backgroundColor: scrollY.interpolate({
+        inputRange: [0, detailsTopOffset / 3],
+        outputRange: ['rgba(0,0,0,0)', 'rgba(255,255,255, 1)'],
+        extrapolate: 'clamp',
+      }),
+    },
+    defaultBackButton: {
+      buttonIcon: {
+        color: scrollY.interpolate({
+          inputRange: [0, detailsTopOffset / 3],
+          outputRange: ['rgba(255,255,255,1)', 'rgba(0,0,0,1)'],
+        }),
+      },
+    },
+  };
+}
+
 function getScrollHandle(scrollY) {
   return Animated.event(
     [{ nativeEvent: { contentOffset: { y: scrollY } } }]
@@ -72,6 +92,7 @@ function ArticleDetailsScreen({
   const scrollY = new Animated.Value(0);
   const detailsTopOffset = getOffsetHeight(bottomContentOffset);
   const headerStyle = createAnimatedHeaderStyle(style.header, scrollY, detailsTopOffset);
+  const navigationBarStyle = createNavigationBarStyle(scrollY, detailsTopOffset);
   const detailsStyle = createDetailsStyle(detailsTopOffset, style);
 
   function onShare() {
@@ -84,32 +105,16 @@ function ArticleDetailsScreen({
     });
   }
 
-  const shareButton = (<Button
-    iconType={Button.iconTypes.EVIL_ICON}
-    icon="share-apple"
-    onPress={onShare}
-    style={style.shareButton}
-  />);
+  // const shareButton = (<Button
+  //   iconType={Button.iconTypes.EVIL_ICON}
+  //   icon="share-apple"
+  //   onPress={onShare}
+  //   style={style.shareButton}
+  // />);
 
   setNavBarProps({
-    style: {
-      container: {
-        backgroundColor: scrollY.interpolate({
-          inputRange: [0, detailsTopOffset / 3],
-          outputRange: ['rgba(0,0,0,0)', 'rgba(255,255,255, 1)'],
-          extrapolate: 'clamp',
-        }),
-      },
-      defaultBackButton: {
-        buttonIcon: {
-          color: scrollY.interpolate({
-            inputRange: [0, detailsTopOffset / 3],
-            outputRange: ['rgba(255,255,255,1)', 'rgba(0,0,0,1)'],
-          }),
-        },
-      },
-    },
-    rightComponent: shareButton,
+    style: navigationBarStyle,
+    // rightComponent: shareButton,
   });
 
   return (

@@ -8,6 +8,11 @@ export default class NavigationBarStateManager {
     this.routeStates = new Map();
   }
 
+  onRouteChanged(route) {
+    const state = this.routeStates.get(route);
+    this.setState(state, route);
+  }
+
   onRouteRemoved(route) {
     this.routeStates.delete(route);
     // we need to save this route, because render method of
@@ -27,7 +32,9 @@ export default class NavigationBarStateManager {
       return;
     }
 
-    listener(_.assign({}, oldState), _.assign({}, newState));
+    if (!_.isEqual(oldState, newState)) {
+      _.defer(() => listener(_.assign({}, oldState), _.assign({}, newState)));
+    }
   }
 
   isRouteRemoved(route) {

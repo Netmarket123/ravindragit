@@ -32,6 +32,7 @@ export class ScreenNavigator extends Component {
     this.renderNavigationBar = this.renderNavigationBar.bind(this);
     this.captureNavigatorRef = this.captureNavigatorRef.bind(this);
     this.setNavigationBarState = this.setNavigationBarState.bind(this);
+    this.onRouteChanged = this.onRouteChanged.bind(this);
 
     this.initialRoute = props.initialRoute;
     this.navBarManager = props.renderNavigationBar ? new NavigationBarStateManager()
@@ -117,6 +118,10 @@ export class ScreenNavigator extends Component {
     return route.sceneConfig || Navigator.SceneConfigs.PushFromRight;
   }
 
+  onRouteChanged(route) {
+    this.navBarManager.onRouteChanged(route);
+  }
+
   renderNavigationBar() {
     // Navigation bar container should attach itself to the
     // navigation bar manager and call renderNavigationBar with
@@ -155,6 +160,7 @@ export class ScreenNavigator extends Component {
         configureScene={this.configureScene}
         renderScene={this.renderScene}
         navigationBar={this.renderNavigationBar()}
+        onDidFocus={this.onRouteChanged}
       />
     ) : null;
 
