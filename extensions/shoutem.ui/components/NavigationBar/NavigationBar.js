@@ -1,11 +1,11 @@
 import React, {
   View,
   Image,
-  Text,
-  TouchableOpacity,
   StatusBar,
   Animated,
 } from 'react-native';
+
+import _ from 'lodash';
 
 import color from 'tinycolor2';
 

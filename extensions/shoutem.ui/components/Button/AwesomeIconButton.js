@@ -55,9 +55,3 @@ const style = {
 };
 
 export default connectStyle('shoutem.ui.AwesomeIconButton', style)(AwesomeIconButton);
-
-
-
-
-
-

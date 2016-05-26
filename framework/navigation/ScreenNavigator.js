@@ -64,6 +64,10 @@ export class ScreenNavigator extends Component {
     return !!nextProps.action;
   }
 
+  onRouteChanged(route) {
+    this.navBarManager.onRouteChanged(route);
+  }
+
   getCurrentRoute() {
     const navigator = this.navigator;
     if (navigator) {
@@ -118,10 +122,6 @@ export class ScreenNavigator extends Component {
     return route.sceneConfig || Navigator.SceneConfigs.PushFromRight;
   }
 
-  onRouteChanged(route) {
-    this.navBarManager.onRouteChanged(route);
-  }
-
   renderNavigationBar() {
     // Navigation bar container should attach itself to the
     // navigation bar manager and call renderNavigationBar with
@@ -147,7 +147,8 @@ export class ScreenNavigator extends Component {
     return (
       <Screen
         {...route.props}
-        setNavBarProps={(state) => { this.setNavigationBarState(state, route)}}
+        // eslint-disable-next-line react/jsx-no-bind
+        setNavBarProps={(state) => { this.setNavigationBarState(state, route); }}
       />
     );
   }

@@ -26,7 +26,12 @@ function renderImagePreview({
   );
 }
 
-renderImagePreview.propTypes = ImagePreview.propTypes;
+renderImagePreview.propTypes = {
+  ...propTypes,
+  source: PropTypes.shape({
+    uri: PropTypes.string,
+  }),
+};
 
 /**
  * Renders a collection of ImageGallery components within
