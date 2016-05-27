@@ -12,6 +12,11 @@ const Dimensions = {
   },
 };
 
+function getCurrentGroupLength(groupedItems) {
+  const currentGroupIndex = groupedItems.length - 1;
+  const currentGroup = groupedItems[currentGroupIndex];
+  return currentGroup ? currentGroup.length : 0;
+}
 /**
  * Returns group section id.
  * GridView works with groups so it needs to return section id from group and not item.
@@ -47,7 +52,7 @@ function groupItems(items, itemsPerGroup) {
 function createCompensationStyle(remainingColumns, marginHorizontal) {
   return {
     flex: remainingColumns,
-    marginHorizontal: remainingColumns * marginHorizontal * 2,
+    marginHorizontal: remainingColumns * marginHorizontal * 2, // x2 for both sides
   };
 }
 
@@ -117,10 +122,11 @@ class GridView extends React.Component {
       throw Error('Can not group items with sections, missing getSectionId prop.');
     }
     let prevSectionId;
-    return items.reduce((groupedItems, item, index) => {
+    return items.reduce((groupedItems, item) => {
       const sectionId = getSectionId(item);
+      const currentGroupLength = getCurrentGroupLength(groupedItems);
 
-      if (prevSectionId !== sectionId || (index % itemsPerGroup) === 0) {
+      if (prevSectionId !== sectionId || currentGroupLength === itemsPerGroup) {
         const group = [];
         group.sectionId = sectionId;
         groupedItems.push(group);
