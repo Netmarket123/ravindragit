@@ -123,21 +123,23 @@ const style = {
     },
   },
   sectionHeader: {
+    [INCLUDE]: ['baseFont'],
     color: '#888888',
     paddingHorizontal: 15,
     paddingTop: 25,
     paddingBottom: 10,
     fontSize: 12,
-    [INCLUDE]: ['baseFont'],
   },
   featuredItem: {
     gridBox: {
       container: {
         padding: 5,
+        flexDirection: 'column',
         backgroundColor: '#2c2c2c',
       },
       contentWrapper: {
         flexWrap: 'wrap',
+        width: null,
         alignItems: 'center',
         justifyContent: 'center',
         height: 330,
@@ -146,6 +148,11 @@ const style = {
       backgroundImage: {
         borderRadius: 2,
       },
+    },
+    headline: {
+      width: null,
+      height: null,
+      alignSelf: 'center',
     },
   },
   screen: {},

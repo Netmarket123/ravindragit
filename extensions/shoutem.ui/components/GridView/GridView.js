@@ -7,8 +7,9 @@ import { connectStyle } from 'shoutem/theme';
 const DEFAULT_ITEMS_GROUP_SIZE = 2;
 const DEFAULT_ITEM_COL_SPAN = 1;
 
+// TODO(Braco) - confirm span values
 const ColSpan = {
-  STRETCH: -1, // Stretch item to row width
+  STRETCH: 'Stretch item to row width',
 };
 
 /**
@@ -85,7 +86,7 @@ class GridView extends React.Component {
     return itemColSpan === ColSpan.STRETCH ? gridColumns : itemColSpan;
   }
 
-  groupItemsWithSelection(items, itemsPerGroup) {
+  groupItemsWithSections(items, itemsPerGroup) {
     const { getSectionId } = this.props;
     if (!getSectionId) {
       throw Error('Can not group items with sections, missing getSectionId prop.');
@@ -117,7 +118,7 @@ class GridView extends React.Component {
     const columns = gridColumns;
 
     return getSectionId ?
-      this.groupItemsWithSelection(items, columns) :
+      this.groupItemsWithSections(items, columns) :
       groupItems(items, columns);
   }
 
