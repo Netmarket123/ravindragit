@@ -5,11 +5,11 @@ import ListView from '../ListView/ListView';
 import { connectStyle } from 'shoutem/theme';
 
 const DEFAULT_ITEMS_GROUP_SIZE = 2;
-const DEFAULT_ITEM_COL_SPAN = 1;
 
-// TODO(Braco) - confirm span values
-const ColSpan = {
-  STRETCH: 'Stretch item to row width',
+const Dimensions = {
+  Column: {
+    stretch: gridColumns => ({ flex: gridColumns }),
+  },
 };
 
 /**
@@ -21,6 +21,14 @@ const ColSpan = {
  */
 function getGroupSectionId(group) {
   return group.sectionId;
+}
+
+function getColSpan(colStyle = {}) {
+  return colStyle.flex || 1;
+}
+
+function getColHorizontalMargin(colStyle) {
+  return colStyle.horizontalMargin || 0;
 }
 
 function groupItems(items, itemsPerGroup) {
@@ -36,20 +44,20 @@ function groupItems(items, itemsPerGroup) {
   }, []);
 }
 
-function createCompensationStyle(remainingColumns, margin) {
+function createCompensationStyle(remainingColumns, marginHorizontal) {
   return {
     flex: remainingColumns,
-    margin: remainingColumns * margin,
+    marginHorizontal: remainingColumns * marginHorizontal * 2,
   };
 }
 
-function renderCompensationView(remainingColumns, margin) {
+function renderCompensationCol(remainingColumns, margin) {
   return <View style={createCompensationStyle(remainingColumns, margin)} />;
 }
 
 class GridView extends React.Component {
   // Predefined ColSpan options for items to use for ColSpan
-  static ColSpan = ColSpan;
+  static Dimensions = Dimensions;
 
   static defaultProps = {
     gridColumns: DEFAULT_ITEMS_GROUP_SIZE,
@@ -77,13 +85,30 @@ class GridView extends React.Component {
     return true;
   }
 
-  getItemColSpan(item, sectionId) {
-    const { getItemColSpan, gridColumns } = this.props;
-    if (!getItemColSpan) {
-      return DEFAULT_ITEM_COL_SPAN;
+  getItemColStyle(item, sectionId) {
+    const { getItemColStyle, gridColumns, style } = this.props;
+    const defaultItemColStyle = style.gridRow.gridItemCol;
+
+    if (!getItemColStyle) {
+      return defaultItemColStyle;
     }
-    const itemColSpan = getItemColSpan(item, sectionId);
-    return itemColSpan === ColSpan.STRETCH ? gridColumns : itemColSpan;
+
+    const itemColStyle = getItemColStyle(gridColumns, item, sectionId);
+
+    return { ...defaultItemColStyle, ...itemColStyle };
+  }
+
+  getGroupRowStyle(sectionId) {
+    const { getGroupRowStyle, style } = this.props;
+    const defaultGroupRowStyle = style.gridRow.container;
+
+    if (!getGroupRowStyle) {
+      return defaultGroupRowStyle;
+    }
+
+    const groupRowStyle = getGroupRowStyle(sectionId);
+
+    return { ...defaultGroupRowStyle, ...groupRowStyle };
   }
 
   groupItemsWithSections(items, itemsPerGroup) {
@@ -127,33 +152,43 @@ class GridView extends React.Component {
   }
 
   createRenderRow() {
-    const { style, renderGridItem, gridColumns } = this.props;
+    const { gridColumns } = this.props;
     return (group) => {
       const sectionId = getGroupSectionId(group);
-      const gridRowStyle = style.gridRow;
-      const gridItemMargin = gridRowStyle.gridItemContainer.margin || 0;
+      const rowStyle = this.getGroupRowStyle(sectionId);
       let remainingColumns = gridColumns;
 
-      const itemView = (
-        <View style={gridRowStyle.container}>
-          {
-            group.reduce((gridItems, item) => {
-              const itemColSpan = this.getItemColSpan(item, sectionId);
-              remainingColumns = remainingColumns - itemColSpan;
-              gridItems.push(
-                <View key={`gridItem_' + ${item.id}`} style={gridRowStyle.gridItemContainer}>
-                  {renderGridItem(item)}
-                </View>
-              );
-              return gridItems;
-            }, [])
-          }
-          {remainingColumns > 0 ? renderCompensationView(remainingColumns, gridItemMargin) : null}
+      const groupCols = group.reduce((gridItems, item) => {
+        const colStyle = this.getItemColStyle(item, sectionId);
+        remainingColumns = remainingColumns - getColSpan(colStyle);
+
+        gridItems.push(this.renderGroupItem(item, colStyle));
+        return gridItems;
+      }, []);
+
+      const colHorizontalMargin = getColHorizontalMargin(rowStyle);
+      const compensationCol = remainingColumns > 0 ?
+        renderCompensationCol(remainingColumns, colHorizontalMargin) : null;
+
+      return (
+        <View style={rowStyle}>
+          {groupCols}
+          {compensationCol}
         </View>
       );
-
-      return itemView;
     };
+  }
+
+  renderGroupItem(item, colStyle) {
+    const { renderGridItem } = this.props;
+    return (
+      <View
+        key={`gridItem_' + ${item.id}`}
+        style={colStyle}
+      >
+        {renderGridItem(item)}
+      </View>
+    );
   }
 
   render() {
@@ -178,8 +213,9 @@ class GridView extends React.Component {
 GridView.propTypes = {
   ...ListView.propTypes,
   gridColumns: React.PropTypes.number,
-  renderGridItem: React.PropTypes.func,
-  getItemColSpan: React.PropTypes.func,
+  renderGridItem: React.PropTypes.func.isRequired,
+  getItemColStyle: React.PropTypes.func,
+  getGroupRowStyle: React.PropTypes.func,
 };
 
 const style = {
@@ -192,7 +228,8 @@ const style = {
     container: {
       flexDirection: 'row',
     },
-    gridItemContainer: {
+    gridItemCol: {
+      flexDirection: 'column',
       flex: 1,
     },
   },
