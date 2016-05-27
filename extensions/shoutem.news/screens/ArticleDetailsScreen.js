@@ -7,7 +7,7 @@ import React, {
   StatusBar,
 } from 'react-native';
 import { INCLUDE, connectStyle } from 'shoutem/theme';
-import { NewsGridBox, RichMedia, Button } from 'shoutem.ui';
+import { NewsGridBox, RichMedia, EvilIconButton } from 'shoutem.ui';
 import * as _ from 'lodash';
 import moment from 'moment';
 import Share from 'react-native-share';
@@ -28,6 +28,13 @@ function createDetailsStyle(topOffset, style) {
     detailsTitleContainer: style.detailsTitleContainer,
     detailsText: style.detailsText,
   };
+}
+
+function interpolateIconColor(scrollY, detailsTopOffset) {
+  return scrollY.interpolate({
+    inputRange: [0, detailsTopOffset / 3],
+    outputRange: ['rgba(255,255,255,1)', 'rgba(0,0,0,1)'],
+  });
 }
 
 function createAnimatedHeaderStyle(headerStyle, animatedValue, headerHeight) {
@@ -54,16 +61,13 @@ function createNavigationBarStyle(scrollY, detailsTopOffset) {
     },
     defaultBackButton: {
       buttonIcon: {
-        color: scrollY.interpolate({
-          inputRange: [0, detailsTopOffset / 3],
-          outputRange: ['rgba(255,255,255,1)', 'rgba(0,0,0,1)'],
-        }),
+        color: interpolateIconColor(scrollY, detailsTopOffset),
       },
     },
   };
 }
 
-function getScreenTitle(titleStyle, title, scrollY, detailsTopOffset) {
+function createScreenTitle(titleStyle, title, scrollY, detailsTopOffset) {
   return (
     <Animated.Text
       numberOfLines={1}
@@ -81,6 +85,11 @@ function getScreenTitle(titleStyle, title, scrollY, detailsTopOffset) {
       {title.toUpperCase()}
     </Animated.Text>
   );
+}
+
+function createShareButtonStyle(shareButtonStyle, scrollY, detailsTopOffset) {
+  const iconColor = interpolateIconColor(scrollY, detailsTopOffset);
+  return _.set(Object.assign({}, shareButtonStyle), ['buttonIcon', 'color'], iconColor);
 }
 
 function getScrollHandle(scrollY) {
@@ -113,11 +122,13 @@ function ArticleDetailsScreen({
 }) {
   const bottomContentOffset = bottomContentOffsetProp || DEFAULT_BOTTOM_CONTENT_OFFSET;
   const scrollY = new Animated.Value(0);
+  const title = article.title || '';
   const detailsTopOffset = getOffsetHeight(bottomContentOffset);
   const headerStyle = createAnimatedHeaderStyle(style.header, scrollY, detailsTopOffset);
   const navigationBarStyle = createNavigationBarStyle(scrollY, detailsTopOffset);
   const detailsStyle = createDetailsStyle(detailsTopOffset, style);
-  const screenTitle = getScreenTitle(style.navBarTitle, article.title, scrollY, detailsTopOffset);
+  const screenTitle = createScreenTitle(style.navBarTitle, title, scrollY, detailsTopOffset);
+  const shareButtonStyle = createShareButtonStyle(style.shareButton, scrollY, detailsTopOffset);
 
   function onShare() {
     Share.open({
@@ -129,17 +140,16 @@ function ArticleDetailsScreen({
     });
   }
 
-  // const shareButton = (<Button
-  //   iconType={Button.iconTypes.EVIL_ICON}
-  //   icon="share-apple"
-  //   onPress={onShare}
-  //   style={style.shareButton}
-  // />);
+  const shareButton = (<EvilIconButton
+    iconName="share-apple"
+    onPress={onShare}
+    style={shareButtonStyle}
+  />);
 
   setNavBarProps({
+    rightComponent: shareButton,
     style: navigationBarStyle,
     centerComponent: screenTitle,
-    // rightComponent: shareButton,
   });
 
   return (
@@ -240,7 +250,8 @@ const style = {
   shareButton: {
     buttonIcon: {
       fontSize: 24,
-      marginBottom: 3,
+      width: 40,
+      height: 40,
     },
   },
 };
