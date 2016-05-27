@@ -5,7 +5,7 @@ import React, {
   Animated,
 } from 'react-native';
 import { INCLUDE, connectStyle } from 'shoutem/theme';
-import { NewsGridBox, RichMedia, Button } from 'shoutem.ui';
+import { NewsGridBox, RichMedia, EvilIconButton } from 'shoutem.ui';
 import * as _ from 'lodash';
 import Share from 'react-native-share';
 
@@ -25,6 +25,13 @@ function createDetailsStyle(topOffset, style) {
     detailsTitleContainer: style.detailsTitleContainer,
     detailsText: style.detailsText,
   };
+}
+
+function interpolateIconColor(scrollY, detailsTopOffset) {
+  return scrollY.interpolate({
+    inputRange: [0, detailsTopOffset / 3],
+    outputRange: ['rgba(255,255,255,1)', 'rgba(0,0,0,1)'],
+  });
 }
 
 function createAnimatedHeaderStyle(headerStyle, animatedValue, headerHeight) {
@@ -51,13 +58,15 @@ function createNavigationBarStyle(scrollY, detailsTopOffset) {
     },
     defaultBackButton: {
       buttonIcon: {
-        color: scrollY.interpolate({
-          inputRange: [0, detailsTopOffset / 3],
-          outputRange: ['rgba(255,255,255,1)', 'rgba(0,0,0,1)'],
-        }),
+        color: interpolateIconColor(scrollY, detailsTopOffset),
       },
     },
   };
+}
+
+function createShareButtonStyle(shareButtonStyle, scrollY, detailsTopOffset) {
+  const iconColor = interpolateIconColor(scrollY, detailsTopOffset);
+  return _.set(Object.assign({}, shareButtonStyle), ['buttonIcon', 'color'], iconColor);
 }
 
 function getScrollHandle(scrollY) {
@@ -94,6 +103,7 @@ function ArticleDetailsScreen({
   const headerStyle = createAnimatedHeaderStyle(style.header, scrollY, detailsTopOffset);
   const navigationBarStyle = createNavigationBarStyle(scrollY, detailsTopOffset);
   const detailsStyle = createDetailsStyle(detailsTopOffset, style);
+  const shareButtonStyle = createShareButtonStyle(style.shareButton, scrollY, detailsTopOffset);
 
   function onShare() {
     Share.open({
@@ -105,16 +115,15 @@ function ArticleDetailsScreen({
     });
   }
 
-  // const shareButton = (<Button
-  //   iconType={Button.iconTypes.EVIL_ICON}
-  //   icon="share-apple"
-  //   onPress={onShare}
-  //   style={style.shareButton}
-  // />);
+  const shareButton = (<EvilIconButton
+    iconName="share-apple"
+    onPress={onShare}
+    style={shareButtonStyle}
+  />);
 
   setNavBarProps({
+    rightComponent: shareButton,
     style: navigationBarStyle,
-    // rightComponent: shareButton,
   });
 
   return (
@@ -194,7 +203,6 @@ const style = {
   shareButton: {
     buttonIcon: {
       fontSize: 24,
-      marginBottom: 3,
     },
   },
 };
