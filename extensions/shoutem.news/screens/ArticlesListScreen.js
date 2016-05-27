@@ -45,6 +45,7 @@ export class ArticlesListScreen extends Component {
   constructor(props, context) {
     super(props, context);
     this.fetchNews = this.fetchNews.bind(this);
+    this.refreshNews = this.refreshNews.bind(this);
     this.renderSectionHeader = this.renderSectionHeader.bind(this);
     this.openDetailsScreen = this.openDetailsScreen.bind(this);
     this.renderRow = this.renderRow.bind(this);
@@ -175,6 +176,7 @@ export class ArticlesListScreen extends Component {
         status={this.state.fetchStatus}
         style={style.listView}
         getSectionId={this.getSectionId}
+        onRefresh={this.refreshNews}
         renderSectionHeader={this.renderSectionHeader}
       />
     );
@@ -184,11 +186,17 @@ export class ArticlesListScreen extends Component {
     const {
       style,
       setNavBarProps,
+      settings,
     } = this.props;
+    const screenTitle = settings.title || 'News';
 
     setNavBarProps({
       rightComponent: this.renderCategoriesDropDown(),
-      centerComponent: (<Text style={style.navigation.navigationBarTitle}>News</Text>),
+      centerComponent: (
+        <Text style={style.navigation.navigationBarTitle}>
+          {screenTitle.toUpperCase()}
+        </Text>
+      ),
       style: style.navigation.navigationBar,
     });
 
@@ -213,6 +221,9 @@ const style = {
     categoriesDropDown: {
       popUpButton: {
         buttonText: {
+          [INCLUDE]: ['navigationBarTextColor'],
+        },
+        buttonIcon: {
           [INCLUDE]: ['navigationBarTextColor'],
         },
       },

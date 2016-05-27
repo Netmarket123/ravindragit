@@ -124,6 +124,7 @@ const style = {
   defaultBackButton: {
     [INCLUDE]: ['baseFont'],
     buttonIcon: {
+      marginTop: -4,
       color: 'white',
       width: 40,
       height: 40,

@@ -24,6 +24,7 @@ export default (variables) => ({
     gridBox: {
       container: {
         flex: 1,
+        backgroundColor: '#2c2c2c',
       },
       contentWrapper: {
         justifyContent: 'center',
@@ -126,6 +127,7 @@ export default (variables) => ({
     itemImage: {
       alignSelf: 'stretch',
       height: 85,
+      width: null,
     },
     itemInfo: {
       flexDirection: 'column',
@@ -207,6 +209,14 @@ export default (variables) => ({
   'shoutem.test.ExampleScreen': {
     button: {
       backgroundColor: variables.testColor,
+    },
+  },
+  'shoutem.ui.RichMedia': {
+    p: {
+      [INCLUDE]: ['baseFont'],
+      fontSize: 13,
+      color: '#666',
+      lineHeight: 20,
     },
   },
 });

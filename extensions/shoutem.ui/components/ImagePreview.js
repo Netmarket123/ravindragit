@@ -16,32 +16,12 @@ const propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
   source: Image.propTypes.source,
+  style: PropTypes.object,
 };
 
 const CLOSE_ICON_NAME = 'clear';
 const CLOSE_ICON_SIZE = 25;
 const STATUS_BAR_OFFSET = (Platform.OS === 'android' ? -25 : 0);
-
-const style = {
-  container: {
-    flex: 1,
-    backgroundColor: 'black',
-  },
-  image: {
-    flex: 1,
-  },
-  header: {
-    position: 'absolute',
-    top: STATUS_BAR_OFFSET,
-    left: 0,
-    backgroundColor: 'transparent',
-  },
-  closeIcon: {
-    color: 'white',
-    marginLeft: 15,
-    marginTop: 20,
-  },
-};
 
 /**
  * Renders an ImagePreview which shows an inline image preview.
@@ -71,7 +51,7 @@ class ImagePreview extends Component {
   }
 
   render() {
-    const { source, width, height } = this.props;
+    const { source, width, height, style } = this.props;
 
     if (this.state.fullScreen) {
       const closeButton = (
@@ -112,6 +92,27 @@ class ImagePreview extends Component {
     );
   }
 }
+
+const style = {
+  container: {
+    flex: 1,
+    backgroundColor: 'black',
+  },
+  image: {
+    flex: 1,
+  },
+  header: {
+    position: 'absolute',
+    top: STATUS_BAR_OFFSET,
+    left: 0,
+    backgroundColor: 'transparent',
+  },
+  closeIcon: {
+    color: 'white',
+    marginLeft: 15,
+    marginTop: 20,
+  },
+};
 
 ImagePreview.propTypes = propTypes;
 
