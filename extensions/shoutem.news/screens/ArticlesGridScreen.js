@@ -8,6 +8,13 @@ import {
   newsMapStateToProps,
   newsMapDispatchToProps,
 } from './ArticlesListScreen';
+import {
+  Sections,
+} from '../const.js';
+
+function getItemColSpan(item, section) {
+  return section === Sections.FEATURED ? GridView.ColSpan.STRETCH : 1;
+}
 
 class ArticlesGridScreen extends ArticlesListScreen {
   static propTypes = {
@@ -55,6 +62,7 @@ class ArticlesGridScreen extends ArticlesListScreen {
         style={style.gridView}
         getSectionId={this.getSectionId}
         renderSectionHeader={this.renderSectionHeader}
+        getItemColSpan={getItemColSpan}
       />
     );
   }

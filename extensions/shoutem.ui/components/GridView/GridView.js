@@ -7,6 +7,10 @@ import { connectStyle } from 'shoutem/theme';
 const DEFAULT_ITEMS_GROUP_SIZE = 2;
 const DEFAULT_ITEM_COL_SPAN = 1;
 
+const ColSpan = {
+  STRETCH: -1, // Stretch item to row width
+};
+
 /**
  * Returns group section id.
  * GridView works with groups so it needs to return section id from group and not item.
@@ -32,6 +36,13 @@ function groupItems(items, itemsPerGroup) {
 }
 
 class GridView extends React.Component {
+  // Predefined ColSpan options for items to use for ColSpan
+  static ColSpan = ColSpan;
+
+  static defaultProps = {
+    gridColumns: DEFAULT_ITEMS_GROUP_SIZE,
+  };
+
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -54,8 +65,13 @@ class GridView extends React.Component {
     return true;
   }
 
-  getItemColSpan(item) {
-    return this.props.getItemColSpan ? this.props.getItemColSpan(item) : DEFAULT_ITEM_COL_SPAN;
+  getItemColSpan(item, sectionId) {
+    const { getItemColSpan, gridColumns } = this.props;
+    if (!getItemColSpan) {
+      return DEFAULT_ITEM_COL_SPAN;
+    }
+    const itemColSpan = getItemColSpan(item, sectionId);
+    return itemColSpan === ColSpan.STRETCH ? gridColumns : itemColSpan;
   }
 
   groupItemsWithSelection(items, itemsPerGroup) {
@@ -87,7 +103,7 @@ class GridView extends React.Component {
       getSectionId,
       gridColumns,
     } = this.props;
-    const columns = gridColumns || DEFAULT_ITEMS_GROUP_SIZE;
+    const columns = gridColumns;
 
     return getSectionId ?
       this.groupItemsWithSelection(items, columns) :
@@ -100,15 +116,16 @@ class GridView extends React.Component {
 
   createRenderRow() {
     const { style, renderGridItem, gridColumns } = this.props;
-    const columns = gridColumns || DEFAULT_ITEMS_GROUP_SIZE;
-    return function renderRow(group) {
-      const columnsDiff = columns - group.length;
+    return (group) => {
+      const sectionId = getGroupSectionId(group);
       const gridRowStyle = style.gridRow;
-      const shouldRenderGridDiff = columnsDiff > 0;
+      let columnsDiff = gridColumns;
       const itemView = (
         <View style={gridRowStyle.container}>
           {
             group.reduce((gridItems, item) => {
+              const itemColSpan = this.getItemColSpan(item, sectionId);
+              columnsDiff = columnsDiff - itemColSpan;
               gridItems.push(
                 <View key={`gridItem_' + ${item.id}`} style={gridRowStyle.gridItemContainer}>
                   {renderGridItem(item)}
@@ -117,7 +134,7 @@ class GridView extends React.Component {
               return gridItems;
             }, [])
           }
-          {shouldRenderGridDiff ? <View style={{ flex: columnsDiff }} /> : null}
+          {columnsDiff > 0 ? <View style={{ flex: columnsDiff }} /> : null}
         </View>
       );
 
