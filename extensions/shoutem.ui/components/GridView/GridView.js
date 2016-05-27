@@ -117,7 +117,7 @@ class GridView extends React.Component {
               return gridItems;
             }, [])
           }
-          {shouldRenderGridDiff ? <View style={{ flex: columnsDiff }}> TEst </View> : null}
+          {shouldRenderGridDiff ? <View style={{ flex: columnsDiff }} /> : null}
         </View>
       );
 
