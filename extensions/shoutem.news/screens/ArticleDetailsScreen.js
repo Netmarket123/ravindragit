@@ -5,7 +5,7 @@ import React, {
   Animated,
 } from 'react-native';
 import { INCLUDE, connectStyle } from 'shoutem/theme';
-import { NewsGridBox, RichMedia, Button } from 'shoutem.ui';
+import { NewsGridBox, RichMedia, EvilIconButton } from 'shoutem.ui';
 import * as _ from 'lodash';
 import Share from 'react-native-share';
 
@@ -105,16 +105,20 @@ function ArticleDetailsScreen({
     });
   }
 
-  // const shareButton = (<Button
-  //   iconType={Button.iconTypes.EVIL_ICON}
-  //   icon="share-apple"
-  //   onPress={onShare}
-  //   style={style.shareButton}
-  // />);
+  const shareButton = (<EvilIconButton
+    iconName="share-apple"
+    onPress={onShare}
+    style={style.shareButton}
+  />);
 
   setNavBarProps({
+    rightComponent: shareButton,
     style: navigationBarStyle,
-    // rightComponent: shareButton,
+//    style: {
+//      container: {
+//        backgroundColor: 'rgba(0, 0, 0, 0)',
+//      },
+//    },
   });
 
   return (
@@ -194,7 +198,7 @@ const style = {
   shareButton: {
     buttonIcon: {
       fontSize: 24,
-      marginBottom: 3,
+      color: '#fff',
     },
   },
 };
