@@ -27,6 +27,13 @@ function createDetailsStyle(topOffset, style) {
   };
 }
 
+function interpolateIconColor(scrollY, detailsTopOffset) {
+  return scrollY.interpolate({
+    inputRange: [0, detailsTopOffset / 3],
+    outputRange: ['rgba(255,255,255,1)', 'rgba(0,0,0,1)'],
+  });
+}
+
 function createAnimatedHeaderStyle(headerStyle, animatedValue, headerHeight) {
   return [headerStyle, {
     transform: [
@@ -51,13 +58,15 @@ function createNavigationBarStyle(scrollY, detailsTopOffset) {
     },
     defaultBackButton: {
       buttonIcon: {
-        color: scrollY.interpolate({
-          inputRange: [0, detailsTopOffset / 3],
-          outputRange: ['rgba(255,255,255,1)', 'rgba(0,0,0,1)'],
-        }),
+        color: interpolateIconColor(scrollY, detailsTopOffset),
       },
     },
   };
+}
+
+function createShareButtonStyle(shareButtonStyle, scrollY, detailsTopOffset) {
+  const iconColor = interpolateIconColor(scrollY, detailsTopOffset);
+  return _.set(Object.assign({}, shareButtonStyle), ['buttonIcon', 'color'], iconColor);
 }
 
 function getScrollHandle(scrollY) {
@@ -94,6 +103,7 @@ function ArticleDetailsScreen({
   const headerStyle = createAnimatedHeaderStyle(style.header, scrollY, detailsTopOffset);
   const navigationBarStyle = createNavigationBarStyle(scrollY, detailsTopOffset);
   const detailsStyle = createDetailsStyle(detailsTopOffset, style);
+  const shareButtonStyle = createShareButtonStyle(style.shareButton, scrollY, detailsTopOffset);
 
   function onShare() {
     Share.open({
@@ -108,17 +118,12 @@ function ArticleDetailsScreen({
   const shareButton = (<EvilIconButton
     iconName="share-apple"
     onPress={onShare}
-    style={style.shareButton}
+    style={shareButtonStyle}
   />);
 
   setNavBarProps({
     rightComponent: shareButton,
     style: navigationBarStyle,
-//    style: {
-//      container: {
-//        backgroundColor: 'rgba(0, 0, 0, 0)',
-//      },
-//    },
   });
 
   return (
@@ -198,7 +203,6 @@ const style = {
   shareButton: {
     buttonIcon: {
       fontSize: 24,
-      color: '#fff',
     },
   },
 };

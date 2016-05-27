@@ -1,4 +1,4 @@
-import React from 'react-native';
+import React, { Animated } from 'react-native';
 import Button from './Button';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
@@ -10,8 +10,9 @@ function EvilIconButton({
   text,
   onPress,
 }) {
+  const AnimatedIcon = Animated.createAnimatedComponent(Icon);
   const renderIcon = () =>
-    <Icon name={iconName} style={style.buttonIcon} size={style.fontSize} key="icon" />
+    <AnimatedIcon name={iconName} style={style.buttonIcon} size={style.fontSize} key="icon" />
   ;
 
   return (
