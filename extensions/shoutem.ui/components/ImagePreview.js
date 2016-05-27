@@ -71,7 +71,7 @@ class ImagePreview extends Component {
   }
 
   render() {
-    const { source, width, height } = this.props;
+    const { source, width, height, style, } = this.props;
 
     if (this.state.fullScreen) {
       const closeButton = (

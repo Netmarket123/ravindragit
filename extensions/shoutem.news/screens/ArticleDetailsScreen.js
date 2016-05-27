@@ -3,10 +3,13 @@ import React, {
   ScrollView,
   Dimensions,
   Animated,
+  Text,
+  StatusBar,
 } from 'react-native';
 import { INCLUDE, connectStyle } from 'shoutem/theme';
 import { NewsGridBox, RichMedia, Button } from 'shoutem.ui';
 import * as _ from 'lodash';
+import moment from 'moment';
 import Share from 'react-native-share';
 
 const DEFAULT_BOTTOM_CONTENT_OFFSET = 50;
@@ -45,7 +48,7 @@ function createNavigationBarStyle(scrollY, detailsTopOffset) {
     container: {
       backgroundColor: scrollY.interpolate({
         inputRange: [0, detailsTopOffset / 3],
-        outputRange: ['rgba(0,0,0,0)', 'rgba(255,255,255, 1)'],
+        outputRange: ['rgba(0,0,0,0)', 'rgba(255,255,255,0.9)'],
         extrapolate: 'clamp',
       }),
     },
@@ -58,6 +61,26 @@ function createNavigationBarStyle(scrollY, detailsTopOffset) {
       },
     },
   };
+}
+
+function getScreenTitle(titleStyle, title, scrollY, detailsTopOffset) {
+  return (
+    <Animated.Text
+      numberOfLines={1}
+      style={[
+        titleStyle,
+        {
+          color: scrollY.interpolate({
+            inputRange: [0, 0.8 * detailsTopOffset, detailsTopOffset],
+            outputRange: ['rgba(0,0,0,0)', 'rgba(0,0,0,0)', '#000'],
+            extrapolate: 'clamp',
+          }),
+        },
+      ]}
+    >
+      {title.toUpperCase()}
+    </Animated.Text>
+  );
 }
 
 function getScrollHandle(scrollY) {
@@ -94,6 +117,7 @@ function ArticleDetailsScreen({
   const headerStyle = createAnimatedHeaderStyle(style.header, scrollY, detailsTopOffset);
   const navigationBarStyle = createNavigationBarStyle(scrollY, detailsTopOffset);
   const detailsStyle = createDetailsStyle(detailsTopOffset, style);
+  const screenTitle = getScreenTitle(style.navBarTitle, article.title, scrollY, detailsTopOffset);
 
   function onShare() {
     Share.open({
@@ -114,6 +138,7 @@ function ArticleDetailsScreen({
 
   setNavBarProps({
     style: navigationBarStyle,
+    centerComponent: screenTitle,
     // rightComponent: shareButton,
   });
 
@@ -124,10 +149,11 @@ function ArticleDetailsScreen({
       >
         <NewsGridBox
           style={style.headline}
-          headline={article.title}
-          newsDetails={[article.author, 'test']}
+          headline={article.title.toUpperCase()}
+          newsDetails={[article.author, moment(article.timeUpdated).fromNow()]}
           backgroundImage={{ uri: _.get(article, 'image.url'), width: 200, height: 200 }}
         />
+        <View style={style.scrollIndicator}></View>
       </Animated.View>
       <ScrollView
         automaticallyAdjustContentInsets={false}
@@ -154,6 +180,25 @@ const style = {
     headline: {
       backgroundColor: 'transparent',
     },
+  },
+  navBarTitle: {
+    [INCLUDE]: ['baseFont'],
+    width: 200,
+    fontSize: 15,
+  },
+  scrollIndicator: {
+    borderColor: 'transparent',
+    borderLeftColor: 'white',
+    borderBottomColor: 'white',
+    borderWidth: 2,
+    borderStyle: 'solid',
+    width: 16,
+    height: 16,
+    bottom: 80,
+    alignSelf: 'center',
+    transform: [{
+      rotate: '-45deg',
+    }],
   },
   screen: {
     position: 'relative',
@@ -190,6 +235,7 @@ const style = {
     bottom: 0,
     height: null,
     width: null,
+    flex: 1,
   },
   shareButton: {
     buttonIcon: {
