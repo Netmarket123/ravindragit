@@ -47,22 +47,40 @@ class ListScreen extends Component {
   }
 
   componentWillMount() {
-    this.setState({ fetchStatus: Status.LOADING }, this.fetchEvents);
+    const {
+      fetchEventsCategories,
+      settings,
+    } = this.props;
+
+    if (settings.categoryIds && settings.categoryIds.length > 0) {
+      this.setState({ fetchStatus: Status.LOADING }, this.fetchEvents);
+    } else {
+      this.setState(
+        { fetchStatus: Status.LOADING },
+        () => fetchEventsCategories(settings.parentCategoryId, settings)
+      );
+    }
   }
 
   fetchEvents() {
     const { settings, findEvents } = this.props;
     const { selectedCategory } = this.state;
 
-    //const categories = settings.categoryIds ? settings.categoryIds : [selectedCategory.id];
+    const categories = settings.categoryIds ? settings.categoryIds : [selectedCategory.id];
 
-    findEvents(undefined, settings).then(() => {
+    findEvents(categories, settings).then(() => {
       this.setState({ fetchStatus: Status.IDLE });
     });
   }
 
   categorySelected(category) {
-    this.setState({ selectedCategory: category });
+    this.setState(
+      {
+        selectedCategory: category,
+        fetchStatus: Status.LOADING,
+      },
+      this.fetchEvents
+    );
   }
 
   renderEvents() {
@@ -138,7 +156,6 @@ class ListScreen extends Component {
       ),
     });
 
-
     return (
       <View style={style.screen}>
         {categorySelector}
@@ -152,6 +169,7 @@ ListScreen.propTypes = {
   settings: React.PropTypes.object,
   selectedCategory: React.PropTypes.object,
   findEvents: React.PropTypes.func,
+  fetchEventsCategories: React.PropTypes.func,
   events: React.PropTypes.array,
   categories: React.PropTypes.array,
   style: React.PropTypes.object,

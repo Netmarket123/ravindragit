@@ -35,17 +35,17 @@ export function openListScreen(settings = {
   return navigateTo(route);
 }
 
-export function findEvents(category, settings) {
+export function findEvents(categoryIds, settings) {
   let query = '';
   const collectionName = 'latestEvents';
 
-  if (category) {
-    query += `&filter[categories]=${category.id}`;
+  if (categoryIds && categoryIds.length > 0) {
+    query += `&filter[categories]=${categoryIds.join(',')}`;
   }
 
   return find(
     {
-      endpoint: `${settings.endpoint}/v1/apps/${settings.appId}/resources/${SHOUTEM_EVENTS_SCHEME}?include=image`,
+      endpoint: `${settings.endpoint}/v1/apps/${settings.appId}/resources/${SHOUTEM_EVENTS_SCHEME}?include=image${query}`,
       headers: { 'Content-Type': 'application/json' },
     },
     SHOUTEM_EVENTS_SCHEME,
