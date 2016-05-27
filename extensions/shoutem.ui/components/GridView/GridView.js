@@ -6,12 +6,34 @@ import { connectStyle } from 'shoutem/theme';
 
 const DEFAULT_ITEMS_GROUP_SIZE = 2;
 
+/**
+ * Used to provide predefined calculation function for grid columns and rows.
+ * Every function must provide style object.
+ */
 const Dimensions = {
+  /**
+   * Provides column calculation functions
+   */
   Column: {
+    /**
+     * Calculates column flex to match 100% width
+     * @param gridColumns
+     */
     stretch: gridColumns => ({ flex: gridColumns }),
+  },
+  /**
+   * Provides row calculation functions
+   */
+  Row: {
   },
 };
 
+/**
+ * Return last items group length.
+ *
+ * @param groupedItems - [[], [] ,[]]
+ * @returns {number}
+ */
 function getCurrentGroupLength(groupedItems) {
   const currentGroupIndex = groupedItems.length - 1;
   const currentGroup = groupedItems[currentGroupIndex];
@@ -28,12 +50,18 @@ function getGroupSectionId(group) {
   return group.sectionId;
 }
 
-function getColSpan(colStyle = {}) {
-  return colStyle.flex || 1;
+/**
+ * Return column flex style number or default value.
+ *
+ * @param columnStyle
+ * @returns {*|number}
+ */
+function getColumnSpan(columnStyle = {}) {
+  return columnStyle.flex || 1;
 }
 
-function getColHorizontalMargin(colStyle) {
-  return colStyle.horizontalMargin || 0;
+function getColumnHorizontalMargin(columnStyle) {
+  return columnStyle.horizontalMargin || 0;
 }
 
 function groupItems(items, itemsPerGroup) {
@@ -56,7 +84,7 @@ function createCompensationStyle(remainingColumns, marginHorizontal) {
   };
 }
 
-function renderCompensationCol(remainingColumns, margin) {
+function renderCompensationColumn(remainingColumns, margin) {
   return <View style={createCompensationStyle(remainingColumns, margin)} />;
 }
 
@@ -90,15 +118,15 @@ class GridView extends React.Component {
     return true;
   }
 
-  getItemColStyle(item, sectionId) {
-    const { getItemColStyle, gridColumns, style } = this.props;
+  getItemColumnStyle(item, sectionId) {
+    const { getItemColumnStyle, gridColumns, style } = this.props;
     const defaultItemColStyle = style.gridRow.gridItemCol;
 
-    if (!getItemColStyle) {
+    if (!getItemColumnStyle) {
       return defaultItemColStyle;
     }
 
-    const itemColStyle = getItemColStyle(gridColumns, item, sectionId);
+    const itemColStyle = getItemColumnStyle(gridColumns, item, sectionId);
 
     return { ...defaultItemColStyle, ...itemColStyle };
   }
@@ -165,16 +193,16 @@ class GridView extends React.Component {
       let remainingColumns = gridColumns;
 
       const groupCols = group.reduce((gridItems, item) => {
-        const colStyle = this.getItemColStyle(item, sectionId);
-        remainingColumns = remainingColumns - getColSpan(colStyle);
+        const columnStyle = this.getItemColumnStyle(item, sectionId);
+        remainingColumns = remainingColumns - getColumnSpan(columnStyle);
 
-        gridItems.push(this.renderGroupItem(item, colStyle));
+        gridItems.push(this.renderGroupItem(item, columnStyle));
         return gridItems;
       }, []);
 
-      const colHorizontalMargin = getColHorizontalMargin(rowStyle);
+      const columnHorizontalMargin = getColumnHorizontalMargin(rowStyle);
       const compensationCol = remainingColumns > 0 ?
-        renderCompensationCol(remainingColumns, colHorizontalMargin) : null;
+        renderCompensationColumn(remainingColumns, columnHorizontalMargin) : null;
 
       return (
         <View style={rowStyle}>
@@ -185,12 +213,12 @@ class GridView extends React.Component {
     };
   }
 
-  renderGroupItem(item, colStyle) {
+  renderGroupItem(item, columnStyle) {
     const { renderGridItem } = this.props;
     return (
       <View
         key={`gridItem_' + ${item.id}`}
-        style={colStyle}
+        style={columnStyle}
       >
         {renderGridItem(item)}
       </View>
@@ -220,7 +248,7 @@ GridView.propTypes = {
   ...ListView.propTypes,
   gridColumns: React.PropTypes.number,
   renderGridItem: React.PropTypes.func.isRequired,
-  getItemColStyle: React.PropTypes.func,
+  getItemColumnStyle: React.PropTypes.func,
   getGroupRowStyle: React.PropTypes.func,
 };
 

@@ -19,7 +19,8 @@ function createFeaturedItemStyle(gridColumns) {
     ...GridView.Dimensions.Column.stretch(gridColumns),
   };
 }
-function getItemColStyle(gridColumns, item, sectionId) {
+
+function getItemColumnStyle(gridColumns, item, sectionId) {
   return sectionId === Sections.FEATURED ?
     createFeaturedItemStyle(gridColumns) : {};
 }
@@ -75,7 +76,7 @@ class ArticlesGridScreen extends ArticlesListScreen {
         style={style.gridView}
         getSectionId={this.getSectionId}
         renderSectionHeader={this.renderSectionHeader}
-        getItemColStyle={getItemColStyle}
+        getItemColumnStyle={getItemColumnStyle}
         getGroupRowStyle={getGroupRowStyle}
       />
     );
