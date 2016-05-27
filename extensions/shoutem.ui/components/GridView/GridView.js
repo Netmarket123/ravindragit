@@ -5,64 +5,182 @@ import ListView from '../ListView/ListView';
 import { connectStyle } from 'shoutem/theme';
 
 const DEFAULT_ITEMS_GROUP_SIZE = 2;
+const DEFAULT_ITEM_COL_SPAN = 1;
 
-function createRenderRow(renderGridItem, style, columns) {
-  return function renderRow(items) {
-    const columnsDiff = columns - items.length;
-    const gridRowStyle = items.featured ? style.featuredGridRow : style.gridRow;
-    // Featured row (view) must have flex direction column so child can center text properly (bug?)
-    // Single grid item wrapper is used to set margin between each grid item and so last item
-    // if single in row can be aligned properly with others.
-    // TODO(Braco) - calculate last item margin fix
-    return (
-      <View style={gridRowStyle.container}>
-        {
-          items.reduce((gridItems, item) => {
-            gridItems.push(
-              <View key={`gridItem_' + ${item.id}`} style={gridRowStyle.gridItemContainer}>
-                {renderGridItem(item)}
-              </View>
-            );
-            return gridItems;
-          }, [])
-        }
-        {!items.featured && columnsDiff > 0 ? <View style={{ flex: columnsDiff }} /> : []}
-      </View>);
+// TODO(Braco) - confirm span values
+const ColSpan = {
+  STRETCH: 'Stretch item to row width',
+};
+
+/**
+ * Returns group section id.
+ * GridView works with groups so it needs to return section id from group and not item.
+ *
+ * @param group {[]}
+ * @returns {*}
+ */
+function getGroupSectionId(group) {
+  return group.sectionId;
+}
+
+function groupItems(items, itemsPerGroup) {
+  return items.reduce((groupedItems, item, index) => {
+    if ((index % itemsPerGroup) === 0) {
+      groupedItems.push([]);
+    }
+
+    const lastGroupIndex = groupedItems.length - 1;
+    groupedItems[lastGroupIndex].push(item);
+
+    return groupedItems;
+  }, []);
+}
+
+function createCompensationStyle(remainingColumns, margin) {
+  return {
+    flex: remainingColumns,
+    margin: remainingColumns * margin,
   };
 }
 
-function groupItems(items, itemsPerGroup = DEFAULT_ITEMS_GROUP_SIZE) {
-  // featuredItemsGroup is first list in groupedItems list
-  const featuredItemsGroup = [];
-  featuredItemsGroup.featured = true;
-  return items.reduce((groupedItems, item, index) => {
-    if (item.featured) {
-      groupedItems[0].push(item);
-    } else {
-      if ((index - groupedItems[0].length) % itemsPerGroup === 0) {
-        groupedItems.push([]);
-      }
-      groupedItems[(groupedItems.length - 1)].push(item);
+function renderCompensationView(remainingColumns, margin) {
+  return <View style={createCompensationStyle(remainingColumns, margin)} />;
+}
+
+class GridView extends React.Component {
+  // Predefined ColSpan options for items to use for ColSpan
+  static ColSpan = ColSpan;
+
+  static defaultProps = {
+    gridColumns: DEFAULT_ITEMS_GROUP_SIZE,
+  };
+
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      groupedItems: [],
+    };
+  }
+
+  componentWillMount() {
+    const { items } = this.props;
+    if (items && items.length > 0) {
+      this.updateGroupedItemsState(items);
     }
-    return groupedItems;
-  }, [featuredItemsGroup]);
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const { items } = this.props;
+    if (nextProps.items !== items) {
+      this.updateGroupedItemsState(nextProps.items);
+    }
+    return true;
+  }
+
+  getItemColSpan(item, sectionId) {
+    const { getItemColSpan, gridColumns } = this.props;
+    if (!getItemColSpan) {
+      return DEFAULT_ITEM_COL_SPAN;
+    }
+    const itemColSpan = getItemColSpan(item, sectionId);
+    return itemColSpan === ColSpan.STRETCH ? gridColumns : itemColSpan;
+  }
+
+  groupItemsWithSections(items, itemsPerGroup) {
+    const { getSectionId } = this.props;
+    if (!getSectionId) {
+      throw Error('Can not group items with sections, missing getSectionId prop.');
+    }
+    let prevSectionId;
+    return items.reduce((groupedItems, item, index) => {
+      const sectionId = getSectionId(item);
+
+      if (prevSectionId !== sectionId || (index % itemsPerGroup) === 0) {
+        const group = [];
+        group.sectionId = sectionId;
+        groupedItems.push(group);
+      }
+
+      prevSectionId = sectionId;
+
+      const lastGroupIndex = groupedItems.length - 1;
+      groupedItems[lastGroupIndex].push(item);
+
+      return groupedItems;
+    }, []);
+  }
+
+  groupItems(items) {
+    const {
+      getSectionId,
+      gridColumns,
+    } = this.props;
+    const columns = gridColumns;
+
+    return getSectionId ?
+      this.groupItemsWithSections(items, columns) :
+      groupItems(items, columns);
+  }
+
+  updateGroupedItemsState(items) {
+    this.setState({ groupedItems: this.groupItems(items) });
+  }
+
+  createRenderRow() {
+    const { style, renderGridItem, gridColumns } = this.props;
+    return (group) => {
+      const sectionId = getGroupSectionId(group);
+      const gridRowStyle = style.gridRow;
+      const gridItemMargin = gridRowStyle.gridItemContainer.margin || 0;
+      let remainingColumns = gridColumns;
+
+      const itemView = (
+        <View style={gridRowStyle.container}>
+          {
+            group.reduce((gridItems, item) => {
+              const itemColSpan = this.getItemColSpan(item, sectionId);
+              remainingColumns = remainingColumns - itemColSpan;
+              gridItems.push(
+                <View key={`gridItem_' + ${item.id}`} style={gridRowStyle.gridItemContainer}>
+                  {renderGridItem(item)}
+                </View>
+              );
+              return gridItems;
+            }, [])
+          }
+          {remainingColumns > 0 ? renderCompensationView(remainingColumns, gridItemMargin) : null}
+        </View>
+      );
+
+      return itemView;
+    };
+  }
+
+  render() {
+    const {
+      getSectionId,
+    } = this.props;
+    const { groupedItems } = this.state;
+    const renderRow = this.createRenderRow();
+
+    // TODO(Braco) - explain getSectionId override
+    return (
+      <ListView
+        {...this.props}
+        getSectionId={getSectionId && getGroupSectionId}
+        items={groupedItems}
+        renderRow={renderRow}
+      />
+    );
+  }
 }
 
-function GridView(props) {
-  const columns = props.gridColumns || DEFAULT_ITEMS_GROUP_SIZE;
-  return (
-    <ListView
-      {...props}
-      items={groupItems(props.items, columns)}
-      renderRow={createRenderRow(props.renderGridItem, props.style, columns)}
-    />
-  );
-}
-
-GridView.propTypes = Object.assign({}, ListView.propTypes, {
+GridView.propTypes = {
+  ...ListView.propTypes,
   gridColumns: React.PropTypes.number,
   renderGridItem: React.PropTypes.func,
-});
+  getItemColSpan: React.PropTypes.func,
+};
 
 const style = {
   header: {
@@ -73,14 +191,6 @@ const style = {
   gridRow: {
     container: {
       flexDirection: 'row',
-    },
-    gridItemContainer: {
-      flex: 1,
-    },
-  },
-  featuredGridRow: {
-    container: {
-      flexDirection: 'column',
     },
     gridItemContainer: {
       flex: 1,

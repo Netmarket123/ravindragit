@@ -8,6 +8,13 @@ import {
   newsMapStateToProps,
   newsMapDispatchToProps,
 } from './ArticlesListScreen';
+import {
+  Sections,
+} from '../const.js';
+
+function getItemColSpan(item, section) {
+  return section === Sections.FEATURED ? GridView.ColSpan.STRETCH : 1;
+}
 
 class ArticlesGridScreen extends ArticlesListScreen {
   static propTypes = {
@@ -43,18 +50,19 @@ class ArticlesGridScreen extends ArticlesListScreen {
     const {
       style,
       news,
-      searchedNews,
       gridColumns,
     } = this.props;
-    const { searchTerm } = this.state;
     return (
       <GridView
         gridColumns={gridColumns}
-        items={searchTerm ? searchedNews : news}
+        items={news}
         renderGridItem={this.renderItem}
         onRefresh={this.refreshNews}
         status={this.state.fetchStatus}
         style={style.gridView}
+        getSectionId={this.getSectionId}
+        renderSectionHeader={this.renderSectionHeader}
+        getItemColSpan={getItemColSpan}
       />
     );
   }
@@ -114,14 +122,24 @@ const style = {
       [INCLUDE]: ['navigationBarTextColor'],
     },
   },
+  sectionHeader: {
+    [INCLUDE]: ['baseFont'],
+    color: '#888888',
+    paddingHorizontal: 15,
+    paddingTop: 25,
+    paddingBottom: 10,
+    fontSize: 12,
+  },
   featuredItem: {
     gridBox: {
       container: {
         padding: 5,
+        flexDirection: 'column',
         backgroundColor: '#2c2c2c',
       },
       contentWrapper: {
         flexWrap: 'wrap',
+        width: null,
         alignItems: 'center',
         justifyContent: 'center',
         height: 330,
@@ -130,6 +148,11 @@ const style = {
       backgroundImage: {
         borderRadius: 2,
       },
+    },
+    headline: {
+      width: null,
+      height: null,
+      alignSelf: 'center',
     },
   },
   screen: {},
