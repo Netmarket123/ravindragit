@@ -19,9 +19,6 @@ export default (state) => {
     events: denormalizer.denormalizeCollection(
       state[SHOUTEM_EVENTS_EXT_NAME].latestEvents, SHOUTEM_EVENTS_SCHEME
     ),
-    searchedEvents: denormalizer.denormalizeCollection(
-      state[SHOUTEM_EVENTS_EXT_NAME].searchedEvents, SHOUTEM_EVENTS_SCHEME
-    ),
     selectedCategory: state[SHOUTEM_EVENTS_EXT_NAME].selectedCategory,
     categories: denormalizer.denormalizeCollection(
       state[SHOUTEM_EVENTS_EXT_NAME].eventsCategories,

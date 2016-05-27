@@ -38,7 +38,6 @@ class ListScreen extends Component {
   constructor(props, context) {
     super(props, context);
     this.fetchEvents = this.fetchEvents.bind(this);
-    this.onSearchChanged = this.onSearchChanged.bind(this);
     this.categorySelected = this.categorySelected.bind(this);
     this.setState = this.setState.bind(this);
     this.state = {
@@ -49,10 +48,6 @@ class ListScreen extends Component {
 
   componentWillMount() {
     this.setState({ fetchStatus: Status.LOADING }, this.fetchEvents);
-  }
-
-  onSearchChanged(searchTerm) {
-    this.setState({ searchTerm });
   }
 
   fetchEvents() {
@@ -155,10 +150,10 @@ class ListScreen extends Component {
 
 ListScreen.propTypes = {
   settings: React.PropTypes.object,
+  selectedCategory: React.PropTypes.object,
   findEvents: React.PropTypes.func,
-  clearSearch: React.PropTypes.func,
   events: React.PropTypes.array,
-  searchedEvents: React.PropTypes.array,
+  categories: React.PropTypes.array,
   style: React.PropTypes.object,
   setNavBarProps: React.PropTypes.func,
   navigateToRoute: React.PropTypes.func,

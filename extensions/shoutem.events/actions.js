@@ -14,7 +14,6 @@ export const reducers = {
   eventsImages: storage(SHOUTEM_IMAGES_SCHEME),
   eventsCategories: collection(SHOUTEM_CATEGORIES_SCHEME, 'eventsCategories'),
   latestEvents: collection(SHOUTEM_EVENTS_SCHEME, 'latestEvents'),
-  searchedEvents: collection(SHOUTEM_EVENTS_SCHEME, 'searchedEvents'),
 };
 
 export function openListScreen(settings = {
@@ -38,7 +37,7 @@ export function openListScreen(settings = {
 
 export function findEvents(category, settings) {
   let query = '';
-  let collectionName = 'latestEvents';
+  const collectionName = 'latestEvents';
 
   if (category) {
     query += `&filter[categories]=${category.id}`;

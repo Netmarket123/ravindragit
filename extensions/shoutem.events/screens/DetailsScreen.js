@@ -4,7 +4,6 @@ import React, {
   Text,
 } from 'react-native';
 import { INCLUDE, connectStyle } from 'shoutem/theme';
-import * as _ from 'lodash';
 import { Button } from 'shoutem.ui';
 import moment from 'moment';
 
@@ -41,7 +40,7 @@ function Details({ item, style }) {
     const fromDate = toMoment(item.startTime);
     const toDate = item.endtime ? toMoment(item.endtime)
                                 : fromDate.clone().add(1, 'hours');
-    console.warn(item.title, fromDate.valueOf(), toDate.valueOf())
+    console.warn(item.title, fromDate.valueOf(), toDate.valueOf());
   }
 
   return (

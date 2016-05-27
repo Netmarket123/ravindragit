@@ -26,7 +26,7 @@ function renderEventItem(item, style, extrasSeparator, onPress) {
     const fromDate = toMoment(item.startTime);
     const toDate = item.endtime ? toMoment(item.endtime)
                                 : fromDate.clone().add(1, 'hours');
-    console.warn(item.title, fromDate.valueOf(), toDate.valueOf())
+    console.warn(item.title, fromDate.valueOf(), toDate.valueOf());
   }
 
   return (
@@ -148,9 +148,7 @@ class GridScreen extends Component {
 GridScreen.propTypes = {
   settings: React.PropTypes.object,
   findEvents: React.PropTypes.func,
-  clearSearch: React.PropTypes.func,
   events: React.PropTypes.array,
-  searchedEvents: React.PropTypes.array,
   style: React.PropTypes.object,
   setNavBarProps: React.PropTypes.func,
   navigateToRoute: React.PropTypes.func,
