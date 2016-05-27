@@ -127,6 +127,7 @@ export default (variables) => ({
     itemImage: {
       alignSelf: 'stretch',
       height: 85,
+      width: null,
     },
     itemInfo: {
       flexDirection: 'column',
