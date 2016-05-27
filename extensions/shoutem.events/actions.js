@@ -36,15 +36,9 @@ export function openListScreen(settings = {
   return navigateTo(route);
 }
 
-export function findEvents(searchTerm, category, pageOffset = 0, settings) {
+export function findEvents(category, settings) {
   let query = '';
   let collectionName = 'latestEvents';
-  const offset = `&page[offset]=${pageOffset}`;
-
-  if (searchTerm) {
-    query += `&query=${searchTerm}`;
-    collectionName = 'searchedEvents';
-  }
 
   if (category) {
     query += `&filter[categories]=${category.id}`;

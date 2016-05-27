@@ -5,13 +5,13 @@ import React, {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
-import { ListItem, AdvancedListView } from 'shoutem.ui';
+import { ListItem, ListView } from 'shoutem.ui';
 import eventsMapDispatchToProps from './lib/eventsMapDispatchToProps';
 import eventsMapStateToProps from './lib/eventsMapStateToProps';
 import EventsCategoriesDropdownMenu from '../components/EventsCategoriesDropDownMenu';
-import fetchEvents from './lib/fetchEvents';
-import _ from 'lodash';
 import moment from 'moment';
+
+const Status = ListView.Status;
 
 function formatDate(date) {
   return moment(date, 'YYYY-MM-DDThh:mm:ss').format('MMMM D • hh:mm');
@@ -26,8 +26,7 @@ function renderRow(item, style, extrasSeparator, onPress) {
         leftExtra={formatDate(item.startTime)}
         id={item.id}
         style={style.listRow}
-        onPressItem={item}
-        onPressMethod={onPress}
+        onPress={onPress}
         buttonIcon={"event-note"}
         onButtonPressed={() => console.warn('pressed')}
       />
@@ -38,33 +37,87 @@ function renderRow(item, style, extrasSeparator, onPress) {
 class ListScreen extends Component {
   constructor(props, context) {
     super(props, context);
-    this.fetch = fetchEvents.bind(this);
+    this.fetchEvents = this.fetchEvents.bind(this);
     this.onSearchChanged = this.onSearchChanged.bind(this);
     this.categorySelected = this.categorySelected.bind(this);
+    this.setState = this.setState.bind(this);
     this.state = {
-      searchTerm: '',
       selectedCategory: null,
+      fetchStatus: null,
     };
+  }
+
+  componentWillMount() {
+    this.setState({ fetchStatus: Status.LOADING }, this.fetchEvents);
   }
 
   onSearchChanged(searchTerm) {
     this.setState({ searchTerm });
   }
 
+  fetchEvents() {
+    const { settings, findEvents } = this.props;
+    const { selectedCategory } = this.state;
+
+    //const categories = settings.categoryIds ? settings.categoryIds : [selectedCategory.id];
+
+    findEvents(undefined, settings).then(() => {
+      this.setState({ fetchStatus: Status.IDLE });
+    });
+  }
+
   categorySelected(category) {
     this.setState({ selectedCategory: category });
+  }
+
+  renderEvents() {
+    const {
+      style,
+      events,
+      navigateToRoute,
+    } = this.props;
+
+    function renderListRow(item) {
+      function openDetailsScreen() {
+        const route = { screen: 'shoutem.events.DetailsScreen', props: { item } };
+        navigateToRoute(route);
+      }
+      return renderRow(item, style, undefined, openDetailsScreen);
+    }
+
+    function convertCmsEventToItem(event) {
+      const imageUrl = (event.image && event.image.url) ? event.image.url : undefined;
+
+      return {
+        id: event.id,
+        title: event.name,
+        information: event.description,
+        startTime: event.starttime,
+        endTime: event.endtime,
+        image: { uri: imageUrl },
+      };
+    }
+
+    return (
+      <ListView
+        items={events.map(convertCmsEventToItem)}
+        renderRow={renderListRow}
+        status={this.state.fetchStatus}
+        style={style.listView}
+        getSectionId={this.getSectionId}
+        renderSectionHeader={this.renderSectionHeader}
+      />
+    );
   }
 
   render() {
     const {
       style,
-      events,
       setNavBarProps,
-      navigateToRoute,
       settings: { parentCategoryId },
       settings,
     } = this.props;
-    const { searchTerm, selectedCategory } = this.state;
+    const { selectedCategory } = this.state;
 
     const dropDownMenu = (
       <EventsCategoriesDropdownMenu
@@ -90,43 +143,11 @@ class ListScreen extends Component {
       ),
     });
 
-    function openDetailsScreen(item) {
-      const route = { screen: 'shoutem.events.DetailsScreen', props: { item } };
-      navigateToRoute(route);
-    }
-
-    function renderListRow(item) {
-      return renderRow(item, style, undefined, openDetailsScreen);
-    }
-
-    function convertCmsEventToItem(event) {
-      const imageUrl = (event.image && event.image.url) ? event.image.url : undefined;
-
-      return {
-        title: event.name,
-        information: event.description,
-        startTime: event.starttime,
-        endTime: event.endtime,
-        image: { uri: imageUrl },
-      };
-    }
-
-    const itemsList = selectedCategory ? (
-      <AdvancedListView
-        items={events.map(convertCmsEventToItem)}
-        search
-        infiniteScrolling
-        onSearchTermChanged={this.onSearchChanged}
-        queryParams={{ searchTerm, selectedCategory }}
-        fetch={this.fetch}
-        renderRow={renderListRow}
-        style={style.listView}
-      />) : null;
 
     return (
       <View style={style.screen}>
         {categorySelector}
-        {itemsList}
+        {this.renderEvents()}
       </View>
     );
   }
