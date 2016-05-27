@@ -185,6 +185,13 @@ class GridView extends React.Component {
     this.setState({ groupedItems: this.groupItems(items) });
   }
 
+  /**
+   * Create renderRow function for ListView. Renders group of items into row.
+   * It work with or without sections. If sections are not enabled, sectionId
+   * is undefined for every group.
+   *
+   * @returns {function()}
+   */
   createRenderRow() {
     const { gridColumns } = this.props;
     return (group) => {
@@ -192,7 +199,7 @@ class GridView extends React.Component {
       const rowStyle = this.getGroupRowStyle(sectionId);
       let remainingColumns = gridColumns;
 
-      const groupCols = group.reduce((gridItems, item) => {
+      const groupColumns = group.reduce((gridItems, item) => {
         const columnStyle = this.getItemColumnStyle(item, sectionId);
         remainingColumns = remainingColumns - getColumnSpan(columnStyle);
 
@@ -201,13 +208,13 @@ class GridView extends React.Component {
       }, []);
 
       const columnHorizontalMargin = getColumnHorizontalMargin(rowStyle);
-      const compensationCol = remainingColumns > 0 ?
+      const compensationColumn = remainingColumns > 0 ?
         renderCompensationColumn(remainingColumns, columnHorizontalMargin) : null;
 
       return (
         <View style={rowStyle}>
-          {groupCols}
-          {compensationCol}
+          {groupColumns}
+          {compensationColumn}
         </View>
       );
     };
