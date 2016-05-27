@@ -4,7 +4,6 @@ import React, {
   Dimensions,
   Animated,
   Text,
-  StatusBar,
 } from 'react-native';
 import { INCLUDE, connectStyle } from 'shoutem/theme';
 import { NewsGridBox, RichMedia, EvilIconButton } from 'shoutem.ui';
@@ -163,7 +162,7 @@ function ArticleDetailsScreen({
           newsDetails={[article.author, moment(article.timeUpdated).fromNow()]}
           backgroundImage={{ uri: _.get(article, 'image.url'), width: 200, height: 200 }}
         />
-        <View style={style.scrollIndicator}></View>
+        <View style={style.scrollIndicator} />
       </Animated.View>
       <ScrollView
         automaticallyAdjustContentInsets={false}
