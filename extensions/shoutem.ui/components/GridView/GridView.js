@@ -35,6 +35,17 @@ function groupItems(items, itemsPerGroup) {
   }, []);
 }
 
+function createCompensationStyle(remainingColumns, margin) {
+  return {
+    flex: remainingColumns,
+    margin: remainingColumns * margin,
+  };
+}
+
+function renderCompensationView(remainingColumns, margin) {
+  return <View style={createCompensationStyle(remainingColumns, margin)} />;
+}
+
 class GridView extends React.Component {
   // Predefined ColSpan options for items to use for ColSpan
   static ColSpan = ColSpan;
@@ -119,13 +130,15 @@ class GridView extends React.Component {
     return (group) => {
       const sectionId = getGroupSectionId(group);
       const gridRowStyle = style.gridRow;
-      let columnsDiff = gridColumns;
+      const gridItemMargin = gridRowStyle.gridItemContainer.margin || 0;
+      let remainingColumns = gridColumns;
+
       const itemView = (
         <View style={gridRowStyle.container}>
           {
             group.reduce((gridItems, item) => {
               const itemColSpan = this.getItemColSpan(item, sectionId);
-              columnsDiff = columnsDiff - itemColSpan;
+              remainingColumns = remainingColumns - itemColSpan;
               gridItems.push(
                 <View key={`gridItem_' + ${item.id}`} style={gridRowStyle.gridItemContainer}>
                   {renderGridItem(item)}
@@ -134,7 +147,7 @@ class GridView extends React.Component {
               return gridItems;
             }, [])
           }
-          {columnsDiff > 0 ? <View style={{ flex: columnsDiff }} /> : null}
+          {remainingColumns > 0 ? renderCompensationView(remainingColumns, gridItemMargin) : null}
         </View>
       );
 
