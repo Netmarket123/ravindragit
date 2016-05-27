@@ -43,18 +43,18 @@ class ArticlesGridScreen extends ArticlesListScreen {
     const {
       style,
       news,
-      searchedNews,
       gridColumns,
     } = this.props;
-    const { searchTerm } = this.state;
     return (
       <GridView
         gridColumns={gridColumns}
-        items={searchTerm ? searchedNews : news}
+        items={news}
         renderGridItem={this.renderItem}
         onRefresh={this.refreshNews}
         status={this.state.fetchStatus}
         style={style.gridView}
+        getSectionId={this.getSectionId}
+        renderSectionHeader={this.renderSectionHeader}
       />
     );
   }
