@@ -6,6 +6,7 @@ import React, {
 import { connectStyle, INCLUDE } from 'shoutem/theme';
 import HypermediaComposer from './lib/HypermediaComposer';
 import AttachmentTagTransformer from './lib/AttachmentTagTransformer';
+import * as _ from 'lodash';
 
 const propTypes = {
   body: PropTypes.string,
@@ -29,13 +30,21 @@ const style = {
   code: codeStyle,
   a: {
     fontWeight: '500',
-    color: '#007AFF',
+    color: '#000',
   },
   video: {
     marginHorizontal: MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE,
+    container: {
+      marginTop: 8,
+      marginBottom: 15,
+    },
   },
   img: {
     marginHorizontal: MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE,
+    container: {
+      marginTop: 8,
+      marginBottom: 15,
+    },
   },
   p: {
     [INCLUDE]: ['baseFont'],
@@ -61,7 +70,7 @@ function getStyleWithUpdatedMediaElementMargins(oldStyle) {
   const imageStyle = oldStyle.img;
   const imageWithMargins = getMediaElementMargin(imageStyle);
 
-  return Object.assign({}, oldStyle, {
+  return _.merge({}, oldStyle, {
     img: imageWithMargins,
     video: videoWithMargins,
   });

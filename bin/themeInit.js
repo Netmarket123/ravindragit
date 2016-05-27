@@ -24,6 +24,7 @@ export default (variables) => ({
     gridBox: {
       container: {
         flex: 1,
+        backgroundColor: '#2c2c2c',
       },
       contentWrapper: {
         justifyContent: 'center',
@@ -207,6 +208,14 @@ export default (variables) => ({
   'shoutem.test.ExampleScreen': {
     button: {
       backgroundColor: variables.testColor,
+    },
+  },
+  'shoutem.ui.RichMedia': {
+    p: {
+      [INCLUDE]: ['baseFont'],
+      fontSize: 13,
+      color: '#666',
+      lineHeight: 20,
     },
   },
 });
