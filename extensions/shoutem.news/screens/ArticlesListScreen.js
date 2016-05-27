@@ -184,11 +184,17 @@ export class ArticlesListScreen extends Component {
     const {
       style,
       setNavBarProps,
+      settings,
     } = this.props;
+    const screenTitle = settings.title || 'News';
 
     setNavBarProps({
       rightComponent: this.renderCategoriesDropDown(),
-      centerComponent: (<Text style={style.navigation.navigationBarTitle}>News</Text>),
+      centerComponent: (
+        <Text style={style.navigation.navigationBarTitle}>
+          {screenTitle.toUpperCase()}
+        </Text>
+      ),
       style: style.navigation.navigationBar,
     });
 
@@ -213,6 +219,9 @@ const style = {
     categoriesDropDown: {
       popUpButton: {
         buttonText: {
+          [INCLUDE]: ['navigationBarTextColor'],
+        },
+        buttonIcon: {
           [INCLUDE]: ['navigationBarTextColor'],
         },
       },

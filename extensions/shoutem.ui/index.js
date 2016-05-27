@@ -5,6 +5,9 @@ export { default as ListView } from './components/ListView/ListView';
 export { default as GridView } from './components/GridView/GridView';
 
 export { default as Button } from './components/Button/Button';
+export { default as MaterialIconButton } from './components/Button/MaterialIconButton';
+export { default as AwesomeIconButton } from './components/Button/AwesomeIconButton';
+export { default as EvilIconButton } from './components/Button/EvilIconButton';
 
 export { default as InfoFields } from './components/InfoFields/InfoFields';
 

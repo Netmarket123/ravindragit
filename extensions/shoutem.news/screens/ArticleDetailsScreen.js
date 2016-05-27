@@ -3,10 +3,12 @@ import React, {
   ScrollView,
   Dimensions,
   Animated,
+  Text,
 } from 'react-native';
 import { INCLUDE, connectStyle } from 'shoutem/theme';
-import { NewsGridBox, RichMedia, Button } from 'shoutem.ui';
+import { NewsGridBox, RichMedia, EvilIconButton } from 'shoutem.ui';
 import * as _ from 'lodash';
+import moment from 'moment';
 import Share from 'react-native-share';
 
 const DEFAULT_BOTTOM_CONTENT_OFFSET = 50;
@@ -27,6 +29,13 @@ function createDetailsStyle(topOffset, style) {
   };
 }
 
+function interpolateIconColor(scrollY, detailsTopOffset) {
+  return scrollY.interpolate({
+    inputRange: [0, detailsTopOffset / 3],
+    outputRange: ['rgba(255,255,255,1)', 'rgba(0,0,0,1)'],
+  });
+}
+
 function createAnimatedHeaderStyle(headerStyle, animatedValue, headerHeight) {
   return [headerStyle, {
     transform: [
@@ -38,6 +47,48 @@ function createAnimatedHeaderStyle(headerStyle, animatedValue, headerHeight) {
       },
     ],
   }];
+}
+
+function createNavigationBarStyle(scrollY, detailsTopOffset) {
+  return {
+    container: {
+      backgroundColor: scrollY.interpolate({
+        inputRange: [0, detailsTopOffset / 3],
+        outputRange: ['rgba(0,0,0,0)', 'rgba(255,255,255,0.9)'],
+        extrapolate: 'clamp',
+      }),
+    },
+    defaultBackButton: {
+      buttonIcon: {
+        color: interpolateIconColor(scrollY, detailsTopOffset),
+      },
+    },
+  };
+}
+
+function createScreenTitle(titleStyle, title, scrollY, detailsTopOffset) {
+  return (
+    <Animated.Text
+      numberOfLines={1}
+      style={[
+        titleStyle,
+        {
+          color: scrollY.interpolate({
+            inputRange: [0, 0.8 * detailsTopOffset, detailsTopOffset],
+            outputRange: ['rgba(0,0,0,0)', 'rgba(0,0,0,0)', '#000'],
+            extrapolate: 'clamp',
+          }),
+        },
+      ]}
+    >
+      {title.toUpperCase()}
+    </Animated.Text>
+  );
+}
+
+function createShareButtonStyle(shareButtonStyle, scrollY, detailsTopOffset) {
+  const iconColor = interpolateIconColor(scrollY, detailsTopOffset);
+  return _.set(Object.assign({}, shareButtonStyle), ['buttonIcon', 'color'], iconColor);
 }
 
 function getScrollHandle(scrollY) {
@@ -63,16 +114,20 @@ Details.propTypes = {
 };
 
 function ArticleDetailsScreen({
+  setNavBarProps,
   article,
   style,
   bottomContentOffset: bottomContentOffsetProp,
-  setNavBarProps,
 }) {
   const bottomContentOffset = bottomContentOffsetProp || DEFAULT_BOTTOM_CONTENT_OFFSET;
   const scrollY = new Animated.Value(0);
+  const title = article.title || '';
   const detailsTopOffset = getOffsetHeight(bottomContentOffset);
   const headerStyle = createAnimatedHeaderStyle(style.header, scrollY, detailsTopOffset);
+  const navigationBarStyle = createNavigationBarStyle(scrollY, detailsTopOffset);
   const detailsStyle = createDetailsStyle(detailsTopOffset, style);
+  const screenTitle = createScreenTitle(style.navBarTitle, title, scrollY, detailsTopOffset);
+  const shareButtonStyle = createShareButtonStyle(style.shareButton, scrollY, detailsTopOffset);
 
   function onShare() {
     Share.open({
@@ -84,15 +139,16 @@ function ArticleDetailsScreen({
     });
   }
 
-  const shareButton = (<Button
-    iconType={Button.iconTypes.EVIL_ICON}
-    icon="share-apple"
+  const shareButton = (<EvilIconButton
+    iconName="share-apple"
     onPress={onShare}
-    style={style.shareButton}
+    style={shareButtonStyle}
   />);
 
   setNavBarProps({
     rightComponent: shareButton,
+    style: navigationBarStyle,
+    centerComponent: screenTitle,
   });
 
   return (
@@ -102,15 +158,16 @@ function ArticleDetailsScreen({
       >
         <NewsGridBox
           style={style.headline}
-          headline={article.title}
-          newsDetails={[article.author, 'test']}
+          headline={article.title.toUpperCase()}
+          newsDetails={[article.author, moment(article.timeUpdated).fromNow()]}
           backgroundImage={{ uri: _.get(article, 'image.url'), width: 200, height: 200 }}
         />
+        <View style={style.scrollIndicator} />
       </Animated.View>
       <ScrollView
         automaticallyAdjustContentInsets={false}
         style={style.container}
-        scrollEventThrottle={16}
+        scrollEventThrottle={1}
         onScroll={getScrollHandle(scrollY)}
       >
         <Details item={article} style={detailsStyle} />
@@ -133,9 +190,29 @@ const style = {
       backgroundColor: 'transparent',
     },
   },
+  navBarTitle: {
+    [INCLUDE]: ['baseFont'],
+    width: 200,
+    fontSize: 15,
+  },
+  scrollIndicator: {
+    borderColor: 'transparent',
+    borderLeftColor: 'white',
+    borderBottomColor: 'white',
+    borderWidth: 2,
+    borderStyle: 'solid',
+    width: 16,
+    height: 16,
+    bottom: 80,
+    alignSelf: 'center',
+    transform: [{
+      rotate: '-45deg',
+    }],
+  },
   screen: {
     position: 'relative',
     backgroundColor: '#fff',
+    paddingTop: 0,
   },
   detailsText: {},
   detailsTitle: {
@@ -167,11 +244,13 @@ const style = {
     bottom: 0,
     height: null,
     width: null,
+    flex: 1,
   },
   shareButton: {
     buttonIcon: {
       fontSize: 24,
-      marginBottom: 3,
+      width: 40,
+      height: 40,
     },
   },
 };
