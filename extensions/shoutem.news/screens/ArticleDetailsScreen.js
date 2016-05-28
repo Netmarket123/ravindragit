@@ -114,24 +114,30 @@ function renderUpNext(currentArticle, articles, style) {
   return null;
 }
 
-function ArticleDetailsScreen({
-  setNavBarProps,
-  article,
-  articles,
-  style,
-  bottomContentOffset: bottomContentOffsetProp,
-}) {
-  const bottomContentOffset = bottomContentOffsetProp || DEFAULT_BOTTOM_CONTENT_OFFSET;
-  const scrollY = new Animated.Value(0);
-  const title = article.title || '';
-  const detailsTopOffset = getOffsetHeight(bottomContentOffset);
-  const headerStyle = createAnimatedHeaderStyle(style.header, scrollY, detailsTopOffset);
-  const navigationBarStyle = createNavigationBarStyle(scrollY, detailsTopOffset);
-  const detailsStyle = createDetailsStyle(detailsTopOffset, style);
-  const screenTitle = createScreenTitle(style.navBarTitle, title, scrollY, detailsTopOffset);
-  const shareButtonStyle = createShareButtonStyle(style.shareButton, scrollY, detailsTopOffset);
+class ArticleDetailsScreen extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+    const {
+      bottomContentOffset: bottomContentOffsetProp,
+      style,
+    } = this.props;
+    this.onShare = this.onShare.bind(this);
+    const bottomContentOffset = bottomContentOffsetProp || DEFAULT_BOTTOM_CONTENT_OFFSET;
+    const detailsTopOffset = getOffsetHeight(bottomContentOffset);
+    this.state = {
+      scrollY: new Animated.Value(0),
+      bottomContentOffset,
+      detailsTopOffset,
+      detailsStyle: createDetailsStyle(detailsTopOffset, style),
+    };
+  }
 
-  function onShare() {
+  componentWillMount() {
+    this.renderNavBar();
+  }
+
+  onShare() {
+    const article = this.props.article;
     Share.open({
       title: article.title,
       share_text: article.summary,
@@ -141,47 +147,75 @@ function ArticleDetailsScreen({
     });
   }
 
-  const shareButton = (<ShoutemIconButton
-    iconName="share"
-    onPress={onShare}
-    style={shareButtonStyle}
-  />);
+  renderNavBar() {
+    const { article, style } = this.props;
+    const {
+      detailsTopOffset,
+      scrollY,
+    } = this.state;
+    const title = article.title || '';
+    const navigationBarStyle = createNavigationBarStyle(scrollY, detailsTopOffset);
+    const screenTitle = createScreenTitle(style.navBarTitle, title, scrollY, detailsTopOffset);
+    const shareButtonStyle = createShareButtonStyle(style.shareButton, scrollY, detailsTopOffset);
+    const shareButton = (
+      <ShoutemIconButton
+        iconName="share"
+        onPress={this.onShare}
+        style={shareButtonStyle}
+      />
+    );
 
-  setNavBarProps({
-    rightComponent: shareButton,
-    style: navigationBarStyle,
-    centerComponent: screenTitle,
-  });
+    this.props.setNavBarProps({
+      rightComponent: shareButton,
+      style: navigationBarStyle,
+      centerComponent: screenTitle,
+    });
+  }
 
-  return (
-    <View style={style.screen}>
-      <Animated.View
-        style={headerStyle}
-      >
-        <NewsGridBox
-          style={style.headline}
-          headline={article.title.toUpperCase()}
-          newsDetails={[article.author, moment(article.timeUpdated).fromNow()]}
-          backgroundImage={{ uri: _.get(article, 'image.url'), width: 200, height: 200 }}
-        />
-        <View style={style.scrollIndicator} />
-      </Animated.View>
-      <ScrollView
-        automaticallyAdjustContentInsets={false}
-        style={style.container}
-        scrollEventThrottle={1}
-        onScroll={getScrollHandle(scrollY)}
-      >
-        <View key="details" style={detailsStyle.detailsContainer}>
-          <RichMedia
-            body={article.body}
-            attachments={article.attachments}
+  render() {
+    const {
+      article,
+      articles,
+      style,
+    } = this.props;
+    const {
+      detailsStyle,
+      detailsTopOffset,
+      scrollY,
+    } = this.state;
+    const headerStyle = createAnimatedHeaderStyle(style.header, scrollY, detailsTopOffset);
+
+    return (
+      <View style={style.screen}>
+        <Animated.View
+          style={headerStyle}
+        >
+          <NewsGridBox
+            style={style.headline}
+            headline={article.title.toUpperCase()}
+            newsDetails={[article.author, moment(article.timeUpdated).fromNow()]}
+            backgroundImage={{ uri: _.get(article, 'image.url'), width: 200, height: 200 }}
           />
-        </View>
-        {renderUpNext(article, articles, style)}
-      </ScrollView>
-    </View>
-  );
+          <View style={style.scrollIndicator} />
+        </Animated.View>
+        <ScrollView
+          automaticallyAdjustContentInsets={false}
+          style={style.container}
+          scrollEventThrottle={1}
+          onScroll={getScrollHandle(scrollY)}
+        >
+          <View key="details" style={detailsStyle.detailsContainer}>
+            <RichMedia
+              body={article.body}
+              attachments={article.attachments}
+            />
+          </View>
+          {renderUpNext(article, articles, style)}
+        </ScrollView>
+      </View>
+    );
+  }
+
 }
 
 ArticleDetailsScreen.propTypes = {
