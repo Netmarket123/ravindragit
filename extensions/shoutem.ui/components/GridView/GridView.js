@@ -8,16 +8,16 @@ import { connectStyle } from 'shoutem/theme';
 const DEFAULT_ITEMS_GROUP_SIZE = 2;
 
 /**
- * Used to provide predefined calculation function for grid columns and rows.
+ * Used to provide predefined calculation function for grid cells and rows.
  * Every function must provide style object.
  */
 const Dimensions = {
   /**
-   * Provides column calculation functions
+   * Provides cell calculation functions
    */
-  Column: {
+  Cell: {
     /**
-     * Calculates column flex to match 100% width
+     * Calculates cell flex to match 100% width
      * @param gridColumns
      */
     stretch: gridColumns => ({ flex: gridColumns }),
@@ -50,18 +50,35 @@ function getGroupSectionId(group) {
   return group.sectionId;
 }
 
-/**
- * Return column flex style number or default value.
- *
- * @param columnStyle
- * @returns {*|number}
- */
-function getColumnSpan(columnStyle = {}) {
-  return columnStyle.flex || 1;
+function createCellSettings(rowSettings, itemIndex) {
+  return {
+    ...rowSettings,
+    itemIndex,
+  };
 }
 
-function getColumnHorizontalMargin(columnStyle) {
-  return new MarginCalculator(columnStyle).getHorizontalMargin();
+function createRowSettings(sectionId, sectionIndex, rowIndex, gridColumns, itemsGroup) {
+  return {
+    sectionId,
+    sectionIndex,
+    rowIndex,
+    gridColumns,
+    groupLength: itemsGroup.length,
+  };
+}
+
+/**
+ * Return cell flex style number or default value.
+ *
+ * @param cellStyle
+ * @returns {*|number}
+ */
+function getCellSpan(cellStyle = {}) {
+  return cellStyle.flex || 1;
+}
+
+function getCellHorizontalMargin(cellStyle) {
+  return new MarginCalculator(cellStyle).getHorizontalMargin();
 }
 
 function groupItems(items, itemsPerGroup) {
@@ -85,7 +102,7 @@ function createCompensationStyle(remainingColumns, marginHorizontal) {
   };
 }
 
-function renderCompensationColumn(remainingColumns, margin) {
+function renderCompensationCell(remainingColumns, margin) {
   return <View style={createCompensationStyle(remainingColumns, margin)} />;
 }
 
@@ -119,20 +136,20 @@ class GridView extends React.Component {
     return true;
   }
 
-  getItemColumnStyle(item, sectionId) {
-    const { getItemColumnStyle, gridColumns, style } = this.props;
-    const defaultItemColStyle = style.gridRow.gridItemCol;
+  getItemCellStyle(item, settings) {
+    const { getItemCellStyle, style } = this.props;
+    const defaultItemCellStyle = style.gridRow.gridItemCell;
 
-    if (!getItemColumnStyle) {
-      return defaultItemColStyle;
+    if (!getItemCellStyle) {
+      return defaultItemCellStyle;
     }
 
-    const itemColStyle = getItemColumnStyle(gridColumns, item, sectionId);
+    const itemColStyle = getItemCellStyle(item, settings);
 
-    return { ...defaultItemColStyle, ...itemColStyle };
+    return { ...defaultItemCellStyle, ...itemColStyle };
   }
 
-  getGroupRowStyle(sectionId) {
+  getGroupRowStyle(rowSettings) {
     const { getGroupRowStyle, style } = this.props;
     const defaultGroupRowStyle = style.gridRow.container;
 
@@ -140,7 +157,7 @@ class GridView extends React.Component {
       return defaultGroupRowStyle;
     }
 
-    const groupRowStyle = getGroupRowStyle(sectionId);
+    const groupRowStyle = getGroupRowStyle(rowSettings);
 
     return { ...defaultGroupRowStyle, ...groupRowStyle };
   }
@@ -175,11 +192,11 @@ class GridView extends React.Component {
       getSectionId,
       gridColumns,
     } = this.props;
-    const columns = gridColumns;
+    const cells = gridColumns;
 
     return getSectionId ?
-      this.groupItemsWithSections(items, columns) :
-      groupItems(items, columns);
+      this.groupItemsWithSections(items, cells) :
+      groupItems(items, cells);
   }
 
   updateGroupedItemsState(items) {
@@ -195,44 +212,55 @@ class GridView extends React.Component {
    */
   createRenderRow() {
     const { gridColumns } = this.props;
-    return group => {
-      const sectionId = getGroupSectionId(group);
-      const rowStyle = this.getGroupRowStyle(sectionId);
-      let remainingColumns = gridColumns;
-      let columnHorizontalMargin;
+    /**
+     * GridView renderRow function, used to pass formatted arguments to renderGridItemCell.
+     *
+     * @param itemsGroup {[]} - grouped items for row
+     * @param sectionIndex {number} - section index (optional)
+     * @param rowIndex {number} - index of itemsGroup in section
+     */
+    return (itemsGroup, sectionIndex, rowIndex) => {
+      const sectionId = getGroupSectionId(itemsGroup);
+      // TODO(Braco) - extract row and cell to class
+      const rowSettings =
+        createRowSettings(sectionId, sectionIndex, rowIndex, gridColumns, itemsGroup);
+      const rowStyle = this.getGroupRowStyle(rowSettings);
+      let remainingCells = gridColumns;
+      let cellHorizontalMargin;
 
-      const groupColumns = group.reduce((gridItems, item) => {
-        const columnStyle = this.getItemColumnStyle(item, sectionId);
-        // We are compensating margin like it is the same applied on every grid column
-        columnHorizontalMargin = getColumnHorizontalMargin(columnStyle);
-        remainingColumns = remainingColumns - getColumnSpan(columnStyle);
+      const groupCells = itemsGroup.reduce((gridItems, item, itemIndex) => {
+        const cellSettings = createCellSettings(rowSettings, itemIndex);
+        const cellStyle = this.getItemCellStyle(item, cellSettings);
+        // We are compensating margin like it is the same applied on every grid cell
+        cellHorizontalMargin = getCellHorizontalMargin(cellStyle);
+        remainingCells = remainingCells - getCellSpan(cellStyle);
 
-        gridItems.push(this.renderGroupItem(item, columnStyle));
+        gridItems.push(this.renderGroupItem(item, cellStyle, cellSettings));
         return gridItems;
       }, []);
 
       // Used to align last row item with item above
-      // in case row have less items then predicted columns
-      const compensationColumn = remainingColumns > 0 ?
-        renderCompensationColumn(remainingColumns, columnHorizontalMargin) : null;
+      // in case row have less items then predicted cells
+      const compensationCell = remainingCells > 0 ?
+        renderCompensationCell(remainingCells, cellHorizontalMargin) : null;
 
       return (
         <View style={rowStyle}>
-          {groupColumns}
-          {compensationColumn}
+          {groupCells}
+          {compensationCell}
         </View>
       );
     };
   }
 
-  renderGroupItem(item, columnStyle) {
-    const { renderGridItem } = this.props;
+  renderGroupItem(item, cellStyle, cellSettings) {
+    const { renderGridItemCell } = this.props;
     return (
       <View
         key={`gridItem_' + ${item.id}`}
-        style={columnStyle}
+        style={cellStyle}
       >
-        {renderGridItem(item)}
+        {renderGridItemCell(item, cellSettings)}
       </View>
     );
   }
@@ -259,8 +287,8 @@ class GridView extends React.Component {
 GridView.propTypes = {
   ...ListView.propTypes,
   gridColumns: React.PropTypes.number,
-  renderGridItem: React.PropTypes.func.isRequired,
-  getItemColumnStyle: React.PropTypes.func,
+  renderGridItemCell: React.PropTypes.func.isRequired,
+  getItemCellStyle: React.PropTypes.func,
   getGroupRowStyle: React.PropTypes.func,
 };
 
@@ -274,7 +302,7 @@ const style = {
     container: {
       flexDirection: 'row',
     },
-    gridItemCol: {
+    gridItemCell: {
       flex: 1,
     },
   },
