@@ -149,7 +149,7 @@ class ListScreen extends Component {
     );
 
     const categorySelector = (
-      <View style={{ height: 40 }}>
+      <View style={style.categorySelector}>
         {dropDownMenu}
       </View>
     );
@@ -224,6 +224,9 @@ const style = {
         fontSize: 24,
       },
     },
+  },
+  categorySelector: {
+    height: 40,
   },
 };
 

@@ -2,6 +2,7 @@ import React, {
   View,
   ScrollView,
   Text,
+  MapView,
 } from 'react-native';
 import { INCLUDE, connectStyle } from 'shoutem/theme';
 import { EvilIconButton, MaterialIconButton } from 'shoutem.ui';
@@ -21,6 +22,7 @@ function createDetailsStyle(style) {
     dateSeparator: style.dateSeparator,
     sectionSeparator: style.sectionSeparator,
     sectionTitle: style.sectionTitle,
+    map: style.map,
   };
 }
 
@@ -47,6 +49,20 @@ function Details({
     console.warn(item.title, fromDate.valueOf(), toDate.valueOf());
   }
 
+  // TODO(Vladimir) - determine the source from which to obtain this information
+  const markers = [{
+    latitude: 48.83367,
+    longitude: 2.39423,
+  }];
+
+  // TODO(Vladimir) - determine the source from which to obtain this information
+  const regionText = {
+    latitude: 48.83367,
+    longitude: 2.39423,
+    latitudeDelta: 0.01,
+    longitudeDelta: 0.01,
+  };
+
   return (
     <View key="details" style={style.detailsContainer}>
       <View style={style.detailsTitleContainer}>
@@ -62,6 +78,15 @@ function Details({
         showIconOnRight={false}
         onPress={onButtonPressed}
       />
+      <MapView
+        region={regionText}
+        initialRegion={regionText}
+        annotations={markers}
+        zoomEnabled={false}
+        scrollEnabled={false}
+        rotateEnabled={false}
+        style={style.map}
+      />
       <View style={style.sectionSeparator} >
         <Text style={style.sectionTitle}>INFORMATION</Text>
       </View>
@@ -71,7 +96,7 @@ function Details({
 }
 
 Details.propTypes = {
-  item: React.PropTypes.object,
+  item: React.PropTypes.object, // TODO(Vladimir) - use item shape
   style: React.PropTypes.object,
 };
 
@@ -223,6 +248,9 @@ const style = {
       width: 40,
       height: 40,
     },
+  },
+  map: {
+    height: 160,
   },
 };
 
