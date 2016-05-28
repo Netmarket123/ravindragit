@@ -6,7 +6,7 @@ import React, {
   Text,
 } from 'react-native';
 import { INCLUDE, connectStyle } from 'shoutem/theme';
-import { NewsGridBox, RichMedia, EvilIconButton } from 'shoutem.ui';
+import { NewsGridBox, RichMedia, ShoutemIconButton } from 'shoutem.ui';
 import * as _ from 'lodash';
 import moment from 'moment';
 import Share from 'react-native-share';
@@ -139,8 +139,8 @@ function ArticleDetailsScreen({
     });
   }
 
-  const shareButton = (<EvilIconButton
-    iconName="share-apple"
+  const shareButton = (<ShoutemIconButton
+    iconName="share"
     onPress={onShare}
     style={shareButtonStyle}
   />);
