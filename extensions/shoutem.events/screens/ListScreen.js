@@ -5,7 +5,7 @@ import React, {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
-import { ListItem, ListView } from 'shoutem.ui';
+import { ListItemButton, ListView, MaterialIconButton } from 'shoutem.ui';
 import eventsMapDispatchToProps from './lib/eventsMapDispatchToProps';
 import eventsMapStateToProps from './lib/eventsMapStateToProps';
 import EventsCategoriesDropdownMenu from '../components/EventsCategoriesDropDownMenu';
@@ -18,9 +18,20 @@ function formatDate(date) {
 }
 
 function renderRow(item, style, extrasSeparator, onPress) {
+  function renderButton() {
+    return (
+      <MaterialIconButton
+        iconName="event-note"
+        style={style.addToCalendarButton}
+        showIconOnRight={false}
+        onPress={() => console.warn('pressed')}
+      />
+    );
+  }
+
   return (
     <View>
-      <ListItem
+      <ListItemButton
         description={item.title}
         image={item.image}
         leftExtra={formatDate(item.startTime)}
@@ -28,7 +39,7 @@ function renderRow(item, style, extrasSeparator, onPress) {
         style={style.listRow}
         onPress={onPress}
         buttonIcon={"event-note"}
-        onButtonPressed={() => console.warn('pressed')}
+        renderButton={renderButton}
       />
     </View>
   );
@@ -209,20 +220,18 @@ const style = {
   },
   listRow: {
     [INCLUDE]: ['shoutem.ui.ListItem.textCentric'],
-    mediumListItemButton: {
-      buttonContainer: {
-        backgroundColor: '#fff',
-      },
-      button: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingLeft: 15,
-        paddingVertical: 9,
-      },
-      buttonIcon: {
-        color: '#333333',
-        fontSize: 24,
-      },
+  },
+  addToCalendarButton: {
+    buttonContainer: {
+      backgroundColor: '#fff',
+    },
+    button: {
+      paddingLeft: 15,
+      paddingVertical: 9,
+    },
+    buttonIcon: {
+      color: '#333333',
+      fontSize: 24,
     },
   },
   categorySelector: {

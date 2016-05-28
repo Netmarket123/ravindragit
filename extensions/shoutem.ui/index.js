@@ -16,6 +16,7 @@ export { default as NewsGridBox } from './components/GridBox/NewsGridBox';
 export { default as ShopGridBox } from './components/GridBox/ShopGridBox';
 
 export { default as ListItem } from './components/ListItem/ListItem';
+export { default as ListItemButton } from './components/ListItem/ListItemButton';
 
 export { default as PlatformSpinner } from './components/Spinner/PlatformSpinner';
 export { default as FullScreenSpinner } from './components/Spinner/FullScreenSpinner';
