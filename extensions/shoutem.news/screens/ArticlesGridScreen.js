@@ -12,8 +12,22 @@ import {
   Sections,
 } from '../const.js';
 
-function getItemColSpan(item, section) {
-  return section === Sections.FEATURED ? GridView.ColSpan.STRETCH : 1;
+function createFeaturedItemStyle(gridColumns) {
+  return {
+    marginHorizontal: 0,
+    marginTop: 0,
+    ...GridView.Dimensions.Column.stretch(gridColumns),
+  };
+}
+
+function getItemColumnStyle(gridColumns, item, sectionId) {
+  return sectionId === Sections.FEATURED ?
+    createFeaturedItemStyle(gridColumns) : {};
+}
+
+function getGroupRowStyle(sectionId) {
+  return sectionId === Sections.FEATURED ?
+    { paddingHorizontal: 0, flexDirection: 'column' } : {};
 }
 
 class ArticlesGridScreen extends ArticlesListScreen {
@@ -62,7 +76,8 @@ class ArticlesGridScreen extends ArticlesListScreen {
         style={style.gridView}
         getSectionId={this.getSectionId}
         renderSectionHeader={this.renderSectionHeader}
-        getItemColSpan={getItemColSpan}
+        getItemColumnStyle={getItemColumnStyle}
+        getGroupRowStyle={getGroupRowStyle}
       />
     );
   }
@@ -95,8 +110,9 @@ const style = {
       container: {
         paddingHorizontal: 2.5,
       },
-      gridItemContainer: {
-        margin: 2.5,
+      gridItemCol: {
+        marginHorizontal: 2.5,
+        marginVertical: 2.5,
       },
     },
   },
