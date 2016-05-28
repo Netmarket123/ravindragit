@@ -10,6 +10,7 @@ import { NewsGridBox, RichMedia, ShoutemIconButton } from 'shoutem.ui';
 import * as _ from 'lodash';
 import moment from 'moment';
 import Share from 'react-native-share';
+import NextArticle from '../components/NextArticle';
 
 const DEFAULT_BOTTOM_CONTENT_OFFSET = 50;
 
@@ -97,25 +98,26 @@ function getScrollHandle(scrollY) {
   );
 }
 
-function Details({ item, style }) {
-  return (
-    <View key="details" style={style.detailsContainer}>
-      <RichMedia
-        body={item.body}
-        attachments={item.attachments}
-      />
-    </View>
-  );
-}
+function renderUpNext(currentArticle, articles, style) {
+  const currentArticleIndex = articles.indexOf(currentArticle);
 
-Details.propTypes = {
-  item: React.PropTypes.object,
-  style: React.PropTypes.object,
-};
+  const nextArticle = articles[currentArticleIndex + 1];
+  if (nextArticle) {
+    return (
+      <NextArticle
+        style={style.upNext}
+        article={nextArticle}
+        articles={articles}
+      />
+    );
+  }
+  return null;
+}
 
 function ArticleDetailsScreen({
   setNavBarProps,
   article,
+  articles,
   style,
   bottomContentOffset: bottomContentOffsetProp,
 }) {
@@ -170,7 +172,13 @@ function ArticleDetailsScreen({
         scrollEventThrottle={1}
         onScroll={getScrollHandle(scrollY)}
       >
-        <Details item={article} style={detailsStyle} />
+        <View key="details" style={detailsStyle.detailsContainer}>
+          <RichMedia
+            body={article.body}
+            attachments={article.attachments}
+          />
+        </View>
+        {renderUpNext(article, articles, style)}
       </ScrollView>
     </View>
   );
@@ -178,6 +186,7 @@ function ArticleDetailsScreen({
 
 ArticleDetailsScreen.propTypes = {
   article: React.PropTypes.object,
+  articles: React.PropTypes.array,
   style: React.PropTypes.object,
   bottomContentOffset: React.PropTypes.number,
   setNavBarProps: React.PropTypes.func,
@@ -251,6 +260,34 @@ const style = {
       fontSize: 24,
       width: 40,
       height: 40,
+    },
+  },
+  upNext: {
+    gridBox: {
+      container: {
+        height: 130,
+      },
+      contentWrapper: {
+        backgroundColor: 'rgba(0,0,0,0.35)',
+        padding: 15,
+      },
+    },
+    contentWrapper: {
+      flex: 1,
+      flexDirection: 'column',
+      opacity: 0.5,
+    },
+    label: {
+      marginBottom: 40,
+      [INCLUDE]: ['baseFont'],
+      fontSize: 15,
+      color: '#fff',
+    },
+    articleTitle: {
+      [INCLUDE]: ['baseFont'],
+      color: '#fff',
+      fontSize: 16,
+      width: 250,
     },
   },
 };
