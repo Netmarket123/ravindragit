@@ -13,18 +13,33 @@ import moment from 'moment';
 
 const Status = ListView.Status;
 
+function toMoment(date) {
+  return moment(date, 'YYYY-MM-DDThh:mm:ss');
+}
+
 function formatDate(date) {
+  if (!date) {
+    return '';
+  }
+
   return moment(date, 'YYYY-MM-DDThh:mm:ss').format('MMMM D • hh:mm');
 }
 
 function renderRow(item, style, extrasSeparator, onPress) {
+  function onButtonPressed() {
+    const fromDate = toMoment(item.startTime);
+    const toDate = item.endtime ? toMoment(item.endtime)
+                                : fromDate.clone().add(1, 'hours');
+    console.warn(item.title, fromDate.valueOf(), toDate.valueOf());
+  }
+
   function renderButton() {
     return (
       <MaterialIconButton
         iconName="event-note"
         style={style.addToCalendarButton}
         showIconOnRight={false}
-        onPress={() => console.warn('pressed')}
+        onPress={onButtonPressed}
       />
     );
   }
