@@ -29,10 +29,11 @@ function createDetailsStyle(topOffset, style) {
   };
 }
 
-function interpolateIconColor(scrollY, detailsTopOffset) {
+function interpolateIconColor(scrollY, detailsTopOffset, navBarTextColor) {
   return scrollY.interpolate({
     inputRange: [0, detailsTopOffset / 3],
-    outputRange: ['rgba(255,255,255,1)', 'rgba(0,0,0,1)'],
+    outputRange: ['rgba(255,255,255,1)', navBarTextColor],
+    extrapolate: 'clamp',
   });
 }
 
@@ -49,7 +50,7 @@ function createAnimatedHeaderStyle(headerStyle, animatedValue, headerHeight) {
   }];
 }
 
-function createNavigationBarStyle(scrollY, detailsTopOffset) {
+function createNavigationBarStyle(scrollY, detailsTopOffset, navBarTextColor) {
   return {
     container: {
       backgroundColor: scrollY.interpolate({
@@ -60,7 +61,7 @@ function createNavigationBarStyle(scrollY, detailsTopOffset) {
     },
     defaultBackButton: {
       buttonIcon: {
-        color: interpolateIconColor(scrollY, detailsTopOffset),
+        color: interpolateIconColor(scrollY, detailsTopOffset, navBarTextColor),
       },
     },
   };
@@ -75,7 +76,7 @@ function createScreenTitle(titleStyle, title, scrollY, detailsTopOffset) {
         {
           color: scrollY.interpolate({
             inputRange: [0, 0.8 * detailsTopOffset, detailsTopOffset],
-            outputRange: ['rgba(0,0,0,0)', 'rgba(0,0,0,0)', '#000'],
+            outputRange: ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0)', titleStyle.color],
             extrapolate: 'clamp',
           }),
         },
@@ -87,7 +88,7 @@ function createScreenTitle(titleStyle, title, scrollY, detailsTopOffset) {
 }
 
 function createShareButtonStyle(shareButtonStyle, scrollY, detailsTopOffset) {
-  const iconColor = interpolateIconColor(scrollY, detailsTopOffset);
+  const iconColor = interpolateIconColor(scrollY, detailsTopOffset, shareButtonStyle.color);
   return _.set(Object.assign({}, shareButtonStyle), ['buttonIcon', 'color'], iconColor);
 }
 
@@ -122,9 +123,10 @@ function ArticleDetailsScreen({
   const bottomContentOffset = bottomContentOffsetProp || DEFAULT_BOTTOM_CONTENT_OFFSET;
   const scrollY = new Animated.Value(0);
   const title = article.title || '';
+  const navBarTextColor = style.navBarTextColor.color;
   const detailsTopOffset = getOffsetHeight(bottomContentOffset);
   const headerStyle = createAnimatedHeaderStyle(style.header, scrollY, detailsTopOffset);
-  const navigationBarStyle = createNavigationBarStyle(scrollY, detailsTopOffset);
+  const navigationBarStyle = createNavigationBarStyle(scrollY, detailsTopOffset, navBarTextColor);
   const detailsStyle = createDetailsStyle(detailsTopOffset, style);
   const screenTitle = createScreenTitle(style.navBarTitle, title, scrollY, detailsTopOffset);
   const shareButtonStyle = createShareButtonStyle(style.shareButton, scrollY, detailsTopOffset);
@@ -191,9 +193,12 @@ const style = {
     },
   },
   navBarTitle: {
-    [INCLUDE]: ['baseFont'],
+    [INCLUDE]: ['baseFont', 'navigationBarTextColor'],
     width: 200,
     fontSize: 15,
+  },
+  navBarTextColor: {
+    [INCLUDE]: ['navigationBarTextColor'],
   },
   scrollIndicator: {
     borderColor: 'transparent',
@@ -247,7 +252,9 @@ const style = {
     flex: 1,
   },
   shareButton: {
+    [INCLUDE]: ['navigationBarTextColor'],
     buttonIcon: {
+      [INCLUDE]: ['navigationBarTextColor'],
       fontSize: 24,
       width: 40,
       height: 40,

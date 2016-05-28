@@ -69,9 +69,6 @@ class ArticlesGridScreen extends ArticlesListScreen {
 }
 
 const style = {
-  navigationBarTextColor: {
-    color: '#fff',
-  },
   gridView: {
     header: {
       container: {},
@@ -114,6 +111,9 @@ const style = {
     categoriesDropDown: {
       popUpButton: {
         buttonText: {
+          [INCLUDE]: ['navigationBarTextColor'],
+        },
+        buttonIcon: {
           [INCLUDE]: ['navigationBarTextColor'],
         },
       },
