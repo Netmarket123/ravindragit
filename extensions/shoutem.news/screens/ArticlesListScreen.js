@@ -73,6 +73,13 @@ export class ArticlesListScreen extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.categories.length > 0 && this.props.categories.length === 0) {
+      // Render NavBar only once, when categories fetched
+      this.renderNavBar(nextProps.categories);
+    }
+  }
+
   getSectionId(item) {
     return item.featured ? Sections.FEATURED : Sections.RECENT;
   }
@@ -107,7 +114,8 @@ export class ArticlesListScreen extends Component {
   }
 
   openDetailsScreen(article) {
-    const route = { screen: Screens.ArticleDetailsScreen,
+    const route = {
+      screen: Screens.ArticleDetailsScreen,
       props: {
         article,
         articles: this.props.news,
@@ -116,16 +124,8 @@ export class ArticlesListScreen extends Component {
     this.props.navigateToRoute(route);
   }
 
-  renderSectionHeader(section) {
-    const { style } = this.props;
-    if (section === Sections.RECENT) {
-      return <Text style={style.sectionHeader}>Recent</Text>;
-    }
-    return null;
-  }
-
-  renderCategoriesDropDown() {
-    const { categories, style, settings } = this.props;
+  renderCategoriesDropDown(categories) {
+    const { style, settings } = this.props;
     if (!this.shouldRenderCategoriesDropDown(categories, settings.categoryIds)) {
       return null;
     }
@@ -138,6 +138,33 @@ export class ArticlesListScreen extends Component {
         style={style.navigation.categoriesDropDown}
       />
     );
+  }
+
+  renderNavBar(categories) {
+    const {
+      setNavBarProps,
+      style,
+      settings,
+    } = this.props;
+    const screenTitle = settings.title || 'News';
+
+    setNavBarProps({
+      rightComponent: this.renderCategoriesDropDown(categories),
+      centerComponent: (
+        <Text style={style.navigation.navigationBarTitle}>
+          {screenTitle.toUpperCase()}
+        </Text>
+      ),
+      style: style.navigation.navigationBar,
+    });
+  }
+
+  renderSectionHeader(section) {
+    const { style } = this.props;
+    if (section === Sections.RECENT) {
+      return <Text style={style.sectionHeader}>Recent</Text>;
+    }
+    return null;
   }
 
   renderArticle(article, style) {
@@ -190,20 +217,7 @@ export class ArticlesListScreen extends Component {
   render() {
     const {
       style,
-      setNavBarProps,
-      settings,
     } = this.props;
-    const screenTitle = settings.title || 'News';
-
-    setNavBarProps({
-      rightComponent: this.renderCategoriesDropDown(),
-      centerComponent: (
-        <Text style={style.navigation.navigationBarTitle}>
-          {screenTitle.toUpperCase()}
-        </Text>
-      ),
-      style: style.navigation.navigationBar,
-    });
 
     return (
       <View style={style.screen}>
