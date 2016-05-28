@@ -256,9 +256,11 @@ export default (variables) => ({
     },
   },
   'shoutem.news.DetailsScreen': {
-    detailsTitle: {
-      fontSize: 22,
-      lineHeight: 25,
+    headline: {
+      headline: {
+        fontSize: 22,
+        lineHeight: 25,
+      },
     },
   },
 });
