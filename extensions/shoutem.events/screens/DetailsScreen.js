@@ -50,7 +50,7 @@ function Details({
   return (
     <View key="details" style={style.detailsContainer}>
       <View style={style.detailsTitleContainer}>
-        <Text style={style.detailsTitle}>{item.title}</Text>
+        <Text style={style.detailsTitle}>{item.title.toUpperCase()}</Text>
       </View>
       <Text style={style.timeText}>{formatDate(item.startTime)}</Text>
       <View style={style.dateSeparator} />
