@@ -17,7 +17,7 @@ function formatDate(date) {
   return moment(date, 'YYYY-MM-DDThh:mm:ss').format('MMMM D • hh:mm');
 }
 
-function renderRow(item, style, extrasSeparator, onPress, onRefresh) {
+function renderRow(item, style, extrasSeparator, onPress) {
   return (
     <View>
       <ListItem
@@ -109,6 +109,7 @@ class ListScreen extends Component {
       return {
         id: event.id,
         title: event.name,
+        rsvplink: event.rsvplink,
         information: event.description,
         startTime: event.starttime,
         endTime: event.endtime,

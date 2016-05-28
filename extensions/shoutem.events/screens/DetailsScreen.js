@@ -4,8 +4,9 @@ import React, {
   Text,
 } from 'react-native';
 import { INCLUDE, connectStyle } from 'shoutem/theme';
-import { Button } from 'shoutem.ui';
+import { Button, EvilIconButton } from 'shoutem.ui';
 import moment from 'moment';
+import Share from 'react-native-share';
 
 function createDetailsStyle(style) {
   return {
@@ -35,7 +36,10 @@ function formatDate(date) {
   return moment(date, 'YYYY-MM-DDThh:mm:ss').format('MMMM D • hh:mm');
 }
 
-function Details({ item, style }) {
+function Details({
+    item,
+    style,
+}) {
   function onButtonPressed() {
     const fromDate = toMoment(item.startTime);
     const toDate = item.endtime ? toMoment(item.endtime)
@@ -74,8 +78,30 @@ Details.propTypes = {
 function DetailsScreen({
   item,
   style,
+  setNavBarProps,
 }) {
   const detailsStyle = createDetailsStyle(style);
+
+  function onShare() {
+    Share.open({
+      title: item.title,
+      share_text: item.information,
+      share_URL: item.rsvplink,
+    }, (sharingError) => {
+      console.error(sharingError);
+    });
+  }
+
+  const shareButton = (<EvilIconButton
+    iconName="share-apple"
+    onPress={onShare}
+    style={style.shareButton}
+  />);
+
+  setNavBarProps({
+    rightComponent: shareButton,
+  });
+
 
   return (
     <View style={style.screen}>
@@ -94,6 +120,7 @@ DetailsScreen.propTypes = {
   item: React.PropTypes.object,
   style: React.PropTypes.object,
   bottomContentOffset: React.PropTypes.number,
+  setNavBarProps: React.PropTypes.func,
 };
 
 const style = {
@@ -189,6 +216,13 @@ const style = {
     bottom: 0,
     height: null,
     width: null,
+  },
+  shareButton: {
+    buttonIcon: {
+      fontSize: 24,
+      width: 40,
+      height: 40,
+    },
   },
 };
 
