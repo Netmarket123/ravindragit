@@ -107,7 +107,12 @@ export class ArticlesListScreen extends Component {
   }
 
   openDetailsScreen(article) {
-    const route = { screen: Screens.ArticleDetailsScreen, props: { article } };
+    const route = { screen: Screens.ArticleDetailsScreen,
+      props: {
+        article,
+        articles: this.props.news,
+      },
+    };
     this.props.navigateToRoute(route);
   }
 
