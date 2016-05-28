@@ -6,6 +6,75 @@ import { connectStyle } from 'shoutem/theme';
 
 const DEFAULT_ITEMS_GROUP_SIZE = 2;
 
+class MarginCalculator {
+  constructor(style) {
+    this.style = style;
+    this.zeroMargin = 0;
+  }
+
+  getHorizontalMargin() {
+    const style = this.style;
+    if (!style) {
+      return this.zeroMargin;
+    }
+    if (style.marginHorizontal) {
+      return style.marginHorizontal;
+    }
+    return this.calculateHorizontalMargins(style);
+  }
+
+  /**
+   *
+   * @param style
+   * @returns {number}
+   */
+  calculateHorizontalMargins(style) {
+    const sideMargins = this.getSideMargins(style);
+
+    if (this.hasNoMargins(sideMargins)) {
+      return this.zeroMargin;
+    } else if (this.hasLeftAndRightMargin(sideMargins)) {
+      return this.sumUpSideMargins(sideMargins);
+    }
+    // margin only on one side, length === 1
+    return this.transformSideMarginToHorizontal(sideMargins[0]);
+  }
+
+  getSideMargins(style) {
+    return ['marginLeft', 'marginRight'].reduce((marginVals, marginProp) => {
+      const marginVal = style[marginProp];
+      if (marginVal) {
+        marginVals.push(marginVal);
+      }
+      return marginVals;
+    }, []);
+  }
+
+  hasNoMargins(sideMargins) {
+    return sideMargins.length === 0;
+  }
+
+  hasLeftAndRightMargin(sideMargins) {
+    return sideMargins.length === 2;
+  }
+
+  sumUpSideMargins(sideMargins) {
+    return sideMargins[0] + sideMargins[1];
+  }
+
+  /**
+   * Total horizontal margin value in case style has margin only on 1 side
+   * is equal to half of that value. Look at it like taking half of that margin
+   * and placing it on another side, which would mean left === right margin.
+   *
+   * @param sideMargin
+   * @returns {number}
+   */
+  transformSideMarginToHorizontal(sideMargin) {
+    return sideMargin / 2;
+  }
+}
+
 /**
  * Used to provide predefined calculation function for grid columns and rows.
  * Every function must provide style object.
@@ -24,8 +93,7 @@ const Dimensions = {
   /**
    * Provides row calculation functions
    */
-  Row: {
-  },
+  Row: {},
 };
 
 /**
@@ -61,7 +129,7 @@ function getColumnSpan(columnStyle = {}) {
 }
 
 function getColumnHorizontalMargin(columnStyle) {
-  return columnStyle.horizontalMargin || 0;
+  return new MarginCalculator(columnStyle).getHorizontalMargin();
 }
 
 function groupItems(items, itemsPerGroup) {
@@ -80,7 +148,7 @@ function groupItems(items, itemsPerGroup) {
 function createCompensationStyle(remainingColumns, marginHorizontal) {
   return {
     flex: remainingColumns,
-    marginHorizontal: remainingColumns * marginHorizontal * 2, // x2 for both sides
+    marginHorizontal: remainingColumns * marginHorizontal,
   };
 }
 
@@ -194,20 +262,21 @@ class GridView extends React.Component {
    */
   createRenderRow() {
     const { gridColumns } = this.props;
-    return (group) => {
+    return group => {
       const sectionId = getGroupSectionId(group);
       const rowStyle = this.getGroupRowStyle(sectionId);
       let remainingColumns = gridColumns;
+      let columnHorizontalMargin;
 
       const groupColumns = group.reduce((gridItems, item) => {
         const columnStyle = this.getItemColumnStyle(item, sectionId);
+        columnHorizontalMargin = getColumnHorizontalMargin(columnStyle);
         remainingColumns = remainingColumns - getColumnSpan(columnStyle);
 
         gridItems.push(this.renderGroupItem(item, columnStyle));
         return gridItems;
       }, []);
 
-      const columnHorizontalMargin = getColumnHorizontalMargin(rowStyle);
       const compensationColumn = remainingColumns > 0 ?
         renderCompensationColumn(remainingColumns, columnHorizontalMargin) : null;
 
@@ -270,7 +339,6 @@ const style = {
       flexDirection: 'row',
     },
     gridItemCol: {
-      flexDirection: 'column',
       flex: 1,
     },
   },
