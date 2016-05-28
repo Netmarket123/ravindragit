@@ -4,7 +4,7 @@ import React, {
   Text,
 } from 'react-native';
 import { INCLUDE, connectStyle } from 'shoutem/theme';
-import { Button, EvilIconButton } from 'shoutem.ui';
+import { EvilIconButton, MaterialIconButton } from 'shoutem.ui';
 import moment from 'moment';
 import Share from 'react-native-share';
 
@@ -55,11 +55,11 @@ function Details({
       <Text style={style.timeText}>{formatDate(item.startTime)}</Text>
       <View style={style.dateSeparator} />
       <Text style={style.timeText}>{formatDate(item.endTime)}</Text>
-      <Button
-        icon="event-note"
-        iconSize={24}
+      <MaterialIconButton
+        iconName="event-note"
         text="ADD TO CALENDAR"
         style={style.button}
+        showIconOnRight={false}
         onPress={onButtonPressed}
       />
       <View style={style.sectionSeparator} >
@@ -169,7 +169,7 @@ const style = {
     buttonContainer: {
       backgroundColor: '#333333',
       borderRadius: 2,
-      width: 180,
+      width: 170,
       alignSelf: 'center',
       marginTop: 13,
       marginBottom: 20,
@@ -177,12 +177,12 @@ const style = {
     button: {
       flexDirection: 'row',
       alignItems: 'center',
-      paddingHorizontal: 15,
+      paddingHorizontal: 8,
       paddingVertical: 9,
     },
     buttonIcon: {
       marginRight: 10,
-      marginLeft: 10,
+      fontSize: 24,
       color: '#fff',
     },
     buttonText: {
