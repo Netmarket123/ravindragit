@@ -69,6 +69,7 @@ class ListView extends React.Component {
     renderHeader: React.PropTypes.func,
     renderFooter: React.PropTypes.func,
     renderSectionHeader: React.PropTypes.func,
+    // TODO(Braco) - add render separator
   };
   static Status = Status;
 
