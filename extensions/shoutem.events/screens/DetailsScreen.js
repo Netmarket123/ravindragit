@@ -9,23 +9,6 @@ import { EvilIconButton, MaterialIconButton } from 'shoutem.ui';
 import moment from 'moment';
 import Share from 'react-native-share';
 
-function createDetailsStyle(style) {
-  return {
-    detailsContainer: {
-      ...style.detailsContainer,
-    },
-    detailsTitle: style.detailsTitle,
-    detailsTitleContainer: style.detailsTitleContainer,
-    detailsText: style.detailsText,
-    timeText: style.timeText,
-    button: style.button,
-    dateSeparator: style.dateSeparator,
-    sectionSeparator: style.sectionSeparator,
-    sectionTitle: style.sectionTitle,
-    map: style.map,
-  };
-}
-
 function toMoment(date) {
   return moment(date, 'YYYY-MM-DDThh:mm:ss');
 }
@@ -105,8 +88,6 @@ function DetailsScreen({
   style,
   setNavBarProps,
 }) {
-  const detailsStyle = createDetailsStyle(style);
-
   function onShare() {
     Share.open({
       title: item.title,
@@ -135,7 +116,7 @@ function DetailsScreen({
         style={style.container}
         scrollEventThrottle={16}
       >
-        <Details item={item} style={detailsStyle} />
+        <Details item={item} style={style} />
       </ScrollView>
     </View>
   );
