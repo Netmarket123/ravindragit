@@ -17,7 +17,7 @@ function formatDate(date) {
   return moment(date, 'YYYY-MM-DDThh:mm:ss').format('MMMM D • hh:mm');
 }
 
-function renderRow(item, style, extrasSeparator, onPress) {
+function renderRow(item, style, extrasSeparator, onPress, onRefresh) {
   return (
     <View>
       <ListItem
@@ -40,6 +40,7 @@ class ListScreen extends Component {
     this.fetchEvents = this.fetchEvents.bind(this);
     this.categorySelected = this.categorySelected.bind(this);
     this.setState = this.setState.bind(this);
+    this.refreshEvents = this.refreshEvents.bind(this);
     this.state = {
       selectedCategory: null,
       fetchStatus: null,
@@ -83,6 +84,10 @@ class ListScreen extends Component {
     );
   }
 
+  refreshEvents() {
+    this.setState({ fetchStatus: Status.REFRESHING }, this.fetchEvents);
+  }
+
   renderEvents() {
     const {
       style,
@@ -118,6 +123,7 @@ class ListScreen extends Component {
         status={this.state.fetchStatus}
         style={style.listView}
         getSectionId={this.getSectionId}
+        onRefresh={this.refreshEvents}
         renderSectionHeader={this.renderSectionHeader}
       />
     );
