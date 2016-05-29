@@ -10,32 +10,21 @@ import eventsMapDispatchToProps from './lib/eventsMapDispatchToProps';
 import eventsMapStateToProps from './lib/eventsMapStateToProps';
 import EventsCategoriesDropdownMenu from '../components/EventsCategoriesDropDownMenu';
 import moment from 'moment';
-import CalendarManager from 'react-native-calendar-manager';
+import { toMoment, addToCalendar } from './lib/Calendar';
 
 const Status = ListView.Status;
-
-function toMoment(date) {
-  return moment(date, 'YYYY-MM-DDThh:mm:ss');
-}
 
 function formatDate(date) {
   if (!date) {
     return '';
   }
 
-  return moment(date, 'YYYY-MM-DDThh:mm:ss').format('MMMM D • hh:mm');
+  return toMoment(date).format('MMMM D • hh:mm');
 }
 
 function renderRow(item, style, extrasSeparator, onPress) {
   function onButtonPressed() {
-    const fromDate = toMoment(item.startTime);
-    const toDate = item.endtime ? toMoment(item.endtime)
-                                : fromDate.clone().add(1, 'hours');
-    CalendarManager.addEvent({
-      name: item.title,
-      startTime: fromDate.valueOf(),
-      endTime: toDate.valueOf(),
-    });
+    addToCalendar(item);
   }
 
   function renderButton() {

@@ -6,20 +6,15 @@ import React, {
 } from 'react-native';
 import { INCLUDE, connectStyle } from 'shoutem/theme';
 import { MaterialIconButton, ShoutemIconButton } from 'shoutem.ui';
-import moment from 'moment';
 import Share from 'react-native-share';
-import CalendarManager from 'react-native-calendar-manager';
-
-function toMoment(date) {
-  return moment(date, 'YYYY-MM-DDThh:mm:ss');
-}
+import { toMoment, addToCalendar } from './lib/Calendar';
 
 function formatDate(date) {
   if (!date) {
     return '';
   }
 
-  return moment(date, 'YYYY-MM-DDThh:mm:ss').format('MMMM D • hh:mm');
+  return toMoment(date).format('MMMM D • hh:mm');
 }
 
 function Details({
@@ -27,14 +22,7 @@ function Details({
     style,
 }) {
   function onButtonPressed() {
-    const fromDate = toMoment(item.startTime);
-    const toDate = item.endtime ? toMoment(item.endtime)
-                                : fromDate.clone().add(1, 'hours');
-    CalendarManager.addEvent({
-      name: item.title,
-      startTime: fromDate.valueOf(),
-      endTime: toDate.valueOf(),
-    });
+    addToCalendar(item);
   }
 
   // TODO(Vladimir) - determine the source from which to obtain this information
