@@ -9,7 +9,7 @@ import _ from 'lodash';
 
 import color from 'tinycolor2';
 
-import MaterialIconButton from '../Button/MaterialIconButton';
+import ShoutemIconButton from '../Button/ShoutemIconButton';
 
 import { connectStyle, INCLUDE } from 'shoutem/theme';
 
@@ -32,10 +32,10 @@ function navigationBarBackButton(hasHistory, navigateBack, style) {
   }
 
   const backButton = hasHistory ? (
-    <MaterialIconButton
+    <ShoutemIconButton
       onPress={navigateBackWithoutEventParameter}
       style={style.defaultBackButton}
-      iconName="arrow-back"
+      iconName="back"
     />
   ) : null;
 
