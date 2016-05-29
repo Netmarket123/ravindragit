@@ -156,7 +156,8 @@ class ArticleDetailsScreen extends React.Component {
       scrollY,
     } = this.state;
     const title = article.title || '';
-    const navigationBarStyle = createNavigationBarStyle(scrollY, detailsTopOffset);
+    const navBarTextColor = style.navBarTitle.color;
+    const navigationBarStyle = createNavigationBarStyle(scrollY, detailsTopOffset, navBarTextColor);
     const screenTitle = createScreenTitle(style.navBarTitle, title, scrollY, detailsTopOffset);
     const shareButtonStyle = createShareButtonStyle(style.shareButton, scrollY, detailsTopOffset);
     const shareButton = (
@@ -241,9 +242,6 @@ const style = {
     [INCLUDE]: ['baseFont', 'navigationBarTextColor'],
     width: 200,
     fontSize: 15,
-  },
-  navBarTextColor: {
-    [INCLUDE]: ['navigationBarTextColor'],
   },
   scrollIndicator: {
     borderColor: 'transparent',

@@ -34,11 +34,7 @@
         "data": [
           {
             "type": "shoutem.core.shortcuts",
-            "id": "56efcdf9f3973a4609a7a123"
-          },
-          {
-            "type": "shoutem.core.shortcuts",
-            "id": "56efcdf9f3973a4609a7a123"
+            "id": "56eec50fa4ae9db8126a20cf"
           }
         ]
       },
@@ -62,7 +58,7 @@
       "id": "shoutem.theme.default",
       "attributes": {
         "variables": {
-          "brandColor": "#03345c"
+          "brandColor": "#0334c5"
         }
       }
     },
@@ -88,7 +84,6 @@
         "iconUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488005&timestamp=635932174426170000&custom_layout=true&highlighted=false&version=58",
         "action": "shoutem.news.openListScreen",
         "settings": {
-          "textCentric": true,
           "appId": "2056",
           "endpoint": "http://api.dev.sauros.hr",
           "parentCategoryId": "49",
@@ -102,7 +97,8 @@
       "attributes": {
         "canonicalName": "shoutem.news.openListScreen",
         "title": "Shoutem news list screen",
-        "iconUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488005&timestamp=635932174426170000&custom_layout=true&highlighted=false&version=58",
+        "iconUrl": "http://s3.amazonaws.com/kanta/icons/RHg2VptVJ023xx92EJmAQA.png",
+        "highlightedIconUrl": "http://s3.amazonaws.com/kanta/icons/usdqEpn9eUOesEA_1at62g.png",
         "action": "shoutem.news.openListScreen",
         "settings": {
           "appId": "2056",
@@ -118,7 +114,8 @@
       "attributes": {
         "canonicalName": "shoutem.test.openExampleScreen",
         "title": "Places",
-        "iconUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488006&timestamp=635932174426170000&custom_layout=true&highlighted=false&version=58",
+        "iconUrl": "http://s3.amazonaws.com/kanta/icons/RHg2VptVJ023xx92EJmAQA.png",
+        "highlightedIconUrl": "http://s3.amazonaws.com/kanta/icons/usdqEpn9eUOesEA_1at62g.png",
         "action": "shoutem.test.openExampleScreen",
         "settings": {
           "screen": 2
@@ -141,7 +138,8 @@
       "attributes": {
         "canonicalName": "shoutem.places.OpenPlacesList",
         "title": "Places",
-        "iconUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488005&timestamp=635932174426170000&custom_layout=true&highlighted=false&version=58",
+        "iconUrl": "http://s3.amazonaws.com/kanta/icons/dLoMYN0GfUWs7IbRNH7wdA.png",
+        "highlightedIconUrl": "http://s3.amazonaws.com/kanta/icons/ORvopLR6uEGOLk8Gz04KzQ.png",
         "action": "shoutem.test.openExampleScreen",
         "settings": {
           "screen": 1
@@ -172,8 +170,8 @@
               "scalingStrategy": "horizontal",
               "scrollType": "continuous",
               "layoutType": "grid",
-              "columnCount": 3,
-              "rowCount": 2,
+              "columnCount": 2,
+              "rowCount": 1,
               "resizeWideScreenLayout": false,
               "buttonLayout": {
                 "buttonSize": {
@@ -181,8 +179,8 @@
                   "height": 330
                 },
                 "buttonIconSize": {
-                  "width": 200,
-                  "height": 200
+                  "width": 270,
+                  "height": 100
                 },
                 "buttonStyle": "custom",
                 "iconAlignment": "middleCenter",
@@ -206,17 +204,17 @@
                 "showIcon": true,
                 "showText": true,
                 "margin": {
-                  "top": 10,
-                  "left": 10,
-                  "bottom": 10,
-                  "right": 10
+                  "top": 0,
+                  "left": 2,
+                  "bottom": 0,
+                  "right": 0
                 }
               },
               "margin": {
-                "top": 10,
-                "left": 10,
-                "bottom": 20,
-                "right": 10
+                "top": 0,
+                "left": 0,
+                "bottom": 0,
+                "right": 0
               },
               "version": 2,
               "custom": true,
@@ -228,8 +226,8 @@
               "canRevert": false
             },
             "backgroundImageAspectRatio": "wide",
-            "backgroundImageUrl": "http://s3.amazonaws.com/kanta/apps/165592476/682842/image/iPhone/yA4yS-LggkebT_z5vCm-lA@2x.png",
-            "backgroundImageWideUrl": "http://s3.amazonaws.com/kanta/apps/166686575/755459/image/iPhone/XetITVSB9UO6E7UY5hWrxw@2x.png"
+            "backgroundImageUrl": "http://s3.amazonaws.com/kanta/apps/207083979/1165938/image/iPhone/2EDPl2Vpp02wjl_XuLrFag@2x.png",
+            "backgroundImageWideUrl": "http://s3.amazonaws.com/kanta/apps/207083979/1165938/image/iPhone/2EDPl2Vpp02wjl_XuLrFag@2x.png"
           }
         }
       },
@@ -238,7 +236,7 @@
           "data": [
             {
               "type": "shoutem.core.shortcuts",
-              "id": "56efccadf3973a4609a7a917"
+              "id": "56efcdf9f3973a4609a7a123"
             },
             {
               "type": "shoutem.core.shortcuts",
