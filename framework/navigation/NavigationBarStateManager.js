@@ -33,9 +33,7 @@ export default class NavigationBarStateManager {
       return;
     }
 
-    if (!_.isEqual(oldState, newState)) {
-      listener(_.assign({}, oldState), _.assign({}, newState));
-    }
+    listener(_.assign({}, oldState), _.assign({}, newState));
   }
 
   isRouteRemoved(route) {
