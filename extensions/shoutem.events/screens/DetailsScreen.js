@@ -29,10 +29,11 @@ function Details({
   const markers = [{
     latitude: 48.83367,
     longitude: 2.39423,
+    image: require('../assets/images/icon-pin-white@3x.png'),
   }];
 
   // TODO(Vladimir) - determine the source from which to obtain this information
-  const regionText = {
+  const region = {
     latitude: 48.83367,
     longitude: 2.39423,
     latitudeDelta: 0.01,
@@ -54,15 +55,17 @@ function Details({
         showIconOnRight={false}
         onPress={onButtonPressed}
       />
-      <MapView
-        region={regionText}
-        initialRegion={regionText}
-        annotations={markers}
-        zoomEnabled={false}
-        scrollEnabled={false}
-        rotateEnabled={false}
-        style={style.map}
-      />
+      <View style={style.mapContainer}>
+        <MapView
+          region={region}
+          initialRegion={region}
+          annotations={markers}
+          zoomEnabled={false}
+          scrollEnabled={false}
+          rotateEnabled={false}
+          style={style.map}
+        />
+      </View>
       <View style={style.sectionSeparator} >
         <Text style={style.sectionTitle}>INFORMATION</Text>
       </View>
@@ -224,6 +227,10 @@ const style = {
   },
   map: {
     height: 160,
+    opacity: 0.7,
+  },
+  mapContainer: {
+    backgroundColor: 'black',
   },
 };
 
