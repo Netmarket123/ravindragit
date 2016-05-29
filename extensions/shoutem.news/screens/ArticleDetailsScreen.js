@@ -98,22 +98,6 @@ function getScrollHandle(scrollY) {
   );
 }
 
-function renderUpNext(currentArticle, articles, style) {
-  const currentArticleIndex = articles.indexOf(currentArticle);
-
-  const nextArticle = articles[currentArticleIndex + 1];
-  if (nextArticle) {
-    return (
-      <NextArticle
-        style={style.upNext}
-        article={nextArticle}
-        articles={articles}
-      />
-    );
-  }
-  return null;
-}
-
 class ArticleDetailsScreen extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -141,6 +125,27 @@ class ArticleDetailsScreen extends React.Component {
     }, (sharingError) => {
       console.error(sharingError);
     });
+  }
+
+  shouldRenderNextArticle() {
+    return this.props.articles && this.props.showNext;
+  }
+
+  renderUpNext() {
+    const { article: currentArticle, articles, style } = this.props;
+    const currentArticleIndex = articles.indexOf(currentArticle);
+
+    const nextArticle = articles[currentArticleIndex + 1];
+    if (nextArticle) {
+      return (
+        <NextArticle
+          style={style.upNext}
+          article={nextArticle}
+          articles={articles}
+        />
+      );
+    }
+    return null;
   }
 
   renderNavBar() {
@@ -171,7 +176,6 @@ class ArticleDetailsScreen extends React.Component {
   render() {
     const {
       article,
-      articles,
       style,
     } = this.props;
     const {
@@ -208,7 +212,7 @@ class ArticleDetailsScreen extends React.Component {
               attachments={article.attachments}
             />
           </View>
-          {articles && renderUpNext(article, articles, style)}
+          {this.shouldRenderNextArticle() && this.renderUpNext()}
         </ScrollView>
       </View>
     );
@@ -222,6 +226,7 @@ ArticleDetailsScreen.propTypes = {
   style: React.PropTypes.object,
   bottomContentOffset: React.PropTypes.number,
   setNavBarProps: React.PropTypes.func,
+  showNext: React.PropTypes.bool,
 };
 
 const style = {

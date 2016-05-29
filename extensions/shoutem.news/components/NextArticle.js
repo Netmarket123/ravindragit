@@ -26,6 +26,7 @@ class NextArticle extends React.Component {
       props: {
         article,
         articles,
+        showNext: true,
       },
     };
     this.props.navigateToRoute(route);
