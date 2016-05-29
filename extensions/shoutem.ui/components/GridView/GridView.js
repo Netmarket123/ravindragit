@@ -213,7 +213,7 @@ class GridView extends React.Component {
   createRenderRow() {
     const { gridColumns } = this.props;
     /**
-     * GridView renderRow function, used to pass formatted arguments to renderGridItemCell.
+     * GridView renderRow function, used to pass formatted arguments to renderGridCell.
      *
      * @param itemsGroup {[]} - grouped items for row
      * @param sectionIndex {number} - section index (optional)
@@ -254,13 +254,13 @@ class GridView extends React.Component {
   }
 
   renderGroupItem(item, cellStyle, cellSettings) {
-    const { renderGridItemCell } = this.props;
+    const { renderGridCell } = this.props;
     return (
       <View
         key={`gridItem_' + ${item.id}`}
         style={cellStyle}
       >
-        {renderGridItemCell(item, cellSettings)}
+        {renderGridCell(item, cellSettings)}
       </View>
     );
   }
@@ -287,7 +287,7 @@ class GridView extends React.Component {
 GridView.propTypes = {
   ...ListView.propTypes,
   gridColumns: React.PropTypes.number,
-  renderGridItemCell: React.PropTypes.func.isRequired,
+  renderGridCell: React.PropTypes.func.isRequired,
   getItemCellStyle: React.PropTypes.func,
   getGroupRowStyle: React.PropTypes.func,
 };

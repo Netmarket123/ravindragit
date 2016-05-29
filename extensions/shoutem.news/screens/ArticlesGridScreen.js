@@ -70,7 +70,7 @@ class ArticlesGridScreen extends ArticlesListScreen {
       <GridView
         gridColumns={gridColumns}
         items={news}
-        renderGridItemCell={this.renderItem}
+        renderGridCell={this.renderItem}
         onRefresh={this.refreshNews}
         status={this.state.fetchStatus}
         style={style.gridView}
