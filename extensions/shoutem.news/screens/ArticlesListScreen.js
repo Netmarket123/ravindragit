@@ -73,13 +73,6 @@ export class ArticlesListScreen extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.categories.length > 0 && this.props.categories.length === 0) {
-      // Render NavBar only once, when categories fetched
-      this.renderNavBar(nextProps.categories);
-    }
-  }
-
   getSectionId(item) {
     return item.featured ? Sections.FEATURED : Sections.RECENT;
   }
@@ -124,8 +117,8 @@ export class ArticlesListScreen extends Component {
     this.props.navigateToRoute(route);
   }
 
-  renderCategoriesDropDown(categories) {
-    const { style, settings } = this.props;
+  renderCategoriesDropDown() {
+    const { style, settings, categories } = this.props;
     if (!this.shouldRenderCategoriesDropDown(categories, settings.categoryIds)) {
       return null;
     }
@@ -140,7 +133,7 @@ export class ArticlesListScreen extends Component {
     );
   }
 
-  renderNavBar(categories) {
+  renderNavBar() {
     const {
       setNavBarProps,
       style,
@@ -149,7 +142,7 @@ export class ArticlesListScreen extends Component {
     const screenTitle = settings.title || 'News';
 
     setNavBarProps({
-      rightComponent: this.renderCategoriesDropDown(categories),
+      rightComponent: this.renderCategoriesDropDown(),
       centerComponent: (
         <Text style={style.navigation.navigationBarTitle}>
           {screenTitle.toUpperCase()}
@@ -218,6 +211,8 @@ export class ArticlesListScreen extends Component {
     const {
       style,
     } = this.props;
+
+    this.renderNavBar();
 
     return (
       <View style={style.screen}>

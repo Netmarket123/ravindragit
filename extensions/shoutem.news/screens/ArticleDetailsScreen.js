@@ -132,10 +132,6 @@ class ArticleDetailsScreen extends React.Component {
     };
   }
 
-  componentWillMount() {
-    this.renderNavBar();
-  }
-
   onShare() {
     const article = this.props.article;
     Share.open({
@@ -184,6 +180,8 @@ class ArticleDetailsScreen extends React.Component {
       scrollY,
     } = this.state;
     const headerStyle = createAnimatedHeaderStyle(style.header, scrollY, detailsTopOffset);
+
+    this.renderNavBar();
 
     return (
       <View style={style.screen}>
