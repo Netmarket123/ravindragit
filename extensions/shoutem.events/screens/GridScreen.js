@@ -9,8 +9,6 @@ import { ListItem, AdvancedGridView } from 'shoutem.ui';
 import eventsMapDispatchToProps from './lib/eventsMapDispatchToProps';
 import eventsMapStateToProps from './lib/eventsMapStateToProps';
 import EventsCategoriesDropdownMenu from '../components/EventsCategoriesDropDownMenu';
-import isSearch from './lib/isSearch';
-import fetchEvents from './lib/fetchEvents';
 import moment from 'moment';
 
 function toMoment(date) {
@@ -48,7 +46,6 @@ function renderEventItem(item, style, extrasSeparator, onPress) {
 class GridScreen extends Component {
   constructor(props, context) {
     super(props, context);
-    this.fetch = fetchEvents.bind(this);
     this.onSearchChanged = this.onSearchChanged.bind(this);
     this.categorySelected = this.categorySelected.bind(this);
     this.state = {
@@ -75,7 +72,6 @@ class GridScreen extends Component {
       settings,
     } = this.props;
     const { searchTerm, selectedCategory } = this.state;
-    const showSearchResults = isSearch(searchTerm);
 
     const dropDownMenu = (
       <EventsCategoriesDropdownMenu
@@ -128,7 +124,6 @@ class GridScreen extends Component {
         items={events.map(convertCmsEventToItem)}
         gridColumns={gridColumns}
         infiniteScrolling
-        notRefreshable={showSearchResults}
         onSearchTermChanged={this.onSearchChanged}
         queryParams={{ searchTerm, selectedCategory }}
         fetch={this.fetch}

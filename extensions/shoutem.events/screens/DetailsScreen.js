@@ -5,7 +5,7 @@ import React, {
   MapView,
 } from 'react-native';
 import { INCLUDE, connectStyle } from 'shoutem/theme';
-import { EvilIconButton, MaterialIconButton } from 'shoutem.ui';
+import { MaterialIconButton, ShoutemIconButton } from 'shoutem.ui';
 import moment from 'moment';
 import Share from 'react-native-share';
 
@@ -98,8 +98,8 @@ function DetailsScreen({
     });
   }
 
-  const shareButton = (<EvilIconButton
-    iconName="share-apple"
+  const shareButton = (<ShoutemIconButton
+    iconName="share"
     onPress={onShare}
     style={style.shareButton}
   />);
@@ -107,7 +107,6 @@ function DetailsScreen({
   setNavBarProps({
     rightComponent: shareButton,
   });
-
 
   return (
     <View style={style.screen}>
