@@ -40,14 +40,20 @@ function Details({
     longitudeDelta: 0.01,
   };
 
+  const endTime = item.endTime ? (
+    <View>
+      <View style={style.dateSeparator} />
+      <Text style={style.timeText}>{formatDate(item.endTime)}</Text>
+    </View>
+  ) : null;
+
   return (
     <View key="details" style={style.detailsContainer}>
       <View style={style.detailsTitleContainer}>
         <Text style={style.detailsTitle}>{item.title.toUpperCase()}</Text>
       </View>
       <Text style={style.timeText}>{formatDate(item.startTime)}</Text>
-      <View style={style.dateSeparator} />
-      <Text style={style.timeText}>{formatDate(item.endTime)}</Text>
+      {endTime}
       <ShoutemIconButton
         iconName="add-to-calendar"
         text="ADD TO CALENDAR"

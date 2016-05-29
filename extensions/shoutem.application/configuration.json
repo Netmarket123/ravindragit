@@ -101,8 +101,8 @@
       "attributes": {
         "canonicalName": "shoutem.events.openListScreen",
         "title": "Events",
-        "iconUrl": "http://s3.amazonaws.com/kanta/icons/RHg2VptVJ023xx92EJmAQA.png",
-        "highlightedIconUrl": "http://s3.amazonaws.com/kanta/icons/usdqEpn9eUOesEA_1at62g.png",
+        "iconUrl": "http://s3.amazonaws.com/kanta/icons/dLoMYN0GfUWs7IbRNH7wdA.png",
+        "highlightedIconUrl": "http://s3.amazonaws.com/kanta/icons/ORvopLR6uEGOLk8Gz04KzQ.png",
         "action": "shoutem.events.openListScreen",
         "settings": {
           "appId": "2056",

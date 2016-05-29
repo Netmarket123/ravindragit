@@ -250,6 +250,8 @@ const style = {
   categorySelector: {
     height: 40,
     paddingVertical: 11,
+    borderTopColor: '#e5e5e5',
+    borderTopWidth: 1,
   },
 };
 

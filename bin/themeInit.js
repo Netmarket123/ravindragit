@@ -66,6 +66,7 @@ export default (variables) => ({
       height: null,
       marginRight: 15,
       resizeMode: 'cover',
+      borderRadius: 2,
     },
     itemInfo: {
       flexDirection: 'column',
@@ -290,6 +291,24 @@ export default (variables) => ({
     },
     timeText: {
       color: variables.brandColor,
+    },
+    sectionTitle: {
+      fontSize: 12,
+    },
+    sectionSeparator: {
+      borderTopColor: '#e5e5e5',
+      borderBottomColor: '#e5e5e5',
+      borderTopWidth: 1,
+      borderBottomWidth: 1,
+      borderLeftWidth: 0,
+      borderRightWidth: 0,
+    },
+    detailsText: {
+      padding: 15,
+      [INCLUDE]: ['baseFont'],
+      fontSize: 16,
+      color: '#666',
+      lineHeight: 24,
     },
   },
 });
