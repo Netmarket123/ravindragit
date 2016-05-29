@@ -208,7 +208,7 @@ class ArticleDetailsScreen extends React.Component {
               attachments={article.attachments}
             />
           </View>
-          {renderUpNext(article, articles, style)}
+          {articles && renderUpNext(article, articles, style)}
         </ScrollView>
       </View>
     );
