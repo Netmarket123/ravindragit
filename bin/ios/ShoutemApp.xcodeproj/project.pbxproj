@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -32,6 +31,7 @@
 		74294E4C5B304CBE9C0E5C8D /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48ABB7C2C9EC45DBAB3078C2 /* MaterialIcons.ttf */; };
 		803336D7B5C34112BAD50388 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 759F68D70E6540D599EA001E /* EvilIcons.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		8FD1F48C728A4EEAB5E8AAEB /* libCalendarManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 348D9387F83D466FAFE0122F /* libCalendarManager.a */; };
 		9E9E651E6B2047CFAE932FC4 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1F215385F682417CA8ED6E6B /* FontAwesome.ttf */; };
 		9ED9C5AEDCF9483BBE7BCEF5 /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D1672A7BB3B649BE9976D339 /* libRCTVideo.a */; };
 		A4BBF8401C7C9BD300CED113 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A4BBF83F1C7C9BD300CED113 /* libz.tbd */; };
@@ -138,6 +138,13 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
+		A486E9B81CFB21F800BC6403 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8CD7426F415F489387DEE40F /* CalendarManager.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A4B4CC701CE4A5C800F02149;
+			remoteInfo = CalendarManager;
+		};
 		C23ED3B51CC918EA007C3788 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6615D1CCB6114D7DBF586011 /* RCTVideo.xcodeproj */;
@@ -172,6 +179,7 @@
 		146F89521CEA5C270065FC7B /* Rubik-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Rubik-Regular.ttf"; path = "../assets/fonts/Rubik-Regular.ttf"; sourceTree = "<group>"; };
 		1F215385F682417CA8ED6E6B /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		272E5BCA1CF9E8C2007AB2C5 /* default-theme-icon-font.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "default-theme-icon-font.ttf"; path = "../assets/fonts/default-theme-icon-font.ttf"; sourceTree = "<group>"; };
+		348D9387F83D466FAFE0122F /* libCalendarManager.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libCalendarManager.a; sourceTree = "<group>"; };
 		3CF69CC3BE124D44B3B9B074 /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		4009DD4D136A4A039DD3CA2A /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		4814241B1B7B40778B2BA351 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
@@ -184,6 +192,7 @@
 		75ED0EB74A8D4167ADD79341 /* libCodePush.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libCodePush.a; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		8CD7426F415F489387DEE40F /* CalendarManager.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = CalendarManager.xcodeproj; path = "../node_modules/react-native-calendar-manager/CalendarManager.xcodeproj"; sourceTree = "<group>"; };
 		98CC9CC2660D4E07BF98129E /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		A4BBF83F1C7C9BD300CED113 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		B165BA48BA954339BF78C0C3 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
@@ -217,6 +226,7 @@
 				9ED9C5AEDCF9483BBE7BCEF5 /* libRCTVideo.a in Frameworks */,
 				E3EBC45710DF48A3948641EA /* libCodePush.a in Frameworks */,
 				22C012825B964AB8BD44C685 /* libRNShare.a in Frameworks */,
+				8FD1F48C728A4EEAB5E8AAEB /* libCalendarManager.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -367,6 +377,7 @@
 				6615D1CCB6114D7DBF586011 /* RCTVideo.xcodeproj */,
 				6151705EA26B4C12AA586727 /* CodePush.xcodeproj */,
 				04FC91D285FE450782454554 /* RNShare.xcodeproj */,
+				8CD7426F415F489387DEE40F /* CalendarManager.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -399,6 +410,14 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* ShoutemApp.app */,
 				00E356EE1AD99517003FC87E /* ShoutemAppTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A486E9B51CFB21F800BC6403 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A486E9B91CFB21F800BC6403 /* libCalendarManager.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -497,6 +516,10 @@
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = A486E9B51CFB21F800BC6403 /* Products */;
+					ProjectRef = 8CD7426F415F489387DEE40F /* CalendarManager.xcodeproj */;
+				},
 				{
 					ProductGroup = 277B59F71CCFB6090048D997 /* Products */;
 					ProjectRef = 6151705EA26B4C12AA586727 /* CodePush.xcodeproj */;
@@ -654,6 +677,13 @@
 			remoteRef = 832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		A486E9B91CFB21F800BC6403 /* libCalendarManager.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libCalendarManager.a;
+			remoteRef = A486E9B81CFB21F800BC6403 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		C23ED3B61CC918EA007C3788 /* libRCTVideo.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -785,6 +815,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ShoutemApp.app/ShoutemApp";
@@ -805,6 +836,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -831,6 +863,7 @@
 					"$(SRCROOT)/../node_modules/react-native/Libraries/**",
 					"$(SRCROOT)/../node_modules/react-native-code-push/ios/CodePush/**",
 					"$(SRCROOT)/../node_modules/react-native-share/ios",
+					"$(SRCROOT)/../node_modules/react-native-calendar-manager/CalendarManager",
 				);
 				INFOPLIST_FILE = ShoutemApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -856,6 +889,7 @@
 					"$(SRCROOT)/../node_modules/react-native/Libraries/**",
 					"$(SRCROOT)/../node_modules/react-native-code-push/ios/CodePush/**",
 					"$(SRCROOT)/../node_modules/react-native-share/ios",
+					"$(SRCROOT)/../node_modules/react-native-calendar-manager/CalendarManager",
 				);
 				INFOPLIST_FILE = ShoutemApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -907,6 +941,7 @@
 					"$(SRCROOT)/../node_modules/react-native-video",
 					"$(SRCROOT)/../node_modules/react-native-code-push/ios/CodePush/**",
 					"$(SRCROOT)/../node_modules/react-native-share/ios",
+					"$(SRCROOT)/../node_modules/react-native-calendar-manager/CalendarManager",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -951,6 +986,7 @@
 					"$(SRCROOT)/../node_modules/react-native-video",
 					"$(SRCROOT)/../node_modules/react-native-code-push/ios/CodePush/**",
 					"$(SRCROOT)/../node_modules/react-native-share/ios",
+					"$(SRCROOT)/../node_modules/react-native-calendar-manager/CalendarManager",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
