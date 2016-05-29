@@ -1,0 +1,12 @@
+{
+  "name": "shoutem.events",
+  "version": "0.0.1",
+  "private": true,
+  "main": "index.js",
+  "dependencies": {
+    "@shoutem/redux-api-state": "^0.0.9",
+    "moment": "^2.13.0",
+    "react": "^0.14.5",
+    "react-native": "^0.23.1"
+  }
+}

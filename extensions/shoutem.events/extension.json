@@ -1,0 +1,17 @@
+{
+    "title": "Shoutem Events Extension",
+    "canonicalName": "shoutem.events",
+    "version": "0.0.1",
+    "description": "Shoutem Events Extension",
+    "shortcuts": [
+        {
+            "canonicalName": "shoutem.events.openListScreen",
+            "action": "shoutem.events.openListScreen",
+            "settings": {}
+        }
+    ],
+    "settingsPage": {},
+    "screens": [
+        {}
+    ]
+}
