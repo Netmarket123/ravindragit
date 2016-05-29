@@ -62,8 +62,6 @@
       "id": "shoutem.theme.default",
       "attributes": {
         "variables": {
-          "testColor": "red",
-          "ganetColor": "961a2d",
           "brandColor": "#03345c"
         }
       }
