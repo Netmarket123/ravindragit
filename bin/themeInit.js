@@ -280,9 +280,6 @@ export default (variables) => ({
         [INCLUDE]: ['navigationBarTextColor'],
       },
     },
-    detailsContainer: {
-      paddingTop: 30,
-    },
     detailsTitle: {
       color: variables.brandColor,
     },

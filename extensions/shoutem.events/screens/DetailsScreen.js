@@ -108,6 +108,11 @@ function DetailsScreen({
 
   setNavBarProps({
     rightComponent: shareButton,
+    style: {
+      container: {
+        backgroundColor: 'rgba(255, 255, 255, 0)',
+      },
+    },
   });
 
   return (
@@ -138,6 +143,8 @@ const style = {
   },
   screen: {
     position: 'relative',
+    backgroundColor: '#fff',
+    paddingTop: 0,
   },
   detailsText: {
     color: '#666666',
@@ -214,6 +221,7 @@ const style = {
   container: {
     position: 'relative',
     flex: 1,
+    paddingTop: 100,
   },
   header: {
     position: 'absolute',
