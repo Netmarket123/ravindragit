@@ -63,7 +63,8 @@
       "attributes": {
         "variables": {
           "testColor": "red",
-          "ganetColor": "961a2d"
+          "ganetColor": "961a2d",
+          "brandColor": "#03345c"
         }
       }
     },

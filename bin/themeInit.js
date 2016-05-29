@@ -14,7 +14,7 @@ export default (variables) => ({
     alignItems: 'center',
   },
   navigationBarTextColor: {
-    color: '#0344c5',
+    color: variables.brandColor,
   },
   screen: {
     flexDirection: 'column',
@@ -27,7 +27,7 @@ export default (variables) => ({
     gridBox: {
       container: {
         flex: 1,
-        backgroundColor: '#0344c5',
+        backgroundColor: variables.brandColor,
       },
       contentWrapper: {
         justifyContent: 'center',
@@ -148,7 +148,7 @@ export default (variables) => ({
       flex: 1,
       fontSize: 16,
       lineHeight: 20,
-      color: '#0344c5',
+      color: variables.brandColor,
       marginHorizontal: 10,
       marginTop: 10,
     },
@@ -179,7 +179,7 @@ export default (variables) => ({
       search: {
         container: {
           paddingHorizontal: 7,
-          backgroundColor: '#0344c5',
+          backgroundColor: variables.brandColor,
           height: 40,
           flexDirection: 'row',
           justifyContent: 'center',
@@ -223,7 +223,7 @@ export default (variables) => ({
       lineHeight: 24,
     },
     a: {
-      color: '#0334c5',
+      color: variables.brandColor,
     },
   },
   'shoutem.news.GridScreen': {
