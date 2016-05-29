@@ -8,6 +8,7 @@ import { INCLUDE, connectStyle } from 'shoutem/theme';
 import { MaterialIconButton, ShoutemIconButton } from 'shoutem.ui';
 import moment from 'moment';
 import Share from 'react-native-share';
+import CalendarManager from 'react-native-calendar-manager';
 
 function toMoment(date) {
   return moment(date, 'YYYY-MM-DDThh:mm:ss');
@@ -29,7 +30,11 @@ function Details({
     const fromDate = toMoment(item.startTime);
     const toDate = item.endtime ? toMoment(item.endtime)
                                 : fromDate.clone().add(1, 'hours');
-    console.warn(item.title, fromDate.valueOf(), toDate.valueOf());
+    CalendarManager.addEvent({
+      name: item.title,
+      startTime: fromDate.valueOf(),
+      endTime: toDate.valueOf(),
+    });
   }
 
   // TODO(Vladimir) - determine the source from which to obtain this information

@@ -10,6 +10,7 @@ import eventsMapDispatchToProps from './lib/eventsMapDispatchToProps';
 import eventsMapStateToProps from './lib/eventsMapStateToProps';
 import EventsCategoriesDropdownMenu from '../components/EventsCategoriesDropDownMenu';
 import moment from 'moment';
+import CalendarManager from 'react-native-calendar-manager';
 
 const Status = ListView.Status;
 
@@ -30,7 +31,11 @@ function renderRow(item, style, extrasSeparator, onPress) {
     const fromDate = toMoment(item.startTime);
     const toDate = item.endtime ? toMoment(item.endtime)
                                 : fromDate.clone().add(1, 'hours');
-    console.warn(item.title, fromDate.valueOf(), toDate.valueOf());
+    CalendarManager.addEvent({
+      name: item.title,
+      startTime: fromDate.valueOf(),
+      endTime: toDate.valueOf(),
+    });
   }
 
   function renderButton() {
