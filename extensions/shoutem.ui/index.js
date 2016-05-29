@@ -8,9 +8,11 @@ export { default as Button } from './components/Button/Button';
 export { default as MaterialIconButton } from './components/Button/MaterialIconButton';
 export { default as AwesomeIconButton } from './components/Button/AwesomeIconButton';
 export { default as EvilIconButton } from './components/Button/EvilIconButton';
+export { default as ShoutemIconButton } from './components/Button/ShoutemIconButton';
 
 export { default as InfoFields } from './components/InfoFields/InfoFields';
 
+export { default as GridBox } from './components/GridBox/GridBox';
 export { default as EventGridBox } from './components/GridBox/EventGridBox';
 export { default as NewsGridBox } from './components/GridBox/NewsGridBox';
 export { default as ShopGridBox } from './components/GridBox/ShopGridBox';

@@ -107,20 +107,20 @@ export class ArticlesListScreen extends Component {
   }
 
   openDetailsScreen(article) {
-    const route = { screen: Screens.ArticleDetailsScreen, props: { article } };
+    const { settings } = this.props;
+    const route = {
+      screen: Screens.ArticleDetailsScreen,
+      props: {
+        article,
+        articles: this.props.news,
+        showNext: settings.showNextArticleOnDetails,
+      },
+    };
     this.props.navigateToRoute(route);
   }
 
-  renderSectionHeader(section) {
-    const { style } = this.props;
-    if (section === Sections.RECENT) {
-      return <Text style={style.sectionHeader}>Recent</Text>;
-    }
-    return null;
-  }
-
   renderCategoriesDropDown() {
-    const { categories, style, settings } = this.props;
+    const { style, settings, categories } = this.props;
     if (!this.shouldRenderCategoriesDropDown(categories, settings.categoryIds)) {
       return null;
     }
@@ -133,6 +133,33 @@ export class ArticlesListScreen extends Component {
         style={style.navigation.categoriesDropDown}
       />
     );
+  }
+
+  renderNavBar() {
+    const {
+      setNavBarProps,
+      style,
+      settings,
+    } = this.props;
+    const screenTitle = settings.title || 'News';
+
+    setNavBarProps({
+      rightComponent: this.renderCategoriesDropDown(),
+      centerComponent: (
+        <Text style={style.navigation.navigationBarTitle}>
+          {screenTitle.toUpperCase()}
+        </Text>
+      ),
+      style: style.navigation.navigationBar,
+    });
+  }
+
+  renderSectionHeader(section) {
+    const { style } = this.props;
+    if (section === Sections.RECENT) {
+      return <Text style={style.sectionHeader}>Recent</Text>;
+    }
+    return null;
   }
 
   renderArticle(article, style) {
@@ -185,20 +212,9 @@ export class ArticlesListScreen extends Component {
   render() {
     const {
       style,
-      setNavBarProps,
-      settings,
     } = this.props;
-    const screenTitle = settings.title || 'News';
 
-    setNavBarProps({
-      rightComponent: this.renderCategoriesDropDown(),
-      centerComponent: (
-        <Text style={style.navigation.navigationBarTitle}>
-          {screenTitle.toUpperCase()}
-        </Text>
-      ),
-      style: style.navigation.navigationBar,
-    });
+    this.renderNavBar();
 
     return (
       <View style={style.screen}>

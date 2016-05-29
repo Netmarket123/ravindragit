@@ -12,8 +12,22 @@ import {
   Sections,
 } from '../const.js';
 
-function getItemColSpan(item, section) {
-  return section === Sections.FEATURED ? GridView.ColSpan.STRETCH : 1;
+function createFeaturedItemStyle(gridColumns) {
+  return {
+    marginHorizontal: 0,
+    marginTop: 0,
+    ...GridView.Dimensions.Cell.stretch(gridColumns),
+  };
+}
+
+function getItemCellStyle(item, settings) {
+  return settings.sectionId === Sections.FEATURED ?
+    createFeaturedItemStyle(settings.gridColumns) : {};
+}
+
+function getGroupRowStyle(settings) {
+  return settings.sectionId === Sections.FEATURED ?
+    { paddingHorizontal: 0, flexDirection: 'column' } : {};
 }
 
 class ArticlesGridScreen extends ArticlesListScreen {
@@ -56,13 +70,14 @@ class ArticlesGridScreen extends ArticlesListScreen {
       <GridView
         gridColumns={gridColumns}
         items={news}
-        renderGridItem={this.renderItem}
+        renderGridCell={this.renderItem}
         onRefresh={this.refreshNews}
         status={this.state.fetchStatus}
         style={style.gridView}
         getSectionId={this.getSectionId}
         renderSectionHeader={this.renderSectionHeader}
-        getItemColSpan={getItemColSpan}
+        getItemCellStyle={getItemCellStyle}
+        getGroupRowStyle={getGroupRowStyle}
       />
     );
   }
@@ -92,8 +107,9 @@ const style = {
       container: {
         paddingHorizontal: 2.5,
       },
-      gridItemContainer: {
-        margin: 2.5,
+      gridItemCell: {
+        marginHorizontal: 2.5,
+        marginVertical: 2.5,
       },
     },
   },

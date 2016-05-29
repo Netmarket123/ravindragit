@@ -6,10 +6,11 @@ import React, {
   Text,
 } from 'react-native';
 import { INCLUDE, connectStyle } from 'shoutem/theme';
-import { NewsGridBox, RichMedia, EvilIconButton } from 'shoutem.ui';
+import { NewsGridBox, RichMedia, ShoutemIconButton } from 'shoutem.ui';
 import * as _ from 'lodash';
 import moment from 'moment';
 import Share from 'react-native-share';
+import NextArticle from '../components/NextArticle';
 
 const DEFAULT_BOTTOM_CONTENT_OFFSET = 50;
 
@@ -98,40 +99,26 @@ function getScrollHandle(scrollY) {
   );
 }
 
-function Details({ item, style }) {
-  return (
-    <View key="details" style={style.detailsContainer}>
-      <RichMedia
-        body={item.body}
-        attachments={item.attachments}
-      />
-    </View>
-  );
-}
+class ArticleDetailsScreen extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+    const {
+      bottomContentOffset: bottomContentOffsetProp,
+      style,
+    } = this.props;
+    this.onShare = this.onShare.bind(this);
+    const bottomContentOffset = bottomContentOffsetProp || DEFAULT_BOTTOM_CONTENT_OFFSET;
+    const detailsTopOffset = getOffsetHeight(bottomContentOffset);
+    this.state = {
+      scrollY: new Animated.Value(0),
+      bottomContentOffset,
+      detailsTopOffset,
+      detailsStyle: createDetailsStyle(detailsTopOffset, style),
+    };
+  }
 
-Details.propTypes = {
-  item: React.PropTypes.object,
-  style: React.PropTypes.object,
-};
-
-function ArticleDetailsScreen({
-  setNavBarProps,
-  article,
-  style,
-  bottomContentOffset: bottomContentOffsetProp,
-}) {
-  const bottomContentOffset = bottomContentOffsetProp || DEFAULT_BOTTOM_CONTENT_OFFSET;
-  const scrollY = new Animated.Value(0);
-  const title = article.title || '';
-  const navBarTextColor = style.navBarTextColor.color;
-  const detailsTopOffset = getOffsetHeight(bottomContentOffset);
-  const headerStyle = createAnimatedHeaderStyle(style.header, scrollY, detailsTopOffset);
-  const navigationBarStyle = createNavigationBarStyle(scrollY, detailsTopOffset, navBarTextColor);
-  const detailsStyle = createDetailsStyle(detailsTopOffset, style);
-  const screenTitle = createScreenTitle(style.navBarTitle, title, scrollY, detailsTopOffset);
-  const shareButtonStyle = createShareButtonStyle(style.shareButton, scrollY, detailsTopOffset);
-
-  function onShare() {
+  onShare() {
+    const article = this.props.article;
     Share.open({
       title: article.title,
       share_text: article.summary,
@@ -141,48 +128,106 @@ function ArticleDetailsScreen({
     });
   }
 
-  const shareButton = (<EvilIconButton
-    iconName="share-apple"
-    onPress={onShare}
-    style={shareButtonStyle}
-  />);
+  shouldRenderNextArticle() {
+    return this.props.articles && this.props.showNext;
+  }
 
-  setNavBarProps({
-    rightComponent: shareButton,
-    style: navigationBarStyle,
-    centerComponent: screenTitle,
-  });
+  renderUpNext() {
+    const { article: currentArticle, articles, style } = this.props;
+    const currentArticleIndex = articles.indexOf(currentArticle);
 
-  return (
-    <View style={style.screen}>
-      <Animated.View
-        style={headerStyle}
-      >
-        <NewsGridBox
-          style={style.headline}
-          headline={article.title.toUpperCase()}
-          newsDetails={[article.author, moment(article.timeUpdated).fromNow()]}
-          backgroundImage={{ uri: _.get(article, 'image.url'), width: 200, height: 200 }}
+    const nextArticle = articles[currentArticleIndex + 1];
+    if (nextArticle) {
+      return (
+        <NextArticle
+          style={style.upNext}
+          article={nextArticle}
+          articles={articles}
         />
-        <View style={style.scrollIndicator} />
-      </Animated.View>
-      <ScrollView
-        automaticallyAdjustContentInsets={false}
-        style={style.container}
-        scrollEventThrottle={1}
-        onScroll={getScrollHandle(scrollY)}
-      >
-        <Details item={article} style={detailsStyle} />
-      </ScrollView>
-    </View>
-  );
+      );
+    }
+    return null;
+  }
+
+  renderNavBar() {
+    const { article, style } = this.props;
+    const {
+      detailsTopOffset,
+      scrollY,
+    } = this.state;
+    const title = article.title || '';
+    const navigationBarStyle = createNavigationBarStyle(scrollY, detailsTopOffset);
+    const screenTitle = createScreenTitle(style.navBarTitle, title, scrollY, detailsTopOffset);
+    const shareButtonStyle = createShareButtonStyle(style.shareButton, scrollY, detailsTopOffset);
+    const shareButton = (
+      <ShoutemIconButton
+        iconName="share"
+        onPress={this.onShare}
+        style={shareButtonStyle}
+      />
+    );
+
+    this.props.setNavBarProps({
+      rightComponent: shareButton,
+      style: navigationBarStyle,
+      centerComponent: screenTitle,
+    });
+  }
+
+  render() {
+    const {
+      article,
+      style,
+    } = this.props;
+    const {
+      detailsStyle,
+      detailsTopOffset,
+      scrollY,
+    } = this.state;
+    const headerStyle = createAnimatedHeaderStyle(style.header, scrollY, detailsTopOffset);
+
+    this.renderNavBar();
+
+    return (
+      <View style={style.screen}>
+        <Animated.View
+          style={headerStyle}
+        >
+          <NewsGridBox
+            style={style.headline}
+            headline={article.title.toUpperCase()}
+            newsDetails={[article.author, moment(article.timeUpdated).fromNow()]}
+            backgroundImage={{ uri: _.get(article, 'image.url'), width: 200, height: 200 }}
+          />
+          <View style={style.scrollIndicator} />
+        </Animated.View>
+        <ScrollView
+          automaticallyAdjustContentInsets={false}
+          style={style.container}
+          scrollEventThrottle={1}
+          onScroll={getScrollHandle(scrollY)}
+        >
+          <View key="details" style={detailsStyle.detailsContainer}>
+            <RichMedia
+              body={article.body}
+              attachments={article.attachments}
+            />
+          </View>
+          {this.shouldRenderNextArticle() && this.renderUpNext()}
+        </ScrollView>
+      </View>
+    );
+  }
+
 }
 
 ArticleDetailsScreen.propTypes = {
   article: React.PropTypes.object,
+  articles: React.PropTypes.array,
   style: React.PropTypes.object,
   bottomContentOffset: React.PropTypes.number,
   setNavBarProps: React.PropTypes.func,
+  showNext: React.PropTypes.bool,
 };
 
 const style = {
@@ -258,6 +303,34 @@ const style = {
       fontSize: 24,
       width: 40,
       height: 40,
+    },
+  },
+  upNext: {
+    gridBox: {
+      container: {
+        height: 130,
+      },
+      contentWrapper: {
+        backgroundColor: 'rgba(0,0,0,0.35)',
+        padding: 15,
+      },
+    },
+    contentWrapper: {
+      flex: 1,
+      flexDirection: 'column',
+      opacity: 0.5,
+    },
+    label: {
+      marginBottom: 40,
+      [INCLUDE]: ['baseFont'],
+      fontSize: 15,
+      color: '#fff',
+    },
+    articleTitle: {
+      [INCLUDE]: ['baseFont'],
+      color: '#fff',
+      fontSize: 16,
+      width: 250,
     },
   },
 };
