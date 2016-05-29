@@ -14,7 +14,7 @@ export default class NavigationBarContainer extends Component {
   }
 
   onStateChange(oldState, newState) {
-    this.newState = newState;
+    this.newState = _.assign({}, newState);
     // we need to defer to avoid state change during the render
     _.defer(() => this.setState(_.assign({}, newState)));
   }
