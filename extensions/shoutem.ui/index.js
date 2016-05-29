@@ -12,6 +12,7 @@ export { default as ShoutemIconButton } from './components/Button/ShoutemIconBut
 
 export { default as InfoFields } from './components/InfoFields/InfoFields';
 
+export { default as GridBox } from './components/GridBox/GridBox';
 export { default as EventGridBox } from './components/GridBox/EventGridBox';
 export { default as NewsGridBox } from './components/GridBox/NewsGridBox';
 export { default as ShopGridBox } from './components/GridBox/ShopGridBox';

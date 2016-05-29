@@ -16,17 +16,17 @@ function createFeaturedItemStyle(gridColumns) {
   return {
     marginHorizontal: 0,
     marginTop: 0,
-    ...GridView.Dimensions.Column.stretch(gridColumns),
+    ...GridView.Dimensions.Cell.stretch(gridColumns),
   };
 }
 
-function getItemColumnStyle(gridColumns, item, sectionId) {
-  return sectionId === Sections.FEATURED ?
-    createFeaturedItemStyle(gridColumns) : {};
+function getItemCellStyle(item, settings) {
+  return settings.sectionId === Sections.FEATURED ?
+    createFeaturedItemStyle(settings.gridColumns) : {};
 }
 
-function getGroupRowStyle(sectionId) {
-  return sectionId === Sections.FEATURED ?
+function getGroupRowStyle(settings) {
+  return settings.sectionId === Sections.FEATURED ?
     { paddingHorizontal: 0, flexDirection: 'column' } : {};
 }
 
@@ -70,13 +70,13 @@ class ArticlesGridScreen extends ArticlesListScreen {
       <GridView
         gridColumns={gridColumns}
         items={news}
-        renderGridItem={this.renderItem}
+        renderGridCell={this.renderItem}
         onRefresh={this.refreshNews}
         status={this.state.fetchStatus}
         style={style.gridView}
         getSectionId={this.getSectionId}
         renderSectionHeader={this.renderSectionHeader}
-        getItemColumnStyle={getItemColumnStyle}
+        getItemCellStyle={getItemCellStyle}
         getGroupRowStyle={getGroupRowStyle}
       />
     );
@@ -110,7 +110,7 @@ const style = {
       container: {
         paddingHorizontal: 2.5,
       },
-      gridItemCol: {
+      gridItemCell: {
         marginHorizontal: 2.5,
         marginVertical: 2.5,
       },

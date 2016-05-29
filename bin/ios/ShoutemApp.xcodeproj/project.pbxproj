@@ -171,7 +171,7 @@
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		146F89521CEA5C270065FC7B /* Rubik-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Rubik-Regular.ttf"; path = "../assets/fonts/Rubik-Regular.ttf"; sourceTree = "<group>"; };
 		1F215385F682417CA8ED6E6B /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
-		272E5BCA1CF9E8C2007AB2C5 /* default-theme-icon-font.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "default-theme-icon-font.ttf"; path = "../../../../../Downloads/default-theme-icon-font/fonts/default-theme-icon-font.ttf"; sourceTree = "<group>"; };
+		272E5BCA1CF9E8C2007AB2C5 /* default-theme-icon-font.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "default-theme-icon-font.ttf"; path = "../assets/fonts/default-theme-icon-font.ttf"; sourceTree = "<group>"; };
 		3CF69CC3BE124D44B3B9B074 /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		4009DD4D136A4A039DD3CA2A /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		4814241B1B7B40778B2BA351 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
@@ -382,6 +382,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				272E5BCA1CF9E8C2007AB2C5 /* default-theme-icon-font.ttf */,
 				A4BBF83F1C7C9BD300CED113 /* libz.tbd */,
 				13B07FAE1A68108700A75B9A /* ShoutemApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -413,7 +414,6 @@
 		E66035ACF78043E086CDCB89 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				272E5BCA1CF9E8C2007AB2C5 /* default-theme-icon-font.ttf */,
 				146F89521CEA5C270065FC7B /* Rubik-Regular.ttf */,
 				6D19753EEA2E424EB54C42A0 /* Entypo.ttf */,
 				759F68D70E6540D599EA001E /* EvilIcons.ttf */,
@@ -675,9 +675,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				272E5BCB1CF9E8C2007AB2C5 /* default-theme-icon-font.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				272E5BCB1CF9E8C2007AB2C5 /* default-theme-icon-font.ttf in Resources */,
 				14EE14E12C884069B31FAC36 /* Entypo.ttf in Resources */,
 				803336D7B5C34112BAD50388 /* EvilIcons.ttf in Resources */,
 				9E9E651E6B2047CFAE932FC4 /* FontAwesome.ttf in Resources */,
