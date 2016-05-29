@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   },
   innerProgressRemaining: {
     height: 20,
-    backgroundColor: '#2C2C2C',
+    backgroundColor: '#2c2c2c',
   },
 });
 

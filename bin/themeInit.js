@@ -13,6 +13,9 @@ export default (variables) => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  navigationBarTextColor: {
+    color: variables.brandColor,
+  },
   screen: {
     flexDirection: 'column',
     alignItems: 'stretch',
@@ -24,7 +27,7 @@ export default (variables) => ({
     gridBox: {
       container: {
         flex: 1,
-        backgroundColor: '#2c2c2c',
+        backgroundColor: variables.brandColor,
       },
       contentWrapper: {
         justifyContent: 'center',
@@ -143,8 +146,9 @@ export default (variables) => ({
     },
     itemTitle: {
       flex: 1,
-      fontSize: 15,
-      color: '#222',
+      fontSize: 16,
+      lineHeight: 20,
+      color: variables.brandColor,
       marginHorizontal: 10,
       marginTop: 10,
     },
@@ -175,7 +179,7 @@ export default (variables) => ({
       search: {
         container: {
           paddingHorizontal: 7,
-          backgroundColor: '#ccc',
+          backgroundColor: variables.brandColor,
           height: 40,
           flexDirection: 'row',
           justifyContent: 'center',
@@ -214,9 +218,49 @@ export default (variables) => ({
   'shoutem.ui.RichMedia': {
     p: {
       [INCLUDE]: ['baseFont'],
-      fontSize: 13,
+      fontSize: 16,
       color: '#666',
-      lineHeight: 20,
+      lineHeight: 24,
+    },
+    a: {
+      color: variables.brandColor,
+    },
+  },
+  'shoutem.news.GridScreen': {
+    gridView: {
+      header: {
+        search: {
+          container: {
+            backgroundColor: '#fff',
+          },
+        },
+      },
+    },
+    navigation: {
+      navigationBar: {
+        backgroundImage: {
+          backgroundColor: '#fff',
+        },
+      },
+    },
+    featuredItem: {
+      gridBox: {
+        container: {
+          backgroundColor: '#fff',
+        },
+      },
+      headline: {
+        fontSize: 22,
+        lineHeight: 25,
+      },
+    },
+  },
+  'shoutem.news.DetailsScreen': {
+    headline: {
+      headline: {
+        fontSize: 22,
+        lineHeight: 25,
+      },
     },
   },
 });
