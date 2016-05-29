@@ -5,7 +5,7 @@ import React, {
   MapView,
 } from 'react-native';
 import { INCLUDE, connectStyle } from 'shoutem/theme';
-import { MaterialIconButton, ShoutemIconButton } from 'shoutem.ui';
+import { ShoutemIconButton } from 'shoutem.ui';
 import Share from 'react-native-share';
 import { toMoment, addToCalendar } from './lib/Calendar';
 
@@ -47,8 +47,8 @@ function Details({
       <Text style={style.timeText}>{formatDate(item.startTime)}</Text>
       <View style={style.dateSeparator} />
       <Text style={style.timeText}>{formatDate(item.endTime)}</Text>
-      <MaterialIconButton
-        iconName="event-note"
+      <ShoutemIconButton
+        iconName="add-to-calendar"
         text="ADD TO CALENDAR"
         style={style.button}
         showIconOnRight={false}

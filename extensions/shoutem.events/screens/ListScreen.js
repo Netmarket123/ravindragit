@@ -5,11 +5,10 @@ import React, {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
-import { ListItemButton, ListView, MaterialIconButton } from 'shoutem.ui';
+import { ListItemButton, ListView, ShoutemIconButton } from 'shoutem.ui';
 import eventsMapDispatchToProps from './lib/eventsMapDispatchToProps';
 import eventsMapStateToProps from './lib/eventsMapStateToProps';
 import EventsCategoriesDropdownMenu from '../components/EventsCategoriesDropDownMenu';
-import moment from 'moment';
 import { toMoment, addToCalendar } from './lib/Calendar';
 
 const Status = ListView.Status;
@@ -29,8 +28,8 @@ function renderRow(item, style, extrasSeparator, onPress) {
 
   function renderButton() {
     return (
-      <MaterialIconButton
-        iconName="event-note"
+      <ShoutemIconButton
+        iconName="add-to-calendar"
         style={style.addToCalendarButton}
         showIconOnRight={false}
         onPress={onButtonPressed}
@@ -47,7 +46,6 @@ function renderRow(item, style, extrasSeparator, onPress) {
         id={item.id}
         style={style.listRow}
         onPress={onPress}
-        buttonIcon={"event-note"}
         renderButton={renderButton}
       />
     </View>
