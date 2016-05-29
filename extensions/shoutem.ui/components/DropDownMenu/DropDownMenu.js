@@ -5,9 +5,11 @@ import React, {
   ListView,
   Modal,
   Component,
+  Animated,
 } from 'react-native';
 
 import MaterialIconButton from '../Button/MaterialIconButton';
+import ShoutemIconButton from '../Button/ShoutemIconButton';
 
 import { connectStyle, INCLUDE } from 'shoutem/theme';
 
@@ -113,21 +115,20 @@ class DropDownMenu extends Component {
           visible={collapsed || false}
           onRequestClose={this.close}
           transparent
-          animated
         >
-          <View style={style.modalContainer}>
+          <Animated.View style={style.modalContainer}>
             <View style={style.modalItems}>
               <ListView
                 dataSource={ds.cloneWithRows(items)}
                 renderRow={this[RENDER_ROW]}
               />
             </View>
-            <MaterialIconButton
-              iconName="clear"
+            <ShoutemIconButton
+              iconName="close"
               onPress={this.close}
               style={style.modalCloseButton}
             />
-          </View>
+          </Animated.View>
         </Modal>
       </View>
     );
