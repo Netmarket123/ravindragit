@@ -47,6 +47,7 @@ function renderRow(item, style, extrasSeparator, onPress) {
         style={style.listRow}
         onPress={onPress}
         renderButton={renderButton}
+        fallbackImage={require('../assets/images/image-fallback.png')}
       />
     </View>
   );
