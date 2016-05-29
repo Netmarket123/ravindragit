@@ -209,10 +209,15 @@ export default (variables) => ({
     container: {
       backgroundColor: '#fff',
     },
+    defaultBackButton: {
+      buttonIcon: {
+        color: variables.brandColor,
+      },
+    },
   },
   'shoutem.test.ExampleScreen': {
     button: {
-      backgroundColor: variables.testColor,
+      backgroundColor: variables.brandColor,
     },
   },
   'shoutem.ui.RichMedia': {
@@ -261,6 +266,30 @@ export default (variables) => ({
         fontSize: 22,
         lineHeight: 25,
       },
+    },
+  },
+  'shoutem.events.DetailsScreen': {
+    button: {
+      buttonContainer: {
+        backgroundColor: variables.brandColor,
+      },
+    },
+    shareButton: {
+      buttonIcon: {
+        [INCLUDE]: ['navigationBarTextColor'],
+      },
+    },
+    detailsContainer: {
+      paddingTop: 30,
+    },
+    detailsTitle: {
+      color: variables.brandColor,
+    },
+    dateSeparator: {
+      backgroundColor: variables.brandColor,
+    },
+    timeText: {
+      color: variables.brandColor,
     },
   },
 });

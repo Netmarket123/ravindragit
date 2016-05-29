@@ -175,10 +175,10 @@ class ListScreen extends Component {
 
     setNavBarProps({
       centerComponent: (
-        <Text>EVENTS</Text>
+        <Text style={style.navigation.navigationBarTitle}>EVENTS</Text>
       ),
       rightComponent: (
-        <Text>Map</Text>
+        <Text style={style.navigation.navigationBarTitle}>Map</Text>
       ),
     });
 
@@ -226,6 +226,11 @@ const style = {
       },
     },
   },
+  navigation: {
+    navigationBarTitle: {
+      [INCLUDE]: ['navigationBarTextColor'],
+    },
+  },
   listRow: {
     [INCLUDE]: ['shoutem.ui.ListItem.textCentric'],
   },
@@ -244,6 +249,7 @@ const style = {
   },
   categorySelector: {
     height: 40,
+    paddingVertical: 11,
   },
 };
 

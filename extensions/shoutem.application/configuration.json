@@ -64,19 +64,6 @@
     },
     {
       "type": "shoutem.core.shortcuts",
-      "id": "56efcdf9f3973a4609a7a918",
-      "attributes": {
-        "canonicalName": "shoutem.test.openExampleScreen",
-        "title": "Places",
-        "iconUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488005&timestamp=635932174426170000&custom_layout=true&highlighted=false&version=58",
-        "action": "shoutem.test.openExampleScreen",
-        "settings": {
-          "screen": 2
-        }
-      }
-    },
-    {
-      "type": "shoutem.core.shortcuts",
       "id": "56efcdf9f3973a4609a7a910",
       "attributes": {
         "canonicalName": "shoutem.news.openListScreen",
@@ -112,13 +99,16 @@
       "type": "shoutem.core.shortcuts",
       "id": "56efccadf3973a4609a7a917",
       "attributes": {
-        "canonicalName": "shoutem.test.openExampleScreen",
-        "title": "Places",
+        "canonicalName": "shoutem.events.openListScreen",
+        "title": "Events",
         "iconUrl": "http://s3.amazonaws.com/kanta/icons/RHg2VptVJ023xx92EJmAQA.png",
         "highlightedIconUrl": "http://s3.amazonaws.com/kanta/icons/usdqEpn9eUOesEA_1at62g.png",
-        "action": "shoutem.test.openExampleScreen",
+        "action": "shoutem.events.openListScreen",
         "settings": {
-          "screen": 2
+          "appId": "2056",
+          "endpoint": "http://api.dev.sauros.hr",
+          "parentCategoryId": "49",
+          "showNextArticleOnDetails": true
         }
       },
       "relationships": {
@@ -129,25 +119,6 @@
               "id": "56efcdf9f3973a4609a7a918"
             }
           ]
-        }
-      }
-    },
-    {
-      "type": "shoutem.core.shortcuts",
-      "id": "56eee2709fc1f8ed12b4cb72",
-      "attributes": {
-        "canonicalName": "shoutem.places.OpenPlacesList",
-        "title": "Places",
-        "iconUrl": "http://s3.amazonaws.com/kanta/icons/dLoMYN0GfUWs7IbRNH7wdA.png",
-        "highlightedIconUrl": "http://s3.amazonaws.com/kanta/icons/ORvopLR6uEGOLk8Gz04KzQ.png",
-        "action": "shoutem.test.openExampleScreen",
-        "settings": {
-          "screen": 1
-        }
-      },
-      "relationships": {
-        "children": {
-          "data": []
         }
       }
     },
@@ -240,7 +211,7 @@
             },
             {
               "type": "shoutem.core.shortcuts",
-              "id": "56eee2709fc1f8ed12b4cb72"
+              "id": "56efccadf3973a4609a7a917"
             }
           ]
         }
@@ -265,31 +236,6 @@
         "canonicalType": "shoutem.places.PlaceDetails",
         "settings": {
           "layout": "x"
-        }
-      }
-    },
-    {
-      "type": "shoutem.core.extensions",
-      "id": "shoutem.code-push",
-      "attributes": {
-        "extension": "56fe4814007ed55a0c6dba36",
-        "app": "690",
-        "configuration": "690",
-        "owner": "1111",
-        "canonicalName": "shoutem.code-push",
-        "settings": {
-          "test": "123",
-          "enableSharing": true,
-          "deploymentKeys": [
-            {
-              "name": "Production",
-              "key": "eAUuOt3mynn5Wm8xl1cdFGEmZ7sjV1nVFkuog"
-            },
-            {
-              "name": "Staging",
-              "key": "d_qIxI70LWU6aSjaxQKczJXhs0VDV1nVFkuog"
-            }
-          ]
         }
       }
     }
