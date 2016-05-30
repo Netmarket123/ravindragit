@@ -6,6 +6,7 @@ import React, {
   Modal,
   Component,
   Animated,
+  Easing,
 } from 'react-native';
 
 import MaterialIconButton from '../Button/MaterialIconButton';
@@ -13,16 +14,31 @@ import ShoutemIconButton from '../Button/ShoutemIconButton';
 
 import { connectStyle, INCLUDE } from 'shoutem/theme';
 
-const RENDER_ROW = Symbol('renderRow');
+function createModalAnimatedStyle(dropDownAnimation) {
+  return {
+    opacity: dropDownAnimation,
+    transform: [
+      {
+        scale: dropDownAnimation.interpolate({
+          inputRange: [0, 1],
+          outputRange: [1.1, 1],
+        }),
+      },
+    ],
+  };
+}
 
 class DropDownMenu extends Component {
   constructor(props) {
     super(props);
-    this.state = Object.assign({}, props);
+    this.state = {
+      ...props,
+      dropDownAnimation: new Animated.Value(0)
+    };
     this.collapse = this.collapse.bind(this);
     this.close = this.close.bind(this);
     this.emitOnItemSelectedEvent = this.emitOnItemSelectedEvent.bind(this);
-    this[RENDER_ROW] = this[RENDER_ROW].bind(this);
+    this.renderRow = this.renderRow.bind(this);
   }
 
   componentWillMount() {
@@ -63,10 +79,25 @@ class DropDownMenu extends Component {
 
   collapse() {
     this.setState({ collapsed: true });
+    Animated.timing(
+      this.state.dropDownAnimation,
+      {
+        toValue: 1,
+        easing: Easing.cubic,
+        duration: 250,
+      }
+    ).start();
   }
 
   close() {
-    this.setState({ collapsed: false });
+    Animated.timing(
+      this.state.dropDownAnimation,
+      {
+        toValue: 0,
+        easing: Easing.cubic,
+        duration: 250,
+      }
+    ).start(() => this.setState({ collapsed: false }));
   }
 
   emitOnItemSelectedEvent() {
@@ -75,7 +106,7 @@ class DropDownMenu extends Component {
     }
   }
 
-  [RENDER_ROW](item) {
+  renderRow(item) {
     const {
       style,
     } = this.props;
@@ -97,6 +128,7 @@ class DropDownMenu extends Component {
       collapsed,
       selectedItem,
       bindings,
+      dropDownAnimation,
     } = this.state;
     const { items, style } = this.props;
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
@@ -107,6 +139,7 @@ class DropDownMenu extends Component {
       onPress={this.collapse}
       style={style.popUpButton}
     /> : null;
+    const modalAnimatedStyle = createModalAnimatedStyle(dropDownAnimation);
 
     return (
       <View>
@@ -116,11 +149,16 @@ class DropDownMenu extends Component {
           onRequestClose={this.close}
           transparent
         >
-          <Animated.View style={style.modalContainer}>
+          <Animated.View
+            style={[
+              style.modalContainer,
+              modalAnimatedStyle,
+            ]}
+          >
             <View style={style.modalItems}>
               <ListView
                 dataSource={ds.cloneWithRows(items)}
-                renderRow={this[RENDER_ROW]}
+                renderRow={this.renderRow}
               />
             </View>
             <ShoutemIconButton
@@ -160,9 +198,15 @@ const style = {
   },
   modalItem: {
     paddingVertical: 23,
+    flex: 1,
   },
   modalItemText: {
     [INCLUDE]: ['baseFont'],
+    textAlign: 'center',
+    flex: 1,
+    width: 200,
+    paddingHorizontal: 20,
+    alignSelf: 'center',
   },
   modalCloseButton: {
     buttonContainer: {
@@ -176,11 +220,12 @@ const style = {
       justifyContent: 'center',
       alignItems: 'center',
       marginLeft: 18,
-      backgroundColor: 'rgba(242, 242, 242, 0.92)',
+      backgroundColor: 'rgba(242, 242, 242, 0)',
+      padding: 10,
     },
     buttonIcon: {
       color: 'black',
-      fontSize: 18,
+      fontSize: 24,
     },
   },
 };
