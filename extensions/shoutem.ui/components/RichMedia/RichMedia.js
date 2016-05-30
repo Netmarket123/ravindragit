@@ -32,6 +32,29 @@ const style = {
     fontWeight: '500',
     color: '#000',
   },
+  h1: {
+    color: '#000',
+    fontSize: 28,
+  },
+  h2: {
+    color: '#000',
+    fontSize: 24,
+  },
+  h3: {
+    fontWeight: '900',
+    color: '#000',
+    fontSize: 18,
+  },
+  h4: {
+    fontWeight: '700',
+    color: '#000',
+    fontSize: 16,
+  },
+  h5: {
+    fontWeight: '500',
+    color: '#000',
+    fontSize: 14,
+  },
   video: {
     marginHorizontal: MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE,
     container: {
