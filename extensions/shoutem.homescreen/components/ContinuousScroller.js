@@ -51,10 +51,12 @@ export default function ContinuousScroller({
   buttonConfig,
 }) {
   const contentContainerPosition = getStyleForContentLayoutPosition(layoutPosition);
+  // TODO(Vladimir) - disable scroll temporarily for react conf
   return (
     <ScrollView
       style={styles.container}
       directionalLockEnabled
+      scrollEnabled={false}
       contentContainerStyle={contentContainerPosition}
     >
       <ShortcutsGrid
