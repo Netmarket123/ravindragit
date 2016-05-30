@@ -2,9 +2,10 @@ import React, {
   View,
   ListView as RNListView,
   RefreshControl,
+  StatusBar,
 } from 'react-native';
 import { connectStyle } from 'shoutem/theme';
-import { FullScreenSpinner, PlatformSpinner } from 'shoutem.ui';
+import { PlatformSpinner } from 'shoutem.ui';
 
 const Status = {
   LOADING: 'loading',
@@ -159,13 +160,15 @@ class ListView extends React.Component {
 
     switch (status) {
       case Status.LOADING:
-        spinner = <FullScreenSpinner style={style.newDataSpinner} />;
+        spinner = <View style={style.loadMoreSpinner}><PlatformSpinner /></View>;
+        StatusBar.setNetworkActivityIndicatorVisible(true);
         break;
       case Status.LOADING_NEXT:
         spinner = <View style={style.loadMoreSpinner}><PlatformSpinner /></View>;
         break;
       case Status.REFRESHING:
       default:
+        StatusBar.setNetworkActivityIndicatorVisible(false);
         spinner = null;
     }
 
