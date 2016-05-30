@@ -1,4 +1,6 @@
 import * as _ from 'lodash';
+import { LOAD_REQUEST } from '@shoutem/redux-api-state';
+import { CALL_API } from 'redux-api-middleware';
 
 /**
  * Creates screen settings for given shortcut.
@@ -32,5 +34,33 @@ export function createExecuteShortcutMiddleware(actions) {
 
     throw new Error(`Shortcut you tried to execute has no valid action (${actionName}),
   or you tried to execute shortcut before appDidMount. Check exports of your extension.`);
+  };
+}
+
+let blockActions = false;
+let actionsStack = [];
+export function blockActionsMiddleware(actions) {
+  return store => next => action => {
+    const actionType = _.get(action, 'type');
+
+    if (action[CALL_API]) {
+      return next(action);
+    }
+
+    if (actionType === 'BLOCK_ACTIONS') {
+      blockActions = true;
+    } else if (actionType === 'ALLOW_ACTIONS') {
+      blockActions = false;
+      let stackedAction;
+      while (stackedAction = actionsStack.pop()) {
+        next(stackedAction);
+      }
+    }
+
+    if (blockActions) {
+      actionsStack = [action, ...actionsStack];
+      return;
+    }
+    return next(action);
   };
 }

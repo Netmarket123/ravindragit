@@ -65,6 +65,7 @@ export class ScreenNavigator extends Component {
   }
 
   onRouteChanged(route) {
+    this.props.allowActions();
     this.navBarManager.onRouteChanged(route);
   }
 
@@ -162,6 +163,9 @@ export class ScreenNavigator extends Component {
         renderScene={this.renderScene}
         navigationBar={this.renderNavigationBar()}
         onDidFocus={this.onRouteChanged}
+        onWillFocus={() => {
+          this.props.blockActions();
+        }}
       />
     ) : null;
 
@@ -226,6 +230,12 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     navigationActionPerformed,
     navigateBack,
+    blockActions: function () {
+      return {type: 'BLOCK_ACTIONS'};
+    },
+    allowActions: function () {
+      return {type: 'ALLOW_ACTIONS'};
+    },
   }, dispatch);
 }
 
