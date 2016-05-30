@@ -177,9 +177,6 @@ class ListScreen extends Component {
       centerComponent: (
         <Text style={style.navigation.navigationBarTitle}>EVENTS</Text>
       ),
-      rightComponent: (
-        <Text style={style.navigation.navigationBarTitle}>Map</Text>
-      ),
     });
 
     return (
