@@ -10,6 +10,7 @@ export default class NavigationBarStateManager {
 
   onRouteChanged(route) {
     const state = this.routeStates.get(route);
+    this.currentRoute = route;
     this.setState(state, route);
   }
 
@@ -32,9 +33,7 @@ export default class NavigationBarStateManager {
       return;
     }
 
-    if (!_.isEqual(oldState, newState)) {
-      _.defer(() => listener(_.assign({}, oldState), _.assign({}, newState)));
-    }
+    listener(_.assign({}, oldState), _.assign({}, newState));
   }
 
   isRouteRemoved(route) {
@@ -55,7 +54,6 @@ export default class NavigationBarStateManager {
       this.routeStates.set(route, newState);
       this.state = newState;
       this.triggerStateChangeListener(oldState, newState);
-      this.currentRoute = route;
     }
   }
 }

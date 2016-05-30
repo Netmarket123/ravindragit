@@ -51,7 +51,7 @@ class ImagePreview extends Component {
   }
 
   render() {
-    const { source, width, height, style } = this.props;
+    const { source, style, width, height } = this.props;
 
     if (this.state.fullScreen) {
       const closeButton = (
@@ -67,7 +67,7 @@ class ImagePreview extends Component {
           animated
           transparent
         >
-          <View style={style.container}>
+          <View style={style.fullScreenContainer}>
             <Image
               style={style.image}
               source={source}
@@ -86,6 +86,7 @@ class ImagePreview extends Component {
             source={source}
             width={width}
             height={height}
+            resizeMode={'contain'}
           />
         </TouchableOpacity>
       </View>
@@ -95,6 +96,10 @@ class ImagePreview extends Component {
 
 const style = {
   container: {
+    flex: 1,
+    backgroundColor: 'transparent',
+  },
+  fullScreenContainer: {
     flex: 1,
     backgroundColor: 'black',
   },
