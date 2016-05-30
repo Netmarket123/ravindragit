@@ -10,7 +10,7 @@ import { ListView, DropDownMenu } from 'shoutem.ui';
 import ListArticleView from '../components/ListArticleView';
 import FeaturedArticleView from '../components/FeaturedArticleView';
 import { bindActionCreators } from 'redux';
-import { ReduxApiStateDenormalizer, isValid, isBusy } from '@shoutem/redux-api-state';
+import { ReduxApiStateDenormalizer, isBusy } from '@shoutem/redux-api-state';
 import { actions } from '../index';
 import { navigateTo } from 'shoutem/navigation';
 import {
@@ -100,19 +100,15 @@ export class ArticlesListScreen extends Component {
   shouldComponentUpdate(nextProps) {
     const newsBusy = isBusy(nextProps.newsCollection);
     const categoriesBusy = isBusy(nextProps.categoriesCollection);
-    const newsIsValid = isValid(nextProps.categoriesCollection);
-    const categoriesIsValid = isValid(nextProps.categoriesCollection);
-    if (newsBusy || categoriesBusy || !newsIsValid || !categoriesIsValid) {
+    if (newsBusy || categoriesBusy) {
       return false;
     }
     const updateNews =
       !newsBusy &&
-      newsIsValid &&
       nextProps.newsCollection !== this.props.newsCollection;
 
     const updateCategories =
       !categoriesBusy &&
-      categoriesIsValid &&
       nextProps.categoriesCollection !== this.props.categoriesCollection;
 
     if (updateNews) {
