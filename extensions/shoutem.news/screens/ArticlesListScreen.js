@@ -74,15 +74,26 @@ export class ArticlesListScreen extends Component {
     const {
       fetchNewsCategories,
       settings,
+      categoriesCollection,
+      newsCollection,
     } = this.props;
 
     if (settings.categoryIds && settings.categoryIds.length > 0) {
       this.setState({ fetchStatus: Status.LOADING }, this.fetchNews);
-    } else {
+    } else if (categoriesCollection.length === 0) {
       this.setState(
         { fetchStatus: Status.LOADING },
         () => fetchNewsCategories(settings.parentCategoryId, settings)
       );
+    }
+
+    if (categoriesCollection.length > 0) {
+      const categories = this.denormalizeCategories(categoriesCollection);
+      this.setState({ selectedCategory: categories[0] });
+    }
+
+    if (newsCollection.length > 0) {
+      this.denormalizeNews(newsCollection);
     }
   }
 
@@ -105,27 +116,35 @@ export class ArticlesListScreen extends Component {
       nextProps.categoriesCollection !== this.props.categoriesCollection;
 
     if (updateNews) {
-      const denormalizer = denormalizeService.get();
-      this.setState({
-        news: denormalizer.denormalizeCollection(
-          nextProps.newsCollection, DataSchemas.Articles
-        ),
-      });
+      this.denormalizeNews(nextProps.newsCollection);
     }
 
     if (updateCategories) {
-      const denormalizer = denormalizeService.get();
-      this.setState({
-        categories: denormalizer.denormalizeCollection(
-          nextProps.categoriesCollection, DataSchemas.Categories
-        ),
-      });
+      this.denormalizeCategories(nextProps.categoriesCollection);
     }
     return true;
   }
 
   getSectionId(item) {
     return item.featured ? Sections.FEATURED : Sections.RECENT;
+  }
+
+  denormalizeNews(newsCollection) {
+    const denormalizer = denormalizeService.get();
+    const news = denormalizer.denormalizeCollection(
+      newsCollection, DataSchemas.Articles
+    );
+    this.setState({ news });
+    return news;
+  }
+
+  denormalizeCategories(categoriesCollection) {
+    const denormalizer = denormalizeService.get();
+    const categories = denormalizer.denormalizeCollection(
+      categoriesCollection, DataSchemas.Categories
+    );
+    this.setState({ categories });
+    return categories;
   }
 
   shouldRenderCategoriesDropDown(categories, categoriesIds) {
