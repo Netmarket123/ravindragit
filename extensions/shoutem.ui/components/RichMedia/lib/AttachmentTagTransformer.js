@@ -33,9 +33,7 @@ export default class AttachmentTagTransformer {
   transform(_: any, node: NodeType, style: any) : any {
     const id = node.attribs.id;
 
-    if (node.attribs.type === 'image' && this.attachments && this.attachments.images) {
-      const attachedImage = this.attachments.images.find((image) => image.id === id);
-
+    function transformImageAttachment(attachedImage) {
       const imageWidth = (windowWidth < attachedImage.width) ? windowWidth : attachedImage.width;
       const imageScale = imageWidth / attachedImage.width;
       const { img } = style;
@@ -107,6 +105,11 @@ export default class AttachmentTagTransformer {
           key={0}
         />,
       ];
+    }
+
+    if (node.attribs.type === 'image' && this.attachments && this.attachments.images) {
+      const attachedImage = this.attachments.images.find((image) => image.id === id);
+      return transformImageAttachment(attachedImage);
     }
 
     if (node.attribs.type === 'video' && this.attachments && this.attachments.videos) {
