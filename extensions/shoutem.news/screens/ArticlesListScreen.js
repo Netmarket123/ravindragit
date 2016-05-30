@@ -10,7 +10,7 @@ import { ListView, DropDownMenu } from 'shoutem.ui';
 import ListArticleView from '../components/ListArticleView';
 import FeaturedArticleView from '../components/FeaturedArticleView';
 import { bindActionCreators } from 'redux';
-import { ReduxApiStateDenormalizer } from '@shoutem/redux-api-state';
+import { ReduxApiStateDenormalizer, isValid, isBusy } from '@shoutem/redux-api-state';
 import { actions } from '../index';
 import { navigateTo } from 'shoutem/navigation';
 import {
@@ -26,6 +26,18 @@ import {
 } from '../const.js';
 
 const Status = ListView.Status;
+class DenormalizeService {
+  constructor() {
+    this.denormalizeInstance = null;
+  }
+  createNewInstance(state) {
+    this.denormalizeInstance = new ReduxApiStateDenormalizer(() => state, schemasMap);
+  }
+  get() {
+    return this.denormalizeInstance;
+  }
+}
+const denormalizeService = new DenormalizeService();
 
 export class ArticlesListScreen extends Component {
   static propTypes = {
@@ -33,9 +45,8 @@ export class ArticlesListScreen extends Component {
     findNews: React.PropTypes.func,
     clearSearch: React.PropTypes.func,
     parentCategoryId: React.PropTypes.any,
-    news: React.PropTypes.array,
-    searchedNews: React.PropTypes.array,
-    categories: React.PropTypes.array,
+    newsCollection: React.PropTypes.array,
+    categoriesCollection: React.PropTypes.array,
     style: React.PropTypes.object,
     setNavBarProps: React.PropTypes.func,
     navigateToRoute: React.PropTypes.func,
@@ -54,6 +65,8 @@ export class ArticlesListScreen extends Component {
     this.state = {
       selectedCategory: null,
       fetchStatus: null,
+      news: [],
+      categories: [],
     };
   }
 
@@ -71,6 +84,44 @@ export class ArticlesListScreen extends Component {
         () => fetchNewsCategories(settings.parentCategoryId, settings)
       );
     }
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const newsBusy = isBusy(nextProps.newsCollection);
+    const categoriesBusy = isBusy(nextProps.categoriesCollection);
+    const newsIsValid = isValid(nextProps.categoriesCollection);
+    const categoriesIsValid = isValid(nextProps.categoriesCollection);
+    if (newsBusy || categoriesBusy || !newsIsValid || !categoriesIsValid) {
+      return false;
+    }
+    const updateNews =
+      !newsBusy &&
+      newsIsValid &&
+      nextProps.newsCollection !== this.props.newsCollection;
+
+    const updateCategories =
+      !categoriesBusy &&
+      categoriesIsValid &&
+      nextProps.categoriesCollection !== this.props.categoriesCollection;
+
+    if (updateNews) {
+      const denormalizer = denormalizeService.get();
+      this.setState({
+        news: denormalizer.denormalizeCollection(
+          nextProps.newsCollection, DataSchemas.Articles
+        ),
+      });
+    }
+
+    if (updateCategories) {
+      const denormalizer = denormalizeService.get();
+      this.setState({
+        categories: denormalizer.denormalizeCollection(
+          nextProps.categoriesCollection, DataSchemas.Categories
+        ),
+      });
+    }
+    return true;
   }
 
   getSectionId(item) {
@@ -112,7 +163,7 @@ export class ArticlesListScreen extends Component {
       screen: Screens.ArticleDetailsScreen,
       props: {
         article,
-        articles: this.props.news,
+        articles: this.state.news,
         showNext: settings.showNextArticleOnDetails,
       },
     };
@@ -120,7 +171,8 @@ export class ArticlesListScreen extends Component {
   }
 
   renderCategoriesDropDown() {
-    const { style, settings, categories } = this.props;
+    const { style, settings } = this.props;
+    const { categories } = this.state;
     if (!this.shouldRenderCategoriesDropDown(categories, settings.categoryIds)) {
       return null;
     }
@@ -194,8 +246,8 @@ export class ArticlesListScreen extends Component {
   renderArticles() {
     const {
       style,
-      news,
     } = this.props;
+    const { news } = this.state;
     return (
       <ListView
         items={news}
@@ -216,9 +268,11 @@ export class ArticlesListScreen extends Component {
 
     this.renderNavBar();
 
+    const articles = this.renderArticles();
+
     return (
       <View style={style.screen}>
-        {this.renderArticles()}
+        {articles}
       </View>
     );
   }
@@ -289,14 +343,10 @@ const style = {
 
 // written as variable to be able to debug in Chrome debugger
 export const newsMapStateToProps = (state) => {
-  const denormalizer = new ReduxApiStateDenormalizer(() => state, schemasMap);
+  denormalizeService.createNewInstance(state, schemasMap);
   return {
-    news: denormalizer.denormalizeCollection(
-      state[EXT].latestNews, DataSchemas.Articles
-    ),
-    categories: denormalizer.denormalizeCollection(
-      state[EXT].newsCategories, DataSchemas.Categories
-    ),
+    newsCollection: state[EXT].latestNews,
+    categoriesCollection: state[EXT].newsCategories,
   };
 };
 

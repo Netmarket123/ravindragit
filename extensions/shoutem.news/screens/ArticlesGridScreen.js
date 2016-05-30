@@ -63,9 +63,9 @@ class ArticlesGridScreen extends ArticlesListScreen {
   renderArticles() {
     const {
       style,
-      news,
       gridColumns,
     } = this.props;
+    const { news } = this.state;
     return (
       <GridView
         gridColumns={gridColumns}
