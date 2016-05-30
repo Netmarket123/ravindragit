@@ -30,7 +30,6 @@ const defaultMediaTagTransformers = [
 
 const defaultHtmlTagTransformers = [
   HtmlTagTransformer,
-  AnchorTagTransformer,
 ];
 
 function decodeHTML(string) {
@@ -57,6 +56,9 @@ export default class HypermediaComposer {
 
   constructor(mediaTransformers?: Array<TagTransformerType>, style: any) {
     const additionalMediaTransformers = mediaTransformers || [];
+    const anchorTagTransformer = new AnchorTagTransformer(this.containsMediaElement.bind(this));
+
+    defaultHtmlTagTransformers.push(anchorTagTransformer);
 
     this.mediaTransformers = defaultMediaTagTransformers.concat(additionalMediaTransformers);
     this.tagTransformers = this.mediaTransformers.concat(defaultHtmlTagTransformers);
