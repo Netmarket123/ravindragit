@@ -8,12 +8,14 @@ import React, {
 
 import ImagePreview from '../../ImagePreview';
 import Video from '../../Video/Video';
+import ImageGallery from '../../ImageGallery';
 
 import type {
   AttachmentsType,
   NodeType,
 } from './types';
 
+const FALLBACK_ATTACHMENT_HEIGHT = 250;
 const windowWidth = Dimensions.get('window').width;
 
 // TODO(Vladimir) - split into multiple files, each implementing the TagTransformer interface
@@ -25,15 +27,13 @@ export default class AttachmentTagTransformer {
   }
 
   canTransform(node: NodeType): boolean {
-    return (node.name === 'attachment' && !!node.attribs);
+    return (node.name === 'se-attachment' && !!node.attribs);
   }
 
   transform(_: any, node: NodeType, style: any) : any {
     const id = node.attribs.id;
 
-    if (node.attribs.type === 'image' && this.attachments.images) {
-      const attachedImage = this.attachments.images.find((image) => image.id === id);
-
+    function transformImageAttachment(attachedImage) {
       const imageWidth = (windowWidth < attachedImage.width) ? windowWidth : attachedImage.width;
       const imageScale = imageWidth / attachedImage.width;
       const { img } = style;
@@ -44,17 +44,54 @@ export default class AttachmentTagTransformer {
         <ImagePreview
           style={style.img}
           source={{ uri: attachedImage.src }}
-          windowWidth={imageWidth - elementToWindowBorderDistance}
+          width={imageWidth - elementToWindowBorderDistance}
           height={(attachedImage.height - elementToWindowBorderDistance) * imageScale}
           key={0}
         />,
       ];
     }
 
-    if (node.attribs.type === 'video' && this.attachments.videos) {
-      const attachedVideo = this.attachments.videos.find((video) => video.id === id);
-      const videoWidth = (windowWidth < attachedVideo.width) ? windowWidth : attachedVideo.width;
-      const videoScale = videoWidth / attachedVideo.width;
+    function transformGalleryAttachment(galleryNode) {
+      const attachedGallery = galleryNode.attribs;
+      let galleryWidth = windowWidth;
+      let galleryScale = 1;
+
+      if (!!attachedGallery.width && windowWidth < attachedGallery.width) {
+        galleryWidth = attachedGallery.width;
+        galleryScale = galleryWidth / attachedGallery.width;
+      }
+
+      const galleryHeight = attachedGallery.height || FALLBACK_ATTACHMENT_HEIGHT;
+      const { gallery } = style;
+      const { marginLeft, marginRight } = gallery;
+      const elementToWindowBorderDistance = marginLeft + marginRight || 0;
+      const imageSources = galleryNode.children
+                .filter(child => child.name === 'se-attachment' && child.attribs.type === 'image')
+                .map(child => child.attribs.src)
+                .filter(imageUrl => imageUrl);
+
+      return [
+        <ImageGallery
+          style={style.gallery}
+          sources={imageSources}
+          width={galleryWidth - elementToWindowBorderDistance}
+          height={(galleryHeight - elementToWindowBorderDistance) * galleryScale}
+          key={0}
+        />,
+      ];
+    }
+
+    function transformVideoAttachment(attachedVideo) {
+      let videoWidth = windowWidth;
+      let videoScale = 1;
+
+      if (!!attachedVideo.width && windowWidth < attachedVideo.width) {
+        videoWidth = attachedVideo.width;
+        videoScale = videoWidth / attachedVideo.width;
+      }
+
+      const videoHeight = attachedVideo.height || FALLBACK_ATTACHMENT_HEIGHT;
+
       const { video } = style;
       const { marginLeft, marginRight } = video;
       const elementToWindowBorderDistance = marginLeft + marginRight;
@@ -63,14 +100,31 @@ export default class AttachmentTagTransformer {
         <Video
           style={style.video}
           source={attachedVideo.src}
-          windowWidth={videoWidth - elementToWindowBorderDistance}
-          height={(attachedVideo.height - elementToWindowBorderDistance) * videoScale}
+          width={videoWidth - elementToWindowBorderDistance}
+          height={(videoHeight - elementToWindowBorderDistance) * videoScale}
           key={0}
         />,
       ];
     }
 
-    // TODO(Vladimir) - add gallery attachment type when merged to develop
+    if (node.attribs.type === 'image' && this.attachments && this.attachments.images) {
+      const attachedImage = this.attachments.images.find((image) => image.id === id);
+      return transformImageAttachment(attachedImage);
+    }
+
+    if (node.attribs.type === 'video' && this.attachments && this.attachments.videos) {
+      const attachedVideo = this.attachments.videos.find((video) => video.id === id);
+      return transformVideoAttachment(attachedVideo);
+    }
+
+    if (node.attribs.type === 'video' && node.attribs.src) {
+      const attachedVideo = node.attribs;
+      return transformVideoAttachment(attachedVideo);
+    }
+
+    if (node.attribs.type === 'gallery') {
+      return transformGalleryAttachment(node);
+    }
 
     return null;
   }
