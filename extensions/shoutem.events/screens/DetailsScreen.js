@@ -5,7 +5,7 @@ import React, {
   MapView,
 } from 'react-native';
 import { INCLUDE, connectStyle } from 'shoutem/theme';
-import { ShoutemIconButton } from 'shoutem.ui';
+import { ShoutemIconButton, RichMedia } from 'shoutem.ui';
 import Share from 'react-native-share';
 import { toMoment, addToCalendar } from './lib/Calendar';
 
@@ -75,7 +75,11 @@ function Details({
       <View style={style.sectionSeparator} >
         <Text style={style.sectionTitle}>INFORMATION</Text>
       </View>
-      <Text style={style.detailsText}>{item.information}</Text>
+      <View style={style.informationContainer}>
+        <RichMedia
+          body={item.information}
+        />
+      </View>
     </View>
   );
 }
@@ -145,10 +149,6 @@ const style = {
     position: 'relative',
     backgroundColor: '#fff',
     paddingTop: 0,
-  },
-  detailsText: {
-    color: '#666666',
-    padding: 15,
   },
   detailsTitle: {
     [INCLUDE]: ['h1'],
@@ -245,6 +245,11 @@ const style = {
   },
   mapContainer: {
     backgroundColor: 'black',
+  },
+  informationContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    padding: 15,
   },
 };
 
