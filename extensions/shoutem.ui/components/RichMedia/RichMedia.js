@@ -46,6 +46,13 @@ const style = {
       marginBottom: 15,
     },
   },
+  gallery: {
+    marginHorizontal: MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE,
+    container: {
+      marginTop: 8,
+      marginBottom: 15,
+    },
+  },
   p: {
     [INCLUDE]: ['baseFont'],
   },
@@ -70,9 +77,13 @@ function getStyleWithUpdatedMediaElementMargins(oldStyle) {
   const imageStyle = oldStyle.img;
   const imageWithMargins = getMediaElementMargin(imageStyle);
 
+  const galleryStyle = oldStyle.gallery;
+  const galleryWithMargins = getMediaElementMargin(galleryStyle);
+
   return _.merge({}, oldStyle, {
     img: imageWithMargins,
     video: videoWithMargins,
+    gallery: galleryWithMargins,
   });
 }
 
