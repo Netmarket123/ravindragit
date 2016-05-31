@@ -6,7 +6,7 @@ import React, {
   Text,
 } from 'react-native';
 import { INCLUDE, connectStyle } from 'shoutem/theme';
-import { NewsGridBox, RichMedia, ShoutemIconButton } from 'shoutem.ui';
+import { RichMedia, ShoutemIconButton, GridBox, InfoFields } from 'shoutem.ui';
 import * as _ from 'lodash';
 import moment from 'moment';
 import Share from 'react-native-share';
@@ -64,6 +64,14 @@ function createAnimatedHeaderStyle(headerStyle, animatedValue, headerHeight) {
 
 function createAnimatedHeaderTextStyle(headerStyle, animatedValue, headerHeight) {
   return [headerStyle, {
+    backgroundColor: animatedValue.interpolate({
+      inputRange: NAV_BAR_INTERPOLATION_INPUT,
+      outputRange: ['rgba(0,0,0,0.5)', 'rgba(0,0,0,0.75)'],
+    }),
+    opacity: animatedValue.interpolate({
+      inputRange: [windowHeight * 0.15, windowHeight * 0.55],
+      outputRange: [1, 0],
+    }),
     transform: [
       {
         translateY: animatedValue.interpolate({
@@ -80,7 +88,7 @@ function createNavigationBarStyle(scrollY, detailsTopOffset, navBarTextColor) {
     container: {
       backgroundColor: scrollY.interpolate({
         inputRange: NAV_BAR_INTERPOLATION_INPUT,
-        outputRange: ['rgba(0,0,0,0)', 'rgba(255,255,255,0.9)'],
+        outputRange: ['rgba(0,0,0,0)', 'rgba(255,255,255,1)'],
         extrapolate: 'clamp',
       }),
     },
@@ -210,8 +218,8 @@ class ArticleDetailsScreen extends React.Component {
       scrollY,
     } = this.state;
     const headerStyle = createAnimatedHeaderStyle(style.header, scrollY, detailsTopOffset);
-    const headerTextStyle = createAnimatedHeaderTextStyle(style.header, scrollY, detailsTopOffset);
-
+    const headerTextStyleWrapper =
+      createAnimatedHeaderTextStyle(style.header, scrollY, detailsTopOffset);
     this.renderNavBar();
 
     return (
@@ -222,12 +230,14 @@ class ArticleDetailsScreen extends React.Component {
         >
           <View style={style.scrollIndicator} />
         </Animated.Image>
-        <Animated.View style={headerTextStyle}>
-          <NewsGridBox
-            style={style.headline}
-            headline={article.title.toUpperCase()}
-            newsDetails={[article.news_author, moment(article.timeUpdated).fromNow()]}
-          />
+        <Animated.View style={headerTextStyleWrapper}>
+          <GridBox style={style.headline.gridBox}>
+            <Text style={style.headline.title}>{article.title.toUpperCase()}</Text>
+            <InfoFields
+              fields={[article.news_author, moment(article.timeUpdated).fromNow()]}
+              style={style.headline.infoFields}
+            />
+          </GridBox>
         </Animated.View>
         <ScrollView
           automaticallyAdjustContentInsets={false}
@@ -262,14 +272,26 @@ const style = {
   headline: {
     [INCLUDE]: ['shoutem.ui.NewsGridBox.photoCentric'],
     gridBox: {
-      backgroundImage: {
-        resizeMode: 'cover',
-        height: DEFAULT_HEADER_HEIGHT,
-        flex: 0,
+      contentWrapper: {
+        padding: 20,
       },
     },
-    headline: {
+    title: {
+      textAlign: 'center',
+      fontSize: 25,
       backgroundColor: 'transparent',
+      [INCLUDE]: ['h1'],
+    },
+    infoFields: {
+      info: {
+        marginBottom: 30,
+        marginTop: 6,
+      },
+      fieldText: {
+        fontSize: 12,
+        color: '#fff',
+        backgroundColor: 'transparent',
+      },
     },
   },
   header: {
@@ -281,6 +303,8 @@ const style = {
     height: DEFAULT_HEADER_HEIGHT,
     width: null,
     flex: 0,
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
   },
   navBarTitle: {
     [INCLUDE]: ['baseFont', 'navigationBarTextColor'],
@@ -295,7 +319,7 @@ const style = {
     borderStyle: 'solid',
     width: 16,
     height: 16,
-    bottom: 80,
+    marginBottom: 30,
     alignSelf: 'center',
     transform: [{
       rotate: '-45deg',
