@@ -242,6 +242,7 @@ const style = {
     },
     button: {
       marginTop: -5,
+      marginRight: -12,
     },
   },
   map: {
