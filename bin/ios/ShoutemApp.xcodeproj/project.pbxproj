@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -24,6 +25,10 @@
 		14EE14E12C884069B31FAC36 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6D19753EEA2E424EB54C42A0 /* Entypo.ttf */; };
 		22C012825B964AB8BD44C685 /* libRNShare.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7D7F9ACC7A460E84151DD3 /* libRNShare.a */; };
 		272E5BCB1CF9E8C2007AB2C5 /* default-theme-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 272E5BCA1CF9E8C2007AB2C5 /* default-theme-icon-font.ttf */; };
+		27BCC6A31CFDCEEE00F624E7 /* WorkSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27BCC69F1CFDCEEE00F624E7 /* WorkSans-Bold.ttf */; };
+		27BCC6A41CFDCEEE00F624E7 /* WorkSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27BCC6A01CFDCEEE00F624E7 /* WorkSans-SemiBold.ttf */; };
+		27BCC6A51CFDCEEE00F624E7 /* WorkSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27BCC6A11CFDCEEE00F624E7 /* WorkSans-Medium.ttf */; };
+		27BCC6A61CFDCEEE00F624E7 /* WorkSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27BCC6A21CFDCEEE00F624E7 /* WorkSans-Regular.ttf */; };
 		2CCFD9260872413BA08ADE6E /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B165BA48BA954339BF78C0C3 /* Foundation.ttf */; };
 		43DDD9C76F4C4DA9BB361B45 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4009DD4D136A4A039DD3CA2A /* Octicons.ttf */; };
 		479A6A9A61DF4219AD22A45E /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CF69CC3BE124D44B3B9B074 /* libRNVectorIcons.a */; };
@@ -179,6 +184,10 @@
 		146F89521CEA5C270065FC7B /* Rubik-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Rubik-Regular.ttf"; path = "../assets/fonts/Rubik-Regular.ttf"; sourceTree = "<group>"; };
 		1F215385F682417CA8ED6E6B /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		272E5BCA1CF9E8C2007AB2C5 /* default-theme-icon-font.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "default-theme-icon-font.ttf"; path = "../assets/fonts/default-theme-icon-font.ttf"; sourceTree = "<group>"; };
+		27BCC69F1CFDCEEE00F624E7 /* WorkSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "WorkSans-Bold.ttf"; path = "../assets/fonts/WorkSans-Bold.ttf"; sourceTree = "<group>"; };
+		27BCC6A01CFDCEEE00F624E7 /* WorkSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "WorkSans-SemiBold.ttf"; path = "../assets/fonts/WorkSans-SemiBold.ttf"; sourceTree = "<group>"; };
+		27BCC6A11CFDCEEE00F624E7 /* WorkSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "WorkSans-Medium.ttf"; path = "../assets/fonts/WorkSans-Medium.ttf"; sourceTree = "<group>"; };
+		27BCC6A21CFDCEEE00F624E7 /* WorkSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "WorkSans-Regular.ttf"; path = "../assets/fonts/WorkSans-Regular.ttf"; sourceTree = "<group>"; };
 		348D9387F83D466FAFE0122F /* libCalendarManager.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libCalendarManager.a; sourceTree = "<group>"; };
 		3CF69CC3BE124D44B3B9B074 /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		4009DD4D136A4A039DD3CA2A /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
@@ -433,6 +442,10 @@
 		E66035ACF78043E086CDCB89 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				27BCC69F1CFDCEEE00F624E7 /* WorkSans-Bold.ttf */,
+				27BCC6A01CFDCEEE00F624E7 /* WorkSans-SemiBold.ttf */,
+				27BCC6A11CFDCEEE00F624E7 /* WorkSans-Medium.ttf */,
+				27BCC6A21CFDCEEE00F624E7 /* WorkSans-Regular.ttf */,
 				146F89521CEA5C270065FC7B /* Rubik-Regular.ttf */,
 				6D19753EEA2E424EB54C42A0 /* Entypo.ttf */,
 				759F68D70E6540D599EA001E /* EvilIcons.ttf */,
@@ -712,10 +725,14 @@
 				803336D7B5C34112BAD50388 /* EvilIcons.ttf in Resources */,
 				9E9E651E6B2047CFAE932FC4 /* FontAwesome.ttf in Resources */,
 				2CCFD9260872413BA08ADE6E /* Foundation.ttf in Resources */,
+				27BCC6A61CFDCEEE00F624E7 /* WorkSans-Regular.ttf in Resources */,
 				146F89531CEA5C270065FC7B /* Rubik-Regular.ttf in Resources */,
 				F70D8A1E2D2C4127BBFE1722 /* Ionicons.ttf in Resources */,
+				27BCC6A41CFDCEEE00F624E7 /* WorkSans-SemiBold.ttf in Resources */,
 				74294E4C5B304CBE9C0E5C8D /* MaterialIcons.ttf in Resources */,
+				27BCC6A31CFDCEEE00F624E7 /* WorkSans-Bold.ttf in Resources */,
 				43DDD9C76F4C4DA9BB361B45 /* Octicons.ttf in Resources */,
+				27BCC6A51CFDCEEE00F624E7 /* WorkSans-Medium.ttf in Resources */,
 				5F768FBA668947E8B76832F3 /* Zocial.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

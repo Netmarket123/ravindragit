@@ -230,7 +230,7 @@ export class ArticlesListScreen extends Component {
   renderSectionHeader(section) {
     const { style } = this.props;
     if (section === Sections.RECENT) {
-      return <Text style={style.sectionHeader}>Recent</Text>;
+      return <Text style={style.sectionHeader}>RECENT NEWS</Text>;
     }
     return null;
   }
