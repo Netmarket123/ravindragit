@@ -3,7 +3,7 @@ function getScaledValue(value, ratio) {
     return value;
   }
 
-  return Math.floor(value * ratio);
+  return Math.ceil(value * ratio);
 }
 
 /**
