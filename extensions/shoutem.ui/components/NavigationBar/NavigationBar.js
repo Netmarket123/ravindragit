@@ -74,6 +74,7 @@ function NavigationBar({
   navigateBack,
   hasHistory,
   backgroundImage,
+  id,
   leftComponent: leftComponentProp,
 }) {
   const leftComponent = leftComponentProp ||
@@ -81,8 +82,9 @@ function NavigationBar({
 
   const backgroundColor = getBackgroundColor(style);
   setStatusBarStyle(backgroundColor);
+  // Key must be set to render new screen NavigationBar
   return (
-    <Animated.View style={style.container}>
+    <Animated.View style={style.container} key={id}>
       <StatusBar
         translucent
       />
@@ -105,6 +107,7 @@ NavigationBar.propTypes = {
   style: React.PropTypes.object,
   hasHistory: React.PropTypes.bool,
   navigateBack: React.PropTypes.func,
+  id: React.PropTypes.number,
 };
 
 const style = {

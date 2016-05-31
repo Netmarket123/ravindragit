@@ -48,7 +48,8 @@ export default class NavigationBarStateManager {
 
   setState(state, route) {
     const oldState = this.state;
-    const newState = _.assign({}, state);
+    // Used as NavigationBar key to render new screen navigation bar
+    const newState = _.assign({}, state, { id: route.id });
 
     if (!this.isRouteRemoved(route) && this.stateShouldChange(route, newState)) {
       this.routeStates.set(route, newState);

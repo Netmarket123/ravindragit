@@ -37,12 +37,20 @@ export class ScreenNavigator extends Component {
     this.initialRoute = props.initialRoute;
     this.navBarManager = props.renderNavigationBar ? new NavigationBarStateManager()
       : this.context.parentNavigator.navBarManager;
+    this.routeStack = [];
   }
 
   getChildContext() {
     return {
       parentNavigator: this,
     };
+  }
+
+  getLastRouteIndex() {
+    if (!this.navigator) {
+      return 0;
+    }
+    return this.navigator.getCurrentRoutes().length + 1;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -163,7 +171,11 @@ export class ScreenNavigator extends Component {
         renderScene={this.renderScene}
         navigationBar={this.renderNavigationBar()}
         onDidFocus={this.onRouteChanged}
-        onWillFocus={() => {
+        onWillFocus={(route) => {
+          if (!route.id) {
+            // Used as NavigationBar key to render new screen navigation bar
+            route.id = this.props.name + this.getLastRouteIndex();
+          }
           this.props.blockActions();
         }}
       />
