@@ -84,8 +84,8 @@
       "attributes": {
         "canonicalName": "shoutem.news.openListScreen",
         "title": "Shoutem news list screen",
-        "iconUrl": "http://s3.amazonaws.com/kanta/icons/RHg2VptVJ023xx92EJmAQA.png",
-        "highlightedIconUrl": "http://s3.amazonaws.com/kanta/icons/usdqEpn9eUOesEA_1at62g.png",
+        "iconUrl": "http://s3.amazonaws.com/kanta/icons/T7Wzk6-mcUCbv_vUsmv_kw.png",
+        "highlightedIconUrl": "http://s3.amazonaws.com/kanta/icons/C0HoGhBsnUKmqMT5gnxTbg.png",
         "action": "shoutem.news.openListScreen",
         "settings": {
           "appId": "2056",
@@ -101,8 +101,8 @@
       "attributes": {
         "canonicalName": "shoutem.events.openListScreen",
         "title": "Events",
-        "iconUrl": "http://s3.amazonaws.com/kanta/icons/dLoMYN0GfUWs7IbRNH7wdA.png",
-        "highlightedIconUrl": "http://s3.amazonaws.com/kanta/icons/ORvopLR6uEGOLk8Gz04KzQ.png",
+        "iconUrl": "http://s3.amazonaws.com/kanta/icons/zaC7rxQQBku8CKmmjMjP7Q.png",
+        "highlightedIconUrl": "http://s3.amazonaws.com/kanta/icons/mkRM7m-5SkWpM2eOMl5vqw.png",
         "action": "shoutem.events.openListScreen",
         "settings": {
           "appId": "2056",
