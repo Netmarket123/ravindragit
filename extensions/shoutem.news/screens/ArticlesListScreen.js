@@ -98,6 +98,9 @@ export class ArticlesListScreen extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
+    if (nextProps === this.props) {
+      return false;
+    }
     const newsBusy = isBusy(nextProps.newsCollection);
     const categoriesBusy = isBusy(nextProps.categoriesCollection);
     if (newsBusy || categoriesBusy) {
