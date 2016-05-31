@@ -249,6 +249,9 @@ export default (variables) => ({
       lineHeight: 24,
     },
     a: {
+      [INCLUDE]: ['baseFont'],
+      fontSize: 16,
+      lineHeight: 24,
       color: variables.brandColor,
     },
   },
