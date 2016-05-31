@@ -64,10 +64,6 @@ function createAnimatedHeaderStyle(headerStyle, animatedValue, headerHeight) {
 
 function createAnimatedHeaderTextStyle(headerStyle, animatedValue, headerHeight) {
   return [headerStyle, {
-    backgroundColor: animatedValue.interpolate({
-      inputRange: NAV_BAR_INTERPOLATION_INPUT,
-      outputRange: ['rgba(0,0,0,0.3)', 'rgba(0,0,0,0.75)'],
-    }),
     opacity: animatedValue.interpolate({
       inputRange: [windowHeight * 0.15, windowHeight * 0.55],
       outputRange: [1, 0],
@@ -81,6 +77,19 @@ function createAnimatedHeaderTextStyle(headerStyle, animatedValue, headerHeight)
       },
     ],
   }];
+}
+
+function createAnimatedHeaderOverlay(animatedValue) {
+  return {
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    position: 'relative',
+    flex: 1,
+    backgroundColor: animatedValue.interpolate({
+      inputRange: NAV_BAR_INTERPOLATION_INPUT,
+      outputRange: ['rgba(0,0,0,0.6)', 'rgba(0,0,0,0.75)'],
+    }),
+  };
 }
 
 function createNavigationBarStyle(scrollY, detailsTopOffset, navBarTextColor) {
@@ -218,6 +227,7 @@ class ArticleDetailsScreen extends React.Component {
       scrollY,
     } = this.state;
     const headerStyle = createAnimatedHeaderStyle(style.header, scrollY, detailsTopOffset);
+    const headerOverlayStyle = createAnimatedHeaderOverlay(scrollY);
     const headerTextStyleWrapper =
       createAnimatedHeaderTextStyle(style.header, scrollY, detailsTopOffset);
     this.renderNavBar();
@@ -228,7 +238,9 @@ class ArticleDetailsScreen extends React.Component {
           style={headerStyle}
           source={{ uri: _.get(article, 'image.url') }}
         >
-          <View style={style.scrollIndicator} />
+          <Animated.View style={headerOverlayStyle} >
+            <View style={style.scrollIndicator} />
+          </Animated.View>
         </Animated.Image>
         <Animated.View style={headerTextStyleWrapper}>
           <GridBox style={style.headline.gridBox}>
@@ -304,8 +316,6 @@ const style = {
     height: DEFAULT_HEADER_HEIGHT,
     width: null,
     flex: 0,
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
   },
   navBarTitle: {
     [INCLUDE]: ['baseFont', 'navigationBarTextColor'],
