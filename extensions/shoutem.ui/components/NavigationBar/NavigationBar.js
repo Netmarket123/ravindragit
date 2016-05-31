@@ -80,7 +80,7 @@ function NavigationBar({
   return (
     <Animated.View style={style.container}>
       <StatusBar
-        transculent
+        translucent
       />
       <Image source={backgroundImage} style={style.backgroundImage}>
         <View style={style.componentsContainer}>
