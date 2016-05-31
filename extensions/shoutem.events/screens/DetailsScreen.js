@@ -247,10 +247,16 @@ const style = {
     width: null,
   },
   shareButton: {
+    buttonContainer: {
+    },
     buttonIcon: {
       fontSize: 24,
       width: 40,
       height: 40,
+    },
+    button: {
+      marginTop: -5,
+      marginRight: -12,
     },
   },
   map: {

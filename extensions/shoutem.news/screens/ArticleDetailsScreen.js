@@ -380,6 +380,7 @@ const style = {
       height: 30,
       paddingLeft: 16,
       paddingBottom: 10,
+      marginTop: -5,
       paddingRight: 4,
       flexDirection: 'row',
       justifyContent: 'flex-end',
