@@ -43,8 +43,15 @@ function createAnimatedHeaderStyle(headerStyle, animatedValue, headerHeight) {
     transform: [
       {
         translateY: animatedValue.interpolate({
+          inputRange: [0, headerHeight],
+          outputRange: [0, -headerHeight / 3],
+          extrapolate: 'clamp',
+        }),
+      },
+      {
+        scale: animatedValue.interpolate({
           inputRange: [-headerHeight, 0, headerHeight],
-          outputRange: [headerHeight / 2, 0, -headerHeight / 3],
+          outputRange: [1.75, 1, 1],
         }),
       },
     ],
@@ -197,7 +204,7 @@ class ArticleDetailsScreen extends React.Component {
           <NewsGridBox
             style={style.headline}
             headline={article.title.toUpperCase()}
-            newsDetails={[article.author, moment(article.timeUpdated).fromNow()]}
+            newsDetails={[article.news_author, moment(article.timeUpdated).fromNow()]}
             backgroundImage={{ uri: _.get(article, 'image.url'), width: 200, height: 200 }}
           />
           <View style={style.scrollIndicator} />
