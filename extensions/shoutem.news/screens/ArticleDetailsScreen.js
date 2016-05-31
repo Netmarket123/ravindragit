@@ -87,7 +87,8 @@ function createAnimatedHeaderOverlay(animatedValue) {
     flex: 1,
     backgroundColor: animatedValue.interpolate({
       inputRange: NAV_BAR_INTERPOLATION_INPUT,
-      outputRange: ['rgba(0,0,0,0.6)', 'rgba(0,0,0,0.75)'],
+      outputRange: ['rgba(0,0,0,0.3)', 'rgba(0,0,0,0.6)'],
+      extrapolate: 'clamp',
     }),
   };
 }
@@ -385,12 +386,10 @@ const style = {
       },
       contentWrapper: {
         backgroundColor: 'rgba(0,0,0,0.35)',
+        padding: 15,
+        flex: 1,
+        flexDirection: 'column',
       },
-    },
-    contentWrapper: {
-      padding: 15,
-      flex: 1,
-      flexDirection: 'column',
     },
     label: {
       marginBottom: 40,

@@ -39,13 +39,13 @@ class NextArticle extends React.Component {
     } = this.props;
     const backgroundImage = { uri: _.get(article, 'image.url') };
     return (
-      <GridBox
-        style={style.gridBox}
-        backgroundImage={backgroundImage}
+      <TouchableOpacity
+        activeOpacity={0.69 + 0.1}
+        onPress={this.openNextArticle}
       >
-        <TouchableOpacity
-          style={style.contentWrapper}
-          onPress={this.openNextArticle}
+        <GridBox
+          style={style.gridBox}
+          backgroundImage={backgroundImage}
         >
           <View>
             <Text style={style.label}>UP NEXT</Text>
@@ -56,8 +56,8 @@ class NextArticle extends React.Component {
               {article.title}
             </Text>
           </View>
-        </TouchableOpacity>
-      </GridBox>
+        </GridBox>
+      </TouchableOpacity>
     );
   }
 }
