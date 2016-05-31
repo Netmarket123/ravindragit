@@ -11,7 +11,7 @@ import type {
 } from './types';
 
 const LINE_BREAK = '\n';
-const PARAGRAPH_BREAK = '\n\n';
+const PARAGRAPH_BREAK = '\n';
 const BULLET = '\u2022 ';
 
 // TODO(Vladimir) - split into multiple files, each implementing the TagTransformer interface

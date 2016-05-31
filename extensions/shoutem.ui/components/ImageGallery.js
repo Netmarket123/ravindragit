@@ -4,11 +4,18 @@ import React, {
 
 import ImagePreview from './ImagePreview';
 import HorizontalPager from './HorizontalPager';
+import { connectStyle } from 'shoutem/theme';
 
 const propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
   sources: PropTypes.arrayOf(PropTypes.string),
+};
+
+const style = {
+  imagePreview: {
+    image: {},
+  },
 };
 
 function renderImagePreview({
@@ -40,7 +47,7 @@ renderImagePreview.propTypes = {
  *
  * @returns {*}
  */
-export default function ImageGallery({
+function ImageGallery({
   sources,
   width,
   height,
@@ -66,3 +73,5 @@ export default function ImageGallery({
 }
 
 ImageGallery.propTypes = propTypes;
+
+export default connectStyle('shoutem.ui.ImageGallery', style)(ImageGallery);
