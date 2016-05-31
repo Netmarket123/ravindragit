@@ -244,6 +244,7 @@ class ListScreen extends Component {
           categories={categories}
           categorySelected={this.categorySelected}
           selectedCategory={selectedCategory}
+          style={style.categoriesDropDown}
         />
       </View>
     );
@@ -320,6 +321,11 @@ const style = {
     paddingVertical: 11,
     borderTopColor: '#e5e5e5',
     borderTopWidth: 1,
+  },
+  categoriesDropDown: {
+    popUpButton: {
+      buttonText: {},
+    },
   },
 };
 

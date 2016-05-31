@@ -11,19 +11,20 @@ class EventsCategoriesDropdownMenu extends React.Component {
     super(props, context);
     this.onCategorySelect = this.onCategorySelect.bind(this);
   }
-  
+
   onCategorySelect(category) {
     this.props.categorySelected(category);
   }
 
   render() {
-    const { categories, selectedCategory } = this.props;
+    const { categories, selectedCategory, style } = this.props;
 
     return (<DropDownMenu
       items={categories}
       bindings={{ text: 'name', value: 'id' }}
       onItemSelected={this.onCategorySelect}
       selectedItem={selectedCategory}
+      style={style}
     />);
   }
 }
@@ -35,6 +36,7 @@ EventsCategoriesDropdownMenu.propTypes = {
   selectedCategory: React.PropTypes.object,
   getEventsCategories: React.PropTypes.func,
   categorySelected: React.PropTypes.func,
+  style: React.PropTypes.object,
 };
 
 function mapStateToProps(state) {

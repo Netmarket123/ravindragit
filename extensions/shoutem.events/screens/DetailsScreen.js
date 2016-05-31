@@ -29,7 +29,7 @@ function Details({
   const markers = [{
     latitude: 48.83367,
     longitude: 2.39423,
-    image: require('../assets/images/icon-pin-white@3x.png'),
+    image: require('../assets/images/pin_dark@3x.png'),
   }];
 
   // TODO(Vladimir) - determine the source from which to obtain this information
@@ -114,7 +114,7 @@ function DetailsScreen({
     rightComponent: shareButton,
     style: {
       container: {
-        backgroundColor: 'rgba(255, 255, 255, 0)',
+        backgroundColor: 'rgba(255, 255, 255, 1)',
       },
     },
   });
