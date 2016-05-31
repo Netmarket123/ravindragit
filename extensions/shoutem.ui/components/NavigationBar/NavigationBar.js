@@ -42,14 +42,24 @@ function navigationBarBackButton(hasHistory, navigateBack, style) {
   return backButton;
 }
 
-function setStatusBarStyle(bg) {
-  if (bg._parent instanceof Animated.Value) {
-    bg._parent.addListener((animation) => {
-      const barStyle = color(bg._interpolation(animation.value)).isDark() ? 'light-content' : 'default';
+function setStatusBarStyle(backgroundColor) {
+  function chooseBarStyle(bgColor) {
+    return color(bgColor).isDark() ? 'light-content' : 'default';
+  }
+
+  // This is little bit hacky, but is the only way
+  // to determine the current value of interpolated Animated.Value
+  // Other way would be to ask developer to provide Animated.Value
+  // used to interpolate backgroundColor. But this way developer doesn't
+  // have to concern about status bar if he animates navigation bar color
+  if (backgroundColor._parent instanceof Animated.Value) {
+    backgroundColor._parent.addListener((animation) => {
+      const barStyle = chooseBarStyle(backgroundColor._interpolation(animation.value));
       StatusBar.setBarStyle(barStyle);
     });
   } else {
-    StatusBar.setBarStyle(color(bg).isDark() ? 'light-content' : 'default');
+    const barStyle = chooseBarStyle(backgroundColor);
+    StatusBar.setBarStyle(barStyle);
   }
 }
 
@@ -65,8 +75,8 @@ function NavigationBar({
   const leftComponent = leftComponentProp ||
     navigationBarBackButton(hasHistory, navigateBack, style);
 
-  const bg = getBackgroundColor(style);
-  setStatusBarStyle(bg);
+  const backgroundColor = getBackgroundColor(style);
+  setStatusBarStyle(backgroundColor);
   return (
     <Animated.View style={style.container}>
       <StatusBar
