@@ -66,7 +66,7 @@ function createAnimatedHeaderTextStyle(headerStyle, animatedValue, headerHeight)
   return [headerStyle, {
     backgroundColor: animatedValue.interpolate({
       inputRange: NAV_BAR_INTERPOLATION_INPUT,
-      outputRange: ['rgba(0,0,0,0.5)', 'rgba(0,0,0,0.75)'],
+      outputRange: ['rgba(0,0,0,0.3)', 'rgba(0,0,0,0.75)'],
     }),
     opacity: animatedValue.interpolate({
       inputRange: [windowHeight * 0.15, windowHeight * 0.55],
@@ -273,12 +273,13 @@ const style = {
     [INCLUDE]: ['shoutem.ui.NewsGridBox.photoCentric'],
     gridBox: {
       contentWrapper: {
-        padding: 20,
+        padding: 40,
       },
     },
     title: {
       textAlign: 'center',
-      fontSize: 25,
+      fontSize: 22,
+      lineHeight: 25,
       backgroundColor: 'transparent',
       [INCLUDE]: ['h1'],
     },
@@ -288,7 +289,7 @@ const style = {
         marginTop: 6,
       },
       fieldText: {
-        fontSize: 12,
+        fontSize: 13,
         color: '#fff',
         backgroundColor: 'transparent',
       },
@@ -354,11 +355,17 @@ const style = {
   },
   shareButton: {
     [INCLUDE]: ['navigationBarTextColor'],
+    buttonContainer: {
+    },
+    button: {
+      width: 40,
+      height: 30,
+      paddingRight: 4,
+      justifyContent: 'flex-end',
+    },
     buttonIcon: {
       [INCLUDE]: ['navigationBarTextColor'],
       fontSize: 24,
-      width: 40,
-      height: 40,
     },
   },
   upNext: {
@@ -368,22 +375,23 @@ const style = {
       },
       contentWrapper: {
         backgroundColor: 'rgba(0,0,0,0.35)',
-        padding: 15,
       },
     },
     contentWrapper: {
+      padding: 15,
       flex: 1,
       flexDirection: 'column',
-      opacity: 0.5,
     },
     label: {
       marginBottom: 40,
       [INCLUDE]: ['baseFont'],
       fontSize: 15,
+      fontWeight: '500',
       color: '#fff',
     },
     articleTitle: {
       [INCLUDE]: ['baseFont'],
+      fontWeight: '500',
       color: '#fff',
       fontSize: 16,
       width: 250,

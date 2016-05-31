@@ -1,7 +1,7 @@
 import React, {
   View,
   Text,
-  TouchableHighlight,
+  TouchableOpacity,
 } from 'react-native';
 import _ from 'lodash';
 import { GridBox } from 'shoutem.ui';
@@ -43,8 +43,7 @@ class NextArticle extends React.Component {
         style={style.gridBox}
         backgroundImage={backgroundImage}
       >
-        <TouchableHighlight
-          activeOpacity={1}
+        <TouchableOpacity
           style={style.contentWrapper}
           onPress={this.openNextArticle}
         >
@@ -57,7 +56,7 @@ class NextArticle extends React.Component {
               {article.title}
             </Text>
           </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
       </GridBox>
     );
   }
