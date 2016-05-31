@@ -18,7 +18,7 @@ function NewsGridBox({
 }) {
   return (
     <GridBox style={style.gridBox} backgroundImage={backgroundImage}>
-      <Text style={style.headline}>{headline}</Text>
+      <Text style={style.headline} numberOfLines={4}>{headline}</Text>
       <InfoFields
         fields={newsDetails}
         fieldsSeparator={newsDetailsSeparator}

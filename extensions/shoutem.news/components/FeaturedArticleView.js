@@ -40,7 +40,7 @@ export default class FeaturedArticleView extends React.Component {
         <NewsGridBox
           backgroundImage={{ uri: _.get(article, 'image.url') }}
           headline={(article.title || '').toUpperCase()}
-          newsDetails={[[article.news_author, moment(article.timeUpdated).fromNow()].join('')]}
+          newsDetails={[[article.news_author, moment(article.timeUpdated).fromNow()].join('      ')]}
           style={style}
         />
       </TouchableOpacity>

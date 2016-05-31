@@ -3,6 +3,7 @@ import React, {
   ScrollView,
   Text,
   MapView,
+  Animated,
 } from 'react-native';
 import { INCLUDE, connectStyle } from 'shoutem/theme';
 import { ShoutemIconButton, RichMedia } from 'shoutem.ui';
@@ -89,6 +90,12 @@ Details.propTypes = {
   style: React.PropTypes.object,
 };
 
+function getScrollHandle(scrollY) {
+  return Animated.event(
+    [{ nativeEvent: { contentOffset: { y: scrollY } } }]
+  );
+}
+
 function DetailsScreen({
   item,
   style,
@@ -109,12 +116,18 @@ function DetailsScreen({
     onPress={onShare}
     style={style.shareButton}
   />);
+  const scrollY = new Animated.Value(0);
 
   setNavBarProps({
     rightComponent: shareButton,
     style: {
       container: {
-        backgroundColor: 'rgba(255, 255, 255, 1)',
+        borderBottomColor: scrollY.interpolate({
+          inputRange: [0, 150],
+          outputRange: ['rgba(0,0,0,0)', 'rgba(51, 51, 51, 0.2)'],
+          extrapolate: 'clamp',
+        }),
+        borderBottomWidth: 1,
       },
     },
   });
@@ -124,7 +137,8 @@ function DetailsScreen({
       <ScrollView
         automaticallyAdjustContentInsets={false}
         style={style.container}
-        scrollEventThrottle={16}
+        scrollEventThrottle={1}
+        onScroll={getScrollHandle(scrollY)}
       >
         <Details item={item} style={style} />
       </ScrollView>

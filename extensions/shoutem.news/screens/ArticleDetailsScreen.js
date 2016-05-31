@@ -101,6 +101,13 @@ function createNavigationBarStyle(scrollY, detailsTopOffset, navBarTextColor) {
         outputRange: ['rgba(0,0,0,0)', 'rgba(255,255,255,1)'],
         extrapolate: 'clamp',
       }),
+      borderWidth: 0,
+      borderBottomColor: scrollY.interpolate({
+        inputRange: NAV_BAR_INTERPOLATION_INPUT,
+        outputRange: ['rgba(0,0,0,0)', 'rgba(51, 51, 51, 0.2)'],
+        extrapolate: 'clamp',
+      }),
+      borderBottomWidth: 1,
     },
     defaultBackButton: {
       buttonIcon: {

@@ -312,6 +312,9 @@ export default (variables) => ({
         lineHeight: 25,
       },
     },
+    navBarTitle: {
+      fontWeight: '500',
+    },
   },
   'shoutem.events.ListScreen': {
     categoriesDropDown: {
