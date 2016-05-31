@@ -64,6 +64,7 @@ export default class HomeScreen extends Component {
       style: {
         container: {
           height: 0,
+          backgroundColor: 'rgba(0,0,0,0)', // TODO(Vladimir) - read statusbar color setting
         },
       },
     });
