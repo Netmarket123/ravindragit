@@ -313,7 +313,7 @@ const style = {
     },
     buttonIcon: {
       color: '#333333',
-      fontSize: 24,
+      fontSize: 20,
     },
   },
   categorySelector: {
