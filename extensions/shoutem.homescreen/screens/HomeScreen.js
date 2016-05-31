@@ -60,7 +60,10 @@ function getScrollerComponentForScrollType(type) {
 
 export default class HomeScreen extends Component {
   hideNavigationBar() {
+    // Ensure that back button is not shown
+    const emptyView = <View />;
     this.props.setNavBarProps({
+      leftComponent: emptyView,
       style: {
         container: {
           height: 0,

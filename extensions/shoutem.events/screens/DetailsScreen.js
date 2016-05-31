@@ -183,7 +183,7 @@ const style = {
     buttonContainer: {
       backgroundColor: '#333333',
       borderRadius: 2,
-      width: 170,
+      width: 160,
       alignSelf: 'center',
       marginTop: 13,
       marginBottom: 20,
@@ -196,7 +196,7 @@ const style = {
     },
     buttonIcon: {
       marginRight: 10,
-      fontSize: 24,
+      fontSize: 20,
       color: '#fff',
     },
     buttonText: {
