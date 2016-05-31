@@ -33,7 +33,7 @@ class DropDownMenu extends Component {
     super(props);
     this.state = {
       ...props,
-      dropDownAnimation: new Animated.Value(0)
+      dropDownAnimation: new Animated.Value(0),
     };
     this.collapse = this.collapse.bind(this);
     this.close = this.close.bind(this);
