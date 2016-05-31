@@ -145,6 +145,7 @@ const style = {
     paddingTop: 25,
     paddingBottom: 10,
     fontSize: 12,
+    fontWeight: '600',
   },
   featuredItem: {
     gridBox: {

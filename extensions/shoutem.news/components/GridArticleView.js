@@ -38,6 +38,7 @@ export default class GridArticleView extends React.Component {
         image={{ uri: _.get(article, 'image.url') }}
         leftExtra={moment(article.timeUpdated).fromNow()}
         id={article.id}
+        numberOfLines={3}
         style={style}
         onPress={this.onPress}
         fallbackImage={require('../assets/images/image-fallback.png')}
