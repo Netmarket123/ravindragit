@@ -249,6 +249,9 @@ export default (variables) => ({
       lineHeight: 24,
     },
     a: {
+      [INCLUDE]: ['baseFont'],
+      fontSize: 16,
+      lineHeight: 24,
       color: variables.brandColor,
     },
   },
@@ -283,6 +286,9 @@ export default (variables) => ({
       gridBox: {
         container: {
           backgroundColor: '#fff',
+        },
+        contentWrapper: {
+          backgroundColor: 'rgba(0, 0, 0, 0.3)',
         },
       },
       infoFields: {
