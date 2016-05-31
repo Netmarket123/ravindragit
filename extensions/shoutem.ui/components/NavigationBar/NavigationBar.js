@@ -42,6 +42,17 @@ function navigationBarBackButton(hasHistory, navigateBack, style) {
   return backButton;
 }
 
+function setStatusBarStyle(bg) {
+  if (bg._parent instanceof Animated.Value) {
+    bg._parent.addListener((animation) => {
+      const barStyle = color(bg._interpolation(animation.value)).isDark() ? 'light-content' : 'default';
+      StatusBar.setBarStyle(barStyle);
+    });
+  } else {
+    StatusBar.setBarStyle(color(bg).isDark() ? 'light-content' : 'default');
+  }
+}
+
 function NavigationBar({
   style,
   centerComponent,
@@ -55,12 +66,10 @@ function NavigationBar({
     navigationBarBackButton(hasHistory, navigateBack, style);
 
   const bg = getBackgroundColor(style);
-  const statusBarStyle = bg && color(bg).isDark() ? 'light-content' : 'default';
-
+  setStatusBarStyle(bg);
   return (
     <Animated.View style={style.container}>
       <StatusBar
-        barStyle={statusBarStyle}
         transculent
       />
       <Image source={backgroundImage} style={style.backgroundImage}>
