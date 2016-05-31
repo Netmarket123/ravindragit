@@ -16,12 +16,26 @@ export default (variables) => ({
   navigationBarTextColor: {
     color: variables.brandColor,
   },
+  navigationBarTitle: {
+    [INCLUDE]: ['navigationBarTextColor'],
+    fontSize: 15,
+    fontWeight: '500',
+  },
   screen: {
     flexDirection: 'column',
     alignItems: 'stretch',
     flex: 1,
     backgroundColor: '#f2f2f2',
     paddingTop: 70,
+  },
+  'shoutem.ui.DropDownMenu': {
+    popUpButton: {
+      buttonText: {
+        [INCLUDE]: ['baseFont'],
+        fontWeight: '500',
+        fontSize: 15,
+      },
+    },
   },
   'shoutem.ui.NewsGridBox.photoCentric': {
     gridBox: {
@@ -82,6 +96,7 @@ export default (variables) => ({
       alignItems: 'center',
     },
     itemTitle: {
+      [INCLUDE]: ['baseFont'],
       flex: 1,
       fontSize: 15,
       color: '#222',
@@ -93,11 +108,15 @@ export default (variables) => ({
       marginHorizontal: 10,
     },
     leftExtra: {
+      [INCLUDE]: ['baseFont'],
       fontSize: 12,
+      fontWeight: '500',
       color: '#888',
     },
     rightExtra: {
+      [INCLUDE]: ['baseFont'],
       fontSize: 12,
+      fontWeight: '500',
       color: '#888',
     },
     mediumListItemButton: {
@@ -258,7 +277,7 @@ export default (variables) => ({
         },
       },
       navigationBarTitle: {
-        fontWeight: '500',
+        [INCLUDE]: ['navigationBarTitle'],
       },
     },
     featuredItem: {
@@ -289,6 +308,22 @@ export default (variables) => ({
       },
     },
   },
+  'shoutem.events.ListScreen': {
+    categoriesDropDown: {
+      popUpButton: {
+        buttonText: {
+          [INCLUDE]: ['baseFont'],
+          fontWeight: '500',
+          fontSize: 15,
+        },
+      },
+    },
+    navigation: {
+      navigationBarTitle: {
+        [INCLUDE]: ['navigationBarTitle'],
+      },
+    },
+  },
   'shoutem.events.DetailsScreen': {
     button: {
       buttonContainer: {
@@ -302,15 +337,23 @@ export default (variables) => ({
     },
     detailsTitle: {
       color: variables.brandColor,
+      fontWeight: '500',
+      fontSize: 22,
+      lineHeight: 25,
+      paddingHorizontal: 40,
     },
     dateSeparator: {
       backgroundColor: variables.brandColor,
+      width: 174,
     },
     timeText: {
       color: variables.brandColor,
+      fontSize: 13,
     },
     sectionTitle: {
+      [INCLUDE]: ['baseFont'],
       fontSize: 12,
+      fontWeight: '600',
     },
     sectionSeparator: {
       borderTopColor: '#e5e5e5',

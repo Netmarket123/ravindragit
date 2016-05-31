@@ -204,6 +204,7 @@ const style = {
     [INCLUDE]: ['baseFont'],
     textAlign: 'center',
     flex: 1,
+    fontSize: 16,
     width: 200,
     paddingHorizontal: 20,
     alignSelf: 'center',
