@@ -47,6 +47,11 @@ function setStatusBarStyle(backgroundColor) {
     return color(bgColor).isDark() ? 'light-content' : 'default';
   }
 
+  function setStyle(bgColor) {
+    const barStyle = chooseBarStyle(bgColor);
+    StatusBar.setBarStyle(barStyle);
+  }
+
   // This is little bit hacky, but is the only way
   // to determine the current value of interpolated Animated.Value
   // Other way would be to ask developer to provide Animated.Value
@@ -54,12 +59,11 @@ function setStatusBarStyle(backgroundColor) {
   // have to concern about status bar if he animates navigation bar color
   if (backgroundColor._parent instanceof Animated.Value) {
     backgroundColor._parent.addListener((animation) => {
-      const barStyle = chooseBarStyle(backgroundColor._interpolation(animation.value));
-      StatusBar.setBarStyle(barStyle);
+      setStyle(backgroundColor._interpolation(animation.value));
     });
+    setStyle(backgroundColor._interpolation(0));
   } else {
-    const barStyle = chooseBarStyle(backgroundColor);
-    StatusBar.setBarStyle(barStyle);
+    setStyle(backgroundColor);
   }
 }
 
