@@ -10,21 +10,10 @@ class EventsCategoriesDropdownMenu extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.onCategorySelect = this.onCategorySelect.bind(this);
-    props.getEventsCategories(props.parentCategoryId, props.settings);
   }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.categories.length > 0 && !nextProps.selectedCategory) {
-      // TODO(Braco) - confirm if this is good way to select first item by default
-      this.onCategorySelect(nextProps.categories[0]);
-    }
-  }
-
+  
   onCategorySelect(category) {
-    if (this.props.categorySelected) {
-      // if "All" selected, emit null as selectedCategory
-      this.props.categorySelected(category);
-    }
+    this.props.categorySelected(category);
   }
 
   render() {

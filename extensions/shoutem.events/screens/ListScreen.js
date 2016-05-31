@@ -3,15 +3,35 @@ import React, {
   Component,
   Text,
 } from 'react-native';
+import { ReduxApiStateDenormalizer, isBusy } from '@shoutem/redux-api-state';
+import { SHOUTEM_EVENTS_EXT_NAME } from '../index';
+import {
+  SHOUTEM_EVENTS_SCHEME,
+  SHOUTEM_CATEGORIES_SCHEME,
+  schemasMap,
+} from '../actions';
 import { connect } from 'react-redux';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
-import { ListItemButton, ListView, ShoutemIconButton } from 'shoutem.ui';
+import { ListItemButton, ListView, ShoutemIconButton, DropDownMenu } from 'shoutem.ui';
 import eventsMapDispatchToProps from './lib/eventsMapDispatchToProps';
-import eventsMapStateToProps from './lib/eventsMapStateToProps';
-import EventsCategoriesDropdownMenu from '../components/EventsCategoriesDropDownMenu';
 import { toMoment, addToCalendar } from './lib/Calendar';
+import EventsCategoriesDropdownMenu from '../components/EventsCategoriesDropDownMenu';
 
 const Status = ListView.Status;
+class DenormalizeService {
+  constructor() {
+    this.denormalizeInstance = null;
+  }
+
+  createNewInstance(state) {
+    this.denormalizeInstance = new ReduxApiStateDenormalizer(() => state, schemasMap);
+  }
+
+  get() {
+    return this.denormalizeInstance;
+  }
+}
+const denormalizeService = new DenormalizeService();
 
 function formatDate(date) {
   if (!date) {
@@ -63,6 +83,8 @@ class ListScreen extends Component {
     this.state = {
       selectedCategory: null,
       fetchStatus: null,
+      events: [],
+      categories: [],
     };
   }
 
@@ -70,16 +92,73 @@ class ListScreen extends Component {
     const {
       fetchEventsCategories,
       settings,
+      categoriesCollection,
+      eventsCollection,
     } = this.props;
 
     if (settings.categoryIds && settings.categoryIds.length > 0) {
       this.setState({ fetchStatus: Status.LOADING }, this.fetchEvents);
-    } else {
+    } else if (categoriesCollection.length === 0) {
       this.setState(
         { fetchStatus: Status.LOADING },
         () => fetchEventsCategories(settings.parentCategoryId, settings)
       );
     }
+
+    if (categoriesCollection.length > 0) {
+      const categories = this.denormalizeCategories(categoriesCollection);
+      this.setState({ selectedCategory: categories[0] });
+    }
+
+    if (eventsCollection.length > 0) {
+      this.denormalizeEvents(eventsCollection);
+    }
+
+  }
+
+  shouldComponentUpdate(nextProps) {
+    if (nextProps === this.props) {
+      return false;
+    }
+    const eventsBusy = isBusy(nextProps.eventsCollection);
+    const categoriesBusy = isBusy(nextProps.categoriesCollection);
+    if (eventsBusy || categoriesBusy) {
+      return false;
+    }
+    const updateNews =
+      !eventsBusy &&
+      nextProps.eventsCollection !== this.props.eventsCollection;
+
+    const updateCategories =
+      !categoriesBusy &&
+      nextProps.categoriesCollection !== this.props.categoriesCollection;
+
+    if (updateNews) {
+      this.denormalizeEvents(nextProps.eventsCollection);
+    }
+
+    if (updateCategories) {
+      this.denormalizeCategories(nextProps.categoriesCollection);
+    }
+    return true;
+  }
+
+  denormalizeCategories(categoriesCollection) {
+    const denormalizer = denormalizeService.get();
+    const categories = denormalizer.denormalizeCollection(
+      categoriesCollection, SHOUTEM_CATEGORIES_SCHEME
+    );
+    this.setState({ categories });
+    return categories;
+  }
+
+  denormalizeEvents(eventsCollection) {
+    const denormalizer = denormalizeService.get();
+    const events = denormalizer.denormalizeCollection(
+      eventsCollection, SHOUTEM_EVENTS_SCHEME
+    );
+    this.setState({ events });
+    return events;
   }
 
   fetchEvents() {
@@ -110,15 +189,16 @@ class ListScreen extends Component {
   renderEvents() {
     const {
       style,
-      events,
       navigateToRoute,
     } = this.props;
+    const { events } = this.state;
 
     function renderListRow(item) {
       function openDetailsScreen() {
         const route = { screen: 'shoutem.events.DetailsScreen', props: { item } };
         navigateToRoute(route);
       }
+
       return renderRow(item, style, undefined, openDetailsScreen);
     }
 
@@ -153,23 +233,16 @@ class ListScreen extends Component {
     const {
       style,
       setNavBarProps,
-      settings: { parentCategoryId },
-      settings,
     } = this.props;
-    const { selectedCategory } = this.state;
-
-    const dropDownMenu = (
-      <EventsCategoriesDropdownMenu
-        settings={settings}
-        parentCategoryId={parentCategoryId}
-        categorySelected={this.categorySelected}
-        selectedCategory={selectedCategory}
-      />
-    );
+    const { selectedCategory, categories, events } = this.state;
 
     const categorySelector = (
       <View style={style.categorySelector}>
-        {dropDownMenu}
+        <EventsCategoriesDropdownMenu
+          categories={categories}
+          categorySelected={this.categorySelected}
+          selectedCategory={selectedCategory}
+        />
       </View>
     );
 
@@ -181,8 +254,8 @@ class ListScreen extends Component {
 
     return (
       <View style={style.screen}>
-        {categorySelector}
-        {this.renderEvents()}
+        {categories.length > 0 ? categorySelector : null}
+        {events.length > 0 ? this.renderEvents() : null}
       </View>
     );
   }
@@ -193,8 +266,8 @@ ListScreen.propTypes = {
   selectedCategory: React.PropTypes.object,
   findEvents: React.PropTypes.func,
   fetchEventsCategories: React.PropTypes.func,
-  events: React.PropTypes.array,
-  categories: React.PropTypes.array,
+  categoriesCollection: React.PropTypes.array,
+  eventsCollection: React.PropTypes.array,
   style: React.PropTypes.object,
   setNavBarProps: React.PropTypes.func,
   navigateToRoute: React.PropTypes.func,
@@ -203,15 +276,11 @@ ListScreen.propTypes = {
 const style = {
   listView: {
     header: {
-      container: {
-      },
-      search: {
-      },
+      container: {},
+      search: {},
     },
-    list: {
-    },
-    listContent: {
-    },
+    list: {},
+    listContent: {},
   },
   screen: {},
   featuredItem: {
@@ -251,6 +320,16 @@ const style = {
     borderTopWidth: 1,
   },
 };
+
+
+function eventsMapStateToProps(state) {
+  denormalizeService.createNewInstance(state, schemasMap);
+  return {
+    selectedCategory: state[SHOUTEM_EVENTS_EXT_NAME].selectedCategory,
+    eventsCollection: state[SHOUTEM_EVENTS_EXT_NAME].latestEvents,
+    categoriesCollection: state[SHOUTEM_EVENTS_EXT_NAME].eventsCategories,
+  };
+}
 
 export default connect(eventsMapStateToProps, eventsMapDispatchToProps)(
   connectStyle('shoutem.events.ListScreen', style)(ListScreen)

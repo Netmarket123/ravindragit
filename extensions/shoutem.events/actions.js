@@ -8,6 +8,13 @@ export const SHOUTEM_IMAGES_SCHEME = 'shoutem.core.image-attachments';
 export const SHOUTEM_CATEGORIES_SCHEME = 'shoutem.core.categories';
 export const CATEGORY_SELECTED = Symbol('categorySelected');
 
+export const schemasMap = {
+  [SHOUTEM_EVENTS_SCHEME]: ['shoutem.events', 'events'],
+  [SHOUTEM_IMAGES_SCHEME]: ['shoutem.events', 'eventsImages'],
+  'shoutem.core.applications': ['shoutem.events', 'applications'],
+  'shoutem.core.categories': ['shoutem.events', 'categories'],
+};
+
 export const reducers = {
   events: storage(SHOUTEM_EVENTS_SCHEME),
   categories: storage(SHOUTEM_CATEGORIES_SCHEME),
@@ -16,10 +23,8 @@ export const reducers = {
   latestEvents: collection(SHOUTEM_EVENTS_SCHEME, 'latestEvents'),
 };
 
-export function openListScreen(settings = {
-  textCentric: false,
-}) {
-  const nextScreenName = `shoutem.events.${settings.textCentric ? 'GridScreen' : 'ListScreen'}`;
+export function openListScreen(settings) {
+  const nextScreenName = 'shoutem.events.ListScreen';
 
   const route = {
     screen: nextScreenName,
