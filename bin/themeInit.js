@@ -287,6 +287,9 @@ export default (variables) => ({
         container: {
           backgroundColor: '#fff',
         },
+        contentWrapper: {
+          backgroundColor: 'rgba(0, 0, 0, 0.3)',
+        },
       },
       infoFields: {
         fieldText: {
