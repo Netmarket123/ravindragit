@@ -41,7 +41,6 @@ export default (variables) => ({
     gridBox: {
       container: {
         flex: 1,
-        backgroundColor: variables.brandColor,
       },
       contentWrapper: {
         justifyContent: 'center',

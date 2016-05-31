@@ -150,8 +150,8 @@
                   "height": 330
                 },
                 "buttonIconSize": {
-                  "width": 270,
-                  "height": 100
+                  "width": 540,
+                  "height": 200
                 },
                 "buttonStyle": "custom",
                 "iconAlignment": "middleCenter",

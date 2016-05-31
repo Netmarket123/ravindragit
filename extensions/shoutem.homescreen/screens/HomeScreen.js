@@ -44,9 +44,13 @@ function getWindowDimensionsInPixels() {
       width,
     } = Dimensions.get('window');
 
+  /**
+   * the dimensions need to be divided with the device pixel ratio as layout
+   * used for reference is using a singular pixel ratio
+   */
   return {
-    height: PixelRatio.getPixelSizeForLayoutSize(height),
-    width: PixelRatio.getPixelSizeForLayoutSize(width),
+    height: PixelRatio.getPixelSizeForLayoutSize(height) / PixelRatio.get(),
+    width: PixelRatio.getPixelSizeForLayoutSize(width) / PixelRatio.get(),
   };
 }
 
@@ -60,6 +64,7 @@ export default class HomeScreen extends Component {
       style: {
         container: {
           height: 0,
+          backgroundColor: 'rgba(0,0,0,0)', // TODO(Vladimir) - read statusbar color setting
         },
       },
     });

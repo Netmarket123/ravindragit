@@ -6,16 +6,21 @@ import React, {
   Text,
 } from 'react-native';
 import { INCLUDE, connectStyle } from 'shoutem/theme';
-import { NewsGridBox, RichMedia, ShoutemIconButton } from 'shoutem.ui';
+import { RichMedia, ShoutemIconButton, GridBox, InfoFields } from 'shoutem.ui';
 import * as _ from 'lodash';
 import moment from 'moment';
 import Share from 'react-native-share';
 import NextArticle from '../components/NextArticle';
 
-const DEFAULT_BOTTOM_CONTENT_OFFSET = 50;
+const windowHeight = Dimensions.get('window').height;
+// TODO(Braco) - make it configurable trough props
+const HEADER_HEIGHT_COEFFICIENT = 0.65;
+const DEFAULT_HEADER_HEIGHT = windowHeight * HEADER_HEIGHT_COEFFICIENT;
+const DEFAULT_BOTTOM_CONTENT_OFFSET = windowHeight - DEFAULT_HEADER_HEIGHT;
+const NAV_BAR_INTERPOLATION_INPUT = [windowHeight * 0.40, windowHeight * 0.60];
 
 function getOffsetHeight(offset) {
-  return Dimensions.get('window').height - offset;
+  return windowHeight - offset;
 }
 
 function createDetailsStyle(topOffset, style) {
@@ -32,7 +37,7 @@ function createDetailsStyle(topOffset, style) {
 
 function interpolateIconColor(scrollY, detailsTopOffset, navBarTextColor) {
   return scrollY.interpolate({
-    inputRange: [0, detailsTopOffset / 3],
+    inputRange: NAV_BAR_INTERPOLATION_INPUT,
     outputRange: ['rgba(255,255,255,1)', navBarTextColor],
     extrapolate: 'clamp',
   });
@@ -45,7 +50,6 @@ function createAnimatedHeaderStyle(headerStyle, animatedValue, headerHeight) {
         translateY: animatedValue.interpolate({
           inputRange: [0, headerHeight],
           outputRange: [0, -headerHeight / 3],
-          extrapolate: 'clamp',
         }),
       },
       {
@@ -58,12 +62,33 @@ function createAnimatedHeaderStyle(headerStyle, animatedValue, headerHeight) {
   }];
 }
 
+function createAnimatedHeaderTextStyle(headerStyle, animatedValue, headerHeight) {
+  return [headerStyle, {
+    backgroundColor: animatedValue.interpolate({
+      inputRange: NAV_BAR_INTERPOLATION_INPUT,
+      outputRange: ['rgba(0,0,0,0.5)', 'rgba(0,0,0,0.75)'],
+    }),
+    opacity: animatedValue.interpolate({
+      inputRange: [windowHeight * 0.15, windowHeight * 0.55],
+      outputRange: [1, 0],
+    }),
+    transform: [
+      {
+        translateY: animatedValue.interpolate({
+          inputRange: [0, headerHeight],
+          outputRange: [0, -headerHeight / 4],
+        }),
+      },
+    ],
+  }];
+}
+
 function createNavigationBarStyle(scrollY, detailsTopOffset, navBarTextColor) {
   return {
     container: {
       backgroundColor: scrollY.interpolate({
-        inputRange: [0, detailsTopOffset / 3],
-        outputRange: ['rgba(0,0,0,0)', 'rgba(255,255,255,0.9)'],
+        inputRange: NAV_BAR_INTERPOLATION_INPUT,
+        outputRange: ['rgba(0,0,0,0)', 'rgba(255,255,255,1)'],
         extrapolate: 'clamp',
       }),
     },
@@ -75,7 +100,7 @@ function createNavigationBarStyle(scrollY, detailsTopOffset, navBarTextColor) {
   };
 }
 
-function createScreenTitle(titleStyle, title, scrollY, detailsTopOffset) {
+function createScreenTitle(titleStyle, title, scrollY) {
   return (
     <Animated.Text
       numberOfLines={1}
@@ -83,8 +108,8 @@ function createScreenTitle(titleStyle, title, scrollY, detailsTopOffset) {
         titleStyle,
         {
           color: scrollY.interpolate({
-            inputRange: [0, 0.8 * detailsTopOffset, detailsTopOffset],
-            outputRange: ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0)', titleStyle.color],
+            inputRange: NAV_BAR_INTERPOLATION_INPUT,
+            outputRange: ['rgba(255, 255, 255, 0)', titleStyle.color],
             extrapolate: 'clamp',
           }),
         },
@@ -165,7 +190,7 @@ class ArticleDetailsScreen extends React.Component {
     const title = article.title || '';
     const navBarTextColor = style.navBarTitle.color;
     const navigationBarStyle = createNavigationBarStyle(scrollY, detailsTopOffset, navBarTextColor);
-    const screenTitle = createScreenTitle(style.navBarTitle, title, scrollY, detailsTopOffset);
+    const screenTitle = createScreenTitle(style.navBarTitle, title, scrollY);
     const shareButtonStyle = createShareButtonStyle(style.shareButton, scrollY, detailsTopOffset);
     const shareButton = (
       <ShoutemIconButton
@@ -193,21 +218,26 @@ class ArticleDetailsScreen extends React.Component {
       scrollY,
     } = this.state;
     const headerStyle = createAnimatedHeaderStyle(style.header, scrollY, detailsTopOffset);
-
+    const headerTextStyleWrapper =
+      createAnimatedHeaderTextStyle(style.header, scrollY, detailsTopOffset);
     this.renderNavBar();
 
     return (
       <View style={style.screen}>
-        <Animated.View
+        <Animated.Image
           style={headerStyle}
+          source={{ uri: _.get(article, 'image.url') }}
         >
-          <NewsGridBox
-            style={style.headline}
-            headline={article.title.toUpperCase()}
-            newsDetails={[article.news_author, moment(article.timeUpdated).fromNow()]}
-            backgroundImage={{ uri: _.get(article, 'image.url'), width: 200, height: 200 }}
-          />
           <View style={style.scrollIndicator} />
+        </Animated.Image>
+        <Animated.View style={headerTextStyleWrapper}>
+          <GridBox style={style.headline.gridBox}>
+            <Text style={style.headline.title}>{article.title.toUpperCase()}</Text>
+            <InfoFields
+              fields={[article.news_author, moment(article.timeUpdated).fromNow()]}
+              style={style.headline.infoFields}
+            />
+          </GridBox>
         </Animated.View>
         <ScrollView
           automaticallyAdjustContentInsets={false}
@@ -241,9 +271,40 @@ ArticleDetailsScreen.propTypes = {
 const style = {
   headline: {
     [INCLUDE]: ['shoutem.ui.NewsGridBox.photoCentric'],
-    headline: {
-      backgroundColor: 'transparent',
+    gridBox: {
+      contentWrapper: {
+        padding: 20,
+      },
     },
+    title: {
+      textAlign: 'center',
+      fontSize: 25,
+      backgroundColor: 'transparent',
+      [INCLUDE]: ['h1'],
+    },
+    infoFields: {
+      info: {
+        marginBottom: 30,
+        marginTop: 6,
+      },
+      fieldText: {
+        fontSize: 12,
+        color: '#fff',
+        backgroundColor: 'transparent',
+      },
+    },
+  },
+  header: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: DEFAULT_HEADER_HEIGHT,
+    width: null,
+    flex: 0,
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
   },
   navBarTitle: {
     [INCLUDE]: ['baseFont', 'navigationBarTextColor'],
@@ -258,7 +319,7 @@ const style = {
     borderStyle: 'solid',
     width: 16,
     height: 16,
-    bottom: 80,
+    marginBottom: 30,
     alignSelf: 'center',
     transform: [{
       rotate: '-45deg',
@@ -289,16 +350,6 @@ const style = {
   },
   container: {
     position: 'relative',
-    flex: 1,
-  },
-  header: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: null,
-    width: null,
     flex: 1,
   },
   shareButton: {
