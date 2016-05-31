@@ -191,7 +191,7 @@ const style = {
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: 'rgba(242, 242, 242, 0.92)',
+    backgroundColor: 'rgba(242, 242, 242, 0.97)',
   },
   modalItems: {
     alignItems: 'center',

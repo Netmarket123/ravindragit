@@ -47,7 +47,12 @@ function ListItem({
 
   return (
     <GridBox style={style.gridBox}>
-      <TouchableOpacity style={style.container} onPress={onPress} key={id}>
+      <TouchableOpacity
+        style={style.container}
+        onPress={onPress}
+        key={id}
+        activeOpacity={0.69 + 0.1}
+      >
         <Image style={style.itemImage} source={fallbackImage}>
           <Image style={{ flex: 1 }} source={image} />
         </Image>

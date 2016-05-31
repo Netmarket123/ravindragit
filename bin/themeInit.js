@@ -309,6 +309,7 @@ export default (variables) => ({
     headline: {
       headline: {
         fontSize: 22,
+        fontWeight: '500',
         lineHeight: 25,
       },
     },

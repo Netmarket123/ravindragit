@@ -36,11 +36,15 @@ export default class FeaturedArticleView extends React.Component {
     } = this.props;
 
     return (
-      <TouchableOpacity onPress={this.onPress} key={article.id}>
+      <TouchableOpacity
+        onPress={this.onPress}
+        key={article.id}
+        activeOpacity={0.69 + 0.1}
+      >
         <NewsGridBox
           backgroundImage={{ uri: _.get(article, 'image.url') }}
           headline={(article.title || '').toUpperCase()}
-          newsDetails={[[article.news_author, moment(article.timeUpdated).fromNow()].join('      ')]}
+          newsDetails={[[article.news_author, moment(article.timeUpdated).fromNow()].join(`      `)]}
           style={style}
         />
       </TouchableOpacity>
