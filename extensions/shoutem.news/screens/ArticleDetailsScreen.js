@@ -286,7 +286,7 @@ const style = {
     infoFields: {
       info: {
         marginBottom: 30,
-        marginTop: 6,
+        marginTop: 15,
       },
       fieldText: {
         fontSize: 13,
