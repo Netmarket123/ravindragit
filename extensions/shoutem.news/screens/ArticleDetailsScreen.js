@@ -17,7 +17,7 @@ const windowHeight = Dimensions.get('window').height;
 const HEADER_HEIGHT_COEFFICIENT = 0.65;
 const DEFAULT_HEADER_HEIGHT = windowHeight * HEADER_HEIGHT_COEFFICIENT;
 const DEFAULT_BOTTOM_CONTENT_OFFSET = windowHeight - DEFAULT_HEADER_HEIGHT;
-const NAV_BAR_INTERPOLATION_INPUT = [windowHeight * 0.40, windowHeight * 0.60];
+const NAV_BAR_INTERPOLATION_INPUT = [windowHeight * 0.40, windowHeight * 0.60 - 40];
 
 function getOffsetHeight(offset) {
   return windowHeight - offset;
