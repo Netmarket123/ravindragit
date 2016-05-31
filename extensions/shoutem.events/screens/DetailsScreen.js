@@ -114,7 +114,7 @@ function DetailsScreen({
     rightComponent: shareButton,
     style: {
       container: {
-        backgroundColor: 'rgba(255, 255, 255, 0)',
+        backgroundColor: 'rgba(255, 255, 255, 1)',
       },
     },
   });
