@@ -2,7 +2,7 @@ import { INCLUDE } from 'shoutem/theme';
 
 export default (variables) => ({
   baseFont: {
-    fontFamily: 'Rubik-Regular',
+    fontFamily: 'Work Sans',
   },
   h1: {
     [INCLUDE]: ['baseFont'],
@@ -135,22 +135,24 @@ export default (variables) => ({
     itemInfo: {
       flexDirection: 'column',
       flexWrap: 'wrap',
-      height: 90,
       position: 'relative',
     },
     itemExtras: {
-      position: 'absolute',
       flexDirection: 'row',
-      bottom: 0,
       alignItems: 'center',
+      marginHorizontal: 10,
+      marginBottom: 10,
+      flex: 1,
     },
     itemTitle: {
-      flex: 1,
+      height: 60,
       fontSize: 16,
+      fontWeight: '500',
       lineHeight: 20,
       color: variables.brandColor,
       marginHorizontal: 10,
       marginTop: 10,
+      marginBottom: 16,
     },
     extrasSeparator: {
       width: 3,
@@ -160,12 +162,12 @@ export default (variables) => ({
     },
     leftExtra: {
       fontSize: 12,
-      marginHorizontal: 10,
-      marginBottom: 10,
+      fontFamily: 'Rubik-Regular',
       color: '#888',
     },
     rightExtra: {
       fontSize: 12,
+      fontFamily: 'Rubik-Regular',
       color: '#888',
     },
     mediumListItemButton: {
@@ -247,6 +249,16 @@ export default (variables) => ({
           backgroundColor: '#fff',
         },
       },
+      categoriesDropDown: {
+        popUpButton: {
+          buttonText: {
+            fontWeight: '500',
+          },
+        },
+      },
+      navigationBarTitle: {
+        fontWeight: '500',
+      },
     },
     featuredItem: {
       gridBox: {
@@ -254,9 +266,17 @@ export default (variables) => ({
           backgroundColor: '#fff',
         },
       },
+      infoFields: {
+        fieldText: {
+          fontSize: 13,
+          fontWeight: '500',
+        },
+      },
       headline: {
         fontSize: 22,
         lineHeight: 25,
+        fontWeight: '500',
+        marginHorizontal: 35,
       },
     },
   },
