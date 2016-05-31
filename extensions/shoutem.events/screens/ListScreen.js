@@ -113,10 +113,12 @@ class ListScreen extends Component {
     if (eventsCollection.length > 0) {
       this.denormalizeEvents(eventsCollection);
     }
-
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextState.fetchStatus !== this.state.fetchStatus) {
+      return true;
+    }
     if (nextProps === this.props) {
       return false;
     }
@@ -255,7 +257,7 @@ class ListScreen extends Component {
     return (
       <View style={style.screen}>
         {categories.length > 0 ? categorySelector : null}
-        {events.length > 0 ? this.renderEvents() : null}
+        {this.renderEvents()}
       </View>
     );
   }

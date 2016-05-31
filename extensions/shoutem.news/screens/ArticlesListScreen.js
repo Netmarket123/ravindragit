@@ -97,7 +97,10 @@ export class ArticlesListScreen extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextState.fetchStatus !== this.state.fetchStatus) {
+      return true;
+    }
     if (nextProps === this.props) {
       return false;
     }

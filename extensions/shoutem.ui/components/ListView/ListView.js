@@ -94,11 +94,15 @@ class ListView extends React.Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    const { items } = this.props;
+    const { items, status } = this.props;
     if (nextProps.items !== items) {
       this.setState({ dataSource: this.listDataSource.clone(nextProps.items) });
+      return true;
     }
-    return true;
+    if (nextProps.status === status) {
+      return true;
+    }
+    return false;
   }
 
   /**
