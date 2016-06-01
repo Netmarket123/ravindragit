@@ -18,7 +18,7 @@ function NewsGridBox({
 }) {
   return (
     <GridBox style={style.gridBox} backgroundImage={backgroundImage}>
-      <Text style={style.headline} numberOfLines={4}>{headline}</Text>
+      <Text style={style.title} numberOfLines={4}>{headline}</Text>
       <InfoFields
         fields={newsDetails}
         fieldsSeparator={newsDetailsSeparator}
@@ -37,16 +37,18 @@ NewsGridBox.propTypes = {
 };
 
 const style = {
-  headline: {
+  title: {
     textAlign: 'center',
-    fontSize: 25,
     backgroundColor: 'transparent',
+    fontSize: 22,
+    lineHeight: 25,
+    fontWeight: '500',
     [INCLUDE]: ['h1'],
   },
   infoFields: {
     info: {
       marginBottom: 30,
-      marginTop: 6,
+      marginTop: 15,
     },
     fieldText: {
       fontSize: 12,

@@ -100,7 +100,6 @@ const style = {
       },
       actionsLabel: {
         height: 0,
-        backgroundColor: 'red',
       },
     },
     gridRow: {
@@ -166,7 +165,7 @@ const style = {
         borderRadius: 2,
       },
     },
-    headline: {
+    title: {
       width: null,
       height: null,
       alignSelf: 'center',

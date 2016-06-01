@@ -306,13 +306,6 @@ export default (variables) => ({
     },
   },
   'shoutem.news.DetailsScreen': {
-    headline: {
-      headline: {
-        fontSize: 22,
-        fontWeight: '500',
-        lineHeight: 25,
-      },
-    },
     navBarTitle: {
       fontWeight: '500',
     },

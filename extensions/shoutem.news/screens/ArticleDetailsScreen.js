@@ -298,9 +298,10 @@ const style = {
     },
     title: {
       textAlign: 'center',
+      backgroundColor: 'transparent',
       fontSize: 22,
       lineHeight: 25,
-      backgroundColor: 'transparent',
+      fontWeight: '500',
       [INCLUDE]: ['h1'],
     },
     infoFields: {
