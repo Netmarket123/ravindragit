@@ -3,12 +3,16 @@ import React, {
   ScrollView,
   Text,
   MapView,
+  Dimensions,
   Animated,
 } from 'react-native';
 import { INCLUDE, connectStyle } from 'shoutem/theme';
 import { ShoutemIconButton, RichMedia } from 'shoutem.ui';
 import Share from 'react-native-share';
 import { toMoment, addToCalendar } from './lib/Calendar';
+
+const windowHeight = Dimensions.get('window').height;
+const NAV_BAR_INTERPOLATION_INPUT = [windowHeight * 0.40, windowHeight * 0.60 - 40];
 
 function formatDate(date) {
   if (!date) {
@@ -96,6 +100,26 @@ function getScrollHandle(scrollY) {
   );
 }
 
+function createScreenTitle(titleStyle, title, scrollY) {
+  return (
+    <Animated.Text
+      numberOfLines={1}
+      style={[
+        titleStyle,
+        {
+          color: scrollY.interpolate({
+            inputRange: NAV_BAR_INTERPOLATION_INPUT,
+            outputRange: ['rgba(255, 255, 255, 0)', titleStyle.color],
+            extrapolate: 'clamp',
+          }),
+        },
+      ]}
+    >
+      {title.toUpperCase()}
+    </Animated.Text>
+  );
+}
+
 function DetailsScreen({
   item,
   style,
@@ -118,6 +142,8 @@ function DetailsScreen({
   />);
   const scrollY = new Animated.Value(0);
 
+  const screenTitle = createScreenTitle(style.navBarTitle, item.title, scrollY);
+
   setNavBarProps({
     rightComponent: shareButton,
     style: {
@@ -130,6 +156,7 @@ function DetailsScreen({
         borderBottomWidth: 1,
       },
     },
+    centerComponent: screenTitle,
   });
 
   return (
@@ -270,6 +297,11 @@ const style = {
     flex: 1,
     backgroundColor: '#fff',
     padding: 15,
+  },
+  navBarTitle: {
+    [INCLUDE]: ['baseFont', 'navigationBarTextColor'],
+    width: 200,
+    fontSize: 15,
   },
 };
 
