@@ -3,7 +3,7 @@ import React, {
   PropTypes,
 } from 'react-native';
 
-import { connectStyle } from 'shoutem/theme';
+import { connectStyle } from '@shoutem/theme';
 
 import NativeVideo from './NativeVideo';
 import WebViewVideo from './WebViewVideo';

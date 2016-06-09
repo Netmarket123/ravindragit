@@ -2,7 +2,7 @@ import React, {
   View,
   Text,
 } from 'react-native';
-import { connectStyle, INCLUDE } from 'shoutem/theme';
+import { connectStyle, INCLUDE } from '@shoutem/theme';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 /**

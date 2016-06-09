@@ -12,7 +12,7 @@ import React, {
 import MaterialIconButton from '../Button/MaterialIconButton';
 import ShoutemIconButton from '../Button/ShoutemIconButton';
 
-import { connectStyle, INCLUDE } from 'shoutem/theme';
+import { connectStyle, INCLUDE } from '@shoutem/theme';
 
 function createModalAnimatedStyle(dropDownAnimation) {
   return {

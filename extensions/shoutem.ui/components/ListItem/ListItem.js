@@ -4,7 +4,7 @@ import React, {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import { connectStyle, INCLUDE } from 'shoutem/theme';
+import { connectStyle, INCLUDE } from '@shoutem/theme';
 import Button from '../Button/Button';
 import GridBox from '../GridBox/GridBox';
 

@@ -4,7 +4,7 @@ import React, {
 } from 'react-native';
 import InfoFields from '../InfoFields/InfoFields';
 import GridBox from './GridBox';
-import { connectStyle, INCLUDE } from 'shoutem/theme';
+import { connectStyle, INCLUDE } from '@shoutem/theme';
 
 /**
  * NewsGridBox used to show single item with news related properties.

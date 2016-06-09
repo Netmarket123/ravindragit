@@ -3,7 +3,7 @@ import React, {
   ProgressBarAndroid,
   Platform,
 } from 'react-native';
-import { connectStyle } from 'shoutem/theme';
+import { connectStyle } from '@shoutem/theme';
 
 function PlatformSpinner({ style }) {
   if (Platform.OS === 'android') {

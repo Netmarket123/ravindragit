@@ -5,7 +5,7 @@ import {
   Text,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { connectStyle, INCLUDE } from 'shoutem/theme';
+import { connectStyle, INCLUDE } from '@shoutem/theme';
 import { ListView, DropDownMenu } from 'shoutem.ui';
 import ListArticleView from '../components/ListArticleView';
 import FeaturedArticleView from '../components/FeaturedArticleView';

@@ -11,7 +11,7 @@ import * as _ from 'lodash';
 import { ScreenNavigator, ROOT_NAVIGATOR_NAME } from './navigation';
 import coreExtensions from './coreExtensions';
 
-import StyleProvider from './theme/StyleProvider';
+import { StyleProvider } from '@shoutem/theme';
 
 // connect is called several times, and we do not want to have different object reference
 // for fallback because it will resolve theme again (changing variables recalculates theme)
