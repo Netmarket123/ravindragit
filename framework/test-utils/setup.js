@@ -19,3 +19,9 @@ global.navigator = {
 };
 
 documentRef = document;
+require("babel-register")({
+  // TODO(Zeljko) - Find better way to transpile ES6 modules
+  // https://babeljs.io/docs/usage/require/
+  // ignore -> do not transpile modules which doesn't are from shoutem
+  ignore: /^(?=.*node_modules)(?!.*@shoutem).*/,
+});
