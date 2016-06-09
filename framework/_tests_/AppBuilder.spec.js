@@ -6,11 +6,16 @@ import { connect } from 'react-redux';
 import { assert } from 'chai';
 import sinon from 'sinon';
 import { shallow, mount } from 'enzyme';
-import StyleProvider from '../theme/StyleProvider';
+import { StyleProvider } from '@shoutem/theme';
 
 import AppBuilder from '../AppBuilder.js';
 
-import themeInit from './mocks/ThemeTest';
+const themeInit = (variables) => ({
+  testStyle: {
+    testProperty: 1,
+    variableProperty: variables.testVariable,
+  },
+});
 
 /**
  * A simple component that will serve as a screen
