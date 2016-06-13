@@ -245,6 +245,7 @@ class ArticleDetailsScreen extends React.Component {
         <Animated.Image
           style={headerStyle}
           source={{ uri: _.get(article, 'image.url') }}
+          onLayout={(e) => { global.layout = e.nativeEvent.layout; } }
         >
           <Animated.View style={headerOverlayStyle} >
             <View style={style.scrollIndicator} />

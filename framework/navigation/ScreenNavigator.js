@@ -13,6 +13,8 @@ import {
   navigateBack,
 } from './actions';
 
+import SceneConfig from './SceneConfigs';
+
 import NavigationBarStateManager from './NavigationBarStateManager';
 import NavigationBarContainer from './NavigationBarContainer';
 
@@ -128,7 +130,7 @@ export class ScreenNavigator extends Component {
   }
 
   configureScene(route) {
-    return route.sceneConfig || Navigator.SceneConfigs.PushFromRight;
+    return route.sceneConfig || Navigator.SceneConfigs.FadeAndroid;
   }
 
   renderNavigationBar() {
