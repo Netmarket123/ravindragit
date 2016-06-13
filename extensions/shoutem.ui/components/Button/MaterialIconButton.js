@@ -1,7 +1,7 @@
 import React, { Animated } from 'react-native';
 import Button from './Button';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { connectStyle, INCLUDE } from 'shoutem/theme';
+import { connectStyle, INCLUDE } from '@shoutem/theme';
 
 function MaterialIconButton({
   style,

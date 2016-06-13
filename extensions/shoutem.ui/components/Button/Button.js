@@ -4,7 +4,7 @@ import React, {
   Text,
 } from 'react-native';
 
-import { connectStyle, INCLUDE } from 'shoutem/theme';
+import { connectStyle, INCLUDE } from '@shoutem/theme';
 
 function Button({
   style,

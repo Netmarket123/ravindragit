@@ -5,7 +5,7 @@ import React, {
 import InfoFields from '../InfoFields/InfoFields';
 import GridBox from './GridBox';
 import Button from '../Button/Button';
-import { connectStyle, INCLUDE } from 'shoutem/theme';
+import { connectStyle, INCLUDE } from '@shoutem/theme';
 
 function createEventDates(eventsDetails, eventDetailsSeparator, eventDetailsStyle) {
   const datesListComponents = [];

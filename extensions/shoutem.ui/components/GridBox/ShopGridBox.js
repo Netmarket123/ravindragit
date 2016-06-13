@@ -4,7 +4,7 @@ import React, {
 } from 'react-native';
 import GridBox from './GridBox';
 import Button from '../Button/Button';
-import { connectStyle, INCLUDE } from 'shoutem/theme';
+import { connectStyle, INCLUDE } from '@shoutem/theme';
 
 /**
  * ShopGridBox used to show single item with shop related properties and actions.

@@ -4,7 +4,7 @@ import React, {
   TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { INCLUDE, connectStyle } from 'shoutem/theme';
+import { INCLUDE, connectStyle } from '@shoutem/theme';
 
 import {
   navigateBack,

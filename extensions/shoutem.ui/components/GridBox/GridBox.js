@@ -2,7 +2,7 @@ import React, {
   View,
   Image,
 } from 'react-native';
-import { connectStyle } from 'shoutem/theme';
+import { connectStyle } from '@shoutem/theme';
 
 /**
  * LargeGridItem is single list item.

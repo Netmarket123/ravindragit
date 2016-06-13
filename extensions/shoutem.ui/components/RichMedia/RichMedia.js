@@ -3,7 +3,7 @@ import React, {
   PropTypes,
   View,
 } from 'react-native';
-import { connectStyle, INCLUDE } from 'shoutem/theme';
+import { connectStyle, INCLUDE } from '@shoutem/theme';
 import HypermediaComposer from './lib/HypermediaComposer';
 import AttachmentTagTransformer from './lib/AttachmentTagTransformer';
 import * as _ from 'lodash';

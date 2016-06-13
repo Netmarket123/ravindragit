@@ -3,7 +3,7 @@ import React, {
 } from 'react-native';
 import ListView from '../ListView/ListView';
 import MarginCalculator from './lib/MarginCalculator';
-import { connectStyle } from 'shoutem/theme';
+import { connectStyle } from '@shoutem/theme';
 
 const DEFAULT_ITEMS_GROUP_SIZE = 2;
 

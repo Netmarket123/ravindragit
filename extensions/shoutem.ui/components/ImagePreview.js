@@ -10,7 +10,7 @@ import React, {
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import { connectStyle } from 'shoutem/theme';
+import { connectStyle } from '@shoutem/theme';
 
 const propTypes = {
   width: PropTypes.number,

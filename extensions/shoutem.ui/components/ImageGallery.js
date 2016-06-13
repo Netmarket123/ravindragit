@@ -4,7 +4,7 @@ import React, {
 
 import ImagePreview from './ImagePreview';
 import HorizontalPager from './HorizontalPager';
-import { connectStyle } from 'shoutem/theme';
+import { connectStyle } from '@shoutem/theme';
 
 const propTypes = {
   width: PropTypes.number,

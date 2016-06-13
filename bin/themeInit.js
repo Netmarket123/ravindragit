@@ -1,4 +1,4 @@
-import { INCLUDE } from 'shoutem/theme';
+import { INCLUDE } from '@shoutem/theme';
 
 export default (variables) => ({
   baseFont: {

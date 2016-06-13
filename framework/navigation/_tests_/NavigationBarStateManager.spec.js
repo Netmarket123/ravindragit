@@ -24,7 +24,7 @@ describe('NavigationBarStateManager', () => {
     const route = { screenName: 'ExampleScreen', props: { a: 1, b: 2 } };
     const state = { a: 'state' };
 
-    navBarManager.onRouteChange(route);
+    navBarManager.onRouteChanged(route);
     assert(navBarManager.currentRoute === route, 'new route is not set as current route');
 
     navBarManager.setState(state);
@@ -40,7 +40,7 @@ describe('NavigationBarStateManager', () => {
     const route = { screenName: 'ExampleScreen', props: { a: 1, b: 2 } };
     const state = { a: 'state' };
 
-    navBarManager.onRouteChange(route);
+    navBarManager.onRouteChanged(route);
     navBarManager.setState(state);
     navBarManager.onRouteRemoved(route);
     assert(navBarManager.routeStates.size === 0, 'route is not removed from the routeStates map');
@@ -59,7 +59,7 @@ describe('NavigationBarStateManager', () => {
 
     navBarManager.state = oldState;
     navBarManager.setStateChangeListener(onStateChange);
-    navBarManager.onRouteChange(route);
+    navBarManager.onRouteChanged(route);
     navBarManager.setState(newState);
     _.defer(() => {
       assert.isTrue(onStateChange.called, 'listener is not called');

@@ -1,7 +1,7 @@
 import React, { Animated } from 'react-native';
 import Button from './Button';
 import Icon from '../Icon/ShoutemIcons';
-import { connectStyle, INCLUDE } from 'shoutem/theme';
+import { connectStyle, INCLUDE } from '@shoutem/theme';
 
 function ShoutemIconButton({
   style,

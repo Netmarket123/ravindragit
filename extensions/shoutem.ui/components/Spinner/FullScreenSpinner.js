@@ -3,7 +3,7 @@ import React, {
   Modal,
 } from 'react-native';
 import PlatformSpinner from './PlatformSpinner';
-import { connectStyle, INCLUDE } from 'shoutem/theme';
+import { connectStyle, INCLUDE } from '@shoutem/theme';
 
 function FullScreenSpinner({ style }) {
   return (

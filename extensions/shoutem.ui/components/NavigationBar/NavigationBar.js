@@ -11,7 +11,7 @@ import color from 'tinycolor2';
 
 import ShoutemIconButton from '../Button/ShoutemIconButton';
 
-import { connectStyle, INCLUDE } from 'shoutem/theme';
+import { connectStyle, INCLUDE } from '@shoutem/theme';
 
 function getBackgroundColor(style) {
   const styleWithBg = _.find(style, (styleDef) =>

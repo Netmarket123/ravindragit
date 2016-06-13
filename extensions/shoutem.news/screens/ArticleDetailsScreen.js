@@ -5,7 +5,7 @@ import React, {
   Animated,
   Text,
 } from 'react-native';
-import { INCLUDE, connectStyle } from 'shoutem/theme';
+import { INCLUDE, connectStyle } from '@shoutem/theme';
 import { NewsGridBox, RichMedia, ShoutemIconButton } from 'shoutem.ui';
 import * as _ from 'lodash';
 import moment from 'moment';

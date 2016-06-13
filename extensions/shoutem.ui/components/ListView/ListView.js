@@ -3,7 +3,7 @@ import React, {
   ListView as RNListView,
   RefreshControl,
 } from 'react-native';
-import { connectStyle } from 'shoutem/theme';
+import { connectStyle } from '@shoutem/theme';
 import { FullScreenSpinner, PlatformSpinner } from 'shoutem.ui';
 
 const Status = {

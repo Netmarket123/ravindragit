@@ -3,7 +3,7 @@ import React, {
   TextInput,
 } from 'react-native';
 import Button from '../Button/Button';
-import { connectStyle, INCLUDE } from 'shoutem/theme';
+import { connectStyle, INCLUDE } from '@shoutem/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const DEFAULT_SEARCH_PLACEHOLDER = 'Search';
