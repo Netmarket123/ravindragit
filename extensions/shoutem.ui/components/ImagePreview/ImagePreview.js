@@ -19,6 +19,10 @@ const propTypes = {
   style: PropTypes.object,
 };
 
+import makeComponentZoomable from './lib/ZoomableComponent';
+
+const ZoomableImage = makeComponentZoomable(Image);
+
 const CLOSE_ICON_NAME = 'clear';
 const CLOSE_ICON_SIZE = 25;
 const STATUS_BAR_OFFSET = (Platform.OS === 'android' ? -25 : 0);
@@ -68,7 +72,7 @@ class ImagePreview extends Component {
           transparent
         >
           <View style={style.fullScreenContainer}>
-            <Image
+            <ZoomableImage
               style={style.image}
               source={source}
               resizeMode={'contain'}

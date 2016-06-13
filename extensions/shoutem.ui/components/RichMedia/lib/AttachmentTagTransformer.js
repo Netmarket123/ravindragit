@@ -6,7 +6,7 @@ import React, {
   Dimensions,
 } from 'react-native';
 
-import ImagePreview from '../../ImagePreview';
+import ImagePreview from '../../ImagePreview/ImagePreview';
 import Video from '../../Video/Video';
 import ImageGallery from '../../ImageGallery';
 

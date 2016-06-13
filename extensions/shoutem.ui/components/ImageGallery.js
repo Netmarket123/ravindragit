@@ -2,7 +2,7 @@ import React, {
   PropTypes,
 } from 'react-native';
 
-import ImagePreview from './ImagePreview';
+import ImagePreview from './ImagePreview/ImagePreview';
 import HorizontalPager from './HorizontalPager';
 import { connectStyle } from '@shoutem/theme';
 
