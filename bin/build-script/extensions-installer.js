@@ -39,11 +39,13 @@ function installLocalExtension(extension, clearAfterInstall) {
   return new Promise((resolve) => {
     fs.copy(packagePath, installedExtensionPath, () => {
       rimraf(path.join(installedExtensionPath, nodeModules), () => {
-        console.log(`${packageName} installed`);
-        if (clearAfterInstall) {
-          rimraf(packagePath, () => console.log(`delete ${packagePath}`));
-        }
-        resolve(extension);
+        rimraf(path.join(installedExtensionPath, '.git'), () => {
+          console.log(`${packageName} installed`);
+          if (clearAfterInstall) {
+            rimraf(packagePath, () => console.log(`delete ${packagePath}`));
+          }
+          resolve(extension);
+        });
       });
     });
   });
