@@ -8,7 +8,7 @@ import { INCLUDE, connectStyle } from '@shoutem/theme';
 
 import {
   navigateBack,
-} from 'shoutem/navigation';
+} from '@shoutem/core/navigation';
 
 import { actions } from 'shoutem.application';
 

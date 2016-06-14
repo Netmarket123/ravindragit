@@ -2,7 +2,7 @@ import React, {
   AppRegistry,
 } from 'react-native';
 
-import { AppBuilder } from 'shoutem';
+import { AppBuilder } from '@shoutem/core';
 
 import { NavigationBar } from 'shoutem.ui';
 

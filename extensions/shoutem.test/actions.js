@@ -4,7 +4,7 @@ import {
 
 import {
   navigateTo,
-} from 'shoutem/navigation';
+} from '@shoutem/core/navigation';
 
 export function openExampleScreen(settings) {
   const { screen, modal } = settings;
