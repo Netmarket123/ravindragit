@@ -58,7 +58,7 @@
       "id": "shoutem.theme.default",
       "attributes": {
         "variables": {
-          "brandColor": "#0334c5"
+          "brandColor": "#454543"
         }
       }
     },
@@ -73,7 +73,7 @@
         "settings": {
           "appId": "2385",
           "endpoint": "http://api.dev.sauros.hr",
-          "parentCategoryId": "49",
+          "parentCategoryId": "389",
           "showNextArticleOnDetails": true
         }
       }
@@ -90,7 +90,7 @@
         "settings": {
           "appId": "2385",
           "endpoint": "http://api.dev.sauros.hr",
-          "parentCategoryId": "49",
+          "parentCategoryId": "389",
           "showNextArticleOnDetails": true
         }
       }
