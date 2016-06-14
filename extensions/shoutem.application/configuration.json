@@ -71,7 +71,7 @@
         "iconUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488005&timestamp=635932174426170000&custom_layout=true&highlighted=false&version=58",
         "action": "shoutem.news.openListScreen",
         "settings": {
-          "appId": "2056",
+          "appId": "2385",
           "endpoint": "http://api.dev.sauros.hr",
           "parentCategoryId": "49",
           "showNextArticleOnDetails": true
@@ -84,11 +84,11 @@
       "attributes": {
         "canonicalName": "shoutem.news.openListScreen",
         "title": "Shoutem news list screen",
-        "iconUrl": "http://s3.amazonaws.com/kanta/icons/T7Wzk6-mcUCbv_vUsmv_kw.png",
+        "iconUrl": "http://s3.amazonaws.com/kanta/icons/EtjaUB5-NUyMhtuf9rYgTw.png",
         "highlightedIconUrl": "http://s3.amazonaws.com/kanta/icons/C0HoGhBsnUKmqMT5gnxTbg.png",
         "action": "shoutem.news.openListScreen",
         "settings": {
-          "appId": "2056",
+          "appId": "2385",
           "endpoint": "http://api.dev.sauros.hr",
           "parentCategoryId": "49",
           "showNextArticleOnDetails": true
@@ -101,11 +101,11 @@
       "attributes": {
         "canonicalName": "shoutem.events.openListScreen",
         "title": "Events",
-        "iconUrl": "http://s3.amazonaws.com/kanta/icons/zaC7rxQQBku8CKmmjMjP7Q.png",
+        "iconUrl": "http://s3.amazonaws.com/kanta/icons/VNWDMXDZekuYec4B_bC_ZA.png",
         "highlightedIconUrl": "http://s3.amazonaws.com/kanta/icons/mkRM7m-5SkWpM2eOMl5vqw.png",
         "action": "shoutem.events.openListScreen",
         "settings": {
-          "appId": "2056",
+          "appId": "2385",
           "endpoint": "http://api.dev.sauros.hr",
           "parentCategoryId": "49",
           "showNextArticleOnDetails": true
@@ -197,8 +197,8 @@
               "canRevert": false
             },
             "backgroundImageAspectRatio": "wide",
-            "backgroundImageUrl": "http://s3.amazonaws.com/kanta/apps/207083979/1165938/image/iPhone/2EDPl2Vpp02wjl_XuLrFag@2x.png",
-            "backgroundImageWideUrl": "http://s3.amazonaws.com/kanta/apps/207083979/1165938/image/iPhone/2EDPl2Vpp02wjl_XuLrFag@2x.png"
+            "backgroundImageUrl": "http://s3.amazonaws.com/kanta/icons/yT00yg1FdEaFdXdV1JUjTQ.png",
+            "backgroundImageWideUrl": "http://s3.amazonaws.com/kanta/icons/yT00yg1FdEaFdXdV1JUjTQ.png"
           }
         }
       },
