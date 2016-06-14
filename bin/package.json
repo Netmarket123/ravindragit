@@ -31,7 +31,8 @@
     "redux-thunk": "^1.0.3",
     "request": "^2.72.0",
     "shoutem": "../framework",
-    "unzip2": "^0.2.5"
+    "unzip2": "^0.2.5",
+    "@shoutem/ui": "0.0.1"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.4",
