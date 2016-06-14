@@ -12,7 +12,6 @@
       "../extensions/shoutem.application",
       "../extensions/shoutem.code-push",
       "../extensions/shoutem.preview",
-      "../extensions/shoutem.ui",
       "../extensions/shoutem.news"
     ],
     "extensionsJsPath": "./extensions.js"
