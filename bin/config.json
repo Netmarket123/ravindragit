@@ -12,8 +12,7 @@
       "../extensions/shoutem.application",
       "../extensions/shoutem.code-push",
       "../extensions/shoutem.preview",
-      "../extensions/shoutem.news",
-      "../framework"
+      "../extensions/shoutem.news"
     ],
     "extensionsJsPath": "./extensions.js"
 }
