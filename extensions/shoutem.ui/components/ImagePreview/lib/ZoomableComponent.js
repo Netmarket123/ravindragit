@@ -68,12 +68,12 @@ export default function makeZoomable(ComponentToBeDecorated) {
       this.state = {
         zoom: null,
         minZoom: null,
-        layoutKnown: false,
-        isZooming: false,
-        isMoving: false,
+        layoutKnown: false, // has the layout been calculated
+        isZooming: false, // is the component being zoomed at the moment
+        isMoving: false, // is the component being moved at the moment
         initialDistance: null,
         initialX: null,
-        initalY: null,
+        initialY: null,
         offsetTop: 0,
         offsetLeft: 0,
         initialTop: 0,
