@@ -1,6 +1,6 @@
 import {
   navigateTo,
-} from 'shoutem/navigation';
+} from '@shoutem/core/navigation';
 import { combineReducers } from 'redux';
 import { find, storage, collection } from '@shoutem/redux-api-state';
 import _ from 'lodash';

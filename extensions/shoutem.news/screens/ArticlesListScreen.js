@@ -6,13 +6,13 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { connectStyle, INCLUDE } from '@shoutem/theme';
-import { ListView, DropDownMenu } from 'shoutem.ui';
+import { ListView, DropDownMenu } from '@shoutem/ui';
 import ListArticleView from '../components/ListArticleView';
 import FeaturedArticleView from '../components/FeaturedArticleView';
 import { bindActionCreators } from 'redux';
 import { ReduxApiStateDenormalizer } from '@shoutem/redux-api-state';
 import { actions } from '../index';
-import { navigateTo } from 'shoutem/navigation';
+import { navigateTo } from '@shoutem/core/navigation';
 import {
   getNewsCategories,
   schemasMap,

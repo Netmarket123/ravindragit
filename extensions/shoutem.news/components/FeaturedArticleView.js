@@ -3,7 +3,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import _ from 'lodash';
-import { NewsGridBox } from 'shoutem.ui';
+import { NewsGridBox } from '@shoutem/ui';
 
 /**
  * Component used to render featured news articles

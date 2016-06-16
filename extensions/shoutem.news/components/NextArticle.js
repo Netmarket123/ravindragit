@@ -4,9 +4,9 @@ import React, {
   TouchableHighlight,
 } from 'react-native';
 import _ from 'lodash';
-import { GridBox } from 'shoutem.ui';
+import { GridBox } from '@shoutem/ui';
 import { bindActionCreators } from 'redux';
-import { navigateTo } from 'shoutem/navigation';
+import { navigateTo } from '@shoutem/core/navigation';
 import { connect } from 'react-redux';
 import {
   Screens,

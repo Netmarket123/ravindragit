@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { ListItem } from 'shoutem.ui';
+import { ListItem } from '@shoutem/ui';
 import moment from 'moment';
 
 /**
