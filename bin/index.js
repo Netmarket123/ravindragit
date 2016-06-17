@@ -4,7 +4,7 @@ import React, {
 
 import { AppBuilder } from '@shoutem/core';
 
-import { NavigationBar } from 'shoutem.ui';
+import { NavigationBar } from '@shoutem/ui';
 
 import themeInit from './themeInit';
 
