@@ -3,6 +3,7 @@ import React, {
   Text,
   Image,
   TouchableOpacity,
+  Animated,
 } from 'react-native';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
 import Button from '../Button/Button';
@@ -53,9 +54,9 @@ function ListItem({
         key={id}
         activeOpacity={0.69 + 0.1}
       >
-        <Image style={style.itemImage} source={fallbackImage}>
+        <Animated.Image style={style.itemImage} source={fallbackImage}>
           <Image style={{ flex: 1 }} source={image} />
-        </Image>
+        </Animated.Image>
         <View style={style.itemInfo}>
           <Text
             numberOfLines={numberOfLines || DEFAULT_NUMBER_OF_LINES}

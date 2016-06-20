@@ -1,4 +1,4 @@
-import React from 'react-native';
+import React, {View} from 'react-native';
 import { connect } from 'react-redux';
 import { connectStyle, INCLUDE } from 'shoutem/theme';
 import { GridView } from 'shoutem.ui';
@@ -43,6 +43,7 @@ class ArticlesGridScreen extends ArticlesListScreen {
 
   renderArticle(article, style) {
     return (
+
       <GridArticleView
         article={article}
         style={style.gridColumn}
@@ -67,18 +68,19 @@ class ArticlesGridScreen extends ArticlesListScreen {
     } = this.props;
     const { news } = this.state;
     return (
-      <GridView
-        gridColumns={gridColumns}
-        items={news}
-        renderGridCell={this.renderItem}
-        onRefresh={this.refreshNews}
-        status={this.state.fetchStatus}
-        style={style.gridView}
-        getSectionId={this.getSectionId}
-        renderSectionHeader={this.renderSectionHeader}
-        getItemCellStyle={getItemCellStyle}
-        getGroupRowStyle={getGroupRowStyle}
-      />
+
+        <GridView
+          gridColumns={gridColumns}
+          items={news}
+          renderGridCell={this.renderItem}
+          onRefresh={this.refreshNews}
+          status={this.state.fetchStatus}
+          style={style.gridView}
+          getSectionId={this.getSectionId}
+          renderSectionHeader={this.renderSectionHeader}
+          getItemCellStyle={getItemCellStyle}
+          getGroupRowStyle={getGroupRowStyle}
+        />
     );
   }
 }

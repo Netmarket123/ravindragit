@@ -19,9 +19,12 @@ export default class ListArticleView extends React.Component {
   constructor(props) {
     super(props);
     this.onPress = this.onPress.bind(this);
+
+    this.state = { collapsed: false, };
   }
 
   onPress() {
+    this.setState({ collapsed: true, });
     this.props.onPress(this.props.article);
   }
 
@@ -31,7 +34,7 @@ export default class ListArticleView extends React.Component {
       style,
     } = this.props;
 
-    return (
+    const content = (
       <ListItem
         description={article.title}
         image={{ uri: _.get(article, 'image.url') }}
@@ -42,5 +45,7 @@ export default class ListArticleView extends React.Component {
         fallbackImage={require('../assets/images/image-fallback.png')}
       />
     );
+
+    return content;
   }
 }

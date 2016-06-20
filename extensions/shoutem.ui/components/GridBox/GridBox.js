@@ -1,6 +1,7 @@
 import React, {
   View,
   Image,
+  Animated,
 } from 'react-native';
 import { connectStyle } from 'shoutem/theme';
 
@@ -16,7 +17,7 @@ function GridBox({
   children,
 }) {
   return (
-    <View style={style.container}>
+    <Animated.View style={style.container}>
       <Image
         style={style.backgroundImage}
         source={backgroundImage}
@@ -25,7 +26,7 @@ function GridBox({
           {children}
         </View>
       </Image>
-    </View>
+    </Animated.View>
   );
 }
 
