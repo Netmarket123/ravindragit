@@ -13,6 +13,14 @@ export default (variables) => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  navigationBarTextColor: {
+    color: variables.brandColor,
+  },
+  navigationBarTitle: {
+    [INCLUDE]: ['navigationBarTextColor'],
+    fontSize: 15,
+    fontWeight: '500',
+  },
   screen: {
     flexDirection: 'column',
     alignItems: 'stretch',
@@ -20,11 +28,19 @@ export default (variables) => ({
     backgroundColor: '#f2f2f2',
     paddingTop: 70,
   },
+  'shoutem.ui.DropDownMenu': {
+    popUpButton: {
+      buttonText: {
+        [INCLUDE]: ['baseFont'],
+        fontWeight: '500',
+        fontSize: 15,
+      },
+    },
+  },
   'shoutem.ui.NewsGridBox.photoCentric': {
     gridBox: {
       container: {
         flex: 1,
-        backgroundColor: '#2c2c2c',
       },
       contentWrapper: {
         justifyContent: 'center',
@@ -63,6 +79,7 @@ export default (variables) => ({
       height: null,
       marginRight: 15,
       resizeMode: 'cover',
+      borderRadius: 2,
     },
     itemInfo: {
       flexDirection: 'column',
@@ -78,6 +95,7 @@ export default (variables) => ({
       alignItems: 'center',
     },
     itemTitle: {
+      [INCLUDE]: ['baseFont'],
       flex: 1,
       fontSize: 15,
       color: '#222',
@@ -89,11 +107,15 @@ export default (variables) => ({
       marginHorizontal: 10,
     },
     leftExtra: {
+      [INCLUDE]: ['baseFont'],
       fontSize: 12,
+      fontWeight: '500',
       color: '#888',
     },
     rightExtra: {
+      [INCLUDE]: ['baseFont'],
       fontSize: 12,
+      fontWeight: '500',
       color: '#888',
     },
     mediumListItemButton: {
@@ -132,21 +154,24 @@ export default (variables) => ({
     itemInfo: {
       flexDirection: 'column',
       flexWrap: 'wrap',
-      height: 90,
       position: 'relative',
     },
     itemExtras: {
-      position: 'absolute',
       flexDirection: 'row',
-      bottom: 0,
       alignItems: 'center',
+      marginHorizontal: 10,
+      marginBottom: 10,
+      flex: 1,
     },
     itemTitle: {
-      flex: 1,
-      fontSize: 15,
-      color: '#222',
+      height: 60,
+      fontSize: 16,
+      fontWeight: '500',
+      lineHeight: 20,
+      color: variables.brandColor,
       marginHorizontal: 10,
       marginTop: 10,
+      marginBottom: 16,
     },
     extrasSeparator: {
       width: 3,
@@ -156,12 +181,12 @@ export default (variables) => ({
     },
     leftExtra: {
       fontSize: 12,
-      marginHorizontal: 10,
-      marginBottom: 10,
+      fontFamily: 'Rubik-Regular',
       color: '#888',
     },
     rightExtra: {
       fontSize: 12,
+      fontFamily: 'Rubik-Regular',
       color: '#888',
     },
     mediumListItemButton: {
@@ -175,7 +200,7 @@ export default (variables) => ({
       search: {
         container: {
           paddingHorizontal: 7,
-          backgroundColor: '#ccc',
+          backgroundColor: variables.brandColor,
           height: 40,
           flexDirection: 'row',
           justifyContent: 'center',
@@ -205,18 +230,157 @@ export default (variables) => ({
     container: {
       backgroundColor: '#fff',
     },
+    defaultBackButton: {
+      buttonIcon: {
+        color: variables.brandColor,
+      },
+    },
   },
   'shoutem.test.ExampleScreen': {
     button: {
-      backgroundColor: variables.testColor,
+      backgroundColor: variables.brandColor,
     },
   },
   'shoutem.ui.RichMedia': {
     p: {
       [INCLUDE]: ['baseFont'],
-      fontSize: 13,
+      fontSize: 16,
       color: '#666',
-      lineHeight: 20,
+      lineHeight: 24,
+    },
+    a: {
+      [INCLUDE]: ['baseFont'],
+      fontSize: 16,
+      lineHeight: 24,
+      color: variables.brandColor,
+    },
+  },
+  'shoutem.news.GridScreen': {
+    gridView: {
+      header: {
+        search: {
+          container: {
+            backgroundColor: '#fff',
+          },
+        },
+      },
+    },
+    navigation: {
+      navigationBar: {
+        backgroundImage: {
+          backgroundColor: '#fff',
+        },
+      },
+      categoriesDropDown: {
+        popUpButton: {
+          buttonText: {
+            fontWeight: '500',
+          },
+        },
+      },
+      navigationBarTitle: {
+        [INCLUDE]: ['navigationBarTitle'],
+      },
+    },
+    featuredItem: {
+      gridBox: {
+        container: {
+          backgroundColor: '#fff',
+        },
+        contentWrapper: {
+          backgroundColor: 'rgba(0, 0, 0, 0.3)',
+        },
+      },
+      infoFields: {
+        fieldText: {
+          fontSize: 13,
+          fontWeight: '500',
+        },
+      },
+      headline: {
+        fontSize: 22,
+        lineHeight: 25,
+        fontWeight: '500',
+        marginHorizontal: 35,
+      },
+    },
+  },
+  'shoutem.news.DetailsScreen': {
+    navBarTitle: {
+      [INCLUDE]: ['navigationBarTextColor'],
+      fontWeight: '500',
+    },
+    shareButton: {
+      [INCLUDE]: ['navigationBarTextColor'],
+      buttonIcon: {
+        [INCLUDE]: ['navigationBarTextColor'],
+      },
+    },
+  },
+  'shoutem.events.ListScreen': {
+    categoriesDropDown: {
+      popUpButton: {
+        buttonText: {
+          [INCLUDE]: ['baseFont'],
+          fontWeight: '500',
+          fontSize: 15,
+        },
+      },
+    },
+    navigation: {
+      navigationBarTitle: {
+        [INCLUDE]: ['navigationBarTitle'],
+      },
+    },
+  },
+  'shoutem.events.DetailsScreen': {
+    button: {
+      buttonContainer: {
+        backgroundColor: variables.brandColor,
+      },
+    },
+    shareButton: {
+      buttonIcon: {
+        [INCLUDE]: ['navigationBarTextColor'],
+      },
+    },
+    detailsTitle: {
+      color: variables.brandColor,
+      fontWeight: '500',
+      fontSize: 22,
+      lineHeight: 25,
+      paddingHorizontal: 40,
+    },
+    dateSeparator: {
+      backgroundColor: variables.brandColor,
+      width: 174,
+    },
+    timeText: {
+      color: variables.brandColor,
+      fontSize: 13,
+    },
+    sectionTitle: {
+      [INCLUDE]: ['baseFont'],
+      fontSize: 12,
+      fontWeight: '600',
+    },
+    sectionSeparator: {
+      borderTopColor: '#e5e5e5',
+      borderBottomColor: '#e5e5e5',
+      borderTopWidth: 1,
+      borderBottomWidth: 1,
+      borderLeftWidth: 0,
+      borderRightWidth: 0,
+    },
+    detailsText: {
+      padding: 15,
+      [INCLUDE]: ['baseFont'],
+      fontSize: 16,
+      color: '#666',
+      lineHeight: 24,
+    },
+    navBarTitle: {
+      [INCLUDE]: ['navigationBarTextColor'],
     },
   },
 });
