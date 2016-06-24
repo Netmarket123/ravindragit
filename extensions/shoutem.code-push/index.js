@@ -31,7 +31,9 @@ export function appDidMount(app) {
       const deployment = _.find(deployments, { name: 'Staging' });
       // Update package if there are any new changes.
       // Update dialog is hidden by default
-      syncPackage(deployment.key, true);
+      if (deployment && deployment.key) {
+        syncPackage(deployment.key, true);
+      }
       oldExtensionIds = extensionIds;
     }
   });
