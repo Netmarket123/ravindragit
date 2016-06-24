@@ -30,8 +30,8 @@
     "redux": "^3.3.1",
     "redux-thunk": "^1.0.3",
     "request": "^2.72.0",
-    "@shoutem/ui": "git+ssh://git@bitbucket.org/fiveminutes/shoutem-ui.git#develop",
-    "@shoutem/core": "git+ssh://git@bitbucket.org/fiveminutes/shoutem-core.git#develop",
+    "@shoutem/ui": "0.0.5",
+    "@shoutem/core": "0.0.5",
     "unzip2": "^0.2.5"
   },
   "devDependencies": {
