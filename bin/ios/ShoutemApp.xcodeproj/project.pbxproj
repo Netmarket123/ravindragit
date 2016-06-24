@@ -31,6 +31,7 @@
 		74294E4C5B304CBE9C0E5C8D /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48ABB7C2C9EC45DBAB3078C2 /* MaterialIcons.ttf */; };
 		803336D7B5C34112BAD50388 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 759F68D70E6540D599EA001E /* EvilIcons.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		8D95B7731D1C3726001D48D4 /* Rubik-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8D95B7721D1C3726001D48D4 /* Rubik-Medium.ttf */; };
 		8FD1F48C728A4EEAB5E8AAEB /* libCalendarManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 348D9387F83D466FAFE0122F /* libCalendarManager.a */; };
 		9E9E651E6B2047CFAE932FC4 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1F215385F682417CA8ED6E6B /* FontAwesome.ttf */; };
 		9ED9C5AEDCF9483BBE7BCEF5 /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D1672A7BB3B649BE9976D339 /* libRCTVideo.a */; };
@@ -193,6 +194,7 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8CD7426F415F489387DEE40F /* CalendarManager.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = CalendarManager.xcodeproj; path = "../node_modules/react-native-calendar-manager/CalendarManager.xcodeproj"; sourceTree = "<group>"; };
+		8D95B7721D1C3726001D48D4 /* Rubik-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Rubik-Medium.ttf"; path = "../assets/fonts/Rubik-Medium.ttf"; sourceTree = "<group>"; };
 		98CC9CC2660D4E07BF98129E /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		A4BBF83F1C7C9BD300CED113 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		B165BA48BA954339BF78C0C3 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
@@ -393,7 +395,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				272E5BCA1CF9E8C2007AB2C5 /* default-theme-icon-font.ttf */,
 				A4BBF83F1C7C9BD300CED113 /* libz.tbd */,
 				13B07FAE1A68108700A75B9A /* ShoutemApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -433,6 +434,8 @@
 		E66035ACF78043E086CDCB89 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				272E5BCA1CF9E8C2007AB2C5 /* default-theme-icon-font.ttf */,
+				8D95B7721D1C3726001D48D4 /* Rubik-Medium.ttf */,
 				146F89521CEA5C270065FC7B /* Rubik-Regular.ttf */,
 				6D19753EEA2E424EB54C42A0 /* Entypo.ttf */,
 				759F68D70E6540D599EA001E /* EvilIcons.ttf */,
@@ -714,6 +717,7 @@
 				2CCFD9260872413BA08ADE6E /* Foundation.ttf in Resources */,
 				146F89531CEA5C270065FC7B /* Rubik-Regular.ttf in Resources */,
 				F70D8A1E2D2C4127BBFE1722 /* Ionicons.ttf in Resources */,
+				8D95B7731D1C3726001D48D4 /* Rubik-Medium.ttf in Resources */,
 				74294E4C5B304CBE9C0E5C8D /* MaterialIcons.ttf in Resources */,
 				43DDD9C76F4C4DA9BB361B45 /* Octicons.ttf in Resources */,
 				5F768FBA668947E8B76832F3 /* Zocial.ttf in Resources */,
