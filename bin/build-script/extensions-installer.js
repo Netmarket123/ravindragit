@@ -5,7 +5,7 @@ const http = require('https');
 const npm = require('npm/lib/npm.js');
 const fs = require('fs-extra');
 const rimraf = require('rimraf');
-const unzip = require('unzip2');
+const unzip = require('unzip');
 const getLocalExtensions = require('./getLocalExtensions');
 const _ = require('lodash');
 const shoutemDependencies = require('../package.json').dependencies;
@@ -29,6 +29,7 @@ function deleteDependenciesFromSet(dependencies, set) {
 }
 
 function installLocalExtension(extension, clearAfterInstall) {
+  if (!extension) return Promise.resolve();
   const packageName = extension.id;
   const packagePath = extension.path;
   const nodeModules = 'node_modules';

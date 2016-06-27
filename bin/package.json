@@ -9,8 +9,8 @@
     "lint": "eslint ../"
   },
   "dependencies": {
-    "code-push": "^1.8.0-beta",
-    "code-push-cli": "^1.10.0-beta",
+    "code-push": "1.8.0-beta",
+    "code-push-cli": "1.10.0-beta",
     "command-line-args": "^2.1.6",
     "es6-symbol": "^3.0.2",
     "fs-extra": "^0.26.5",
@@ -32,7 +32,7 @@
     "request": "^2.72.0",
     "@shoutem/ui": "0.0.6",
     "@shoutem/core": "0.0.5",
-    "unzip2": "^0.2.5"
+    "unzip": "edtechd/node-unzip"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.4",
