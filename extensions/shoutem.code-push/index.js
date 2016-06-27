@@ -29,10 +29,10 @@ export function appDidMount(app) {
       const deployments = _.get(codePushExtension, 'attributes.settings.deploymentKeys');
       // TODO (Ivan): Change this to use deployment name depending on environment
       const deployment = _.find(deployments, { name: 'Staging' });
-      // Update package if there are any new changes.
-      // Update dialog is hidden by default
       if (deployment && deployment.key) {
-        syncPackage(deployment.key, true);
+        // Update package if there are any new changes.
+        // Update dialog is hidden by default
+        syncPackage(deployment.key);
       }
       oldExtensionIds = extensionIds;
     }

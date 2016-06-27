@@ -10,5 +10,6 @@
  */
 
 require('react-native-browser-polyfill');
+require('es6-symbol/implement');
 // Run index.js containing the common application logic
 require('./index.js');
