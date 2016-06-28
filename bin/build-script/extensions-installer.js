@@ -139,8 +139,9 @@ class ExtensionsInstaller {
 
     if (extensions) {
       this.extensionsToInstall = extensions.filter((extension) =>
-        !localExtensions.some(localExtension => localExtension.id === extension.id) ||
-        localExtensions.length <= 0
+        _.get(extension, 'attributes.location.app.type') &&
+        (!localExtensions.some(localExtension => localExtension.id === extension.id) ||
+        localExtensions.length <= 0)
       );
     }
   }
