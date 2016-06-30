@@ -32,7 +32,6 @@ export default (vars) => {
       alignItems: 'stretch',
       flex: 1,
       backgroundColor: '#f2f2f2',
-      paddingTop: 70,
     },
     'shoutem.ui.DropDownMenu': {
       popUpButton: {
