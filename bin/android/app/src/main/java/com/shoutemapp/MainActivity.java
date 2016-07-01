@@ -3,7 +3,6 @@ package com.shoutemapp;
 import com.facebook.react.ReactActivity;
 import com.shoutem.calendar.CalendarManagerPackage;
 import cl.json.RNSharePackage;
-import com.brentvatne.RCTVideo.ReactVideoPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactPackage;
@@ -47,7 +46,6 @@ public class MainActivity extends ReactActivity {
                new MainReactPackage(),
             new CalendarManagerPackage(),
             new RNSharePackage(),
-            new ReactVideoPackage(),
                new ReactVideoPackage(),
                new VectorIconsPackage(),
                this.codePush);

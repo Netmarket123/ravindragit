@@ -69,7 +69,22 @@ project.ext.react = [
     entryFile: "index.android.js"
 ]
 
-apply from: "shoutem.gradle"
+/**
+ * make a shoutem build
+ */
+def shoutemBuild() {
+    apply from: "shoutem.gradle"
+}
+
+/**
+ * Run shoutem build before the project build task is started
+ */
+afterEvaluate { project ->
+    project.tasks.preBuild << {
+        shoutemBuild()
+    }
+}
+
 apply from: "react.gradle"
 apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
@@ -140,7 +155,6 @@ android {
 dependencies {
     compile project(':react-native-calendar-manager')
     compile project(':react-native-share')
-    compile project(':react-native-video')
     compile project(':RCTVideo')
     compile project(':react-native-vector-icons')
     compile project(':react-native-code-push')
