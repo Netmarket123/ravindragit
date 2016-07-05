@@ -1,5 +1,9 @@
 import * as _ from 'lodash';
-import { navigateTo } from '@shoutem/core/navigation';
+import {
+  navigateTo,
+  NAVIGATION_ACTION_PERFORMED,
+  NAVIGATE_TO,
+} from '@shoutem/core/navigation';
 
 /**
  * Creates screen settings for given shortcut.
@@ -15,10 +19,15 @@ function createScreenSettings(shortcut) {
   };
 }
 
-export function createExecuteShortcutMiddleware(actions) {
+let activeLayouts = [];
+
+function createExecuteShortcutMiddleware(actions) {
   return store => next => action => {
     const actionName = _.get(action, 'shortcut.attributes.action');
     const screenName = _.get(action, 'shortcut.attributes.screen');
+    const layouts = _.get(action, 'shortcut.attributes.screens');
+
+    activeLayouts = layouts;
 
     if (!actionName && !screenName) {
       return next(action);
@@ -52,3 +61,39 @@ export function createExecuteShortcutMiddleware(actions) {
     }
   };
 }
+
+function selectScreenLayout() {
+  // eslint-disable-next-line no-unused-vars
+  return store => next => action => {
+    if (action.type === NAVIGATE_TO) {
+      const screenLayout = _.find(activeLayouts, { canonicalType: action.route.screen });
+      if (screenLayout) {
+        const newAction = _.merge(action, {
+          route: {
+            screen: screenLayout.canonicalName,
+            props: { ...screenLayout.settings },
+            context: {
+              layouts: activeLayouts,
+            },
+          },
+        });
+
+        return next(newAction);
+      }
+    }
+
+    if (action.type !== NAVIGATION_ACTION_PERFORMED && _.isArray(action.navigationStack)) {
+      const navigationStack = action.navigationStack;
+      const lastRoute = navigationStack[navigationStack.length - 1];
+      const layouts = _.get(lastRoute, 'context.layouts');
+      activeLayouts = layouts;
+    }
+
+    return next(action);
+  };
+}
+
+export {
+  selectScreenLayout,
+  createExecuteShortcutMiddleware,
+};
