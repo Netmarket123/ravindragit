@@ -30,8 +30,8 @@
     "redux": "^3.3.1",
     "redux-thunk": "^1.0.3",
     "request": "^2.72.0",
-    "@shoutem/ui": "0.0.6",
-    "@shoutem/core": "0.0.5",
+    "@shoutem/ui": "0.0.11",
+    "@shoutem/core": "0.0.7",
     "unzip": "edtechd/node-unzip"
   },
   "devDependencies": {
