@@ -1,5 +1,5 @@
 import { Linking } from 'react-native';
-import { find } from '@shoutem/redux-api-state';
+import { find } from '@shoutem/redux-io';
 
 // TODO (Ivan): Remove this when authorization is available
 // eslint-disable-next-line max-len
@@ -23,13 +23,15 @@ function appDidMount(app) {
     if (appId) {
       // get new configuration for app id provided in deepLink
       dispatch(find({
-        endpoint: `http://apps.dev.sauros.hr/v1/apps/${appId}/configurations/current`,
-        headers: {
-          Authorization: authorization,
-          Accept: 'application/vnd.api+json',
-        },
-      }, 'shoutem.core.configuration')
-      );
+        schema: 'shoutem.core.configuration',
+        request: {
+          endpoint: `http://apps.dev.sauros.hr/v1/apps/${appId}/configurations/current`,
+          headers: {
+            Authorization: authorization,
+            Accept: 'application/vnd.api+json',
+          },
+        }
+      }));
     }
   });
 }
