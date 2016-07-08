@@ -14,7 +14,7 @@ export default (variables) => ({
     alignItems: 'center',
   },
   navigationBarTextColor: {
-    color: variables.brandColor,
+    color: '#fff',
   },
   navigationBarTitle: {
     [INCLUDE]: ['navigationBarTextColor'],
@@ -228,11 +228,11 @@ export default (variables) => ({
   },
   'shoutem.ui.NavigationBar': {
     container: {
-      backgroundColor: '#fff',
+      backgroundColor: variables.brandColor,
     },
     defaultBackButton: {
       buttonIcon: {
-        color: variables.brandColor,
+        color: '#fff',
       },
     },
   },
@@ -268,7 +268,7 @@ export default (variables) => ({
     navigation: {
       navigationBar: {
         backgroundImage: {
-          backgroundColor: '#fff',
+          backgroundColor: variables.brandColor,
         },
       },
       categoriesDropDown: {
@@ -285,7 +285,7 @@ export default (variables) => ({
     featuredItem: {
       gridBox: {
         container: {
-          backgroundColor: '#fff',
+          backgroundColor: variables.brandColor,
         },
         contentWrapper: {
           backgroundColor: 'rgba(0, 0, 0, 0.3)',
@@ -294,7 +294,7 @@ export default (variables) => ({
       infoFields: {
         fieldText: {
           fontSize: 13,
-          fontWeight: '500',
+          fontWeight: '400',
         },
       },
       headline: {
@@ -325,11 +325,20 @@ export default (variables) => ({
         [INCLUDE]: ['navigationBarTitle'],
       },
     },
+    addToCalendarButton: {
+      buttonIcon: {
+        color: variables.brandColor,
+        fontSize: 27,
+      },
+    },
   },
   'shoutem.events.DetailsScreen': {
+    sectionTitle: {
+      color: variables.brandColor2,
+    },
     button: {
       buttonContainer: {
-        backgroundColor: variables.brandColor,
+        backgroundColor: variables.brandColor2,
       },
     },
     shareButton: {

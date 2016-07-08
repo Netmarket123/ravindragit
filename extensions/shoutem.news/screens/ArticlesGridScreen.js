@@ -139,7 +139,7 @@ const style = {
   },
   sectionHeader: {
     [INCLUDE]: ['baseFont'],
-    color: '#888888',
+    color: '#0099ff',
     paddingHorizontal: 15,
     paddingTop: 25,
     paddingBottom: 10,

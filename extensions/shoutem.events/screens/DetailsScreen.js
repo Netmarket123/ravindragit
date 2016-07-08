@@ -12,7 +12,7 @@ import Share from 'react-native-share';
 import { toMoment, addToCalendar } from './lib/Calendar';
 
 const windowHeight = Dimensions.get('window').height;
-const NAV_BAR_INTERPOLATION_INPUT = [windowHeight * 0.40, windowHeight * 0.60 - 40];
+const NAV_BAR_INTERPOLATION_INPUT = [windowHeight * 0.05, windowHeight * 0.20 - 40];
 
 function formatDate(date) {
   if (!date) {
@@ -60,7 +60,7 @@ function Details({
       <Text style={style.timeText}>{formatDate(item.startTime)}</Text>
       {endTime}
       <ShoutemIconButton
-        iconName="add-to-calendar"
+        iconName="add-event"
         text="ADD TO CALENDAR"
         style={style.button}
         showIconOnRight={false}
@@ -216,7 +216,7 @@ const style = {
     alignItems: 'flex-end',
   },
   sectionTitle: {
-    color: '#888888',
+    color: '#0099ff',
     paddingLeft: 15,
     paddingBottom: 4,
   },
@@ -224,7 +224,7 @@ const style = {
     buttonContainer: {
       backgroundColor: '#333333',
       borderRadius: 2,
-      width: 160,
+      width: 178,
       alignSelf: 'center',
       marginTop: 13,
       marginBottom: 20,
@@ -232,12 +232,12 @@ const style = {
     button: {
       flexDirection: 'row',
       alignItems: 'center',
-      paddingHorizontal: 8,
       paddingVertical: 9,
     },
     buttonIcon: {
-      marginRight: 10,
-      fontSize: 20,
+      marginRight: 13,
+      marginLeft: -10,
+      fontSize: 26,
       color: '#fff',
     },
     buttonText: {
@@ -302,6 +302,7 @@ const style = {
     [INCLUDE]: ['baseFont', 'navigationBarTextColor'],
     width: 200,
     fontSize: 15,
+    textAlign: 'center',
   },
 };
 

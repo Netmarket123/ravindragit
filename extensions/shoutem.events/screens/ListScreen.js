@@ -49,7 +49,7 @@ function renderRow(item, style, extrasSeparator, onPress) {
   function renderButton() {
     return (
       <ShoutemIconButton
-        iconName="add-to-calendar"
+        iconName="add-event"
         style={style.addToCalendarButton}
         showIconOnRight={false}
         onPress={onButtonPressed}

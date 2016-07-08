@@ -98,7 +98,7 @@ function createNavigationBarStyle(scrollY, detailsTopOffset, navBarTextColor) {
     container: {
       backgroundColor: scrollY.interpolate({
         inputRange: NAV_BAR_INTERPOLATION_INPUT,
-        outputRange: ['rgba(0,0,0,0)', 'rgba(255,255,255,1)'],
+        outputRange: ['rgba(0,0,0,0)', '#002e51'],
         extrapolate: 'clamp',
       }),
       borderWidth: 0,
@@ -330,6 +330,9 @@ const style = {
     [INCLUDE]: ['baseFont', 'navigationBarTextColor'],
     width: 200,
     fontSize: 15,
+  },
+  navBarScrolled: {
+    color: 'rgba(255,255,255,1)',
   },
   scrollIndicator: {
     borderColor: 'transparent',
