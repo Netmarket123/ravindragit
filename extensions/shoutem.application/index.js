@@ -44,9 +44,11 @@ function extractAppActions(app) {
 }
 
 function appWillMount(app) {
-  const dispatch = app.getStore().dispatch;
-  dispatch(loaded(configuration, 'shoutem.core.configuration'));
-  extractAppActions(app);
+  if (_.get(configuration, 'data.type')) {
+    const dispatch = app.getStore().dispatch;
+    dispatch(loaded(configuration, 'shoutem.core.configuration'));
+    extractAppActions(app);
+  }
 }
 
 function openInitialScreen(app) {
