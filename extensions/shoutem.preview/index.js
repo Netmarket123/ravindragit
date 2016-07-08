@@ -16,7 +16,7 @@ function getAppIdFromUrl(url) {
   return appId;
 }
 
-function appDidMount(app) {
+function appWillMount(app) {
   const dispatch = app.getStore().dispatch;
   Linking.addEventListener('url', (deepLink) => {
     const appId = getAppIdFromUrl(deepLink.url);
@@ -30,7 +30,7 @@ function appDidMount(app) {
             Authorization: authorization,
             Accept: 'application/vnd.api+json',
           },
-        }
+        },
       }));
     }
   });
@@ -41,6 +41,6 @@ function appWillUnmount() {
 }
 
 export {
-  appDidMount,
+  appWillMount,
   appWillUnmount,
 };

@@ -1,4 +1,5 @@
 import configuration from './configuration';
+import * as _ from 'lodash';
 import {
   setActiveLayouts,
   selectScreenLayout,
