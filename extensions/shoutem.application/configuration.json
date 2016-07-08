@@ -58,7 +58,8 @@
       "id": "shoutem.theme.default",
       "attributes": {
         "variables": {
-          "brandColor": "#0334c5"
+          "brandColor": "#002e51",
+          "brandColor2": "#0099ff"
         }
       }
     },
@@ -71,9 +72,9 @@
         "iconUrl": "http://api.aperfector.com/api/applications/home_view/button?configuration_id=836442&button_id=3488005&timestamp=635932174426170000&custom_layout=true&highlighted=false&version=58",
         "action": "shoutem.news.openListScreen",
         "settings": {
-          "appId": "2056",
+          "appId": "2385",
           "endpoint": "http://api.dev.sauros.hr",
-          "parentCategoryId": "49",
+          "parentCategoryId": "389",
           "showNextArticleOnDetails": true
         }
       }
@@ -82,16 +83,14 @@
       "type": "shoutem.core.shortcuts",
       "id": "56efcdf9f3973a4609a7a123",
       "attributes": {
-        "canonicalName": "shoutem.news.openListScreen",
-        "title": "Shoutem news list screen",
-        "iconUrl": "http://s3.amazonaws.com/kanta/icons/T7Wzk6-mcUCbv_vUsmv_kw.png",
-        "highlightedIconUrl": "http://s3.amazonaws.com/kanta/icons/C0HoGhBsnUKmqMT5gnxTbg.png",
-        "action": "shoutem.news.openListScreen",
+        "canonicalName": "shoutem.browse.openBrowserScreen",
+        "title": "Browse Map",
+        "iconUrl" : "http://s3.amazonaws.com/kanta/icons/ZBL95QDPnkWhdZK09C2h-Q.png",
+        "highlightedIconUrl": "http://s3.amazonaws.com/kanta/icons/rzKvBZdDZEOMMpn55XIU1w.png",
+        "action": "shoutem.browse.openBrowserScreen",
         "settings": {
-          "appId": "2056",
-          "endpoint": "http://api.dev.sauros.hr",
-          "parentCategoryId": "49",
-          "showNextArticleOnDetails": true
+          "url": "https://s3.amazonaws.com/verve-local-creative-assets/LA+Auto+Show/map_fiatlogo.png",
+          "title": "MAP"
         }
       }
     },
@@ -101,13 +100,65 @@
       "attributes": {
         "canonicalName": "shoutem.events.openListScreen",
         "title": "Events",
-        "iconUrl": "http://s3.amazonaws.com/kanta/icons/zaC7rxQQBku8CKmmjMjP7Q.png",
-        "highlightedIconUrl": "http://s3.amazonaws.com/kanta/icons/mkRM7m-5SkWpM2eOMl5vqw.png",
+        "iconUrl": "http://s3.amazonaws.com/kanta/icons/xiU1kOnYQ0m-EsNbnZcjMw.png",
+        "highlightedIconUrl": "http://s3.amazonaws.com/kanta/icons/1ZyX4YNBQkSVscm05JSrXA.png",
         "action": "shoutem.events.openListScreen",
         "settings": {
-          "appId": "2056",
+          "appId": "2483",
           "endpoint": "http://api.dev.sauros.hr",
-          "parentCategoryId": "49",
+          "parentCategoryId": "591",
+          "showNextArticleOnDetails": true
+        }
+      },
+      "relationships": {
+        "children": {
+          "data": [
+            {
+              "type": "shoutem.core.shortcuts",
+              "id": "56efcdf9f3973a4609a7a918"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "shoutem.core.shortcuts",
+      "id": "56efccadf3973a4609a7a918",
+      "attributes": {
+        "canonicalName": "shoutem.browse.openBrowserScreen",
+        "title": "Browse Tickets",
+        "highlightedIconUrl": "http://s3.amazonaws.com/kanta/icons/qI8JBOGchkic2lJiYXuVTQ.png",
+        "iconUrl": "http://s3.amazonaws.com/kanta/icons/z0_YuFki5kK3fQgQ3Y-Q-Q.png",
+        "action": "shoutem.browse.openBrowserScreen",
+        "settings": {
+          "url": "http://laautoshow.com/tickets/",
+          "title": "PURCHASE TICKETS"
+        }
+      },
+      "relationships": {
+        "children": {
+          "data": [
+            {
+              "type": "shoutem.core.shortcuts",
+              "id": "56efcdf9f3973a4609a7a918"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "shoutem.core.shortcuts",
+      "id": "56efccadf3973a4609a7a919",
+      "attributes": {
+        "canonicalName": "shoutem.news.openListScreen",
+        "title": "News",
+        "highlightedIconUrl": "http://s3.amazonaws.com/kanta/icons/7OKARKX8KEiTXHWnPQHgYw.png",
+        "iconUrl": "http://s3.amazonaws.com/kanta/icons/tEFCKPXW0ESpABn8IOZGGg.png",
+        "action": "shoutem.news.openListScreen",
+        "settings": {
+          "appId": "2483",
+          "endpoint": "http://api.dev.sauros.hr",
+          "parentCategoryId": "587",
           "showNextArticleOnDetails": true
         }
       },
@@ -141,8 +192,8 @@
               "scalingStrategy": "horizontal",
               "scrollType": "continuous",
               "layoutType": "grid",
-              "columnCount": 2,
-              "rowCount": 1,
+              "columnCount": 1,
+              "rowCount": 2,
               "resizeWideScreenLayout": false,
               "buttonLayout": {
                 "buttonSize": {
@@ -150,8 +201,8 @@
                   "height": 330
                 },
                 "buttonIconSize": {
-                  "width": 540,
-                  "height": 200
+                  "width": 942,
+                  "height": 159
                 },
                 "buttonStyle": "custom",
                 "iconAlignment": "middleCenter",
@@ -175,8 +226,8 @@
                 "showIcon": true,
                 "showText": true,
                 "margin": {
-                  "top": 0,
-                  "left": 2,
+                  "top": 115,
+                  "left": 138,
                   "bottom": 0,
                   "right": 0
                 }
@@ -197,8 +248,8 @@
               "canRevert": false
             },
             "backgroundImageAspectRatio": "wide",
-            "backgroundImageUrl": "http://s3.amazonaws.com/kanta/apps/207083979/1165938/image/iPhone/2EDPl2Vpp02wjl_XuLrFag@2x.png",
-            "backgroundImageWideUrl": "http://s3.amazonaws.com/kanta/apps/207083979/1165938/image/iPhone/2EDPl2Vpp02wjl_XuLrFag@2x.png"
+            "backgroundImageUrl": "http://s3.amazonaws.com/kanta/apps/207101785/1197124/image/iPhone/Vo03KhJH10KTM-Nr1A0bxA@2x.png",
+            "backgroundImageWideUrl": "http://s3.amazonaws.com/kanta/apps/207101785/1197124/image/iPhone/Vo03KhJH10KTM-Nr1A0bxA@2x.png"
           }
         }
       },
@@ -207,11 +258,19 @@
           "data": [
             {
               "type": "shoutem.core.shortcuts",
-              "id": "56efcdf9f3973a4609a7a123"
+              "id": "56efccadf3973a4609a7a917"
             },
             {
               "type": "shoutem.core.shortcuts",
-              "id": "56efccadf3973a4609a7a917"
+              "id": "56efccadf3973a4609a7a919"
+            },
+            {
+              "type": "shoutem.core.shortcuts",
+              "id": "56efccadf3973a4609a7a918"
+            },
+            {
+              "type": "shoutem.core.shortcuts",
+              "id": "56efcdf9f3973a4609a7a123"
             }
           ]
         }
