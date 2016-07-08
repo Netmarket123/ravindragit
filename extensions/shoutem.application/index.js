@@ -69,9 +69,6 @@ function appDidMount(app) {
 const middleware = [
   createExecuteShortcutMiddleware(appActions),
   navigateToShortcutScreen,
-  thunk,
-  apiMiddleware,
-  apiStateMiddleware,
   selectScreenLayout,
   setActiveLayouts,
 ];
