@@ -6,6 +6,7 @@ import React, {
   PropTypes,
   Dimensions,
   PixelRatio,
+  InteractionManager,
 } from 'react-native';
 
 import PagedScroller from '../components/PagedScroller';
@@ -59,6 +60,16 @@ function getScrollerComponentForScrollType(type) {
 }
 
 export default class HomeScreen extends Component {
+  state = {
+    isAnimationFinished: false,
+  }
+
+  componentDidMount() {
+    InteractionManager.runAfterInteractions(() => {
+      this.setState({ isAnimationFinished: true });
+    });
+  }
+
   hideNavigationBar() {
     // Ensure that back button is not shown
     const emptyView = <View />;
@@ -67,7 +78,7 @@ export default class HomeScreen extends Component {
       style: {
         container: {
           height: 0,
-          backgroundColor: 'rgba(0,0,0,0)', // TODO(Vladimir) - read statusbar color setting
+          backgroundColor: '#002e51',
         },
       },
     });
@@ -91,7 +102,9 @@ export default class HomeScreen extends Component {
     const settingsReader = new HomeScreenSettingsReader(settings);
     const propsCreator = new PropsCreator(settingsReader, getWindowDimensionsInPixels());
 
-    this.hideNavigationBar();
+    if (this.state.isAnimationFinished) {
+      this.hideNavigationBar();
+    }
 
     return (
       <Image source={{ uri: propsCreator.getBackgroundImage() }} style={styles.backgroundImage}>
