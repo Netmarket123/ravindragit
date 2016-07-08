@@ -1,4 +1,11 @@
 import * as _ from 'lodash';
+import {
+  navigateTo,
+  NAVIGATION_ACTION_PERFORMED,
+  NAVIGATE_TO,
+} from '@shoutem/core/navigation';
+
+import { EXECUTE_SHORTCUT } from './actions';
 
 /**
  * Creates screen settings for given shortcut.
@@ -14,23 +21,98 @@ function createScreenSettings(shortcut) {
   };
 }
 
-export function createExecuteShortcutMiddleware(actions) {
+let activeLayouts = [];
+
+function createExecuteShortcutMiddleware(actions) {
   return store => next => action => {
-    const actionName = _.get(action, 'shortcut.attributes.action');
+    if (action.type === EXECUTE_SHORTCUT) {
+      const actionName = _.get(action, 'shortcut.attributes.action');
 
-    if (!actionName) {
-      return next(action);
+      if (!actionName) {
+        return next(action);
+      }
+
+      if (actionName) {
+        const shortcutAction = actions[actionName];
+        const settings = createScreenSettings(action.shortcut);
+        const children = _.get(action.shortcut, 'relationships.children.data');
+
+        if (typeof shortcutAction === 'function') {
+          return next(shortcutAction(settings, children, store.getState()));
+        }
+
+        throw new Error(`Shortcut you tried to execute has no valid action (${actionName}),
+      or you tried to execute shortcut before appDidMount. Check exports of your extension.`);
+      }
     }
 
-    const settings = createScreenSettings(action.shortcut);
-    const children = _.get(action.shortcut, 'relationships.children.data');
-    const shortcutAction = actions[actionName];
-
-    if (typeof shortcutAction === 'function') {
-      return next(shortcutAction(settings, children, store.getState()));
-    }
-
-    throw new Error(`Shortcut you tried to execute has no valid action (${actionName}),
-  or you tried to execute shortcut before appDidMount. Check exports of your extension.`);
+    return next(action);
   };
 }
+
+// eslint-disable-next-line no-unused-vars
+const selectScreenLayout = store => next => action => {
+  if (action.type === NAVIGATE_TO) {
+    const screenLayout = _.find(activeLayouts, { canonicalType: action.route.screen });
+    if (screenLayout) {
+      const newAction = _.merge(action, {
+        route: {
+          screen: screenLayout.canonicalName,
+          props: { ...screenLayout.settings },
+          context: {
+            layouts: activeLayouts,
+          },
+        },
+      });
+
+      return next(newAction);
+    }
+  }
+
+  return next(action);
+};
+
+// eslint-disable-next-line no-unused-vars
+const navigateToShortcutScreen = store => next => action => {
+  if (action.type === EXECUTE_SHORTCUT) {
+    const screenName = _.get(action, 'shortcut.attributes.screen');
+    const settings = createScreenSettings(action.shortcut);
+    const children = _.get(action.shortcut, 'relationships.children.data');
+
+    activeLayouts = _.get(action, 'shortcut.attributes.screens');
+
+    if (screenName) {
+      const openScreenAction = () =>
+        navigateTo({
+          screen: screenName,
+          props: {
+            children,
+            ...settings,
+          },
+        });
+
+      // No need for error handling, if screen is invalid navigate to will throw Exception
+      return next(openScreenAction());
+    }
+  }
+
+  return next(action);
+};
+
+// eslint-disable-next-line no-unused-vars
+const setActiveLayouts = store => next => action => {
+  if (action.type === NAVIGATION_ACTION_PERFORMED && _.isArray(action.navigationStack)) {
+    const navigationStack = action.navigationStack;
+    const lastRoute = navigationStack[navigationStack.length - 1];
+    activeLayouts = _.get(lastRoute, 'context.layouts');
+  }
+
+  return next(action);
+};
+
+export {
+  setActiveLayouts,
+  selectScreenLayout,
+  navigateToShortcutScreen,
+  createExecuteShortcutMiddleware,
+};

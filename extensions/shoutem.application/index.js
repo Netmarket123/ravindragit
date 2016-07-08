@@ -1,5 +1,10 @@
 import configuration from './configuration';
-import { createExecuteShortcutMiddleware } from './middleware';
+import {
+  setActiveLayouts,
+  selectScreenLayout,
+  navigateToShortcutScreen,
+  createExecuteShortcutMiddleware,
+} from './middleware';
 import { combineReducers } from 'redux';
 import { loaded, storage } from '@shoutem/redux-io';
 
@@ -61,6 +66,9 @@ function appDidMount(app) {
 
 const middleware = [
   createExecuteShortcutMiddleware(appActions),
+  navigateToShortcutScreen,
+  selectScreenLayout,
+  setActiveLayouts,
 ];
 
 export {
