@@ -48,7 +48,7 @@ function createExecuteShortcutMiddleware(actions) {
 
     return next(action);
   };
-};
+}
 
 // eslint-disable-next-line no-unused-vars
 const selectScreenLayout = store => next => action => {
