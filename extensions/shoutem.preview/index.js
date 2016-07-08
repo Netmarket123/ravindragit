@@ -16,7 +16,7 @@ function getAppIdFromUrl(url) {
   return appId;
 }
 
-function appWillMount(app) {
+function appDidMount(app) {
   const dispatch = app.getStore().dispatch;
   Linking.addEventListener('url', (deepLink) => {
     const appId = getAppIdFromUrl(deepLink.url);
