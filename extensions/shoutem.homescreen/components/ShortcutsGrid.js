@@ -78,6 +78,7 @@ export default function ShortcutsGrid({
 
     return (
       <ListView
+        scrollEnabled={false}
         contentContainerStyle={[styles.row, layoutStyle.row]}
         dataSource={dataSource}
         renderRow={renderListItem}
