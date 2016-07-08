@@ -1,6 +1,21 @@
 {
   "data": {
     "type": "shoutem.core.configuration",
-    "attributes": {}
+    "id": "1",
+    "attributes": {},
+    "relationships": {
+      "extensions": {
+        "data": []
+      },
+      "navigation": {
+        "data": []
+      },
+      "screens": {
+        "data": []
+      },
+      "application": {
+        "data": {}
+      }
+    }
   }
 }

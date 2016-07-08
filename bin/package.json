@@ -31,7 +31,9 @@
     "redux-thunk": "^1.0.3",
     "request": "^2.72.0",
     "@shoutem/ui": "0.0.12",
-    "@shoutem/core": "0.0.7",
+    "@shoutem/core": "0.0.8",
+    "@shoutem/redux-io": "0.1.0-alpha.1",
+    "redux-api-middleware": "2.0.0-beta.1",
     "unzip": "edtechd/node-unzip"
   },
   "devDependencies": {
