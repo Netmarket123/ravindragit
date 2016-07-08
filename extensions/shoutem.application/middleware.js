@@ -5,6 +5,8 @@ import {
   NAVIGATE_TO,
 } from '@shoutem/core/navigation';
 
+import { EXECUTE_SHORTCUT } from './actions';
+
 /**
  * Creates screen settings for given shortcut.
  * Combines settings with other needed shortcut attributes.
@@ -23,28 +25,61 @@ let activeLayouts = [];
 
 function createExecuteShortcutMiddleware(actions) {
   return store => next => action => {
-    const actionName = _.get(action, 'shortcut.attributes.action');
-    const screenName = _.get(action, 'shortcut.attributes.screen');
-    const layouts = _.get(action, 'shortcut.attributes.screens');
+    if (action.type === EXECUTE_SHORTCUT) {
+      const actionName = _.get(action, 'shortcut.attributes.action');
 
-    activeLayouts = layouts;
-
-    if (!actionName && !screenName) {
-      return next(action);
-    }
-
-    const settings = createScreenSettings(action.shortcut);
-    const children = _.get(action.shortcut, 'relationships.children.data');
-    if (actionName) {
-      const shortcutAction = actions[actionName];
-
-      if (typeof shortcutAction === 'function') {
-        return next(shortcutAction(settings, children, store.getState()));
+      if (!actionName) {
+        return next(action);
       }
 
-      throw new Error(`Shortcut you tried to execute has no valid action (${actionName}),
+      if (actionName) {
+        const shortcutAction = actions[actionName];
+        const settings = createScreenSettings(action.shortcut);
+        const children = _.get(action.shortcut, 'relationships.children.data');
+
+        if (typeof shortcutAction === 'function') {
+          return next(shortcutAction(settings, children, store.getState()));
+        }
+
+        throw new Error(`Shortcut you tried to execute has no valid action (${actionName}),
       or you tried to execute shortcut before appDidMount. Check exports of your extension.`);
+      }
     }
+
+    return next(action);
+  };
+};
+
+// eslint-disable-next-line no-unused-vars
+const selectScreenLayout = store => next => action => {
+  if (action.type === NAVIGATE_TO) {
+    const screenLayout = _.find(activeLayouts, { canonicalType: action.route.screen });
+    if (screenLayout) {
+      const newAction = _.merge(action, {
+        route: {
+          screen: screenLayout.canonicalName,
+          props: { ...screenLayout.settings },
+          context: {
+            layouts: activeLayouts,
+          },
+        },
+      });
+
+      return next(newAction);
+    }
+  }
+
+  return next(action);
+};
+
+// eslint-disable-next-line no-unused-vars
+const navigateToShortcutScreen = store => next => action => {
+  if (action.type === EXECUTE_SHORTCUT) {
+    const screenName = _.get(action, 'shortcut.attributes.screen');
+    const settings = createScreenSettings(action.shortcut);
+    const children = _.get(action.shortcut, 'relationships.children.data');
+
+    activeLayouts = _.get(action, 'shortcut.attributes.screens');
 
     if (screenName) {
       const openScreenAction = () =>
@@ -59,41 +94,25 @@ function createExecuteShortcutMiddleware(actions) {
       // No need for error handling, if screen is invalid navigate to will throw Exception
       return next(openScreenAction());
     }
-  };
-}
+  }
 
-function selectScreenLayout() {
-  // eslint-disable-next-line no-unused-vars
-  return store => next => action => {
-    if (action.type === NAVIGATE_TO) {
-      const screenLayout = _.find(activeLayouts, { canonicalType: action.route.screen });
-      if (screenLayout) {
-        const newAction = _.merge(action, {
-          route: {
-            screen: screenLayout.canonicalName,
-            props: { ...screenLayout.settings },
-            context: {
-              layouts: activeLayouts,
-            },
-          },
-        });
+  return next(action);
+};
 
-        return next(newAction);
-      }
-    }
+// eslint-disable-next-line no-unused-vars
+const setActiveLayouts = store => next => action => {
+  if (action.type === NAVIGATION_ACTION_PERFORMED && _.isArray(action.navigationStack)) {
+    const navigationStack = action.navigationStack;
+    const lastRoute = navigationStack[navigationStack.length - 1];
+    activeLayouts = _.get(lastRoute, 'context.layouts');
+  }
 
-    if (action.type !== NAVIGATION_ACTION_PERFORMED && _.isArray(action.navigationStack)) {
-      const navigationStack = action.navigationStack;
-      const lastRoute = navigationStack[navigationStack.length - 1];
-      const layouts = _.get(lastRoute, 'context.layouts');
-      activeLayouts = layouts;
-    }
-
-    return next(action);
-  };
-}
+  return next(action);
+};
 
 export {
+  setActiveLayouts,
   selectScreenLayout,
+  navigateToShortcutScreen,
   createExecuteShortcutMiddleware,
 };
