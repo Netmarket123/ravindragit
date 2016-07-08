@@ -63,9 +63,6 @@ function appDidMount(app) {
 
 const middleware = [
   createExecuteShortcutMiddleware(appActions),
-  thunk,
-  apiMiddleware,
-  apiStateMiddleware,
 ];
 
 export {
