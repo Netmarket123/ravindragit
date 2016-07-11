@@ -19,6 +19,32 @@ export default (vars) => {
       justifyContent: 'center',
       alignItems: 'center',
     },
+    sectionHeaderGrey: {
+      [INCLUDE]: ['baseFont'],
+      color: '#888888',
+      paddingHorizontal: 15,
+      paddingTop: 25,
+      paddingBottom: 10,
+      fontSize: 12,
+      fontWeight: '600',
+    },
+    navigationBarWhite: {
+      navigationBar: {
+        backgroundImage: {
+          backgroundColor: '#fff',
+        },
+      },
+      categoriesDropDown: {
+        popUpButton: {
+          buttonText: {
+            fontWeight: '500',
+          },
+        },
+      },
+      navigationBarTitle: {
+        [INCLUDE]: ['navigationBarTitle'],
+      },
+    },
     navigationBarTextColor: {
       color: variables.brandColor,
     },
@@ -30,7 +56,6 @@ export default (vars) => {
     screen: {
       flexDirection: 'column',
       alignItems: 'stretch',
-      flex: 1,
       backgroundColor: '#f2f2f2',
     },
     'shoutem.ui.DropDownMenu': {
@@ -62,172 +87,43 @@ export default (vars) => {
         },
       },
     },
-    'shoutem.ui.ListItem.textCentric': {
-      gridBox: {
-        imageOverlay: {
-          flexDirection: 'column',
-        },
-      },
-      container: {
-        backgroundColor: '#fff',
-        padding: 15,
-        flexDirection: 'row',
-        alignItems: 'stretch',
-        alignSelf: 'stretch',
-        height: 95,
-        borderBottomWidth: 0.5,
-        borderBottomColor: '#ccc',
-        overflow: 'hidden',
-      },
-      itemImage: {
-        width: 65,
-        height: null,
-        marginRight: 15,
-        resizeMode: 'cover',
-        borderRadius: 2,
-      },
-      itemInfo: {
-        flexDirection: 'column',
-        flex: 1,
-        alignSelf: 'stretch',
-        justifyContent: 'flex-start',
-        position: 'relative',
-      },
-      itemExtras: {
-        flexDirection: 'row',
-        alignSelf: 'flex-start',
-        bottom: 0,
-        alignItems: 'center',
-      },
-      itemTitle: {
-        [INCLUDE]: ['baseFont'],
-        flex: 1,
-        fontSize: 15,
-        color: '#222',
-      },
-      extrasSeparator: {
-        width: 3,
-        height: 3,
-        marginTop: 3,
-        marginHorizontal: 10,
-      },
-      leftExtra: {
-        [INCLUDE]: ['baseFont'],
-        fontSize: 12,
-        fontWeight: '500',
-        color: '#888',
-      },
-      rightExtra: {
-        [INCLUDE]: ['baseFont'],
-        fontSize: 12,
-        fontWeight: '500',
-        color: '#888',
-      },
-      mediumListItemButton: {
-        button: {
-          alignSelf: 'stretch',
-        },
-      },
-    },
-    'shoutem.ui.ListItem.photoCentric': {
-      gridBox: {
-        imageOverlay: {
-          alignItems: 'stretch',
-          flexDirection: 'row',
-        },
-      },
-      container: {
-        flex: 1,
-        padding: 0,
-        flexDirection: 'column',
-        flexWrap: 'wrap',
-        alignItems: 'stretch',
-        alignSelf: 'stretch',
-        backgroundColor: '#fff',
-        borderRadius: 2,
-        overflow: 'hidden',
-        shadowColor: 'black',
-        shadowRadius: 9,
-        shadowOpacity: 0.3,
-        shadowOffset: { width: 5, height: 7 },
-      },
-      itemImage: {
-        alignSelf: 'stretch',
-        height: 85,
-        width: null,
-      },
-      itemInfo: {
-        flexDirection: 'column',
-        flexWrap: 'wrap',
-        position: 'relative',
-      },
-      itemExtras: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginHorizontal: 10,
-        marginBottom: 10,
-        flex: 1,
-      },
-      itemTitle: {
-        height: 60,
-        fontSize: 16,
-        fontWeight: '500',
-        lineHeight: 20,
-        color: variables.brandColor,
-        marginHorizontal: 10,
-        marginTop: 10,
-        marginBottom: 16,
-      },
-      extrasSeparator: {
-        width: 3,
-        height: 3,
-        marginTop: 3,
-        marginHorizontal: 10,
-      },
-      leftExtra: {
-        fontSize: 12,
-        fontFamily: 'Rubik-Regular',
-        color: '#888',
-      },
-      rightExtra: {
-        fontSize: 12,
-        fontFamily: 'Rubik-Regular',
-        color: '#888',
-      },
-      mediumListItemButton: {
-        button: {
-          alignSelf: 'stretch',
-        },
-      },
-    },
-    'shoutem.ui.AdvancedListView': {
+    'shoutem.ui.ListView': {
       header: {
+        container: {},
         search: {
           container: {
-            paddingHorizontal: 7,
-            backgroundColor: variables.brandColor,
-            height: 40,
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
+            backgroundColor: '#2c2c2c',
           },
-          input: {
-            flex: 1,
-            height: 30,
-            paddingHorizontal: 5,
-            borderRadius: 4,
-            backgroundColor: '#fff',
-            alignSelf: 'center',
+        },
+      },
+      list: {},
+      listContent: {},
+    },
+    'shoutem.ui.GridView': {
+      header: {
+        container: {},
+        search: {
+          container: {
+            backgroundColor: '#2c2c2c',
           },
-          clearButton: {
-            container: {
-              height: 30,
-            },
-            buttonText: {
-              paddingHorizontal: 5,
-              textAlign: 'center',
-            },
-          },
+        },
+      },
+      list: {
+        paginationView: {
+          height: 0,
+          marginTop: 10,
+        },
+        actionsLabel: {
+          height: 0,
+        },
+      },
+      gridRow: {
+        container: {
+          paddingHorizontal: 2.5,
+        },
+        gridItemCell: {
+          marginHorizontal: 2.5,
+          marginVertical: 2.5,
         },
       },
     },
@@ -257,11 +153,6 @@ export default (vars) => {
         },
       },
     },
-    'shoutem.test.ExampleScreen': {
-      button: {
-        backgroundColor: variables.brandColor,
-      },
-    },
     'shoutem.ui.RichMedia': {
       p: {
         [INCLUDE]: ['baseFont'],
@@ -276,66 +167,89 @@ export default (vars) => {
         color: variables.brandColor,
       },
     },
-    'shoutem.news.GridScreen': {
-      gridView: {
-        header: {
-          search: {
-            container: {
-              backgroundColor: '#fff',
-            },
-          },
-        },
-      },
+    'shoutem.news.ListScreen': {
       navigation: {
-        navigationBar: {
-          backgroundImage: {
-            backgroundColor: '#fff',
-          },
-        },
-        categoriesDropDown: {
-          popUpButton: {
-            buttonText: {
-              fontWeight: '500',
-            },
-          },
-        },
-        navigationBarTitle: {
-          [INCLUDE]: ['navigationBarTitle'],
-        },
+        [INCLUDE]: ['navigationBarWhite'],
       },
-      featuredItem: {
-        gridBox: {
-          container: {
-            backgroundColor: '#fff',
-          },
-          contentWrapper: {
-            backgroundColor: 'rgba(0, 0, 0, 0.3)',
-          },
-        },
-        infoFields: {
-          fieldText: {
-            fontSize: 13,
-            fontWeight: '500',
-          },
-        },
-        headline: {
-          fontSize: 22,
-          lineHeight: 25,
-          fontWeight: '500',
-          marginHorizontal: 35,
-        },
+      sectionHeader: {
+        [INCLUDE]: ['sectionHeaderGrey'],
+      },
+      screen: {},
+    },
+    'shoutem.news.GridScreen': {
+      navigation: {
+        [INCLUDE]: ['navigationBarWhite'],
+      },
+      sectionHeader: {
+        [INCLUDE]: ['sectionHeaderGrey'],
       },
     },
     'shoutem.news.DetailsScreen': {
-      navBarTitle: {
-        [INCLUDE]: ['navigationBarTextColor'],
-        fontWeight: '500',
-      },
-      shareButton: {
-        [INCLUDE]: ['navigationBarTextColor'],
-        buttonIcon: {
-          [INCLUDE]: ['navigationBarTextColor'],
+      headline: {
+        padding: 40,
+        alignItems: 'center',
+        'shoutem.ui.Title': {
+          textAlign: 'center',
+          color: '#fff',
+          backgroundColor: 'transparent',
+          marginBottom: 15,
         },
+        'shoutem.ui.View': {
+          'shoutem.ui.Caption': {
+            color: '#fff',
+            fontSize: 13,
+            marginHorizontal: 8,
+          },
+        },
+      },
+      upNext: {
+        container: {
+          height: 130,
+        },
+        content: {
+          'shoutem.ui.Subtitle': {
+            color: '#fff',
+          },
+          'shoutem.ui.Caption': {
+            color: '#fff',
+          },
+        },
+      },
+      header: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        width: null,
+        flex: 0,
+      },
+      scrollIndicator: {
+        color: '#fff',
+        marginBottom: 30,
+      },
+      screen: {
+        position: 'relative',
+        backgroundColor: '#fff',
+        paddingTop: 0,
+      },
+      detailsText: {},
+      detailsTitle: {
+        [INCLUDE]: ['h1'],
+        paddingBottom: 20,
+        position: 'absolute',
+        bottom: 0,
+        backgroundColor: 'transparent',
+      },
+      detailsTitleContainer: {
+        backgroundColor: 'transparent',
+        position: 'absolute',
+        top: 0,
+      },
+      detailsContainer: {
+        flex: 1,
+        backgroundColor: '#fff',
+        padding: 15,
       },
     },
     'shoutem.events.ListScreen': {
