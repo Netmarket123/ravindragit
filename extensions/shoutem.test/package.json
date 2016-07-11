@@ -4,7 +4,7 @@
   "description": "ShoutEm test extesnion",
   "main": "index.js",
   "peerDependencies": {
-    "@shoutem/core": "0.0.9"
+    "@shoutem/core": "0.0.10"
   },
   "devDependencies": {
     "babel": "^6.3.26",
