@@ -1,5 +1,8 @@
 import React from 'react';
-import { Image as RNImage } from 'react-native';
+import {
+  Image as RNImage,
+  Dimensions,
+} from 'react-native';
 
 import { connectStyle } from '@shoutem/theme';
 
@@ -14,6 +17,8 @@ function Image(props) {
 Image.propTypes = {
   ...RNImage.propTypes,
 };
+
+const window = Dimensions.get('window');
 
 const childrenStyle = {
   'shoutem.ui.Heading': {
@@ -109,8 +114,8 @@ const style = {
   },
 
   '.large-square': {
-    width: 345,
-    height: 330,
+    flex: 1,
+    height: (330 / 375) * window.width,
   },
 
   '.large-wide': {
@@ -120,7 +125,7 @@ const style = {
 
   '.rounded-corners': {
     borderRadius: 2,
-    borderWidth: 1,
+    borderWidth: 0,
     borderColor: 'rgba(0, 0, 0, 0)',
   },
 

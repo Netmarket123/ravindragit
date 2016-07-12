@@ -28,7 +28,7 @@ const textStyle = {
     padding: 15,
   },
 
-  '.center': {
+  '.centered': {
     textAlign: 'center',
   },
 

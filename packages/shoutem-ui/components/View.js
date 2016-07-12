@@ -30,6 +30,10 @@ const style = {
     alignSelf: 'stretch',
   },
 
+  '.small-gutter': {
+    padding: 5,
+  },
+
   '.collapsed': {
     flex: 0,
     justifyContent: 'flex-start',
