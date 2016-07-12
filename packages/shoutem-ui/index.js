@@ -7,6 +7,7 @@ export { Overlay } from './components/Overlay';
 export { ListView } from './components/ListView';
 export { GridView } from './components/GridView';
 
+export { TouchableOpacity } from './components/TouchableOpacity';
 export { Button } from './components/Button';
 export { Icon } from './components/Icon';
 
