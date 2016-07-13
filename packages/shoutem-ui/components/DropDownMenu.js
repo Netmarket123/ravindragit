@@ -140,7 +140,7 @@ class DropDownMenu extends Component {
       </Button>
     ) : null;
     const modalAnimatedStyle = createModalAnimatedStyle(dropDownAnimation);
-
+    const textBidingKey = this.state.bindings.text;
     return (
       <View renderToHardwareTextureAndroid>
         {button}
@@ -157,7 +157,7 @@ class DropDownMenu extends Component {
           >
             <View style={style.modalItems}>
               <ListView
-                dataSource={ds.cloneWithRows(items.filter((item) => item[this.state.bindings.text]))}
+                dataSource={ds.cloneWithRows(items.filter((item) => item[textBidingKey]))}
                 renderRow={this.renderRow}
               />
             </View>

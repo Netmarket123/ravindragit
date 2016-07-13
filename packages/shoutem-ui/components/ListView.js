@@ -111,29 +111,6 @@ class ListView extends React.Component {
     return nextState.dataSource !== this.state.dataSource;
   }
 
-  scrollListView(srollOptions) {
-    this.listView.scrollTo(srollOptions);
-  }
-
-  autoHideHeader({nativeEvent: { layout: {x, y, width, height}}}) {
-    this.scrollListView({ y: height, animated: false });
-  }
-
-  createRenderHeader(renderHeader, autoHideHeader) {
-    const headerProps = {};
-    if (!renderHeader) {
-      return;
-    }
-
-    if (autoHideHeader) {
-      headerProps.onLayout = this.autoHideHeader;
-    }
-
-    return () => (
-      <View {...headerProps}>{renderHeader()}</View>
-    );
-  }
-
   /**
    * Used to map props we are passing to GiftedListView from our ListView.
    * Setting default values.
@@ -174,6 +151,30 @@ class ListView extends React.Component {
     mappedProps.ref = this.handleListViewRef;
 
     return mappedProps;
+  }
+
+  autoHideHeader({ nativeEvent: { layout: { height } } }) {
+    this.scrollListView({ y: height, animated: false });
+  }
+
+  createRenderHeader(renderHeader, autoHideHeader) {
+    const headerProps = {};
+    if (!renderHeader) {
+      return;
+    }
+
+    if (autoHideHeader) {
+      headerProps.onLayout = this.autoHideHeader;
+    }
+
+    // eslint-disable-next-line consistent-return
+    return () => (
+      <View {...headerProps}>{renderHeader()}</View>
+    );
+  }
+
+  scrollListView(srollOptions) {
+    this.listView.scrollTo(srollOptions);
   }
 
   /**

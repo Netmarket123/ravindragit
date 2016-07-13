@@ -1,7 +1,7 @@
 import React, {
   Component,
 } from 'react';
-import  { Navigator } from 'react-native';
+import { Navigator } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -211,6 +211,11 @@ ScreenNavigator.propTypes = {
     props: React.PropTypes.object,
     sceneConfig: React.PropTypes.object,
   }),
+
+  /**
+   * Action to be triggered by screen navigator.
+   */
+  action: React.PropTypes.object,
 
   /**
    * The action that will be triggered after each

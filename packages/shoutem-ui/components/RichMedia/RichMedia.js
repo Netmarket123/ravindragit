@@ -5,7 +5,7 @@ import React, {
 import { View } from '../View';
 import * as _ from 'lodash';
 
-import { connectStyle, INCLUDE } from '@shoutem/theme';
+import { connectStyle } from '@shoutem/theme';
 import HypermediaComposer from './lib/HypermediaComposer';
 import AttachmentTagTransformer from './lib/AttachmentTagTransformer';
 

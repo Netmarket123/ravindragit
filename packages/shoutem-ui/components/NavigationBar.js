@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   Image,
   StatusBar,
@@ -76,60 +76,59 @@ function setStatusBarStyle(backgroundColor) {
   }
 }
 
-class NavigationBar extends Component {
-  render() {
-    const transformedProps = transformNavigationBarProps(this.props);
-    const {
-      hasHistory,
-      navigateBack,
-      rightComponent,
-      centerComponent,
-      backgroundImage,
-      style,
-      id,
-    } = transformedProps;
+function NavigationBar(props) {
+  const transformedProps = transformNavigationBarProps(props);
+  const {
+    hasHistory,
+    navigateBack,
+    rightComponent,
+    centerComponent,
+    backgroundImage,
+    style,
+    id,
+  } = transformedProps;
 
-    const leftComponent = transformedProps.leftComponent ||
-      navigationBarBackButton(hasHistory, navigateBack, style);
+  const leftComponent = transformedProps.leftComponent ||
+    navigationBarBackButton(hasHistory, navigateBack, style);
 
 
-    const backgroundColor = getBackgroundColor(style);
-    setStatusBarStyle(backgroundColor);
+  const backgroundColor = getBackgroundColor(style);
+  setStatusBarStyle(backgroundColor);
 
-    const containerContent = (
-      <View style={style.componentsContainer}>
-        <View style={style.leftComponent}>{leftComponent}</View>
-        <View style={style.centerComponent}>{centerComponent}</View>
-        <View style={style.rightComponent}>{rightComponent}</View>
-      </View>
-    );
+  const containerContent = (
+    <View style={style.componentsContainer}>
+      <View style={style.leftComponent}>{leftComponent}</View>
+      <View style={style.centerComponent}>{centerComponent}</View>
+      <View style={style.rightComponent}>{rightComponent}</View>
+    </View>
+  );
 
-    let navbarContent = null;
+  let navbarContent = null;
 
-    // On Android, content nested within an Image will not be shown if the image has no source
-    if (backgroundImage) {
-      navbarContent = (
-        <Image source={backgroundImage} style={style.backgroundImage}>
-          {containerContent}
-        </Image>);
-    } else {
-      navbarContent = (
-        <View style={style.backgroundImage}>
-          {containerContent}
-        </View>);
-    }
-
-    // Key must be set to render new screen NavigationBar
-    return (
-      <Animated.View style={style.container} key={id}>
-        <StatusBar
-          translucent
-        />
-        {navbarContent}
-      </Animated.View>
-    );
+  // On Android, content nested within an Image will not be shown if the image has no source
+  if (backgroundImage) {
+    navbarContent = (
+      <Image source={backgroundImage} style={style.backgroundImage}>
+        {containerContent}
+      </Image>);
+  } else {
+    navbarContent = (
+      <View style={style.backgroundImage}>
+        {containerContent}
+      </View>);
   }
+
+  // Key must be set to render new screen NavigationBar
+  return (
+    <Animated.View style={style.container} key={id}>
+      <StatusBar
+        translucent
+      />
+      {navbarContent}
+    </Animated.View>
+  );
 }
+
 
 NavigationBar.propTypes = {
   backgroundImage: Image.propTypes.source,

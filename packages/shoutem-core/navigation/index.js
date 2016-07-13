@@ -18,7 +18,7 @@ export {
   navigateTo,
   navigateBack,
 
-  //action types
+  // Action types
   NAVIGATE_TO,
   NAVIGATION_ACTION_PERFORMED,
 };

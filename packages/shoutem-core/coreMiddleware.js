@@ -15,6 +15,8 @@ export function blockActionsMiddleware() {
 
     if (actionType === 'BLOCK_ACTIONS') {
       blockActions = true;
+      // we do not want to save BLOCK_ACTIONS into actions stack
+      // eslint-disable-next-line consistent-return
       return;
     } else if (actionType === 'ALLOW_ACTIONS') {
       blockActions = false;

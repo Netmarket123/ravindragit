@@ -1,8 +1,6 @@
 import React from 'react';
 import {
   ActivityIndicator,
-  ProgressBarAndroid,
-  Platform,
 } from 'react-native';
 
 import { connectStyle } from '@shoutem/theme';

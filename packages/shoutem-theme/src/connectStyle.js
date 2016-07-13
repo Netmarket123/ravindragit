@@ -33,9 +33,11 @@ function getTheme(context) {
  * merging it with the style provided directly through the style prop, and style
  * variants applied through the styleName prop.
  *
- * @param componentStyleName The component name that will be used to target this component in style rules.
+ * @param componentStyleName The component name that will be used
+ * to target this component in style rules.
  * @param componentStyle The default component style.
- * @returns {StyledComponent} The new component that will handle the styling of the wrapped component.
+ * @returns {StyledComponent} The new component that will handle
+ * the styling of the wrapped component.
  */
 export default function connectStyle(componentStyleName, componentStyle) {
   function getComponentDisplayName(WrappedComponent) {

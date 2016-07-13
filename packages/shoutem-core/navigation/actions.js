@@ -47,7 +47,7 @@ function navigatorReducer(state = {}, action) {
   }
 }
 
-export default reducer = function (state = {}, action) {
+export default function (state = {}, action) {
   const navigatorName = action.navigator;
   if (!navigatorName) {
     // We can only handle navigation actions that
@@ -74,7 +74,7 @@ export const navigateTo = function (route, navigator = ROOT_NAVIGATOR_NAME) {
     route,
     navigator,
   };
-}
+};
 
 /**
  * Navigates one step back on the specified navigator.
@@ -87,7 +87,7 @@ export const navigateBack = function (navigator = ROOT_NAVIGATOR_NAME) {
     type: NAVIGATE_BACK,
     navigator,
   };
-}
+};
 
 /**
  * This action should be triggered each time when a navigator
@@ -105,4 +105,4 @@ export const navigationActionPerformed = function (navigationAction, navigationS
     navigationAction,
     navigationStack,
   };
-}
+};
