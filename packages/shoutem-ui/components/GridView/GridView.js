@@ -115,6 +115,8 @@ class GridView extends React.Component {
     gridColumns: DEFAULT_ITEMS_GROUP_SIZE,
   };
 
+  static Status = ListView.Status;
+
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -231,7 +233,8 @@ class GridView extends React.Component {
       const groupCells = itemsGroup.reduce((gridItems, item, itemIndex) => {
         const cellSettings = createCellSettings(rowSettings, itemIndex);
         const cellStyle = this.getItemCellStyle(item, cellSettings);
-        // We are compensating margin like it is the same applied on every grid cell
+        // We are compensating missing margins for last item of not filled row
+        // like the same margin is applied on every grid cell
         cellHorizontalMargin = getCellHorizontalMargin(cellStyle);
         remainingCells = remainingCells - getCellSpan(cellStyle);
 
@@ -257,7 +260,7 @@ class GridView extends React.Component {
     const { renderGridCell } = this.props;
     return (
       <View
-        key={`gridItem_' + ${item.id}`}
+        key={`gridItem_' + ${cellSettings.itemIndex}`}
         style={cellStyle}
       >
         {renderGridCell(item, cellSettings)}

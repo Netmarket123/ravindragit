@@ -63,6 +63,7 @@ class ListDataSource {
 class ListView extends React.Component {
   static propTypes = {
     status: React.PropTypes.string,
+    autoHideHeader: React.PropTypes.bool,
     style: React.PropTypes.object,
     data: React.PropTypes.array,
     onLoadMore: React.PropTypes.func,
@@ -80,6 +81,7 @@ class ListView extends React.Component {
     super(props, context);
     this.handleListViewRef = this.handleListViewRef.bind(this);
     this.renderFooter = this.renderFooter.bind(this);
+    this.autoHideHeader = this.autoHideHeader.bind(this);
     this.listView = null;
 
 
@@ -101,8 +103,35 @@ class ListView extends React.Component {
     }
   }
 
-  shouldComponentUpdate(nextProps) {
-    return nextProps.status !== this.props.status;
+  shouldComponentUpdate(nextProps, nextState) {
+    // Status prop is used to control when to re-render ListView from outside
+    if (nextProps.status) {
+      return nextProps.status !== this.props.status;
+    }
+    return nextState.dataSource !== this.state.dataSource;
+  }
+
+  scrollListView(srollOptions) {
+    this.listView.scrollTo(srollOptions);
+  }
+
+  autoHideHeader({nativeEvent: { layout: {x, y, width, height}}}) {
+    this.scrollListView({ y: height, animated: false });
+  }
+
+  createRenderHeader(renderHeader, autoHideHeader) {
+    const headerProps = {};
+    if (!renderHeader) {
+      return;
+    }
+
+    if (autoHideHeader) {
+      headerProps.onLayout = this.autoHideHeader;
+    }
+
+    return () => (
+      <View {...headerProps}>{renderHeader()}</View>
+    );
   }
 
   /**
@@ -123,10 +152,11 @@ class ListView extends React.Component {
 
     // style
     mappedProps.customStyles = props.style.list;
+
     mappedProps.contentContainerStyle = props.style.listContent;
 
     // rendering
-    mappedProps.renderHeader = props.renderHeader;
+    mappedProps.renderHeader = this.createRenderHeader(props.renderHeader, props.autoHideHeader);
     mappedProps.renderRow = props.renderRow;
     mappedProps.renderFooter = this.renderFooter;
     mappedProps.renderSectionHeader = props.renderSectionHeader;
