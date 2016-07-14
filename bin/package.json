@@ -9,41 +9,17 @@
     "lint": "eslint ../"
   },
   "dependencies": {
-    "code-push": "1.8.0-beta",
-    "code-push-cli": "1.10.0-beta",
+    "react-native-calendar-manager": "git+ssh://git@bitbucket.org/fiveminutes/react-native-calendar-manager.git",
+    "@shoutem/core": "0.0.10",
     "command-line-args": "^2.1.6",
-    "es6-symbol": "^3.0.2",
     "fs-extra": "^0.26.5",
     "glob": "^7.0.3",
-    "lodash": "^4.10.1",
     "node-watch": "^0.3.5",
     "npm": "3.8.6",
-    "react": "^0.14.5",
-    "react-native": "^0.23.1",
-    "react-native-browser-polyfill": "^0.1.1",
-    "react-native-calendar-manager": "git+ssh://git@bitbucket.org/fiveminutes/react-native-calendar-manager.git",
-    "react-native-code-push": "^1.10.4-beta",
-    "react-native-share": "^1.0.10",
-    "react-native-vector-icons": "^2.0.3",
-    "react-native-video": "^0.7.1",
-    "react-redux": "^4.4.0",
-    "redux": "^3.3.1",
-    "redux-thunk": "^1.0.3",
     "request": "^2.72.0",
-    "@shoutem/ui": "0.0.12",
-    "@shoutem/core": "0.0.8",
-    "@shoutem/redux-io": "0.1.0-alpha.1",
-    "redux-api-middleware": "2.0.0-beta.1",
     "unzip": "edtechd/node-unzip"
   },
   "devDependencies": {
-    "babel-eslint": "^6.0.4",
-    "eslint": "^2.9.0",
-    "eslint-config-airbnb": "^8.0.0",
-    "eslint-plugin-import": "^1.6.1",
-    "eslint-plugin-jsx-a11y": "^1.0.4",
-    "eslint-plugin-react": "^5.0.1",
-    "eslint-plugin-react-native": "^1.0.2",
-    "redux-logger": "^2.6.1"
   }
 }
+

@@ -3,11 +3,8 @@
   "version": "1.0.0",
   "description": "ShoutEm test extesnion",
   "main": "index.js",
-  "dependencies": {
-    "react": "^0.14.5",
-    "react-native": "^0.23.1",
-    "react-redux": "^4.4.0",
-    "redux": "^3.3.1"
+  "peerDependencies": {
+    "@shoutem/core": "0.0.10"
   },
   "devDependencies": {
     "babel": "^6.3.26",
@@ -15,7 +12,6 @@
     "chai": "^3.4.1",
     "enzyme": "^2.0.0-rc1",
     "mocha": "^2.3.4",
-    "react": "^0.14.7",
     "react-addons-test-utils": "^0.14.7",
     "react-dom": "^0.14.7",
     "react-native-mock": "^0.0.6"

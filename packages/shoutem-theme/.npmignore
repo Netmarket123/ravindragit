@@ -1,0 +1,13 @@
+node_modules
+.idea
+
+# Ignore test folders
+*_tests_
+
+# Ignore local/config files
+.editorconfig
+.npmignore
+.gitignore
+
+# Ignore previous builds
+*.tgz
