@@ -1,5 +1,3 @@
-import { INCLUDE } from '@shoutem/theme';
-
 export default (vars) => {
   const variables = {
     brandColor: 'black',

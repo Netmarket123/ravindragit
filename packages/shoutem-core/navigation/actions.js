@@ -68,6 +68,7 @@ export default function (state = {}, action) {
  *  parameter, the root navigator will be used if it is undefined.
  * @returns {*} The action.
  */
+// eslint-disable-next-line func-names
 export const navigateTo = function (route, navigator = ROOT_NAVIGATOR_NAME) {
   return {
     type: NAVIGATE_TO,
@@ -82,6 +83,7 @@ export const navigateTo = function (route, navigator = ROOT_NAVIGATOR_NAME) {
  *  parameter, the root navigator will be used if it is undefined.
  * @returns {*} The action.
  */
+// eslint-disable-next-line func-names
 export const navigateBack = function (navigator = ROOT_NAVIGATOR_NAME) {
   return {
     type: NAVIGATE_BACK,
@@ -98,6 +100,7 @@ export const navigateBack = function (navigator = ROOT_NAVIGATOR_NAME) {
  * @param navigator The navigator name of the navigator that performed the action.
  * @returns {*} The action.
  */
+// eslint-disable-next-line func-names
 export const navigationActionPerformed = function (navigationAction, navigationStack, navigator) {
   return {
     type: NAVIGATION_ACTION_PERFORMED,
