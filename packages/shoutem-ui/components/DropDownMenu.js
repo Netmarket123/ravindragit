@@ -36,6 +36,7 @@ class DropDownMenu extends Component {
     this.state = {
       ...props,
       dropDownAnimation: new Animated.Value(0),
+      selectedItem: null,
     };
     this.collapse = this.collapse.bind(this);
     this.close = this.close.bind(this);
@@ -47,14 +48,15 @@ class DropDownMenu extends Component {
     this.autoSelect(this.props.items, this.props.selectedItem);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (nextProps.items === this.props.items && nextState === this.state) {
-      return false;
-    }
-    if (!this.state.selectedItem) {
+  componentWillReceiveProps(nextProps) {
+    if (!this.state.selectedItem && nextProps.items.length > 0) {
       this.autoSelect(nextProps.items, nextProps.selectedItem);
     }
-    return true;
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return (nextProps.items !== this.props.items) ||
+      (nextState !== this.state);
   }
 
   getValue() {
