@@ -19,6 +19,7 @@
     "glob": "^7.0.3",
     "node-watch": "^0.3.5",
     "npm": "3.8.6",
+    "react-native-maps": "5minutes/react-native-maps#friends-with-28",
     "request": "^2.72.0",
     "unzip": "edtechd/node-unzip"
   },
