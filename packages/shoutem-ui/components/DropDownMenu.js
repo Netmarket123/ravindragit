@@ -179,46 +179,7 @@ DropDownMenu.propTypes = {
   style: React.PropTypes.object,
 };
 
-const style = {
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: 'rgba(242, 242, 242, 0.97)',
-  },
-  modalItems: {
-    alignItems: 'center',
-  },
-  modalItem: {
-    paddingVertical: 23,
-    flex: 1,
-  },
-  modalItemText: {
-    fontFamily: 'Rubik-Regular',
-    textAlign: 'center',
-    flex: 1,
-    fontSize: 16,
-    width: 200,
-    paddingHorizontal: 20,
-    alignSelf: 'center',
-  },
-
-  modalCloseButton: {
-    button: {
-      position: 'absolute',
-      bottom: 65,
-      left: 18,
-      right: 0,
-    },
-    buttonIcon: {
-      color: 'black',
-      fontSize: 24,
-    },
-  },
-};
-
-const StyledDropDownMenu = connectStyle('shoutem.ui.DropDownMenu', style)(DropDownMenu);
+const StyledDropDownMenu = connectStyle('shoutem.ui.DropDownMenu', {})(DropDownMenu);
 
 export {
   StyledDropDownMenu as DropDownMenu,

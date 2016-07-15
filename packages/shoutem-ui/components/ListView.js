@@ -269,23 +269,7 @@ class ListView extends React.Component {
   }
 }
 
-const style = {
-  header: {
-    container: {},
-  },
-  list: {},
-  listContent: {},
-  tintColor: {
-    // uses only background color
-    backgroundColor: '#ccc',
-  },
-  newDataSpinner: {},
-  loadMoreSpinner: {
-    paddingVertical: 25,
-  },
-};
-
-const StyledListView = connectStyle('shoutem.ui.ListView', style)(ListView);
+const StyledListView = connectStyle('shoutem.ui.ListView', {})(ListView);
 
 export {
   StyledListView as ListView,

@@ -295,24 +295,7 @@ GridView.propTypes = {
   getGroupRowStyle: React.PropTypes.func,
 };
 
-const style = {
-  header: {
-    container: {},
-    search: {},
-  },
-  listContent: {},
-  list: {},
-  gridRow: {
-    container: {
-      flexDirection: 'row',
-    },
-    gridItemCell: {
-      flex: 1,
-    },
-  },
-};
-
-const StyledGridView = connectStyle('shoutem.ui.GridView', style)(GridView);
+const StyledGridView = connectStyle('shoutem.ui.GridView', {})(GridView);
 
 export {
   StyledGridView as GridView,

@@ -14,7 +14,7 @@ import { Button } from './Button';
 import { Icon } from './Icon';
 import { View } from './View';
 
-import { connectStyle, INCLUDE } from '@shoutem/theme';
+import { connectStyle } from '@shoutem/theme';
 
 import transformNavigationBarProps from '../lib/transformNavigationBarProps';
 
@@ -141,83 +141,7 @@ NavigationBar.propTypes = {
   id: React.PropTypes.string,
 };
 
-const style = {
-  '.clear': {
-    container: {
-      backgroundColor: 'transparent',
-      borderBottomColor: 'transparent',
-    },
-    defaultBackButton: {
-      'shoutem.ui.Icon': {
-        color: 'white',
-      },
-    },
-    rightComponent: {
-      'shoutem.ui.Button': {
-        backgroundColor: 'transparent',
-        borderColor: 'transparent',
-        'shoutem.ui.Icon': {
-          color: 'white',
-        },
-      },
-    },
-    centerComponent: {
-      'shoutem.ui.Title': {
-        color: 'white',
-      },
-    },
-  },
-  backgroundImage: {
-    padding: 15,
-    backgroundColor: 'transparent',
-    height: 70,
-  },
-  container: {
-    height: 70,
-    top: 0,
-    left: 0,
-    right: 0,
-    position: 'absolute',
-    backgroundColor: 'white',
-    borderBottomColor: 'rgb(242, 242, 242)',
-    borderBottomWidth: 1,
-  },
-  componentsContainer: {
-    flex: 1,
-    alignItems: 'flex-end',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  component: {
-    height: 24,
-    marginBottom: -8,
-    alignSelf: 'flex-end',
-    flex: 1,
-  },
-  leftComponent: {
-    [INCLUDE]: ['component'],
-    alignItems: 'flex-start',
-  },
-  centerComponent: {
-    [INCLUDE]: ['component'],
-    alignItems: 'center',
-  },
-  rightComponent: {
-    [INCLUDE]: ['component'],
-    alignItems: 'flex-end',
-  },
-  defaultBackButton: {
-    'shoutem.ui.Icon': {
-      marginTop: -4,
-      color: 'black',
-      width: 40,
-      height: 40,
-      fontSize: 24,
-    },
-  },
-};
-
-const StyledNavigationBar = connectStyle('shoutem.ui.NavigationBar', style)(NavigationBar);
+const StyledNavigationBar = connectStyle('shoutem.ui.NavigationBar', {})(NavigationBar);
 
 export {
   StyledNavigationBar as NavigationBar,

@@ -5,24 +5,17 @@ import React, {
 import {
   ScrollView,
   ViewPagerAndroid,
-  Dimensions,
   Platform,
   View,
 } from 'react-native';
+
+import { connectStyle } from '@shoutem/theme';
 
 const propTypes = {
   height: PropTypes.number.isRequired,
   dataSource: PropTypes.arrayOf(PropTypes.string),
   renderPage: PropTypes.func,
-};
-
-const screenWidth = Dimensions.get('window').width;
-
-const styles = {
-  item: {
-    flex: 1,
-    width: screenWidth,
-  },
+  style: PropTypes.object,
 };
 
 /**
@@ -42,9 +35,10 @@ function HorizontalPager({
   height,
   dataSource,
   renderPage,
+  style,
 }) {
   const pages = dataSource.map((src, key) => (
-    <View style={styles.item} key={key} >
+    <View style={style.item} key={key} >
       {renderPage(src, key)}
     </View>
   ));
@@ -72,4 +66,8 @@ function HorizontalPager({
 
 HorizontalPager.propTypes = propTypes;
 
-export { HorizontalPager };
+const StyledHorizontalPager = connectStyle('shoutem.ui.HorizontalPager', {})(HorizontalPager);
+
+export {
+  StyledHorizontalPager as HorizontalPager,
+};

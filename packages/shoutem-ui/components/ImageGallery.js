@@ -12,12 +12,6 @@ const propTypes = {
   sources: PropTypes.arrayOf(PropTypes.string),
 };
 
-const style = {
-  imagePreview: {
-    image: {},
-  },
-};
-
 function renderImagePreview({
   source,
   height,
@@ -74,7 +68,7 @@ function ImageGallery({
 
 ImageGallery.propTypes = propTypes;
 
-const StyledImageGallery = connectStyle('shoutem.ui.ImageGallery', style)(ImageGallery);
+const StyledImageGallery = connectStyle('shoutem.ui.ImageGallery', {})(ImageGallery);
 
 export {
   StyledImageGallery as ImageGallery,

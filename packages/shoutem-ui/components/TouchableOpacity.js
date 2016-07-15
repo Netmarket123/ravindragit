@@ -26,11 +26,7 @@ TouchableOpacity.propTypes = {
   ...RNTouchableOpacity.propTypes,
 };
 
-const style = {
-  activeOpacity: 0.8,
-};
-
-const StyledTouchableOpacity = connectStyle('shoutem.ui.TouchableOpacity', style)(TouchableOpacity);
+const StyledTouchableOpacity = connectStyle('shoutem.ui.TouchableOpacity', {})(TouchableOpacity);
 
 export {
   StyledTouchableOpacity as TouchableOpacity,
