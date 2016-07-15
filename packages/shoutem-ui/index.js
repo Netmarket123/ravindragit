@@ -1,4 +1,5 @@
 export { View } from './components/View';
+export { Screen } from './components/Screen';
 
 export { NavigationBar } from './components/NavigationBar';
 export { DropDownMenu } from './components/DropDownMenu';

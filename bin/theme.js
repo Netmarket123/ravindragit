@@ -16,6 +16,7 @@ export default (vars) => {
   };
 
   const STATUS_BAR_OFFSET = (Platform.OS === 'android' ? -25 : 0);
+  const NAVIGATION_BAR_HEIGHT = 70;
 
   return {
     //
@@ -308,6 +309,15 @@ export default (vars) => {
 
       flex: 1,
       justifyContent: 'space-between',
+    },
+
+    'shoutem.ui.Screen': {
+      '.full-screen': {
+        marginTop: -NAVIGATION_BAR_HEIGHT,
+      },
+
+      backgroundColor: '#fff',
+      flex: 1,
     },
 
     'shoutem.ui.Row': {
