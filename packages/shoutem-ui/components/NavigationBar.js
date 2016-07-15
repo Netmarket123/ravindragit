@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   Image,
   StatusBar,
   Animated,
-  Platform,
+  LayoutAnimation,
 } from 'react-native';
 
 import _ from 'lodash';
@@ -16,7 +16,7 @@ import { View } from './View';
 
 import { connectStyle, INCLUDE } from '@shoutem/theme';
 
-import transformNavigationBarProps from '../lib/transformNavigationBarProps';
+import withTransformedProps from '../lib/transformNavigationBarProps';
 
 function getBackgroundColor(style) {
   const styleWithBg = _.find(style, (styleDef) =>
@@ -53,12 +53,8 @@ function setStatusBarStyle(backgroundColor) {
   }
 
   function setStyle(bgColor) {
-    if (Platform.OS === 'android') {
-      StatusBar.setTranslucent(true);
-    } else {
-      const barStyle = chooseBarStyle(bgColor);
-      StatusBar.setBarStyle(barStyle);
-    }
+    const barStyle = chooseBarStyle(bgColor);
+    StatusBar.setBarStyle(barStyle);
   }
 
   // This is little bit hacky, but is the only way
@@ -76,59 +72,42 @@ function setStatusBarStyle(backgroundColor) {
   }
 }
 
-function NavigationBar(props) {
-  const transformedProps = transformNavigationBarProps(props);
-  const {
-    hasHistory,
-    navigateBack,
-    rightComponent,
-    centerComponent,
-    backgroundImage,
-    style,
-    id,
-  } = transformedProps;
+@withTransformedProps
+class NavigationBar extends Component {
+  render() {
+    const {
+      hasHistory,
+      navigateBack,
+      rightComponent,
+      centerComponent,
+      backgroundImage,
+      style,
+      id,
+    } = this.props;
 
-  const leftComponent = transformedProps.leftComponent ||
-    navigationBarBackButton(hasHistory, navigateBack, style);
+    const leftComponent = this.props.leftComponent ||
+      navigationBarBackButton(hasHistory, navigateBack, style);
 
 
-  const backgroundColor = getBackgroundColor(style);
-  setStatusBarStyle(backgroundColor);
-
-  const containerContent = (
-    <View style={style.componentsContainer}>
-      <View style={style.leftComponent}>{leftComponent}</View>
-      <View style={style.centerComponent}>{centerComponent}</View>
-      <View style={style.rightComponent}>{rightComponent}</View>
-    </View>
-  );
-
-  let navbarContent = null;
-
-  // On Android, content nested within an Image will not be shown if the image has no source
-  if (backgroundImage) {
-    navbarContent = (
-      <Image source={backgroundImage} style={style.backgroundImage}>
-        {containerContent}
-      </Image>);
-  } else {
-    navbarContent = (
-      <View style={style.backgroundImage}>
-        {containerContent}
-      </View>);
+    const backgroundColor = getBackgroundColor(style);
+    setStatusBarStyle(backgroundColor);
+    // Key must be set to render new screen NavigationBar
+    return (
+      <Animated.View style={style.container} key={id}>
+        <StatusBar
+          translucent
+        />
+        <Image source={backgroundImage} style={style.backgroundImage}>
+          <View style={style.componentsContainer}>
+            <View style={style.leftComponent}>{leftComponent}</View>
+            <View style={style.centerComponent}>{centerComponent}</View>
+            <View style={style.rightComponent}>{rightComponent}</View>
+          </View>
+        </Image>
+      </Animated.View>
+    );
   }
-
-  // Key must be set to render new screen NavigationBar
-  return (
-    <Animated.View style={style.container} key={id}>
-      <StatusBar
-        translucent
-      />
-      {navbarContent}
-    </Animated.View>
-  );
 }
-
 
 NavigationBar.propTypes = {
   backgroundImage: Image.propTypes.source,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, Animated } from 'react';
 
 import { Button } from '../components/Button';
 import { Icon } from '../components/Icon';
@@ -8,36 +8,45 @@ import Share from 'react-native-share';
 import * as _ from 'lodash';
 
 const transformers = {
-  title: (value) => ({
-    centerComponent: <Title styleName="navigationBarTitle">{value}</Title>,
-  }),
+  title: (value) => {
+    return {
+      centerComponent: <Title styleName="navigationBarTitle" numberOfLines={1}>{value}</Title>
+    };
+  },
   share: (value) => {
-    const onShare = () => (
-      Share.open({
+    const onShare = () => {
+      return Share.open({
         title: value.title,
         share_text: value.text,
         share_URL: value.link,
       }, (sharingError) => {
         console.error(sharingError);
-      })
-    );
+      });
+    };
+    // const AnimatedIcon = Animate.createAnimatedComponent(Icon);
     return {
       rightComponent: (
         <Button onPress={onShare} style={{ marginTop: -5 }}>
-          <Icon name="share" />
+          <Icon name="share"></Icon>
         </Button>
-      ),
+      )
     };
-  },
+  }
 };
 
-export default function transformNavigationBarProps(props) {
-  const newProps = {};
-  _.forEach(props, (value, key) => {
-    if (_.isFunction(transformers[key])) {
-      _.assign(newProps, transformers[key](value));
-    }
-  });
+export default withTransformedProps = NavigationBarComponent => class extends Component{
+  constructor(props) {
+    super(props);
+  }
 
-  return _.assign(newProps, props);
-}
+  render() {
+    let newProps = {};
+    _.forEach(this.props, (value, key) => {
+      if (_.isFunction(transformers[key])) {
+        _.assign(newProps, transformers[key](value));
+      }
+    });
+
+    return <NavigationBarComponent {...(_.assign(newProps, this.props))} />;
+  }
+};
