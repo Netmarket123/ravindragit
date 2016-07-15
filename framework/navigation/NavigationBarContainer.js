@@ -1,5 +1,6 @@
 import React, {
   Component,
+  LayoutAnimation,
 } from 'react-native';
 
 import * as _ from 'lodash';
@@ -16,6 +17,8 @@ export default class NavigationBarContainer extends Component {
   onStateChange(oldState, newState) {
     this.newState = _.assign({}, newState);
     // we need to defer to avoid state change during the render
+    LayoutAnimation.easeInEaseOut();
+
     _.defer(() => this.setState(_.assign({}, newState)));
   }
 
