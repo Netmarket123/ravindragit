@@ -139,7 +139,6 @@ const style = {
     height: 70,
   },
   container: {
-    [INCLUDE]: ['textColor'],
     height: 70,
     top: 0,
     left: 0,
@@ -162,19 +161,16 @@ const style = {
     flex: 1,
   },
   leftComponent: {
-    [INCLUDE]: ['textColor'],
     [INCLUDE]: ['component'],
     [INCLUDE]: ['iconButton'],
     alignItems: 'flex-start',
   },
   centerComponent: {
-    [INCLUDE]: ['textColor'],
     [INCLUDE]: ['component'],
     [INCLUDE]: ['iconButton'],
     alignItems: 'center',
   },
   rightComponent: {
-    [INCLUDE]: ['textColor'],
     [INCLUDE]: ['component'],
     [INCLUDE]: ['iconButton'],
     alignItems: 'flex-end',

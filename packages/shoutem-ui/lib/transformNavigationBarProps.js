@@ -1,20 +1,15 @@
 import React, { Component } from 'react';
-import { Animated } from 'react-native';
 
 import { Button } from '../components/Button';
-import { Icon } from '../components/Icon';
-import { Title } from '../components/Text';
+import { Animated } from '../components/Animated';
 
 import Share from 'react-native-share';
 import * as _ from 'lodash';
 
-const AnimatedIcon = Animated.createAnimatedComponent(Icon);
-const AnimatedTitle = Animated.createAnimatedComponent(Title);
-
 const transformers = {
   title: (value, props) => {
     return {
-      centerComponent: <AnimatedTitle styleName="navigationBarTitle" numberOfLines={1}>{value}</AnimatedTitle>
+      centerComponent: <Animated.Title styleName="navigationBarTitle" numberOfLines={1}>{value}</Animated.Title>
     };
   },
   share: (value, props) => {
@@ -30,7 +25,7 @@ const transformers = {
     return {
       rightComponent: (
         <Button onPress={onShare}>
-          <AnimatedIcon name="share" />
+          <Animated.Icon name="share" />
         </Button>
       ),
     };
@@ -52,14 +47,22 @@ const transformers = {
         styleName="clear"
         onPress={navigateBackWithoutEventParameter}
       >
-        <AnimatedIcon name="back" />
+        <Animated.Icon name="back" />
       </Button>
     ) : null;
 
     return { leftComponent };
   },
   animation: (value, props) => {
-    return { style: value.style };
+    const containerStyle = {
+      backgroundColor: value.style.backgroundColor,
+      borderBottomColor: value.style.borderBottomColor,
+    };
+    return {
+      style: {
+        container: { ...containerStyle },
+      },
+    };
   },
 };
 
@@ -71,7 +74,7 @@ export default withTransformedProps = NavigationBarComponent => class extends Co
 
     if (animation) {
       const backgroundColor = _.get(style, 'container.backgroundColor');
-      const textColor = _.get(style, 'container.color');
+      const textColor = _.get(style, 'textColor.color');
 
       animation.setColors(backgroundColor, textColor);
     }
@@ -81,6 +84,10 @@ export default withTransformedProps = NavigationBarComponent => class extends Co
         _.assign(newProps, transformers[key](value, props));
       }
     });
+
+    if (newProps.style) {
+      props.style = _.merge(props.style, newProps.style);
+    }
 
     return <NavigationBarComponent {...(_.assign(newProps, props))} />;
   }

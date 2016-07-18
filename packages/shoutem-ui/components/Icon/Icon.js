@@ -30,6 +30,10 @@ const IconComponent = createIconSetFromIcoMoon(icoMoonConfig);
 export const Icon = connectStyle('shoutem.ui.Icon', style)(IconComponent);
 
 const AnimatedIcon = RNAnimated.createAnimatedComponent(IconComponent);
-export const Animated = {
+const Animated = {
   Icon: connectStyle('shoutem.ui.Animated.Icon', style)(AnimatedIcon),
+};
+
+export {
+  Animated,
 };

@@ -1,4 +1,4 @@
-import { Animated as AnimatedIcon } from './Icon';
+import { Animated as AnimatedIcon } from './Icon/Icon';
 import { Animated as AnimatedText } from './Text';
 import { Animated as AnimatedView } from './View';
 import { Animated as AnimatedImage } from './Image';

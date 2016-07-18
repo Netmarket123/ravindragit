@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 
-export class ColorAnimation {
+class ColorAnimation {
   constructor(options) {
     _.assign(this, options);
     if (!_.isFunction(this[this.preset])) {
@@ -29,12 +29,12 @@ export class ColorAnimation {
         outputRange: ['rgba(0,0,0,0)', standardTextColor],
         extrapolate: 'clamp',
       }),
-      backgroudColor: animatedValue.interpolate({
+      backgroundColor: animatedValue.interpolate({
         inputRange: [0, defaultAnimatedValue],
-        outputRange: ['rgba(0,0,0,0)', standardBackgroundColor],
+        outputRange: ['rgba(0,0,0,0)', 'rgba(255,255,255,1)'],
         extrapolate: 'clamp',
       }),
-      borderBottomColor: scrollY.interpolate({
+      borderBottomColor: animatedValue.interpolate({
         inputRange: [defaultAnimatedValue / 2, defaultAnimatedValue],
         outputRange: ['rgba(0,0,0,0)', 'rgba(51, 51, 51, 0.2)'],
         extrapolate: 'clamp',
@@ -42,3 +42,7 @@ export class ColorAnimation {
     };
   }
 }
+
+export const NavigationBarAnimations = {
+  ColorAnimation,
+};
