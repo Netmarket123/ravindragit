@@ -3,15 +3,12 @@ import {
   Image,
   StatusBar,
   Animated,
-  LayoutAnimation,
 } from 'react-native';
 
 import _ from 'lodash';
 
 import color from 'tinycolor2';
 
-import { Button } from './Button';
-import { Icon } from './Icon';
 import { View } from './View';
 
 import { connectStyle, INCLUDE } from '@shoutem/theme';
@@ -24,27 +21,6 @@ function getBackgroundColor(style) {
   );
 
   return styleWithBg && styleWithBg.backgroundColor || 'transparent';
-}
-
-function navigationBarBackButton(hasHistory, navigateBack, style) {
-  /**
-   * onPress sets `event` as first param, which leads to ignoring default navigateBack
-   * first argument (navigator) so we have to wrap navigateBack into function to leave first
-   * argument empty, default
-   */
-  function navigateBackWithoutEventParameter() {
-    navigateBack();
-  }
-
-  return hasHistory ? (
-    <Button
-      styleName="clear"
-      onPress={navigateBackWithoutEventParameter}
-      style={style.defaultBackButton}
-    >
-      <Icon name="back" />
-    </Button>
-  ) : null;
 }
 
 function setStatusBarStyle(backgroundColor) {
@@ -76,18 +52,13 @@ function setStatusBarStyle(backgroundColor) {
 class NavigationBar extends Component {
   render() {
     const {
-      hasHistory,
-      navigateBack,
+      leftComponent,
       rightComponent,
       centerComponent,
       backgroundImage,
       style,
       id,
     } = this.props;
-
-    const leftComponent = this.props.leftComponent ||
-      navigationBarBackButton(hasHistory, navigateBack, style);
-
 
     const backgroundColor = getBackgroundColor(style);
     setStatusBarStyle(backgroundColor);
@@ -126,23 +97,39 @@ const style = {
       backgroundColor: 'transparent',
       borderBottomColor: 'transparent',
     },
-    defaultBackButton: {
-      'shoutem.ui.Icon': {
-        color: 'white',
-      },
-    },
-    rightComponent: {
+    iconButton: {
       'shoutem.ui.Button': {
-        backgroundColor: 'transparent',
-        borderColor: 'transparent',
         'shoutem.ui.Icon': {
           color: 'white',
         },
       },
     },
+    rightComponent: {
+      [INCLUDE]: ['iconButton'],
+    },
+    leftComponent: {
+      [INCLUDE]: ['iconButton'],
+    },
     centerComponent: {
       'shoutem.ui.Title': {
         color: 'white',
+      },
+    },
+  },
+  textColor: {
+    color: 'black',
+  },
+  iconButton: {
+    'shoutem.ui.Button': {
+      backgroundColor: 'transparent',
+      borderColor: 'transparent',
+      'shoutem.ui.Icon': {
+        [INCLUDE]: ['textColor'],
+        marginTop: -4,
+        width: 48,
+        height: 48,
+        lineHeight: 48,
+        fontSize: 24,
       },
     },
   },
@@ -152,6 +139,7 @@ const style = {
     height: 70,
   },
   container: {
+    [INCLUDE]: ['textColor'],
     height: 70,
     top: 0,
     left: 0,
@@ -174,25 +162,22 @@ const style = {
     flex: 1,
   },
   leftComponent: {
+    [INCLUDE]: ['textColor'],
     [INCLUDE]: ['component'],
+    [INCLUDE]: ['iconButton'],
     alignItems: 'flex-start',
   },
   centerComponent: {
+    [INCLUDE]: ['textColor'],
     [INCLUDE]: ['component'],
+    [INCLUDE]: ['iconButton'],
     alignItems: 'center',
   },
   rightComponent: {
+    [INCLUDE]: ['textColor'],
     [INCLUDE]: ['component'],
+    [INCLUDE]: ['iconButton'],
     alignItems: 'flex-end',
-  },
-  defaultBackButton: {
-    'shoutem.ui.Icon': {
-      marginTop: -4,
-      color: 'black',
-      width: 40,
-      height: 40,
-      fontSize: 24,
-    },
   },
 };
 

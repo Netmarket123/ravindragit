@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Image as RNImage,
   Dimensions,
+  Animated as RNAnimated,
 } from 'react-native';
 
 import { connectStyle } from '@shoutem/theme';
@@ -141,6 +142,22 @@ const style = {
   alignItems: 'center',
   justifyContent: 'center',
   resizeMode: 'cover',
+};
+
+function AnimatedImage(props) {
+  return (
+    <RNAnimated.Image {...props}>
+      {props.children}
+    </RNAnimated.Image>
+  );
+}
+
+AnimatedImage.propTypes = {
+  ...RNImage.propTypes,
+};
+
+const Animated = {
+  Image: connectStyle('shoutem.ui.Animated.Image', style)(AnimatedImage),
 };
 
 const StyledImage = connectStyle('shoutem.ui.Image', style)(Image);

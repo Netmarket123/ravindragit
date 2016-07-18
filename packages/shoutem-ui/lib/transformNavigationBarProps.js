@@ -1,4 +1,5 @@
-import React, { Component, Animated } from 'react';
+import React, { Component } from 'react';
+import { Animated } from 'react-native';
 
 import { Button } from '../components/Button';
 import { Icon } from '../components/Icon';
@@ -7,46 +8,80 @@ import { Title } from '../components/Text';
 import Share from 'react-native-share';
 import * as _ from 'lodash';
 
+const AnimatedIcon = Animated.createAnimatedComponent(Icon);
+const AnimatedTitle = Animated.createAnimatedComponent(Title);
+
 const transformers = {
-  title: (value) => {
+  title: (value, props) => {
     return {
-      centerComponent: <Title styleName="navigationBarTitle" numberOfLines={1}>{value}</Title>
+      centerComponent: <AnimatedTitle styleName="navigationBarTitle" numberOfLines={1}>{value}</AnimatedTitle>
     };
   },
-  share: (value) => {
-    const onShare = () => {
-      return Share.open({
-        title: value.title,
+  share: (value, props) => {
+    const onShare = () =>
+      Share.open({
+        title: value.title || props.title,
         share_text: value.text,
         share_URL: value.link,
       }, (sharingError) => {
         console.error(sharingError);
       });
-    };
-    // const AnimatedIcon = Animate.createAnimatedComponent(Icon);
+
     return {
       rightComponent: (
-        <Button onPress={onShare} style={{ marginTop: -5 }}>
-          <Icon name="share"></Icon>
+        <Button onPress={onShare}>
+          <AnimatedIcon name="share" />
         </Button>
-      )
+      ),
     };
-  }
+  },
+  hasHistory: (value, props) => {
+    const { navigateBack } = props;
+
+    /**
+     * onPress sets `event` as first param, which leads to ignoring default navigateBack
+     * first argument (navigator) so we have to wrap navigateBack into function to leave first
+     * argument empty, default
+     */
+    function navigateBackWithoutEventParameter() {
+      navigateBack();
+    }
+
+    const leftComponent = value ? (
+      <Button
+        styleName="clear"
+        onPress={navigateBackWithoutEventParameter}
+      >
+        <AnimatedIcon name="back" />
+      </Button>
+    ) : null;
+
+    return { leftComponent };
+  },
+  animation: (value, props) => {
+    return { style: value.style };
+  },
 };
 
-export default withTransformedProps = NavigationBarComponent => class extends Component{
-  constructor(props) {
-    super(props);
-  }
-
+export default withTransformedProps = NavigationBarComponent => class extends Component {
   render() {
-    let newProps = {};
-    _.forEach(this.props, (value, key) => {
+    const newProps = {};
+    const { props } = this;
+    const { style, animation } = props;
+
+    if (animation) {
+      const backgroundColor = _.get(style, 'container.backgroundColor');
+      const textColor = _.get(style, 'container.color');
+
+      animation.setColors(backgroundColor, textColor);
+    }
+
+    _.forEach(props, (value, key) => {
       if (_.isFunction(transformers[key])) {
-        _.assign(newProps, transformers[key](value));
+        _.assign(newProps, transformers[key](value, props));
       }
     });
 
-    return <NavigationBarComponent {...(_.assign(newProps, this.props))} />;
+    return <NavigationBarComponent {...(_.assign(newProps, props))} />;
   }
 };
