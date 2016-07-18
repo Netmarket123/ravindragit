@@ -14,3 +14,6 @@ include ':react-native-share'
 project(':react-native-share').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-share/android')
 include ':react-native-calendar-manager'
 project(':react-native-calendar-manager').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-calendar-manager/android')
+include ':react-native-maps'
+project(':react-native-maps').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-maps/android/lib')
+
