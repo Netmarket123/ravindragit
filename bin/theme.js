@@ -783,6 +783,22 @@ export default () => ({
   // Collections
   //
   'shoutem.ui.ListView': {
+    'shoutem.ui.Divider': {
+      'shoutem.ui.View': {
+        'shoutem.ui.Caption': {
+          paddingVertical: SMALL_GUTTER,
+          paddingHorizontal: MEDIUM_GUTTER,
+        },
+      },
+
+      backgroundColor: 'white',
+      paddingTop: 20,
+      flex: 0,
+      height: null,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderColor: 'rgb(242, 242, 242)',
+    },
+
     header: {
       container: {},
     },
@@ -818,6 +834,7 @@ export default () => ({
   'shoutem.ui.GridRow': {
     '*': {
       flex: 1,
+      alignSelf: 'stretch',
       marginLeft: SMALL_GUTTER,
     },
 
