@@ -170,16 +170,11 @@ export default () => ({
       textDecorationLine: 'line-through',
     },
 
-    // @depricated
-    '.inset': {
-      padding: 15,
-    },
-
     '.centered': {
       textAlign: 'center',
     },
 
-    '.light': {
+    '.bright': {
       color: '#fff',
     },
 
