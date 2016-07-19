@@ -134,6 +134,16 @@ export default () => ({
     },
   },
 
+  commonVariants: {
+    '.flexible': {
+      flex: 1,
+    },
+
+    '.collapsible': {
+      flex: -1,
+    },
+  },
+
   //
   // Text
   //
@@ -154,20 +164,13 @@ export default () => ({
   },
 
   'shoutem.ui.Text': {
-    [INCLUDE]: ['defaultFont', 'gutters'],
+    [INCLUDE]: ['commonVariants', 'defaultFont', 'gutters'],
 
     '.line-through': {
       textDecorationLine: 'line-through',
     },
 
-    '.flexible': {
-      flex: 1,
-    },
-
-    '.collapsible': {
-      flex: -1,
-    },
-
+    // @depricated
     '.inset': {
       padding: 15,
     },
@@ -249,6 +252,8 @@ export default () => ({
     },
 
     'shoutem.ui.View': {
+      [INCLUDE]: ['commonVariants'],
+
       '.actions': {
         'shoutem.ui.Icon': {
           color: 'white',
@@ -384,7 +389,7 @@ export default () => ({
   // Containers
   //
   'shoutem.ui.View': {
-    [INCLUDE]: ['gutters'],
+    [INCLUDE]: ['commonVariants', 'gutters'],
 
     '.horizontal': {
       flexDirection: 'row',
@@ -397,7 +402,6 @@ export default () => ({
       },
 
       flexDirection: 'column',
-      flex: 0,
       alignSelf: 'stretch',
     },
 
@@ -481,6 +485,8 @@ export default () => ({
   },
 
   'shoutem.ui.Tile': {
+    [INCLUDE]: ['commonVariants'],
+
     'shoutem.ui.Image': {
       'shoutem.ui.Icon': {
         color: 'white',
@@ -548,6 +554,8 @@ export default () => ({
   },
 
   'shoutem.ui.Card': {
+    [INCLUDE]: ['commonVariants'],
+
     '*.content': {
       padding: 10,
       alignSelf: 'stretch',
@@ -642,6 +650,8 @@ export default () => ({
   },
 
   'shoutem.ui.Button': {
+    [INCLUDE]: ['commonVariants'],
+
     'shoutem.ui.Text': {
       fontFamily: 'Rubik-Medium',
       fontSize: 12,
@@ -828,7 +838,9 @@ export default () => ({
       container: {},
     },
     list: {},
-    listContent: {},
+    listContent: {
+      paddingBottom: SMALL_GUTTER,
+    },
     tintColor: {
       // uses only background color
       backgroundColor: '#ccc',
@@ -987,10 +999,7 @@ export default () => ({
     },
     defaultBackButton: {
       'shoutem.ui.Icon': {
-        marginTop: -4,
         color: 'black',
-        width: 40,
-        height: 40,
         fontSize: 24,
       },
     },
