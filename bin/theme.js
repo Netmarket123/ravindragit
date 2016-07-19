@@ -397,7 +397,13 @@ export default () => ({
       },
 
       flexDirection: 'column',
+      flex: 0,
       alignSelf: 'stretch',
+    },
+
+    '.wrapped': {
+      flexWrap: 'wrap',
+      justifyContent: 'flex-start',
     },
 
     '.collapsed': {
@@ -660,6 +666,24 @@ export default () => ({
       borderRadius: 0,
     },
 
+    '.stacked': {
+      'shoutem.ui.Icon': {
+        color: '#666666',
+        fontSize: 32,
+      },
+
+      'shoutem.ui.Text': {
+        [INCLUDE]: ['defaultFont'],
+        fontSize: 13,
+        margin: 10,
+      },
+
+      width: 125,
+      flexDirection: 'column',
+      paddingTop: 10,
+      paddingBottom: SMALL_GUTTER,
+    },
+
     underlayColor: '#ccc',
 
     backgroundColor: 'white',
@@ -751,7 +775,8 @@ export default () => ({
       color: '#666666',
     },
     container: {
-      margin: 15,
+      margin: MEDIUM_GUTTER,
+      paddingVertical: MEDIUM_GUTTER,
     },
   },
 
@@ -984,6 +1009,24 @@ export default () => ({
       height: 0,
       borderBottomWidth: StyleSheet.hairlineWidth,
       borderColor: 'rgb(242, 242, 242)',
+    },
+
+    '.section-header': {
+      'shoutem.ui.View': {
+        'shoutem.ui.Caption': {
+          paddingVertical: SMALL_GUTTER,
+          paddingHorizontal: MEDIUM_GUTTER,
+          color: '#888888',
+        },
+      },
+
+      backgroundColor: '#f2f2f2',
+      paddingTop: 20,
+      flex: 0,
+      height: null,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderTopWidth: StyleSheet.hairlineWidth,
+      borderColor: '#e5e5e5',
     },
 
     alignSelf: 'stretch',
