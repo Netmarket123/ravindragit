@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {
   Platform,
   Dimensions,
@@ -16,236 +17,42 @@ const EXTRA_LARGE_GUTTER = 45;
 const STATUS_BAR_OFFSET = (Platform.OS === 'android' ? -25 : 0);
 const NAVIGATION_BAR_HEIGHT = 70;
 
+const sizeVariants = ['', 'left', 'right', 'top', 'bottom', 'horizontal', 'vertical'];
+
+function capitalizeFirstLetter(value) {
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+function createVariants(baseName, variants, key, value) {
+  return _.reduce(variants, (result, variant) => {
+    const variantName = variant ? `${baseName}-${variant}` : baseName;
+    const keyName = variant ? `${key}${capitalizeFirstLetter(variant)}` : key;
+
+    // eslint-disable-next-line no-param-reassign
+    result[variantName] = {
+      [keyName]: value,
+    };
+
+    return result;
+  }, {});
+}
+
 export default () => ({
   //
   // Common
   //
   guttersPadding: {
-    '.sm-gutter': {
-      padding: SMALL_GUTTER,
-    },
-
-    '.sm-gutter-left': {
-      paddingLeft: SMALL_GUTTER,
-    },
-
-    '.sm-gutter-right': {
-      paddingRight: SMALL_GUTTER,
-    },
-
-    '.sm-gutter-top': {
-      paddingTop: SMALL_GUTTER,
-    },
-
-    '.sm-gutter-bottom': {
-      paddingBottom: SMALL_GUTTER,
-    },
-
-    '.sm-gutter-vertical': {
-      paddingVertical: SMALL_GUTTER,
-    },
-
-    '.sm-gutter-horizontal': {
-      paddingHorizontal: SMALL_GUTTER,
-    },
-
-    '.md-gutter': {
-      padding: MEDIUM_GUTTER,
-    },
-
-    '.md-gutter-left': {
-      paddingLeft: MEDIUM_GUTTER,
-    },
-
-    '.md-gutter-right': {
-      paddingRight: MEDIUM_GUTTER,
-    },
-
-    '.md-gutter-top': {
-      paddingTop: MEDIUM_GUTTER,
-    },
-
-    '.md-gutter-bottom': {
-      paddingBottom: MEDIUM_GUTTER,
-    },
-
-    '.md-gutter-vertical': {
-      paddingVertical: MEDIUM_GUTTER,
-    },
-
-    '.md-gutter-horizontal': {
-      paddingHorizontal: MEDIUM_GUTTER,
-    },
-
-    '.lg-gutter': {
-      padding: LARGE_GUTTER,
-    },
-
-    '.lg-gutter-left': {
-      paddingLeft: LARGE_GUTTER,
-    },
-
-    '.lg-gutter-right': {
-      paddingRight: LARGE_GUTTER,
-    },
-
-    '.lg-gutter-top': {
-      paddingTop: LARGE_GUTTER,
-    },
-
-    '.lg-gutter-bottom': {
-      paddingBottom: LARGE_GUTTER,
-    },
-
-    '.lg-gutter-vertical': {
-      paddingVertical: LARGE_GUTTER,
-    },
-
-    '.lg-gutter-horizontal': {
-      paddingHorizontal: LARGE_GUTTER,
-    },
-
-    '.xl-gutter': {
-      padding: EXTRA_LARGE_GUTTER,
-    },
-
-    '.xl-gutter-left': {
-      paddingLeft: EXTRA_LARGE_GUTTER,
-    },
-
-    '.xl-gutter-right': {
-      paddingRight: EXTRA_LARGE_GUTTER,
-    },
-
-    '.xl-gutter-top': {
-      paddingTop: EXTRA_LARGE_GUTTER,
-    },
-
-    '.xl-gutter-bottom': {
-      paddingBottom: EXTRA_LARGE_GUTTER,
-    },
-
-    '.xl-gutter-vertical': {
-      paddingVertical: EXTRA_LARGE_GUTTER,
-    },
-
-    '.xl-gutter-horizontal': {
-      paddingHorizontal: EXTRA_LARGE_GUTTER,
-    },
+    ...createVariants('.sm-gutter', sizeVariants, 'padding', SMALL_GUTTER),
+    ...createVariants('.md-gutter', sizeVariants, 'padding', MEDIUM_GUTTER),
+    ...createVariants('.lg-gutter', sizeVariants, 'padding', LARGE_GUTTER),
+    ...createVariants('.xl-gutter', sizeVariants, 'padding', EXTRA_LARGE_GUTTER),
   },
 
   guttersMargin: {
-    '.sm-gutter': {
-      margin: SMALL_GUTTER,
-    },
-
-    '.sm-gutter-left': {
-      marginLeft: SMALL_GUTTER,
-    },
-
-    '.sm-gutter-right': {
-      marginRight: SMALL_GUTTER,
-    },
-
-    '.sm-gutter-top': {
-      marginTop: SMALL_GUTTER,
-    },
-
-    '.sm-gutter-bottom': {
-      marginBottom: SMALL_GUTTER,
-    },
-
-    '.sm-gutter-vertical': {
-      marginVertical: SMALL_GUTTER,
-    },
-
-    '.sm-gutter-horizontal': {
-      marginHorizontal: SMALL_GUTTER,
-    },
-
-    '.md-gutter': {
-      margin: MEDIUM_GUTTER,
-    },
-
-    '.md-gutter-left': {
-      marginLeft: MEDIUM_GUTTER,
-    },
-
-    '.md-gutter-right': {
-      marginRight: MEDIUM_GUTTER,
-    },
-
-    '.md-gutter-top': {
-      marginTop: MEDIUM_GUTTER,
-    },
-
-    '.md-gutter-bottom': {
-      marginBottom: MEDIUM_GUTTER,
-    },
-
-    '.md-gutter-vertical': {
-      marginVertical: MEDIUM_GUTTER,
-    },
-
-    '.md-gutter-horizontal': {
-      marginHorizontal: MEDIUM_GUTTER,
-    },
-
-    '.lg-gutter': {
-      margin: LARGE_GUTTER,
-    },
-
-    '.lg-gutter-left': {
-      marginLeft: LARGE_GUTTER,
-    },
-
-    '.lg-gutter-right': {
-      marginRight: LARGE_GUTTER,
-    },
-
-    '.lg-gutter-top': {
-      marginTop: LARGE_GUTTER,
-    },
-
-    '.lg-gutter-bottom': {
-      marginBottom: LARGE_GUTTER,
-    },
-
-    '.lg-gutter-vertical': {
-      marginVertical: LARGE_GUTTER,
-    },
-
-    '.lg-gutter-horizontal': {
-      marginHorizontal: LARGE_GUTTER,
-    },
-
-    '.xl-gutter': {
-      margin: EXTRA_LARGE_GUTTER,
-    },
-
-    '.xl-gutter-left': {
-      marginLeft: EXTRA_LARGE_GUTTER,
-    },
-
-    '.xl-gutter-right': {
-      marginRight: EXTRA_LARGE_GUTTER,
-    },
-
-    '.xl-gutter-top': {
-      marginTop: EXTRA_LARGE_GUTTER,
-    },
-
-    '.xl-gutter-bottom': {
-      marginBottom: EXTRA_LARGE_GUTTER,
-    },
-
-    '.xl-gutter-vertical': {
-      marginVertical: EXTRA_LARGE_GUTTER,
-    },
-
-    '.xl-gutter-horizontal': {
-      marginHorizontal: EXTRA_LARGE_GUTTER,
-    },
+    ...createVariants('.sm-gutter', sizeVariants, 'margin', SMALL_GUTTER),
+    ...createVariants('.md-gutter', sizeVariants, 'margin', MEDIUM_GUTTER),
+    ...createVariants('.lg-gutter', sizeVariants, 'margin', LARGE_GUTTER),
+    ...createVariants('.xl-gutter', sizeVariants, 'margin', EXTRA_LARGE_GUTTER),
   },
 
   commonVariants: {
