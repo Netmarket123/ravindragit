@@ -19,15 +19,7 @@ Spinner.propTypes = {
   style: React.PropTypes.object,
 };
 
-const style = {
-  android: {
-    height: 20,
-  },
-  ios: {
-  },
-};
-
-const StyledSpinner = connectStyle('shoutem.ui.Spinner', style)(Spinner);
+const StyledSpinner = connectStyle('shoutem.ui.Spinner', {})(Spinner);
 
 export {
   StyledSpinner as Spinner,

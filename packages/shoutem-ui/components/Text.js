@@ -15,62 +15,15 @@ Text.propTypes = {
   ...RNText.propTypes,
 };
 
-const textStyle = {
-  '.line-through': {
-    textDecorationLine: 'line-through',
-  },
+const StyledText = connectStyle('shoutem.ui.Text', {})(Text);
 
-  '.flexible': {
-    flex: 1,
-  },
+const Heading = connectStyle('shoutem.ui.Heading', {})(Text);
 
-  '.inset': {
-    padding: 15,
-  },
+const Title = connectStyle('shoutem.ui.Title', {})(Text);
 
-  '.centered': {
-    textAlign: 'center',
-  },
+const Subtitle = connectStyle('shoutem.ui.Subtitle', {})(Text);
 
-  '.light': {
-    color: '#fff',
-  },
-
-  fontFamily: 'Rubik-Regular',
-  color: '#555555',
-  fontSize: 14,
-};
-
-const StyledText = connectStyle('shoutem.ui.Text', textStyle)(Text);
-
-const Heading = connectStyle('shoutem.ui.Heading', {
-  ...textStyle,
-  color: '#222222',
-  fontSize: 25,
-})(Text);
-
-const Title = connectStyle('shoutem.ui.Title', {
-  ...textStyle,
-  color: '#222222',
-  fontSize: 20,
-  lineHeight: 24,
-  '.navigationBarTitle': {
-    fontSize: 15,
-    lineHeight: 18,
-  },
-})(Text);
-
-const Subtitle = connectStyle('shoutem.ui.Subtitle', {
-  ...textStyle,
-  color: '#222222',
-  fontSize: 15,
-})(Text);
-
-const Caption = connectStyle('shoutem.ui.Caption', {
-  ...textStyle,
-  color: '#555555',
-  fontSize: 12,
-})(Text);
+const Caption = connectStyle('shoutem.ui.Caption', {})(Text);
 
 export {
   StyledText as Text,

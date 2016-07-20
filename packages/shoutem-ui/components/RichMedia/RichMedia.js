@@ -16,71 +16,6 @@ const propTypes = {
   style: PropTypes.object,
 };
 
-const boldStyle = { fontWeight: '500' };
-const italicStyle = { fontStyle: 'italic' };
-const codeStyle = { fontFamily: 'Menlo' };
-
-const MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE = 30;
-
-const style = {
-  b: boldStyle,
-  strong: boldStyle,
-  i: italicStyle,
-  em: italicStyle,
-  pre: codeStyle,
-  code: codeStyle,
-  a: {
-    fontWeight: '500',
-    color: '#000',
-  },
-  h1: {
-    color: '#000',
-    fontSize: 28,
-  },
-  h2: {
-    color: '#000',
-    fontSize: 24,
-  },
-  h3: {
-    fontWeight: '900',
-    color: '#000',
-    fontSize: 18,
-  },
-  h4: {
-    fontWeight: '700',
-    color: '#000',
-    fontSize: 16,
-  },
-  h5: {
-    fontWeight: '500',
-    color: '#000',
-    fontSize: 14,
-  },
-  video: {
-    marginHorizontal: MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE,
-    container: {
-      marginTop: 8,
-      marginBottom: 15,
-    },
-  },
-  img: {
-    marginHorizontal: MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE,
-    container: {
-      marginTop: 8,
-      marginBottom: 15,
-    },
-  },
-  gallery: {
-    marginHorizontal: MEDIA_ELEMENT_TO_WINDOW_BORDER_DISTANCE,
-    container: {
-      marginTop: 8,
-      marginBottom: 15,
-    },
-  },
-  p: {
-  },
-};
-
 function getMediaElementMargin(mediaElementStyle) {
   const { marginHorizontal, margin, marginLeft, marginRight } = mediaElementStyle;
 
@@ -117,7 +52,7 @@ function getStyleWithUpdatedMediaElementMargins(oldStyle) {
 class RichMedia extends Component {
   state = {
     content: null,
-  }
+  };
 
   componentDidMount() {
     const { body, attachments } = this.props;
@@ -154,7 +89,7 @@ class RichMedia extends Component {
 
   render() {
     return (
-      <View>
+      <View style={this.props.style.container}>
         {this.state.content}
       </View>
     );
@@ -166,7 +101,7 @@ RichMedia.defaultProps = {
   onError: console.error.bind(console),
 };
 
-const StyledRichMedia = connectStyle('shoutem.ui.RichMedia', style)(RichMedia);
+const StyledRichMedia = connectStyle('shoutem.ui.RichMedia', {})(RichMedia);
 export {
   StyledRichMedia as RichMedia,
 };

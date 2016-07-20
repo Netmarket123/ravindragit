@@ -3,7 +3,7 @@ import { View as RNView } from 'react-native';
 
 import { connectStyle } from '@shoutem/theme';
 
-function View(props) {
+function Screen(props) {
   return (
     <RNView {...props}>
       {props.children}
@@ -11,12 +11,12 @@ function View(props) {
   );
 }
 
-View.propTypes = {
+Screen.propTypes = {
   ...RNView.propTypes,
 };
 
-const StyledView = connectStyle('shoutem.ui.View', {})(View);
+const StyledScreen = connectStyle('shoutem.ui.Screen', {})(Screen);
 
 export {
-  StyledView as View,
+  StyledScreen as Screen,
 };
