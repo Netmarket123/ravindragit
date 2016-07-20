@@ -1,11 +1,10 @@
-import _ from 'lodash';
 import {
   Platform,
   Dimensions,
   StyleSheet,
 } from 'react-native';
 
-import { INCLUDE } from '@shoutem/theme';
+import { INCLUDE, createVariations } from '@shoutem/theme';
 
 const window = Dimensions.get('window');
 
@@ -19,40 +18,22 @@ const NAVIGATION_BAR_HEIGHT = 70;
 
 const sizeVariants = ['', 'left', 'right', 'top', 'bottom', 'horizontal', 'vertical'];
 
-function capitalizeFirstLetter(value) {
-  return value.charAt(0).toUpperCase() + value.slice(1);
-}
-
-function createVariants(baseName, variants, key, value) {
-  return _.reduce(variants, (result, variant) => {
-    const variantName = variant ? `${baseName}-${variant}` : baseName;
-    const keyName = variant ? `${key}${capitalizeFirstLetter(variant)}` : key;
-
-    // eslint-disable-next-line no-param-reassign
-    result[variantName] = {
-      [keyName]: value,
-    };
-
-    return result;
-  }, {});
-}
-
 export default () => ({
   //
   // Common
   //
   guttersPadding: {
-    ...createVariants('.sm-gutter', sizeVariants, 'padding', SMALL_GUTTER),
-    ...createVariants('.md-gutter', sizeVariants, 'padding', MEDIUM_GUTTER),
-    ...createVariants('.lg-gutter', sizeVariants, 'padding', LARGE_GUTTER),
-    ...createVariants('.xl-gutter', sizeVariants, 'padding', EXTRA_LARGE_GUTTER),
+    ...createVariations('.sm-gutter', sizeVariants, 'padding', SMALL_GUTTER),
+    ...createVariations('.md-gutter', sizeVariants, 'padding', MEDIUM_GUTTER),
+    ...createVariations('.lg-gutter', sizeVariants, 'padding', LARGE_GUTTER),
+    ...createVariations('.xl-gutter', sizeVariants, 'padding', EXTRA_LARGE_GUTTER),
   },
 
   guttersMargin: {
-    ...createVariants('.sm-gutter', sizeVariants, 'margin', SMALL_GUTTER),
-    ...createVariants('.md-gutter', sizeVariants, 'margin', MEDIUM_GUTTER),
-    ...createVariants('.lg-gutter', sizeVariants, 'margin', LARGE_GUTTER),
-    ...createVariants('.xl-gutter', sizeVariants, 'margin', EXTRA_LARGE_GUTTER),
+    ...createVariations('.sm-gutter', sizeVariants, 'margin', SMALL_GUTTER),
+    ...createVariations('.md-gutter', sizeVariants, 'margin', MEDIUM_GUTTER),
+    ...createVariations('.lg-gutter', sizeVariants, 'margin', LARGE_GUTTER),
+    ...createVariations('.xl-gutter', sizeVariants, 'margin', EXTRA_LARGE_GUTTER),
   },
 
   commonVariants: {
