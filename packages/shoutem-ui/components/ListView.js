@@ -13,7 +13,6 @@ const Status = {
   LOADING: 'loading',
   LOADING_NEXT: 'loadingNext',
   REFRESHING: 'refreshing',
-  ERROR: 'error',
   IDLE: 'idle',
 };
 
@@ -94,7 +93,6 @@ class ListView extends React.Component {
 
     this.state = {
       status: Status.LOADING,
-      nextLoadingStatus: Status.LOADING,
       dataSource: this.listDataSource.clone(props.data),
     };
   }
@@ -118,7 +116,6 @@ class ListView extends React.Component {
   onRefresh() {
     this.setState({
       status: Status.REFRESHING,
-      nextLoadingStatus: Status.REFRESHING,
     });
 
     if (this.props.onRefresh) {
@@ -170,9 +167,13 @@ class ListView extends React.Component {
 
   setLoading(loading) {
     if (loading) {
+      if (this.state.status !== Status.IDLE) {
+        // We are already in a loading status
+        return;
+      }
+
       this.setState({
-        status: this.state.nextLoadingStatus,
-        nextLoadingStatus: Status.LOADING,
+        status: Status.LOADING,
       });
     } else {
       this.setState({
