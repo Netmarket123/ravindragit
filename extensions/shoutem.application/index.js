@@ -12,6 +12,7 @@ import { loaded, storage } from '@shoutem/redux-io';
 import {
   configurationReducer,
   executeShortcut,
+  getAppId,
 } from './actions';
 import { getFirstShortcut } from './getFirstShortcut';
 
@@ -81,4 +82,5 @@ export {
   middleware,
   appWillMount,
   appDidMount,
+  getAppId,
 };
