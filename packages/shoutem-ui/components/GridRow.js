@@ -34,18 +34,43 @@ GridRow.propTypes = {
   ...RNView.propTypes,
 };
 
-// eslint-disable-next-line arrow-body-style
-GridRow.groupData = (data, shouldCreateNewRow) => {
-  return _.reduce(data, (rows, element) => {
-    const lastRow = _.last(rows);
-    if (shouldCreateNewRow(element, lastRow)) {
-      rows.push([element]);
-    } else {
-      lastRow.push(element);
+/* eslint-disable no-param-reassign */
+/**
+ * Groups data into rows for rendering in grid views.
+ * Elements may need more than one column in the grid,
+ * a weight can be assigned to each element that determines
+ * the number of columns it should occupy.
+ *
+ * @param data The data elements to group.
+ * @param columns The number of columns of the grid.
+ * @param getElementWeight Optional function that returns the
+ *   weight of a single element. Each element has a weight of
+ *   1 by default.
+ * @returns {Array} An array of rows, each row is an array of
+ *   data elements.
+ */
+GridRow.groupByRows = (data, columns, getElementWeight = _.constant(1)) => {
+  const groupedData = _.reduce(data, (result, element) => {
+    let currentRow = _.last(result.rows);
+    if (currentRow === undefined) {
+      currentRow = [];
+      result.rows.push(currentRow);
     }
 
-    return rows;
-  }, []);
+    const elementWeight = getElementWeight(element);
+    if (result.currentRowWeight + elementWeight <= columns) {
+      result.currentRowWeight += elementWeight;
+      currentRow.push(element);
+    } else {
+      result.currentRowWeight = elementWeight;
+      currentRow = [element];
+      result.rows.push(currentRow);
+    }
+
+    return result;
+  }, { currentRowWeight: 0, rows: []});
+
+  return groupedData.rows;
 };
 
 const StyledGridRow = connectStyle('shoutem.ui.GridRow', {})(GridRow);
