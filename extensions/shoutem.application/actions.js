@@ -28,3 +28,20 @@ export function executeShortcut(shortcut) {
     shortcut,
   };
 }
+
+/**
+ * A selector that returns the id of the currently running application.
+ *
+ * @param state The redux state.
+ * @returns {*} The app id.
+ */
+export function getAppId(state) {
+  return _.get(state, [
+    'shoutem.application',
+    'configuration',
+    'relationships',
+    'application',
+    'data',
+    'id',
+  ]);
+}
