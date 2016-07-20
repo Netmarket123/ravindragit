@@ -47,12 +47,15 @@ class DropDownMenu extends Component {
     this.autoSelect(this.props.items, this.props.selectedItem);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!this.state.selectedItem && nextProps.items.length > 0) {
+      this.autoSelect(nextProps.items, nextProps.selectedItem);
+    }
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
     if (nextProps.items === this.props.items && nextState === this.state) {
       return false;
-    }
-    if (!this.state.selectedItem) {
-      this.autoSelect(nextProps.items, nextProps.selectedItem);
     }
     return true;
   }
