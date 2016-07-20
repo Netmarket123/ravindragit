@@ -38,8 +38,6 @@ export default function transformNavigationBarProps(props) {
       _.assign(newProps, transformers[key](value));
     }
   });
-  
-  
 
   return _.assign(newProps, props);
 }
