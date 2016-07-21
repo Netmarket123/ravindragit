@@ -37,38 +37,34 @@ GridRow.propTypes = {
 /* eslint-disable no-param-reassign */
 /**
  * Groups data into rows for rendering in grid views.
- * Elements may need more than one column in the grid,
- * a weight can be assigned to each element that determines
+ * Elements may need more than one column in the grid.
+ * To accomplish this, a column span can be assigned to
+ * each element. The column span of an element determines
  * the number of columns it should occupy.
  *
  * @param data The data elements to group.
  * @param columns The number of columns of the grid.
- * @param getElementWeight Optional function that returns the
- *   weight of a single element. Each element has a weight of
- *   1 by default.
+ * @param getColumnSpan Optional function that returns the
+ *   column span of a single element. Each element has a span
+ *   of 1 by default.
  * @returns {Array} An array of rows, each row is an array of
  *   data elements.
  */
-GridRow.groupByRows = (data, columns, getElementWeight = _.constant(1)) => {
+GridRow.groupByRows = (data, columns, getColumnSpan = _.constant(1)) => {
   const groupedData = _.reduce(data, (result, element) => {
     let currentRow = _.last(result.rows);
-    if (currentRow === undefined) {
+    const elementSpan = getColumnSpan(element);
+
+    if (!currentRow || (result.currentRowSize + elementSpan > columns)) {
       currentRow = [];
+      result.currentRowSize = 0;
       result.rows.push(currentRow);
     }
 
-    const elementWeight = getElementWeight(element);
-    if (result.currentRowWeight + elementWeight <= columns) {
-      result.currentRowWeight += elementWeight;
-      currentRow.push(element);
-    } else {
-      result.currentRowWeight = elementWeight;
-      currentRow = [element];
-      result.rows.push(currentRow);
-    }
-
+    result.currentRowSize += elementSpan;
+    currentRow.push(element);
     return result;
-  }, { currentRowWeight: 0, rows: []});
+  }, { currentRowSize: 0, rows: [] });
 
   return groupedData.rows;
 };
