@@ -39,7 +39,7 @@ function getTheme(context) {
  * @returns {StyledComponent} The new component that will handle
  * the styling of the wrapped component.
  */
-export default function connectStyle(componentStyleName, componentStyle) {
+export default function connectStyle(componentStyleName, componentStyle = {}) {
   function getComponentDisplayName(WrappedComponent) {
     return WrappedComponent.displayName || WrappedComponent.name || 'Component';
   }
