@@ -6,6 +6,6 @@
     "react-native-code-push": "^1.10.4-beta"
   },
   "peerDependencies": {
-    "@shoutem/core": "0.0.10"
+    "@shoutem/core": "0.0.11"
   }
 }
