@@ -722,7 +722,6 @@ export default () => ({
     },
     container: {
       margin: MEDIUM_GUTTER,
-      paddingVertical: MEDIUM_GUTTER,
     },
   },
 
@@ -970,8 +969,8 @@ export default () => ({
     '.section-header': {
       'shoutem.ui.View': {
         'shoutem.ui.Caption': {
-          paddingVertical: SMALL_GUTTER,
-          paddingHorizontal: MEDIUM_GUTTER,
+          marginVertical: SMALL_GUTTER,
+          marginHorizontal: MEDIUM_GUTTER,
           color: '#888888',
         },
       },
