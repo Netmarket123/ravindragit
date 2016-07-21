@@ -66,6 +66,14 @@ function createApplication(appContext) {
     }
 
     /**
+     * Returns the redux state of the app.
+     * @returns {*} The redux state.
+     */
+    getState() {
+      return appContext.store.getState();
+    }
+
+    /**
      * Returns the extensions used to initialize the app.
      * @returns {*} The extensions.
      */
