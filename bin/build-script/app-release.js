@@ -103,6 +103,7 @@ class AppRelease {
       appName: `${this.appId}`,
       deploymentName: this.getDeploymentName(),
       platform: 'ios',
+      development: true,
     })
       .then(() =>
         console.log(`App with id:${this.appId} is successfully released`)
