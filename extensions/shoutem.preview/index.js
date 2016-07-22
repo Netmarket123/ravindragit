@@ -32,7 +32,7 @@ function appWillMount(app) {
     const appId = getAppIdFromUrl(deepLink.url);
     if (appId) {
       // get new configuration for app id provided in deepLink
-      dispatch(find('shoutem.core.configuration', '', { 'appId': appId }));
+      dispatch(find('shoutem.core.configuration', '', { appId }));
     }
   });
 }
