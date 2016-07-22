@@ -1,5 +1,5 @@
 import { Linking } from 'react-native';
-import { find } from '@shoutem/redux-io';
+import rio, { find } from '@shoutem/redux-io';
 
 // TODO (Ivan): Remove this when authorization is available
 // eslint-disable-next-line max-len
@@ -17,21 +17,22 @@ function getAppIdFromUrl(url) {
 }
 
 function appWillMount(app) {
+  rio.registerSchema({
+    schema: 'shoutem.core.configuration',
+    request: {
+      endpoint: 'http://apps.dev.sauros.hr/v1/apps/{appId}/configurations/current',
+      headers: {
+        Authorization: authorization,
+        Accept: 'application/vnd.api+json',
+      },
+    },
+  });
   const dispatch = app.getStore().dispatch;
   Linking.addEventListener('url', (deepLink) => {
     const appId = getAppIdFromUrl(deepLink.url);
     if (appId) {
       // get new configuration for app id provided in deepLink
-      dispatch(find({
-        schema: 'shoutem.core.configuration',
-        request: {
-          endpoint: `http://apps.dev.sauros.hr/v1/apps/${appId}/configurations/current`,
-          headers: {
-            Authorization: authorization,
-            Accept: 'application/vnd.api+json',
-          },
-        },
-      }));
+      dispatch(find('shoutem.core.configuration', '', { appId }));
     }
   });
 }
