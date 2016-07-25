@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "react-native-code-push": "^1.10.4-beta"
+    "react-native-code-push": "^1.13.5-beta"
   },
   "peerDependencies": {
     "@shoutem/core": "0.0.11"
