@@ -17,7 +17,6 @@ export default (variables) => ({
     color: variables.brandColor,
   },
   navigationBarTitle: {
-    [INCLUDE]: ['navigationBarTextColor'],
     fontSize: 15,
     fontWeight: '500',
   },
