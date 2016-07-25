@@ -5,7 +5,6 @@ import rio, { find } from '@shoutem/redux-io';
 // eslint-disable-next-line max-len
 const authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkMGYxOGYzMy04MzI1LTQxOTUtYmMwNi1jMmYxOWE0Y2RhOTciLCJpc3MiOiJzaG91dGVtIiwic3ViIjoidXNlcjoxIiwidXNyIjoic3NhcnVuaWNAZ21haWwuY29tIiwiaWF0IjoxNDU4MzA3NjYxLCJybG0iOiJhcHAtYnVpbGRlciIsImFjbCI6eyJ1c2VyOjEvKiI6WyJyZWFkIiwid3JpdGUiXX0sInZzaSI6eyJ0eXAiOiJ2IiwidiI6MH19.fZk_KPQtkKkiTht5LrJJpreLBJddbxdHPWX2p5lIfs4';
 
-
 function getAppIdFromUrl(url) {
   const matches = url.match(/preview:\/\/open-app\/([0-9]*)/);
   let appId;
@@ -16,7 +15,7 @@ function getAppIdFromUrl(url) {
   return appId;
 }
 
-function appWillMount(app) {
+function appDidMount(app) {
   rio.registerSchema({
     schema: 'shoutem.core.configuration',
     request: {
@@ -42,6 +41,6 @@ function appWillUnmount() {
 }
 
 export {
-  appWillMount,
+  appDidMount,
   appWillUnmount,
 };
