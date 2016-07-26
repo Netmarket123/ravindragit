@@ -1,5 +1,7 @@
 import {
   MapView,
+  Image,
+  InteractionManager,
 } from 'react-native';
 
 import {
@@ -23,9 +25,23 @@ export default class MapComponent extends Component {
     super(props);
     this.onRegionChange = this.onRegionChange.bind(this);
     this.onMarkerPress = this.onMarkerPress.bind(this);
+    this.state = {
+      markerCoordinates: null,
+      selectedMarker: null,
+      // Default region is Croatia, Heinzelova 33
+      region: {
+        longitude: 15.9994209,
+        latitude: 45.8109446,
+        latitudeDelta: 0.1,
+        longitudeDelta: 0.1,
+      },
+      isReady: false,
+    };
   }
 
-  state = {};
+  componentDidMount() {
+    InteractionManager.runAfterInteractions(() => this.setState({ isReady: true }));
+  }
 
   onRegionChange(region) {
     this.setState({ region });
@@ -47,14 +63,30 @@ export default class MapComponent extends Component {
     const selectedCoordinates = this.getCoordinatesFromNativeEvent(pressEvent);
     const selectedMarker = markers.find(isLocatedAt(selectedCoordinates));
 
-    this.setState(Object.assign(this.state, {
+    this.setState({
       markerCoordinates: selectedCoordinates,
       selectedMarker,
-    }));
+    });
 
     if (onMarkerPressed) {
       onMarkerPressed(selectedMarker);
     }
+  }
+
+  getInitialRegion() {
+    const { initialRegion, markers } = this.props;
+
+    if (initialRegion) {
+      return initialRegion;
+    } else if (markers.length > 0) {
+      return {
+        ...markers[0],
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      };
+    }
+
+    return this.state.region;
   }
 
   // Override in subclass
@@ -64,7 +96,15 @@ export default class MapComponent extends Component {
 }
 
 MapComponent.propTypes = {
+  ...MapView.propTypes,
+  markerImage: Image.propTypes.source,
+  style: PropTypes.object,
+  initialRegion: MapView.propTypes.region,
   markers: MapView.propTypes.annotations,
   onMarkerPressed: PropTypes.func,
   onRegionChanged: PropTypes.func,
+};
+
+MapComponent.defaultProps = {
+  markerImage: require('../../assets/images/pin-light@3x.png'),
 };

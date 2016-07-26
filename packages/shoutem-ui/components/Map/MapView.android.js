@@ -2,6 +2,7 @@ import React from 'react';
 
 import MapView from 'react-native-maps';
 import MapComponent from './MapComponent';
+import { connectStyle } from '@shoutem/theme';
 
 /**
  * Renders an MapView using an Android-specific MapView implementation
@@ -57,22 +58,13 @@ class MapViewAndroid extends MapComponent {
 
   render() {
     const {
-      initialRegion,
       markers,
       markerImage,
     } = this.props;
 
-    const region = this.state.region || initialRegion;
     return (
       <MapView
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-        }}
-        region={region}
+        region={this.getInitialRegion()}
         onRegionChange={this.onRegionChange}
         onMarkerPress={this.onMarkerPress}
         {...this.props}
@@ -94,10 +86,12 @@ class MapViewAndroid extends MapComponent {
 }
 
 MapViewAndroid.propTypes = {
-  ...MapView.propTypes,
+  ...MapComponent.propTypes,
 };
 
+const StyledMapView = connectStyle('shoutem.ui.MapView')(MapViewAndroid);
+
 export {
-  MapViewAndroid as MapView,
+  StyledMapView as MapView,
 };
 

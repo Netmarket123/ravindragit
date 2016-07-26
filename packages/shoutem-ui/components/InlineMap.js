@@ -1,13 +1,10 @@
 import React, {
   PropTypes,
 } from 'react';
-
-import {
-  View,
-} from 'react-native';
-
 import { connectStyle } from '@shoutem/theme';
 import { MapView } from './Map/MapView';
+import MapComponent from './Map/MapComponent';
+import { View } from './View';
 
 /**
  * Renders an Inline Map containing the Map as a background and child
@@ -57,182 +54,48 @@ import { MapView } from './Map/MapView';
  * @param props
  * @returns rendered InlineMap
  */
-function InlineMap(props) {
+function InlineMap({
+  style,
+  markers,
+  children,
+  scrollEnabled,
+  rotateEnabled,
+  pitchEnabled,
+  initialRegion,
+  markerImage,
+}) {
+  const mapProps = {
+    initialRegion,
+    markers,
+    scrollEnabled,
+    rotateEnabled,
+    pitchEnabled,
+    markerImage,
+  };
+
   return (
-    <View >
-      <MapView
-        style={{
-          height: props.style.height,
-        }}
-        initialRegion={props.initialRegion || {
-          latitude: props.latitude,
-          longitude: props.longitude,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01,
-        }}
-        markers={props.markers || [{
-          latitude: props.latitude,
-          longitude: props.longitude,
-        }]}
-        markerImage={require('./../assets/images/pin_dark@3x.png')}
-        scrollEnabled={false}
-        rotateEnabled={false}
-        pitchEnabled={false}
-      />
-      <View
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          height: props.style.height,
-        }}
-      >
-        {props.children}
+    <View style={style}>
+      <MapView {...mapProps} />
+      <View>
+        {children}
       </View>
     </View>
   );
 }
 
+InlineMap.defaultProps = {
+  scrollEnabled: false,
+  rotateEnabled: false,
+  pitchEnabled: false,
+};
+
 InlineMap.propTypes = {
   ...View.propTypes,
-};
-
-const childrenStyle = {
-  'shoutem.ui.Heading': {
-    color: 'white',
-    marginVertical: 8,
-  },
-
-  'shoutem.ui.Title': {
-    color: 'white',
-    marginVertical: 12,
-  },
-
-  'shoutem.ui.Subtitle': {
-    color: 'white',
-    marginTop: 80,
-  },
-
-  'shoutem.ui.Caption': {
-    color: 'white',
-    marginTop: 5,
-  },
-
-  'shoutem.ui.Text': {
-    color: 'white',
-  },
-
-  'shoutem.ui.View': {
-    '.actions': {
-      'shoutem.ui.Icon': {
-        color: 'white',
-      },
-
-      '*': {
-        marginRight: 0,
-        marginVertical: 0,
-        marginLeft: 10,
-      },
-
-      flex: 0,
-      alignSelf: 'flex-end',
-      flexDirection: 'row',
-      alignItems: 'flex-end',
-      justifyContent: 'center',
-    },
-  },
-};
-
-const style = {
-  ...childrenStyle,
-
-  'shoutem.ui.Overlay': {
-    'shoutem.ui.View': {
-      ...childrenStyle,
-    },
-
-    alignSelf: 'stretch',
-    marginVertical: 0,
-  },
-
-  '.small-avatar': {
-    width: 25,
-    height: 25,
-    borderRadius: 13,
-    borderColor: 'rgba(0, 0, 0, 0)',
-    borderWidth: 1,
-    resizeMode: 'cover',
-  },
-
-  '.small': {
-    width: 65,
-    height: 65,
-  },
-
-  '.medium': {
-    width: 145,
-    height: 92,
-  },
-
-  '.medium-square': {
-    width: 145,
-    height: 145,
-  },
-
-  '.large': {
-    width: 375,
-    height: 240,
-  },
-
-  '.large-portrait': {
-    width: 375,
-    height: 375,
-  },
-
-  '.large-square': {
-    width: 345,
-    height: 330,
-  },
-
-  '.large-wide': {
-    width: 375,
-    height: 200,
-  },
-
-  '.rounded-corners': {
-    borderRadius: 2,
-    borderWidth: 1,
-    borderColor: 'rgba(0, 0, 0, 0)',
-  },
-
-  '.top-aligned': {
-    justifyContent: 'flex-start',
-  },
-
-  '.bottom-aligned': {
-    justifyContent: 'flex-end',
-  },
-
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  resizeMode: 'cover',
-};
-
-InlineMap.propTypes = {
+  ...MapComponent.propTypes,
   children: PropTypes.element,
-  markers: MapView.propTypes.markers,
-  initialRegion: MapView.propTypes.initialRegion.isRequired,
-  latitude: PropTypes.number,
-  longitude: PropTypes.number,
-  style: PropTypes.shape({
-    height: PropTypes.number.isRequired,
-  }),
 };
 
-const StyledInlineMap = connectStyle('shoutem.ui.InlineMap', style)(InlineMap);
+const StyledInlineMap = connectStyle('shoutem.ui.InlineMap')(InlineMap);
 
 export {
   StyledInlineMap as InlineMap,
