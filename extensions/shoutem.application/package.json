@@ -4,6 +4,6 @@
   "private": true,
   "main": "index.js",
   "peerDependencies": {
-    "@shoutem/core": "0.0.10"
+    "@shoutem/core": "0.0.11"
   }
 }

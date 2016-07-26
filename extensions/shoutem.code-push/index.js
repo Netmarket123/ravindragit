@@ -10,6 +10,7 @@ import * as _ from 'lodash';
  * about app update (not recommended to do on iOS)
  */
 function syncPackage(deploymentKey, updateDialog) {
+  codePush.allowRestart();
   codePush.sync({
     installMode: codePush.InstallMode.IMMEDIATE,
     deploymentKey,
