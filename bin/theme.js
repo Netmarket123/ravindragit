@@ -823,7 +823,7 @@ export default () => ({
 
   'shoutem.ui.DropDownMenu': {
     '.horizontal': {
-      wrapper: {
+      container: {
         height: 40,
         justifyContent: 'center',
         backgroundColor: Colors.LIGHT_GRAY,
