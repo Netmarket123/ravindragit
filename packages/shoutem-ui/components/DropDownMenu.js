@@ -143,7 +143,7 @@ class DropDownMenu extends Component {
     const modalAnimatedStyle = createModalAnimatedStyle(dropDownAnimation);
     const textBidingKey = this.state.bindings.text;
     return (
-      <View renderToHardwareTextureAndroid>
+      <View style={style.container} renderToHardwareTextureAndroid>
         {button}
         <Modal
           visible={collapsed || false}
