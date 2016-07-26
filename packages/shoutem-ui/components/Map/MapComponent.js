@@ -9,6 +9,8 @@ import {
   PropTypes,
 } from 'react';
 
+import _ from 'lodash';
+
 function isLocatedAt(coordinates) {
   return marker => marker.latitude === coordinates.latitude
                   && marker.longitude === coordinates.longitude;
@@ -52,6 +54,13 @@ export default class MapComponent extends Component {
     if (onRegionChanged) {
       onRegionChanged(region);
     }
+  }
+
+  getMarkerImage(marker) {
+    const { selectedMarkerImage, markerImage } = this.props;
+    const { selectedMarker } = this.state;
+
+    return selectedMarker && _.isEqual(marker, selectedMarker) ? selectedMarkerImage : markerImage;
   }
 
   onMarkerPress(pressEvent) {
@@ -98,6 +107,7 @@ export default class MapComponent extends Component {
 MapComponent.propTypes = {
   ...MapView.propTypes,
   markerImage: Image.propTypes.source,
+  selectedMarkerImage: Image.propTypes.source,
   style: PropTypes.object,
   initialRegion: MapView.propTypes.region,
   markers: MapView.propTypes.annotations,
@@ -107,4 +117,5 @@ MapComponent.propTypes = {
 
 MapComponent.defaultProps = {
   markerImage: require('../../assets/images/pin-light@3x.png'),
+  selectedMarkerImage: require('../../assets/images/pin-dark@3x.png'),
 };
