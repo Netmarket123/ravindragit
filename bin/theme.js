@@ -8,6 +8,11 @@ import { INCLUDE, createVariations } from '@shoutem/theme';
 
 const window = Dimensions.get('window');
 
+const Colors = {
+  DARK: '#333333',
+  LIGHT_GRAY: '#f2f2f2',
+};
+
 const SMALL_GUTTER = 5;
 const MEDIUM_GUTTER = 15;
 const LARGE_GUTTER = 30;
@@ -37,6 +42,11 @@ export default () => ({
   },
 
   commonVariants: {
+    '.rounded-corners': {
+      borderRadius: 2,
+      borderWidth: 0,
+      borderColor: 'rgba(0, 0, 0, 0)',
+    },
     '.flexible': {
       flex: 1,
     },
@@ -44,6 +54,14 @@ export default () => ({
     '.collapsible': {
       flex: -1,
     },
+  },
+
+  overlayParent: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
 
   //
@@ -171,7 +189,7 @@ export default () => ({
     },
   },
   'shoutem.ui.Image': {
-    [INCLUDE]: ['imageChildren', 'guttersPadding'],
+    [INCLUDE]: ['imageChildren', 'guttersPadding', 'commonVariants'],
 
     'shoutem.ui.Overlay': {
       'shoutem.ui.View': {
@@ -227,12 +245,6 @@ export default () => ({
     '.large-wide': {
       width: 375,
       height: 200,
-    },
-
-    '.rounded-corners': {
-      borderRadius: 2,
-      borderWidth: 0,
-      borderColor: 'rgba(0, 0, 0, 0)',
     },
 
     '.top-aligned': {
@@ -445,6 +457,20 @@ export default () => ({
       backgroundColor: 'white',
     },
 
+    '.text-centric': {
+      'shoutem.ui.Title': {
+        marginBottom: MEDIUM_GUTTER,
+      },
+
+      'shoutem.ui.Button': {
+        marginTop: LARGE_GUTTER,
+      },
+
+      padding: LARGE_GUTTER,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+
     flexDirection: 'column',
     alignItems: 'flex-start',
     backgroundColor: 'rgba(0, 0, 0, 0)',
@@ -571,6 +597,19 @@ export default () => ({
       borderColor: 'rgba(0, 0, 0, 0)',
       borderWidth: 0,
       borderRadius: 0,
+    },
+
+    '.dark': {
+      [INCLUDE]: ['commonVariants'],
+
+      'shoutem.ui.Icon': {
+        color: '#ffffff',
+      },
+      'shoutem.ui.Text': {
+        color: '#ffffff',
+      },
+
+      backgroundColor: Colors.DARK,
     },
 
     '.stacked': {
@@ -784,6 +823,13 @@ export default () => ({
   },
 
   'shoutem.ui.DropDownMenu': {
+    '.horizontal': {
+      wrapper: {
+        height: 40,
+        justifyContent: 'center',
+        backgroundColor: Colors.LIGHT_GRAY,
+      },
+    },
     modalContainer: {
       flex: 1,
       justifyContent: 'center',
@@ -917,6 +963,10 @@ export default () => ({
       borderColor: 'rgb(242, 242, 242)',
     },
 
+    '.medium-vertical-margin': {
+      marginVertical: MEDIUM_GUTTER,
+    },
+
     '.section-header': {
       'shoutem.ui.View': {
         'shoutem.ui.Caption': {
@@ -937,5 +987,107 @@ export default () => ({
 
     alignSelf: 'stretch',
     height: 20,
+  },
+
+  'shoutem.ui.MapView': {
+    flex: 1,
+  },
+
+  'shoutem.ui.InlineMap': {
+    '.small-avatar': {
+      width: 25,
+      height: 25,
+      borderRadius: 13,
+      borderColor: 'rgba(0, 0, 0, 0)',
+      borderWidth: 1,
+      resizeMode: 'cover',
+    },
+
+    '.small': {
+      width: 65,
+      height: 65,
+    },
+
+    '.medium': {
+      width: 145,
+      height: 92,
+    },
+
+    '.medium-square': {
+      width: 145,
+      height: 145,
+    },
+
+    '.medium-tall': {
+      height: 160,
+    },
+
+    '.large': {
+      width: 375,
+      height: 240,
+    },
+
+    '.large-portrait': {
+      width: 375,
+      height: 375,
+    },
+
+    '.large-square': {
+      width: 345,
+      height: 330,
+    },
+
+    '.large-wide': {
+      width: 375,
+      height: 200,
+    },
+
+    '.top-aligned': {
+      justifyContent: 'flex-start',
+    },
+
+    '.bottom-aligned': {
+      justifyContent: 'flex-end',
+    },
+
+    'shoutem.ui.View': {
+      'shoutem.ui.View': {
+        'shoutem.ui.Overlay': {
+          'shoutem.ui.View': {
+            'shoutem.ui.Heading': {
+              color: 'white',
+              marginVertical: 8,
+            },
+
+            'shoutem.ui.Title': {
+              color: 'white',
+              marginVertical: 12,
+            },
+
+            'shoutem.ui.Subtitle': {
+              color: 'white',
+              marginTop: 80,
+            },
+
+            'shoutem.ui.Caption': {
+              color: 'white',
+              marginTop: 5,
+            },
+
+            'shoutem.ui.Text': {
+              color: 'white',
+            },
+          },
+
+          alignSelf: 'stretch',
+          marginVertical: 0,
+        },
+
+        [INCLUDE]: ['overlayParent'],
+      },
+    },
+
+    [INCLUDE]: ['commonVariants'],
+    flex: 0,
   },
 });
