@@ -1,12 +1,18 @@
 import {
   MapView,
-  Image,
 } from 'react-native';
 
 import React from 'react';
 
 import MapComponent from './MapComponent';
+import { connectStyle } from '@shoutem/theme';
 
+function getMarkerLatLong(marker) {
+  return {
+    latitude: marker.latitude,
+    longitude: marker.longitude,
+  };
+}
 /**
  * Renders an MapView using an iOS-specific MapView implementation
  *
@@ -58,43 +64,29 @@ class MapViewIOS extends MapComponent {
     return coordinates;
   }
 
-  render() {
-    const onMarkerPress = this.onMarkerPress.bind(this);
+  createAnnotations() {
     const {
-      initialRegion,
       markers,
-      markerImage,
+      markerImage: image,
     } = this.props;
 
-    function onFocus(latitude, longitude) {
-      return () => {
-        onMarkerPress({ latitude, longitude });
-      };
+    return markers.map(marker => ({
+      ...marker,
+      onFocus: () => this.onMarkerPress(getMarkerLatLong(marker)),
+      image,
+    }));
+  }
+
+  render() {
+    if (!this.state.isReady) {
+      return null;
     }
-
-    function appendOnFocusEvent(marker) {
-      const { latitude, longitude } = marker;
-
-      return {
-        ...marker,
-        onFocus: onFocus(latitude, longitude),
-        image: markerImage,
-      };
-    }
-
     return (
       <MapView
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-        }}
-        region={initialRegion}
+        region={this.getInitialRegion()}
+        annotations={this.createAnnotations()}
         onRegionChange={this.onRegionChange}
         onMarkerPress={this.onMarkerPress}
-        annotations={markers.map(appendOnFocusEvent)}
         {...this.props}
       />
     );
@@ -102,13 +94,12 @@ class MapViewIOS extends MapComponent {
 }
 
 MapViewIOS.propTypes = {
-  ...MapView.propTypes,
-  markers: MapView.propTypes.annotations,
-  markerImage: Image.propTypes.source,
-  initialRegion: MapView.propTypes.region,
+  ...MapComponent.propTypes,
 };
 
+const StyledMapView = connectStyle('shoutem.ui.MapView')(MapViewIOS);
+
 export {
-  MapViewIOS as MapView,
+  StyledMapView as MapView,
 };
 
