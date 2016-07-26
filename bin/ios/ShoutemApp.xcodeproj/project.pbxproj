@@ -25,7 +25,7 @@
 		14EE14E12C884069B31FAC36 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6D19753EEA2E424EB54C42A0 /* Entypo.ttf */; };
 		22C012825B964AB8BD44C685 /* libRNShare.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7D7F9ACC7A460E84151DD3 /* libRNShare.a */; };
 		263E1A6A14D947EC81005298 /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4BF60A42C4B479592D60D6E /* libAirMaps.a */; };
-		272E5BCB1CF9E8C2007AB2C5 /* default-theme-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 272E5BCA1CF9E8C2007AB2C5 /* default-theme-icon-font.ttf */; };
+		2749353F1D477D74000C45D5 /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2749353E1D477D74000C45D5 /* rubicon-icon-font.ttf */; };
 		2CCFD9260872413BA08ADE6E /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B165BA48BA954339BF78C0C3 /* Foundation.ttf */; };
 		43DDD9C76F4C4DA9BB361B45 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4009DD4D136A4A039DD3CA2A /* Octicons.ttf */; };
 		479A6A9A61DF4219AD22A45E /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CF69CC3BE124D44B3B9B074 /* libRNVectorIcons.a */; };
@@ -189,7 +189,7 @@
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		146F89521CEA5C270065FC7B /* Rubik-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Rubik-Regular.ttf"; path = "../assets/fonts/Rubik-Regular.ttf"; sourceTree = "<group>"; };
 		1F215385F682417CA8ED6E6B /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
-		272E5BCA1CF9E8C2007AB2C5 /* default-theme-icon-font.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "default-theme-icon-font.ttf"; path = "../assets/fonts/default-theme-icon-font.ttf"; sourceTree = "<group>"; };
+		2749353E1D477D74000C45D5 /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "rubicon-icon-font.ttf"; path = "../assets/fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; };
 		348D9387F83D466FAFE0122F /* libCalendarManager.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libCalendarManager.a; sourceTree = "<group>"; };
 		3CF69CC3BE124D44B3B9B074 /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		4009DD4D136A4A039DD3CA2A /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
@@ -455,7 +455,7 @@
 		E66035ACF78043E086CDCB89 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				272E5BCA1CF9E8C2007AB2C5 /* default-theme-icon-font.ttf */,
+				2749353E1D477D74000C45D5 /* rubicon-icon-font.ttf */,
 				8D95B7721D1C3726001D48D4 /* Rubik-Medium.ttf */,
 				146F89521CEA5C270065FC7B /* Rubik-Regular.ttf */,
 				6D19753EEA2E424EB54C42A0 /* Entypo.ttf */,
@@ -740,7 +740,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				272E5BCB1CF9E8C2007AB2C5 /* default-theme-icon-font.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				14EE14E12C884069B31FAC36 /* Entypo.ttf in Resources */,
@@ -751,6 +750,7 @@
 				F70D8A1E2D2C4127BBFE1722 /* Ionicons.ttf in Resources */,
 				8D95B7731D1C3726001D48D4 /* Rubik-Medium.ttf in Resources */,
 				74294E4C5B304CBE9C0E5C8D /* MaterialIcons.ttf in Resources */,
+				2749353F1D477D74000C45D5 /* rubicon-icon-font.ttf in Resources */,
 				43DDD9C76F4C4DA9BB361B45 /* Octicons.ttf in Resources */,
 				5F768FBA668947E8B76832F3 /* Zocial.ttf in Resources */,
 			);
