@@ -57,10 +57,7 @@ class MapViewAndroid extends MapComponent {
   }
 
   render() {
-    const {
-      markers,
-      markerImage,
-    } = this.props;
+    const { markers } = this.props;
 
     return (
       <MapView
@@ -76,7 +73,7 @@ class MapViewAndroid extends MapComponent {
                 title={marker.title}
                 description={marker.subtitle}
                 key={key}
-                image={markerImage}
+                image={this.getMarkerImage(marker)}
               />
             ))
           }

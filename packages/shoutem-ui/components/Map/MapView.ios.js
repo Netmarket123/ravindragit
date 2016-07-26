@@ -65,15 +65,12 @@ class MapViewIOS extends MapComponent {
   }
 
   createAnnotations() {
-    const {
-      markers,
-      markerImage: image,
-    } = this.props;
+    const { markers } = this.props;
 
     return markers.map(marker => ({
       ...marker,
       onFocus: () => this.onMarkerPress(getMarkerLatLong(marker)),
-      image,
+      image: this.getMarkerImage(marker),
     }));
   }
 
