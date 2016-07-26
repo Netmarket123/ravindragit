@@ -7,7 +7,6 @@ import {
   Modal,
   Image,
   TouchableOpacity,
-  Platform,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -27,8 +26,6 @@ const propTypes = {
 
 const CLOSE_ICON_NAME = 'clear';
 const CLOSE_ICON_SIZE = 25;
-const STATUS_BAR_OFFSET = (Platform.OS === 'android' ? -25 : 0);
-const FULL_SCREEN_CLOSE_BUTTON_OFFSET_TOP = -STATUS_BAR_OFFSET + 20;
 
 /**
  * Renders an ImagePreview which shows an inline image preview.
@@ -43,7 +40,7 @@ class ImagePreview extends Component {
 
   state = {
     fullScreen: false,
-  }
+  };
 
   onPressCloseButton() {
     this.setState({
@@ -92,10 +89,11 @@ class ImagePreview extends Component {
       <View style={[style.container, { width, height }]}>
         <TouchableOpacity onPress={this.onPressImage} >
           <Image
+            style={style.thumbnail}
             source={source}
             width={width}
             height={height}
-            resizeMode={'contain'}
+            resizeMode="contain"
           />
         </TouchableOpacity>
       </View>
@@ -103,34 +101,9 @@ class ImagePreview extends Component {
   }
 }
 
-const style = {
-  container: {
-    flex: 1,
-    backgroundColor: 'transparent',
-  },
-  fullScreenContainer: {
-    flex: 1,
-    backgroundColor: 'black',
-  },
-  image: {
-    flex: 1,
-  },
-  header: {
-    position: 'absolute',
-    top: STATUS_BAR_OFFSET,
-    left: 0,
-    backgroundColor: 'transparent',
-  },
-  closeIcon: {
-    color: 'white',
-    marginLeft: 15,
-    marginTop: FULL_SCREEN_CLOSE_BUTTON_OFFSET_TOP,
-  },
-};
-
 ImagePreview.propTypes = propTypes;
 
-const StyledImagePreview = connectStyle('shoutem.ui.ImagePreview', style)(ImagePreview);
+const StyledImagePreview = connectStyle('shoutem.ui.ImagePreview', {})(ImagePreview);
 
 export {
   StyledImagePreview as ImagePreview,

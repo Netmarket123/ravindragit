@@ -11,7 +11,7 @@ import color from 'tinycolor2';
 
 import { View } from './View';
 
-import { connectStyle, INCLUDE } from '@shoutem/theme';
+import { connectStyle } from '@shoutem/theme';
 
 import withTransformedProps from '../lib/transformNavigationBarProps';
 
@@ -29,8 +29,13 @@ function setStatusBarStyle(backgroundColor) {
   }
 
   function setStyle(bgColor) {
-    const barStyle = chooseBarStyle(bgColor);
-    StatusBar.setBarStyle(barStyle);
+    if (Platform.OS === 'android') {
+      StatusBar.setTranslucent(true);
+      StatusBar.setBackgroundColor('rgba(0, 0, 0, 0.2)');
+    } else {
+      const barStyle = chooseBarStyle(bgColor);
+      StatusBar.setBarStyle(barStyle);
+    }
   }
 
   // This is little bit hacky, but is the only way
@@ -91,93 +96,7 @@ NavigationBar.propTypes = {
   id: React.PropTypes.string,
 };
 
-const style = {
-  '.clear': {
-    container: {
-      backgroundColor: 'transparent',
-      borderBottomColor: 'transparent',
-    },
-    iconButton: {
-      'shoutem.ui.Button': {
-        'shoutem.ui.Icon': {
-          color: 'white',
-        },
-      },
-    },
-    rightComponent: {
-      [INCLUDE]: ['iconButton'],
-    },
-    leftComponent: {
-      [INCLUDE]: ['iconButton'],
-    },
-    centerComponent: {
-      'shoutem.ui.Title': {
-        color: 'white',
-      },
-    },
-  },
-  textColor: {
-    color: 'black',
-  },
-  iconButton: {
-    'shoutem.ui.Button': {
-      backgroundColor: 'transparent',
-      borderColor: 'transparent',
-      'shoutem.ui.Icon': {
-        [INCLUDE]: ['textColor'],
-        marginTop: -4,
-        width: 48,
-        height: 48,
-        lineHeight: 48,
-        fontSize: 24,
-      },
-    },
-  },
-  backgroundImage: {
-    padding: 15,
-    backgroundColor: 'transparent',
-    height: 70,
-  },
-  container: {
-    height: 70,
-    top: 0,
-    left: 0,
-    right: 0,
-    position: 'absolute',
-    backgroundColor: 'white',
-    borderBottomColor: 'rgb(242, 242, 242)',
-    borderBottomWidth: 1,
-  },
-  componentsContainer: {
-    flex: 1,
-    alignItems: 'flex-end',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  component: {
-    height: 24,
-    marginBottom: -8,
-    alignSelf: 'flex-end',
-    flex: 1,
-  },
-  leftComponent: {
-    [INCLUDE]: ['component'],
-    [INCLUDE]: ['iconButton'],
-    alignItems: 'flex-start',
-  },
-  centerComponent: {
-    [INCLUDE]: ['component'],
-    [INCLUDE]: ['iconButton'],
-    alignItems: 'center',
-  },
-  rightComponent: {
-    [INCLUDE]: ['component'],
-    [INCLUDE]: ['iconButton'],
-    alignItems: 'flex-end',
-  },
-};
-
-const StyledNavigationBar = connectStyle('shoutem.ui.NavigationBar', style)(NavigationBar);
+const StyledNavigationBar = connectStyle('shoutem.ui.NavigationBar', {})(NavigationBar);
 
 export {
   StyledNavigationBar as NavigationBar,

@@ -29,13 +29,21 @@ const ImageTagTransformer = {
     const { img } = style;
     const { marginLeft, marginRight } = img;
     const elementToWindowBorderDistance = marginLeft + marginRight;
+    const previewWidth = imageWidth - elementToWindowBorderDistance;
+    const previewHeight = (attribsHeight - elementToWindowBorderDistance) * imageScale;
 
     return [
       <ImagePreview
         style={style.img}
-        source={{ uri: node.attribs.src }}
-        width={imageWidth - elementToWindowBorderDistance}
-        height={(attribsHeight - elementToWindowBorderDistance) * imageScale}
+        source={{
+          uri: node.attribs.src,
+          // Image is not rendered correctly,
+          // if we use the original image sizes here
+          width: previewWidth,
+          height: previewHeight,
+        }}
+        width={previewWidth}
+        height={previewHeight}
         key={0}
       />,
     ];

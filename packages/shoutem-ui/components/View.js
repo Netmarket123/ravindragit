@@ -15,35 +15,7 @@ View.propTypes = {
   ...RNView.propTypes,
 };
 
-const style = {
-  '.horizontal': {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-  },
-
-  '.vertical': {
-    'shoutem.ui.View': {
-      marginBottom: 5,
-    },
-
-    flexDirection: 'column',
-    alignSelf: 'stretch',
-  },
-
-  '.small-gutter': {
-    padding: 5,
-  },
-
-  '.collapsed': {
-    flex: 0,
-    justifyContent: 'flex-start',
-  },
-
-  flex: 1,
-  justifyContent: 'space-between',
-};
-
-const StyledView = connectStyle('shoutem.ui.View', style)(View);
+const StyledView = connectStyle('shoutem.ui.View', {})(View);
 
 function AnimatedView(props) {
   return (

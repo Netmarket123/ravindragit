@@ -13,7 +13,6 @@ const Status = {
   LOADING: 'loading',
   LOADING_NEXT: 'loadingNext',
   REFRESHING: 'refreshing',
-  ERROR: 'error',
   IDLE: 'idle',
 };
 
@@ -62,10 +61,10 @@ class ListDataSource {
 
 class ListView extends React.Component {
   static propTypes = {
-    status: React.PropTypes.string,
     autoHideHeader: React.PropTypes.bool,
     style: React.PropTypes.object,
     data: React.PropTypes.array,
+    loading: React.PropTypes.bool,
     onLoadMore: React.PropTypes.func,
     onRefresh: React.PropTypes.func,
     getSectionId: React.PropTypes.func,
@@ -75,13 +74,13 @@ class ListView extends React.Component {
     renderSectionHeader: React.PropTypes.func,
     // TODO(Braco) - add render separator
   };
-  static Status = Status;
 
   constructor(props, context) {
     super(props, context);
     this.handleListViewRef = this.handleListViewRef.bind(this);
     this.renderFooter = this.renderFooter.bind(this);
     this.autoHideHeader = this.autoHideHeader.bind(this);
+    this.onRefresh = this.onRefresh.bind(this);
     this.listView = null;
 
 
@@ -93,6 +92,7 @@ class ListView extends React.Component {
 
 
     this.state = {
+      status: Status.LOADING,
       dataSource: this.listDataSource.clone(props.data),
     };
   }
@@ -101,14 +101,26 @@ class ListView extends React.Component {
     if (nextProps.data !== this.props.data) {
       this.setState({ dataSource: this.listDataSource.clone(nextProps.data) });
     }
+
+    if (nextProps.loading !== this.props.loading) {
+      this.setLoading(nextProps.loading);
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    // Status prop is used to control when to re-render ListView from outside
-    if (nextProps.status) {
-      return nextProps.status !== this.props.status;
+    return (nextProps.data !== this.props.data) ||
+      (nextProps.loading !== this.props.loading) ||
+      (nextState.status !== this.state.status);
+  }
+
+  onRefresh() {
+    this.setState({
+      status: Status.REFRESHING,
+    });
+
+    if (this.props.onRefresh) {
+      this.props.onRefresh();
     }
-    return nextState.dataSource !== this.state.dataSource;
   }
 
   /**
@@ -153,6 +165,23 @@ class ListView extends React.Component {
     return mappedProps;
   }
 
+  setLoading(loading) {
+    if (loading) {
+      if (this.state.status !== Status.IDLE) {
+        // We are already in a loading status
+        return;
+      }
+
+      this.setState({
+        status: Status.LOADING,
+      });
+    } else {
+      this.setState({
+        status: Status.IDLE,
+      });
+    }
+  }
+
   autoHideHeader({ nativeEvent: { layout: { height } } }) {
     this.scrollListView({ y: height, animated: false });
   }
@@ -173,13 +202,13 @@ class ListView extends React.Component {
     );
   }
 
-  scrollListView(srollOptions) {
-    this.listView.scrollTo(srollOptions);
+  scrollListView(scrollOptions) {
+    this.listView.scrollTo(scrollOptions);
   }
 
   /**
    * Save RN ListView ref
-   * @param React native ListView ref
+   * @param listView React native ListView ref
    */
   handleListViewRef(listView) {
     if (!listView) {
@@ -190,22 +219,27 @@ class ListView extends React.Component {
   }
 
   renderFooter() {
-    const { status, style, renderFooter } = this.props;
+    const { style, renderFooter } = this.props;
+    const { status } = this.state;
     let spinner;
 
+    let showNetworkActivity = true;
     switch (status) {
       case Status.LOADING:
         spinner = <View style={style.loadMoreSpinner}><Spinner /></View>;
-        StatusBar.setNetworkActivityIndicatorVisible(true);
         break;
       case Status.LOADING_NEXT:
         spinner = <View style={style.loadMoreSpinner}><Spinner /></View>;
         break;
       case Status.REFRESHING:
+        spinner = null;
+        break;
       default:
-        StatusBar.setNetworkActivityIndicatorVisible(false);
+        showNetworkActivity = false;
         spinner = null;
     }
+
+    StatusBar.setNetworkActivityIndicatorVisible(showNetworkActivity);
 
     return (
       <View>
@@ -216,12 +250,14 @@ class ListView extends React.Component {
   }
 
   renderRefreshControl() {
-    const { status, style, onRefresh } = this.props;
+    const { style } = this.props;
+    const { status } = this.state;
+
     return (
       <RefreshControl
-        onRefresh={onRefresh}
+        onRefresh={this.onRefresh}
         refreshing={status === Status.REFRESHING}
-        tintColor={style.tiltColor.backgroundColor}
+        tintColor={style.tintColor.backgroundColor}
       />
     );
   }
@@ -234,23 +270,7 @@ class ListView extends React.Component {
   }
 }
 
-const style = {
-  header: {
-    container: {},
-  },
-  list: {},
-  listContent: {},
-  tiltColor: {
-    // uses only background color
-    backgroundColor: '#ccc',
-  },
-  newDataSpinner: {},
-  loadMoreSpinner: {
-    paddingVertical: 25,
-  },
-};
-
-const StyledListView = connectStyle('shoutem.ui.ListView', style)(ListView);
+const StyledListView = connectStyle('shoutem.ui.ListView', {})(ListView);
 
 export {
   StyledListView as ListView,

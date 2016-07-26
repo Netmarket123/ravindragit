@@ -16,12 +16,7 @@ const propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
   source: PropTypes.string,
-};
-
-const style = {
-  container: {
-    flex: 1,
-  },
+  style: PropTypes.object,
 };
 
 /**
@@ -36,6 +31,7 @@ function Video({
   width,
   height,
   source,
+  style,
 }) {
   const sourceReader = new VideoSourceReader(source);
   let VideoElement = NativeVideo;
@@ -57,7 +53,7 @@ function Video({
 
 Video.propTypes = propTypes;
 
-const StyledVideo = connectStyle('shoutem.ui.Video', style)(Video);
+const StyledVideo = connectStyle('shoutem.ui.Video', {})(Video);
 
 export {
   StyledVideo as Video,
