@@ -4,7 +4,7 @@ import {
 
 import React from 'react';
 
-import MapComponent from './MapComponent';
+import MapViewBase from './MapViewBase';
 import { connectStyle } from '@shoutem/theme';
 
 function getMarkerLatLong(marker) {
@@ -59,7 +59,7 @@ function getMarkerLatLong(marker) {
         />
  * ```
  */
-class MapViewIOS extends MapComponent {
+class MapViewIOS extends MapViewBase {
   getCoordinatesFromNativeEvent(coordinates) {
     return coordinates;
   }
@@ -91,7 +91,7 @@ class MapViewIOS extends MapComponent {
 }
 
 MapViewIOS.propTypes = {
-  ...MapComponent.propTypes,
+  ...MapViewBase.propTypes,
 };
 
 const StyledMapView = connectStyle('shoutem.ui.MapView')(MapViewIOS);

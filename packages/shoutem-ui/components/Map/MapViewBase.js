@@ -39,7 +39,7 @@ function isLocatedAt(coordinates) {
  *
  * @returns {null}
  */
-export default class MapComponent extends Component {
+export default class MapViewBase extends Component {
   constructor(props) {
     super(props);
     this.onRegionChange = this.onRegionChange.bind(this);
@@ -137,7 +137,7 @@ export default class MapComponent extends Component {
   }
 }
 
-MapComponent.propTypes = {
+MapViewBase.propTypes = {
   ...MapView.propTypes,
   markerImage: Image.propTypes.source,
   selectedMarkerImage: Image.propTypes.source,
@@ -149,7 +149,7 @@ MapComponent.propTypes = {
   focusUserLocation: PropTypes.bool,
 };
 
-MapComponent.defaultProps = {
+MapViewBase.defaultProps = {
   markerImage: require('../../assets/images/pin-light@3x.png'),
   selectedMarkerImage: require('../../assets/images/pin-dark@3x.png'),
 };

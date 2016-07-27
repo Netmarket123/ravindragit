@@ -2,9 +2,9 @@ import React, {
   PropTypes,
 } from 'react';
 import { connectStyle } from '@shoutem/theme';
-import { MapView } from './Map/MapView';
-import MapComponent from './Map/MapComponent';
-import { View } from './View';
+import { MapView } from './MapView';
+import MapViewBase from './MapViewBase';
+import { View } from '../View';
 
 /**
  * Renders an Inline Map containing the Map as a background and child
@@ -91,7 +91,7 @@ InlineMap.defaultProps = {
 
 InlineMap.propTypes = {
   ...View.propTypes,
-  ...MapComponent.propTypes,
+  ...MapViewBase.propTypes,
   children: PropTypes.element,
 };
 

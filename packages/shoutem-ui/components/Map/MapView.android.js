@@ -1,7 +1,7 @@
 import React from 'react';
 
 import MapView from 'react-native-maps';
-import MapComponent from './MapComponent';
+import MapViewBase from './MapViewBase';
 import { connectStyle } from '@shoutem/theme';
 
 /**
@@ -51,7 +51,7 @@ import { connectStyle } from '@shoutem/theme';
  * ```
  */
 
-class MapViewAndroid extends MapComponent {
+class MapViewAndroid extends MapViewBase {
   getCoordinatesFromNativeEvent(nEvent) {
     return nEvent.nativeEvent.coordinate;
   }
@@ -85,7 +85,7 @@ class MapViewAndroid extends MapComponent {
 }
 
 MapViewAndroid.propTypes = {
-  ...MapComponent.propTypes,
+  ...MapViewBase.propTypes,
 };
 
 const StyledMapView = connectStyle('shoutem.ui.MapView')(MapViewAndroid);
