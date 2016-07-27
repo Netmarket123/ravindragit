@@ -215,7 +215,7 @@ export default () => ({
     },
 
     '.large-portrait': {
-      width: 375,
+      flex: 1,
       height: (518 / 375) * window.width,
     },
 
