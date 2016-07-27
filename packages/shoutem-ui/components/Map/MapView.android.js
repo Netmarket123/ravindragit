@@ -58,7 +58,9 @@ class MapViewAndroid extends MapComponent {
 
   render() {
     const { markers } = this.props;
-
+    if (!this.isMapReadyToRender()) {
+      return null;
+    }
     return (
       <MapView
         region={this.getInitialRegion()}
