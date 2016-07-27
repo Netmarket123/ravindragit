@@ -22,8 +22,11 @@ function getVimeoVideoId(url) {
   return false;
 }
 
+/**
+ * modestbranding=1 - disables Youtube logo but doesn't work with showinfo=0
+ */
 function getYouTubeEmbedUrl(id) {
-  return `http://www.youtube.com/embed/${id}`;
+  return `http://www.youtube.com/embed/${id}?showinfo=0&rel=0&cc_load_policy=0`;
 }
 
 function getVimeoEmbedUrl(id) {

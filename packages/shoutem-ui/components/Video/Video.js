@@ -46,6 +46,7 @@ function Video({
         source={{ uri: sourceReader.getUrl() }}
         width={width}
         height={height}
+        style={style}
       />
     </View>
   );

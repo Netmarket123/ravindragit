@@ -561,6 +561,18 @@ export default () => ({
       marginHorizontal: 10,
     },
 
+    'shoutem.ui.Icon.squared': {
+      fontSize: 24,
+      marginHorizontal: 12,
+      marginVertical: 12,
+    },
+
+    'shoutem.ui.Icon.small-squared': {
+      fontSize: 19,
+      marginHorizontal: 9,
+      marginVertical: 9,
+    },
+
     '.clear': {
       'shoutem.ui.Icon': {
         color: 'white',
@@ -589,6 +601,10 @@ export default () => ({
       flexDirection: 'column',
       paddingTop: 10,
       paddingBottom: SMALL_GUTTER,
+    },
+
+    '.rounded': {
+      borderRadius: 26,
     },
 
     underlayColor: '#ccc',
@@ -689,10 +705,70 @@ export default () => ({
   'shoutem.ui.Video': {
     container: {
       flex: 1,
+      backgroundColor: '#000',
+    },
+
+    fullScreen: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0,
+    },
+
+    closeButton: {
+      fontSize: 35,
+      color: 'white',
+      lineHeight: 40,
+      width: 40,
+      textAlign: 'center',
+    },
+
+    controls: {
+      backgroundColor: 'transparent',
+      borderRadius: 5,
+      position: 'absolute',
+      bottom: 44,
+      left: 4,
+      right: 4,
+    },
+
+    header: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      backgroundColor: 'transparent',
+    },
+
+    progress: {
+      flex: 1,
+      flexDirection: 'row',
+      borderRadius: 3,
+      overflow: 'hidden',
+    },
+
+    innerProgressCompleted: {
+      height: 20,
+      backgroundColor: '#cccccc',
+    },
+
+    innerProgressRemaining: {
+      height: 20,
+      backgroundColor: '#2c2c2c',
+    },
+
+    playButton: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      position: 'absolute',
+      left: 0,
+      top: 0,
     },
   },
 
   'shoutem.ui.Icon': {
+    [INCLUDE]: ['guttersMargin'],
+
     '.rounded-overlay': {
       backgroundColor: '#333333',
       color: 'white',

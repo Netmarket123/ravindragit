@@ -4,12 +4,16 @@ import React, {
 } from 'react';
 
 import {
-  StyleSheet,
   View,
   TouchableOpacity,
   Modal,
   Text,
 } from 'react-native';
+
+import {
+  Icon,
+  Button,
+} from '@shoutem/ui';
 
 import Video from 'react-native-video';
 
@@ -19,58 +23,8 @@ const propTypes = {
   source: PropTypes.shape({
     uri: PropTypes.string,
   }),
+  style: PropTypes.object,
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#d8d8d8',
-  },
-  fullScreen: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-  },
-  closeButton: {
-    fontSize: 35,
-    color: 'white',
-    lineHeight: 40,
-    width: 40,
-    textAlign: 'center',
-  },
-  controls: {
-    backgroundColor: 'transparent',
-    borderRadius: 5,
-    position: 'absolute',
-    bottom: 44,
-    left: 4,
-    right: 4,
-  },
-  header: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    backgroundColor: 'transparent',
-  },
-  progress: {
-    flex: 1,
-    flexDirection: 'row',
-    borderRadius: 3,
-    overflow: 'hidden',
-  },
-  innerProgressCompleted: {
-    height: 20,
-    backgroundColor: '#cccccc',
-  },
-  innerProgressRemaining: {
-    height: 20,
-    backgroundColor: '#2c2c2c',
-  },
-});
 
 class NativeVideo extends Component {
   constructor(props) {
@@ -96,7 +50,6 @@ class NativeVideo extends Component {
 
   onLoad(data) {
     this.setState({ duration: data.duration });
-    this.setState({ paused: !this.state.paused });
   }
 
   onProgress(data) {
@@ -131,13 +84,13 @@ class NativeVideo extends Component {
 
 
   render() {
-    const { width, height } = this.props;
+    const { width, height, style } = this.props;
 
     const playableVideo = (
-      <TouchableOpacity style={styles.fullScreen} onPress={this.onPressVideo}>
+      <TouchableOpacity style={style.fullScreen} onPress={this.onPressVideo}>
         <Video
           source={this.props.source}
-          style={this.state.fullScreen ? styles.fullScreen : { width, height }}
+          style={this.state.fullScreen ? style.fullScreen : { width, height }}
           rate={this.state.rate}
           paused={this.state.paused}
           volume={this.state.volume}
@@ -156,19 +109,19 @@ class NativeVideo extends Component {
       const flexRemaining = (1 - this.getCurrentTimePercentage()) * 100;
 
       const closeButton = (
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.fullScreen} onPress={this.onPressCloseBUtton}>
-            <Text style={styles.closeButton}>×</Text>
+        <View style={style.header}>
+          <TouchableOpacity style={style.fullScreen} onPress={this.onPressCloseBUtton}>
+            <Text style={style.closeButton}>×</Text>
           </TouchableOpacity>
         </View>
       );
 
       const controls = (
-        <View style={styles.controls}>
-          <View style={styles.trackingControls}>
-            <View style={styles.progress}>
-              <View style={[styles.innerProgressCompleted, { flex: flexCompleted }]} />
-              <View style={[styles.innerProgressRemaining, { flex: flexRemaining }]} />
+        <View style={style.controls}>
+          <View style={style.trackingControls}>
+            <View style={style.progress}>
+              <View style={[style.innerProgressCompleted, { flex: flexCompleted }]} />
+              <View style={[style.innerProgressRemaining, { flex: flexRemaining }]} />
             </View>
           </View>
         </View>
@@ -176,7 +129,7 @@ class NativeVideo extends Component {
 
       return (
         <Modal>
-          <View style={styles.container}>
+          <View style={style.container}>
             {playableVideo}
             {controls}
             {closeButton}
@@ -185,11 +138,21 @@ class NativeVideo extends Component {
       );
     }
 
+    const playButton = (
+      <View
+        pointerEvents="none"
+        style={[style.playButton, { width, height }]}
+      >
+        <Button name="play" styleName="rounded">
+          <Icon styleName="squared" name="play" />
+        </Button>
+      </View>
+    );
+
     return (
-      <View >
-        <View style={styles.container}>
-          {playableVideo}
-        </View>
+      <View>
+        {playableVideo}
+        {playButton}
       </View>
     );
   }

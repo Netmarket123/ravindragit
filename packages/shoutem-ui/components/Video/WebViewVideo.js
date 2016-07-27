@@ -4,7 +4,6 @@ import React, {
 
 import {
   View,
-  StyleSheet,
   WebView,
 } from 'react-native';
 
@@ -14,13 +13,8 @@ const propTypes = {
   source: PropTypes.shape({
     uri: PropTypes.string,
   }),
+  style: PropTypes.object,
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 /**
  * Displays a HTML Video player from the specified source
@@ -32,9 +26,10 @@ function WebViewVideo({
   width,
   height,
   source,
+  style,
 }) {
   return (
-    <View style={[styles.container, { width, height }]}>
+    <View style={[style.container, { width, height }]}>
       <WebView
         source={source}
       />
