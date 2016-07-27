@@ -14,7 +14,7 @@ import _ from 'lodash';
 const DEFAULT_ZOOM_SETTINGS = {
   latitudeDelta: 0.01,
   longitudeDelta: 0.01,
-}
+};
 
 // ShoutEm HQ location
 const DEFAULT_REGION = {
@@ -27,6 +27,7 @@ const DEFAULT_REGION = {
 function getUserLocation(success, error) {
   navigator.geolocation.getCurrentPosition(success, error);
 }
+
 function isLocatedAt(coordinates) {
   return marker => marker.latitude === coordinates.latitude
   && marker.longitude === coordinates.longitude;
@@ -46,76 +47,14 @@ export default class MapComponent extends Component {
     this.state = {
       markerCoordinates: null,
       selectedMarker: null,
-      // Default region is Croatia, Heinzelova 33
       region: null,
+      initialRegion: null,
       isReady: false,
     };
   }
 
   componentWillMount() {
     this.resolveInitialRegion();
-  }
-
-  resolveInitialRegion() {
-    const { initialRegion, markers, focusUserLocation } = this.props;
-
-    let region = DEFAULT_REGION;
-    if (focusUserLocation) {
-      getUserLocation((location) => {
-        const { coords: { latitude, longitude } } = location;
-        this.updateRegion({ latitude, longitude });
-        this.mapIsReadyToRender();
-      }, (error) => {
-        this.updateRegion(region);
-        this.mapIsReadyToRender();
-      });
-      return;
-    } else if (initialRegion) {
-      region = initialRegion;
-    } else if (markers.length > 0) {
-      region = markers[0];
-    }
-    this.updateRegion(region);
-    this.mapIsReadyToRender();
-  }
-
-  getInitialRegion() {
-    return this.state.region;
-  }
-
-  mapIsReadyToRender() {
-    InteractionManager.runAfterInteractions(() => this.setState({ isReady: true }));
-  }
-
-  isMapReadyToRender() {
-    return !this.state.isReady;
-  }
-
-  updateRegion(region, zoomSettings = DEFAULT_ZOOM_SETTINGS) {
-    this.setState({
-      region: {
-        ...zoomSettings,
-        ...region,
-      },
-    });
-  }
-
-  onRegionChange(region) {
-    this.updateRegion({ region });
-    const {
-      onRegionChanged,
-    } = this.props;
-
-    if (onRegionChanged) {
-      onRegionChanged(region);
-    }
-  }
-
-  getMarkerImage(marker) {
-    const { selectedMarkerImage, markerImage } = this.props;
-    const { selectedMarker } = this.state;
-
-    return selectedMarker && _.isEqual(marker, selectedMarker) ? selectedMarkerImage : markerImage;
   }
 
   onMarkerPress(pressEvent) {
@@ -136,6 +75,60 @@ export default class MapComponent extends Component {
     if (onMarkerPressed) {
       onMarkerPressed(selectedMarker);
     }
+  }
+
+  onRegionChange(region) {
+    this.setState({ region });
+    const {
+      onRegionChanged,
+    } = this.props;
+
+    if (onRegionChanged) {
+      onRegionChanged(region);
+    }
+  }
+
+  getInitialRegion() {
+    return this.state.initialRegion;
+  }
+
+  getMarkerImage(marker) {
+    const { selectedMarkerImage, markerImage } = this.props;
+    const { selectedMarker } = this.state;
+
+    return selectedMarker && _.isEqual(marker, selectedMarker) ? selectedMarkerImage : markerImage;
+  }
+
+  resolveInitialRegion() {
+    const { initialRegion, markers, focusUserLocation } = this.props;
+
+    let region = DEFAULT_REGION;
+    if (focusUserLocation) {
+      getUserLocation(
+        (location) => this.updateInitialRegion(location.coords),
+        () => this.updateInitialRegion(region)
+      );
+      return;
+    } else if (initialRegion) {
+      region = initialRegion;
+    } else if (markers.length > 0) {
+      region = markers[0];
+    }
+    this.updateInitialRegion(region);
+  }
+
+  isMapReadyToRender() {
+    return this.state.isReady;
+  }
+
+  updateInitialRegion(region) {
+    this.setState({
+      initialRegion: {
+        ...DEFAULT_ZOOM_SETTINGS,
+        ...region,
+      },
+    });
+    InteractionManager.runAfterInteractions(() => this.setState({ isReady: true }));
   }
 
   // Override in subclass
