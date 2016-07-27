@@ -6,8 +6,18 @@ import {
 import { connectStyle } from '@shoutem/theme';
 
 function Image(props) {
+  // resizeMode is not a RN style but a prop.
+  const style = {
+    ...props.style,
+  };
+  delete style.resizeMode;
+
   return (
-    <RNImage {...props}>
+    <RNImage
+      {...props}
+      style={style}
+      resizeMode={props.style.resizeMode}
+    >
       {props.children}
     </RNImage>
   );
