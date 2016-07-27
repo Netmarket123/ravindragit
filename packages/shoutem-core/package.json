@@ -3,7 +3,7 @@
   "version": "0.0.12",
   "main": "index.js",
   "dependencies": {
-    "@shoutem/redux-io": "0.2.0-alpha.2",
+    "@shoutem/redux-io": "0.2.0-alpha.5",
     "@shoutem/theme": "0.0.5",
     "@shoutem/ui": "0.0.15",
     "es6-symbol": "^3.0.2",
