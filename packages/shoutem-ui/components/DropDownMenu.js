@@ -138,6 +138,7 @@ class DropDownMenu extends Component {
     const button = selectedItem ? (
       <Button onPress={this.collapse} styleName="clear">
         <Text>{selectedItem[bindings.text]}</Text>
+        <Icon name="drop-down" style={style.modalCloseButton.buttonIcon} />
       </Button>
     ) : null;
     const modalAnimatedStyle = createModalAnimatedStyle(dropDownAnimation);

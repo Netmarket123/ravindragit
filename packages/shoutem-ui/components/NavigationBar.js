@@ -55,6 +55,7 @@ function setStatusBarStyle(backgroundColor) {
   function setStyle(bgColor) {
     if (Platform.OS === 'android') {
       StatusBar.setTranslucent(true);
+      StatusBar.setBackgroundColor('rgba(0, 0, 0, 0.2)');
     } else {
       const barStyle = chooseBarStyle(bgColor);
       StatusBar.setBarStyle(barStyle);
