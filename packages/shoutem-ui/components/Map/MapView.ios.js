@@ -75,7 +75,7 @@ class MapViewIOS extends MapComponent {
   }
 
   render() {
-    if (!this.state.isReady) {
+    if (!this.isMapReadyToRender()) {
       return null;
     }
     return (
