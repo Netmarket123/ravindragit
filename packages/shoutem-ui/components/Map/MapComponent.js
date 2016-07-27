@@ -11,9 +11,25 @@ import {
 
 import _ from 'lodash';
 
+const DEFAULT_ZOOM_SETTINGS = {
+  latitudeDelta: 0.01,
+  longitudeDelta: 0.01,
+}
+
+// ShoutEm HQ location
+const DEFAULT_REGION = {
+  longitude: 15.9994209,
+  latitude: 45.8109446,
+  latitudeDelta: 0.1,
+  longitudeDelta: 0.1,
+};
+
+function getUserLocation(success, error) {
+  navigator.geolocation.getCurrentPosition(success, error);
+}
 function isLocatedAt(coordinates) {
   return marker => marker.latitude === coordinates.latitude
-                  && marker.longitude === coordinates.longitude;
+  && marker.longitude === coordinates.longitude;
 }
 
 /**
@@ -31,22 +47,61 @@ export default class MapComponent extends Component {
       markerCoordinates: null,
       selectedMarker: null,
       // Default region is Croatia, Heinzelova 33
-      region: {
-        longitude: 15.9994209,
-        latitude: 45.8109446,
-        latitudeDelta: 0.1,
-        longitudeDelta: 0.1,
-      },
+      region: null,
       isReady: false,
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
+    this.resolveInitialRegion();
+  }
+
+  resolveInitialRegion() {
+    const { initialRegion, markers, focusUserLocation } = this.props;
+
+    let region = DEFAULT_REGION;
+    if (focusUserLocation) {
+      getUserLocation((location) => {
+        const { coords: { latitude, longitude } } = location;
+        this.updateRegion({ latitude, longitude });
+        this.mapIsReadyToRender();
+      }, (error) => {
+        this.updateRegion(region);
+        this.mapIsReadyToRender();
+      });
+      return;
+    } else if (initialRegion) {
+      region = initialRegion;
+    } else if (markers.length > 0) {
+      region = markers[0];
+    }
+    this.updateRegion(region);
+    this.mapIsReadyToRender();
+  }
+
+  getInitialRegion() {
+    return this.state.region;
+  }
+
+  mapIsReadyToRender() {
     InteractionManager.runAfterInteractions(() => this.setState({ isReady: true }));
   }
 
+  isMapReadyToRender() {
+    return !this.state.isReady;
+  }
+
+  updateRegion(region, zoomSettings = DEFAULT_ZOOM_SETTINGS) {
+    this.setState({
+      region: {
+        ...zoomSettings,
+        ...region,
+      },
+    });
+  }
+
   onRegionChange(region) {
-    this.setState({ region });
+    this.updateRegion({ region });
     const {
       onRegionChanged,
     } = this.props;
@@ -75,27 +130,12 @@ export default class MapComponent extends Component {
     this.setState({
       markerCoordinates: selectedCoordinates,
       selectedMarker,
+      ...DEFAULT_ZOOM_SETTINGS,
     });
 
     if (onMarkerPressed) {
       onMarkerPressed(selectedMarker);
     }
-  }
-
-  getInitialRegion() {
-    const { initialRegion, markers } = this.props;
-
-    if (initialRegion) {
-      return initialRegion;
-    } else if (markers.length > 0) {
-      return {
-        ...markers[0],
-        latitudeDelta: 0.01,
-        longitudeDelta: 0.01,
-      };
-    }
-
-    return this.state.region;
   }
 
   // Override in subclass
@@ -113,6 +153,7 @@ MapComponent.propTypes = {
   markers: MapView.propTypes.annotations,
   onMarkerPressed: PropTypes.func,
   onRegionChanged: PropTypes.func,
+  focusUserLocation: PropTypes.bool,
 };
 
 MapComponent.defaultProps = {
