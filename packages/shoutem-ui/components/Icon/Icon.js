@@ -8,13 +8,11 @@ import { connectStyle } from '@shoutem/theme';
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
 import icoMoonConfig from './config.json';
 
-
 const IconComponent = createIconSetFromIcoMoon(icoMoonConfig);
 export const Icon = connectStyle('shoutem.ui.Icon', {})(IconComponent);
 
-const AnimatedIcon = RNAnimated.createAnimatedComponent(IconComponent);
 const Animated = {
-  Icon: connectStyle('shoutem.ui.Animated.Icon', {})(AnimatedIcon),
+  Icon: RNAnimated.createAnimatedComponent(Icon),
 };
 
 export {

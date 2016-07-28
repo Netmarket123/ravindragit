@@ -837,39 +837,23 @@ export default () => ({
         backgroundColor: 'transparent',
         borderBottomColor: 'transparent',
       },
-      iconButton: {
+      defaultBackButton: {
+        'shoutem.ui.Icon': {
+          color: 'white',
+        },
+      },
+      rightComponent: {
         'shoutem.ui.Button': {
+          backgroundColor: 'transparent',
+          borderColor: 'transparent',
           'shoutem.ui.Icon': {
             color: 'white',
           },
         },
       },
-      rightComponent: {
-        [INCLUDE]: ['iconButton'],
-      },
-      leftComponent: {
-        [INCLUDE]: ['iconButton'],
-      },
       centerComponent: {
         'shoutem.ui.Title': {
           color: 'white',
-        },
-      },
-    },
-    textColor: {
-      color: 'black',
-    },
-    iconButton: {
-      'shoutem.ui.Button': {
-        backgroundColor: 'transparent',
-        borderColor: 'transparent',
-        'shoutem.ui.Icon': {
-          [INCLUDE]: ['textColor'],
-          marginTop: -4,
-          width: 48,
-          height: 48,
-          lineHeight: 48,
-          fontSize: 24,
         },
       },
     },
@@ -901,19 +885,19 @@ export default () => ({
       flex: 1,
     },
     leftComponent: {
-      [INCLUDE]: ['component'],
-      [INCLUDE]: ['iconButton'],
       alignItems: 'flex-start',
     },
     centerComponent: {
-      [INCLUDE]: ['component'],
-      [INCLUDE]: ['iconButton'],
       alignItems: 'center',
     },
     rightComponent: {
-      [INCLUDE]: ['component'],
-      [INCLUDE]: ['iconButton'],
       alignItems: 'flex-end',
+    },
+    defaultBackButton: {
+      'shoutem.ui.Icon': {
+        color: 'black',
+        fontSize: 24,
+      },
     },
   },
 

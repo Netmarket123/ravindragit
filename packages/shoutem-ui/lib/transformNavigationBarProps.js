@@ -6,10 +6,10 @@ import { Animated } from '../components/Animated';
 import Share from 'react-native-share';
 import * as _ from 'lodash';
 
-const transformers = {
+const composers = {
   title: (value, props) => {
     return {
-      centerComponent: <Animated.Title styleName="navigationBarTitle" numberOfLines={1}>{value}</Animated.Title>
+      centerComponent: <Animated.Title style={{ color: _.get(props, 'animation.style.color') }}>{value || ''}</Animated.Title>,
     };
   },
   share: (value, props) => {
@@ -42,53 +42,76 @@ const transformers = {
       navigateBack();
     }
 
-    const leftComponent = value ? (
-      <Button
-        styleName="clear"
-        onPress={navigateBackWithoutEventParameter}
-      >
-        <Animated.Icon name="back" />
-      </Button>
-    ) : null;
-
-    return { leftComponent };
+    return {
+      leftComponent: (
+        <Button
+          style={props.style.defaultBackButton}
+          styleName="clear"
+          onPress={navigateBackWithoutEventParameter}
+        >
+          <Animated.Icon style={{ color: _.get(props, 'animation.style.color') }} name="back" />
+        </Button>
+      ),
+    };
   },
   animation: (value, props) => {
+    const animation = value;
+    const { style } = props;
+    const backgroundColor = _.get(style, 'container.backgroundColor');
+    const textColor = _.get(style, 'textColor.color');
+
+    animation.setColors(backgroundColor, textColor);
+
     const containerStyle = {
-      backgroundColor: value.style.backgroundColor,
-      borderBottomColor: value.style.borderBottomColor,
+      backgroundColor: animation.style.backgroundColor,
+      borderBottomColor: animation.style.borderBottomColor,
     };
     return {
       style: {
         container: { ...containerStyle },
+        leftComponent: {
+          'shoutem.ui.Icon': {
+            color: animation.style.color,
+          },
+        },
+        rightComponent: {
+          'shoutem.ui.Button': {
+            backgroundColor: 'transparent',
+            borderColor: 'transparent',
+            'shoutem.ui.Icon': {
+              color: animation.style.color,
+            },
+          },
+        },
+        centerComponent: {
+          'shoutem.ui.Title': {
+            color: animation.style.color,
+          },
+        },
       },
     };
   },
 };
 
-export default withTransformedProps = NavigationBarComponent => class extends Component {
+export default composeChildren = NavigationBarComponent => class extends Component {
   render() {
-    const newProps = {};
-    const { props } = this;
-    const { style, animation } = props;
+    let newProps = {};
+    const { id, style } = this.props;
 
-    if (animation) {
-      const backgroundColor = _.get(style, 'container.backgroundColor');
-      const textColor = _.get(style, 'textColor.color');
-
-      animation.setColors(backgroundColor, textColor);
+    if (!id) {
+      return null;
     }
 
-    _.forEach(props, (value, key) => {
-      if (_.isFunction(transformers[key])) {
-        _.assign(newProps, transformers[key](value, props));
+    _.forEach(this.props, (value, key) => {
+      if (_.isFunction(composers[key])) {
+        _.assign(newProps, composers[key](value, this.props));
       }
     });
 
     if (newProps.style) {
-      props.style = _.merge(props.style, newProps.style);
+      newProps.style = _.merge(style, newProps.style);
     }
 
-    return <NavigationBarComponent {...(_.assign(newProps, props))} />;
+    return <NavigationBarComponent {..._.assign(newProps, this.props)} />;
   }
 };

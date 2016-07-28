@@ -17,20 +17,8 @@ View.propTypes = {
 
 const StyledView = connectStyle('shoutem.ui.View', {})(View);
 
-function AnimatedView(props) {
-  return (
-    <RNAnimated.View {...props}>
-      {props.children}
-    </RNAnimated.View>
-  );
-}
-
-AnimatedView.propTypes = {
-  ...RNView.propTypes,
-};
-
 const Animated = {
-  View: connectStyle('shoutem.ui.Animated.View', style)(AnimatedView),
+  View: RNAnimated.createAnimatedComponent(StyledView),
 };
 
 export {

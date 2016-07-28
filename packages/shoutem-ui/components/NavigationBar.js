@@ -3,6 +3,7 @@ import {
   Image,
   StatusBar,
   Animated,
+  Platform,
 } from 'react-native';
 
 import _ from 'lodash';
@@ -13,7 +14,7 @@ import { View } from './View';
 
 import { connectStyle } from '@shoutem/theme';
 
-import withTransformedProps from '../lib/transformNavigationBarProps';
+import composeChildren from '../lib/transformNavigationBarProps';
 
 function getBackgroundColor(style) {
   const styleWithBg = _.find(style, (styleDef) =>
@@ -53,14 +54,13 @@ function setStatusBarStyle(backgroundColor) {
   }
 }
 
-@withTransformedProps
+@composeChildren
 class NavigationBar extends Component {
   render() {
     const {
       leftComponent,
       rightComponent,
       centerComponent,
-      backgroundImage,
       style,
       id,
     } = this.props;
@@ -70,16 +70,12 @@ class NavigationBar extends Component {
     // Key must be set to render new screen NavigationBar
     return (
       <Animated.View style={style.container} key={id}>
-        <StatusBar
-          translucent
-        />
-        <Image source={backgroundImage} style={style.backgroundImage}>
-          <View style={style.componentsContainer}>
-            <View style={style.leftComponent}>{leftComponent}</View>
-            <View style={style.centerComponent}>{centerComponent}</View>
-            <View style={style.rightComponent}>{rightComponent}</View>
-          </View>
-        </Image>
+        <StatusBar translucent />
+        <View style={style.componentsContainer}>
+          <View style={style.leftComponent}>{leftComponent}</View>
+          <View style={style.centerComponent}>{centerComponent}</View>
+          <View style={style.rightComponent}>{rightComponent}</View>
+        </View>
       </Animated.View>
     );
   }
