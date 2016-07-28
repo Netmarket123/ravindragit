@@ -182,6 +182,7 @@ class ListView extends React.Component {
     }
   }
 
+  // eslint-disable-next-line consistent-return
   createOnLoadMore() {
     const { onLoadMore } = this.props;
     const { status } = this.state;
@@ -192,8 +193,6 @@ class ListView extends React.Component {
         }
       }, 2000, { leading: true });
     }
-    // eslint-disable-next-line consistent-return
-    return;
   }
 
   autoHideHeader({ nativeEvent: { layout: { height } } }) {
