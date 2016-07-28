@@ -763,8 +763,8 @@ export default () => ({
     'shoutem.ui.Divider': {
       'shoutem.ui.View': {
         'shoutem.ui.Caption': {
-          paddingVertical: SMALL_GUTTER,
-          paddingHorizontal: MEDIUM_GUTTER,
+          marginVertical: SMALL_GUTTER,
+          marginHorizontal: MEDIUM_GUTTER,
         },
       },
 

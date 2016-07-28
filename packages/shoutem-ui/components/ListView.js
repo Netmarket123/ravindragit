@@ -4,6 +4,7 @@ import {
   ListView as RNListView,
   RefreshControl,
   StatusBar,
+  Platform,
 } from 'react-native';
 import { connectStyle } from '@shoutem/theme';
 import { Spinner } from './Spinner';
@@ -252,7 +253,9 @@ class ListView extends React.Component {
         spinner = null;
     }
 
-    StatusBar.setNetworkActivityIndicatorVisible(showNetworkActivity);
+    if (Platform.OS === 'ios') {
+      StatusBar.setNetworkActivityIndicatorVisible(showNetworkActivity);
+    }
 
     return (
       <View>
