@@ -249,8 +249,8 @@ export default () => ({
     },
 
     '.large-wide': {
-      width: 375,
-      height: 200,
+      alignSelf: 'stretch',
+      height: (200 / 375) * window.width,
     },
 
     '.top-aligned': {
