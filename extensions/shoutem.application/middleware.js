@@ -15,9 +15,10 @@ import { EXECUTE_SHORTCUT } from './actions';
  * @returns {{title: *}}
  */
 function createScreenSettings(shortcut) {
+  const attributes = _.get(shortcut, 'attributes', {});
   return {
-    title: shortcut.title,
-    ..._.get(shortcut, 'attributes.settings', {}),
+    title: attributes.title || '',
+    ...attributes.settings,
   };
 }
 

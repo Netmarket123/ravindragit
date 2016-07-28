@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { connectStyle } from '@shoutem/theme';
 import { Spinner } from './Spinner';
-
+import _ from 'lodash';
 
 const Status = {
   LOADING: 'loading',
@@ -151,7 +151,7 @@ class ListView extends React.Component {
     mappedProps.renderSectionHeader = props.renderSectionHeader;
 
     // events
-    mappedProps.onEndReached = props.onLoadMore;
+    mappedProps.onEndReached = this.createOnLoadMore();
 
     // data to display
     mappedProps.dataSource = this.state.dataSource;
@@ -179,6 +179,19 @@ class ListView extends React.Component {
       this.setState({
         status: Status.IDLE,
       });
+    }
+  }
+
+  // eslint-disable-next-line consistent-return
+  createOnLoadMore() {
+    const { onLoadMore } = this.props;
+    const { status } = this.state;
+    if (onLoadMore) {
+      return _.throttle(() => {
+        if (status === Status.IDLE) {
+          onLoadMore();
+        }
+      }, 2000, { leading: true });
     }
   }
 
