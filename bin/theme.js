@@ -194,6 +194,12 @@ export default () => ({
     'shoutem.ui.Overlay': {
       'shoutem.ui.View': {
         [INCLUDE]: ['imageChildren'],
+
+        'shoutem.ui.Button': {
+          '.action': {
+            marginTop: LARGE_GUTTER,
+          },
+        },
       },
 
       alignSelf: 'stretch',
@@ -610,6 +616,7 @@ export default () => ({
       },
 
       backgroundColor: Colors.DARK,
+      borderColor: Colors.DARK,
     },
 
     '.stacked': {
