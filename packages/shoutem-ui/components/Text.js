@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text as RNText } from 'react-native';
+import { Text as RNText, Animated as RNAnimated } from 'react-native';
 
 import { connectStyle } from '@shoutem/theme';
 
@@ -25,10 +25,23 @@ const Subtitle = connectStyle('shoutem.ui.Subtitle', {})(Text);
 
 const Caption = connectStyle('shoutem.ui.Caption', {})(Text);
 
+const Animated = {
+  Text: RNAnimated.createAnimatedComponent(StyledText),
+
+  Heading: RNAnimated.createAnimatedComponent(Heading),
+
+  Title: RNAnimated.createAnimatedComponent(Title),
+
+  Subtitle: RNAnimated.createAnimatedComponent(Subtitle),
+
+  Caption: RNAnimated.createAnimatedComponent(Caption),
+};
+
 export {
   StyledText as Text,
   Heading,
   Title,
   Subtitle,
   Caption,
+  Animated,
 };

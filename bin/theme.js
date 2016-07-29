@@ -886,34 +886,34 @@ export default () => ({
   //
   'shoutem.ui.NavigationBar': {
     '.clear': {
-      container: {
-        backgroundColor: 'transparent',
-        borderBottomColor: 'transparent',
+      'shoutem.ui.Title': {
+        color: 'white',
       },
-      defaultBackButton: {
+      'shoutem.ui.Icon': {
+        color: 'white',
+      },
+      'shoutem.ui.Button': {
+        backgroundColor: 'transparent',
+        borderColor: 'transparent',
         'shoutem.ui.Icon': {
           color: 'white',
         },
       },
-      rightComponent: {
-        'shoutem.ui.Button': {
-          backgroundColor: 'transparent',
-          borderColor: 'transparent',
-          'shoutem.ui.Icon': {
-            color: 'white',
-          },
-        },
-      },
-      centerComponent: {
-        'shoutem.ui.Title': {
-          color: 'white',
-        },
+      container: {
+        backgroundColor: 'transparent',
+        borderBottomColor: 'transparent',
       },
     },
-    backgroundImage: {
-      padding: 15,
-      backgroundColor: 'transparent',
-      height: 70,
+    'shoutem.ui.Title': {
+      fontSize: 15,
+      lineHeight: 18,
+    },
+    'shoutem.ui.Icon': {
+      color: 'black',
+      fontSize: 24,
+    },
+    'shoutem.ui.Text': {
+      color: 'black',
     },
     container: {
       height: 70,
@@ -924,12 +924,14 @@ export default () => ({
       backgroundColor: 'white',
       borderBottomColor: 'rgb(242, 242, 242)',
       borderBottomWidth: 1,
+      padding: 15,
     },
     componentsContainer: {
       flex: 1,
       alignItems: 'flex-end',
       flexDirection: 'row',
       justifyContent: 'space-between',
+      backgroundColor: 'transparent',
     },
     component: {
       height: 24,
@@ -939,18 +941,15 @@ export default () => ({
     },
     leftComponent: {
       alignItems: 'flex-start',
+      flex: 1,
     },
     centerComponent: {
       alignItems: 'center',
+      flex: 1,
     },
     rightComponent: {
       alignItems: 'flex-end',
-    },
-    defaultBackButton: {
-      'shoutem.ui.Icon': {
-        color: 'black',
-        fontSize: 24,
-      },
+      flex: 1,
     },
   },
 

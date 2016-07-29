@@ -2,6 +2,7 @@ export { View } from './components/View';
 export { Screen } from './components/Screen';
 
 export { NavigationBar } from './components/NavigationBar';
+export { NavigationBarAnimations } from './components/NavigationBar/NavigationBarAnimations';
 export { DropDownMenu } from './components/DropDownMenu';
 export { Overlay } from './components/Overlay';
 
@@ -35,3 +36,4 @@ export { Divider } from './components/Divider';
 export { Card } from './components/Card';
 export { Row } from './components/Row';
 export { Tile } from './components/Tile';
+export { Animated } from './components/Animated';

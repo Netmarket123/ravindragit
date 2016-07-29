@@ -24,6 +24,7 @@
     "unzip": "edtechd/node-unzip"
   },
   "devDependencies": {
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-preset-react-native": "^1.9.0"
   }
 }
-
