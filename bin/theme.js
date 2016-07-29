@@ -123,6 +123,7 @@ export default () => ({
     color: '#222222',
     fontSize: 20,
     lineHeight: 24,
+    letterSpacing: 1,
   },
 
   'shoutem.ui.Subtitle': {
@@ -622,7 +623,7 @@ export default () => ({
     '.stacked': {
       'shoutem.ui.Icon': {
         color: '#666666',
-        fontSize: 32,
+        fontSize: 24,
       },
 
       'shoutem.ui.Text': {
