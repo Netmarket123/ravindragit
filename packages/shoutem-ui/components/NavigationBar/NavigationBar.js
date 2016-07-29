@@ -15,7 +15,7 @@ import color from 'tinycolor2';
 
 import { connectStyle } from '@shoutem/theme';
 
-import composeChildren from '../lib/transformNavigationBarProps';
+import composeChildren from './composeChildren';
 
 function getBackgroundColor(style) {
   const styleWithBg = _.find(style, (styleDef) =>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import { Button } from '../components/Button';
-import { Animated } from '../components/Animated';
+import { Button } from '../Button';
+import { Animated } from '../Animated';
 
 import Share from 'react-native-share';
 import * as _ from 'lodash';
