@@ -20,8 +20,7 @@ export { Image } from './components/Image';
 export { ImagePreview } from './components/ImagePreview';
 export { ImageGallery } from './components/ImageGallery';
 export { RichMedia } from './components/RichMedia';
-export { MapView } from './components/Map/MapView';
-export { InlineMap } from './components/InlineMap';
+export { MapView, InlineMap } from './components/Map/';
 
 export {
   Heading,
