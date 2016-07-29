@@ -1,7 +1,8 @@
 import React from 'react';
 
 import MapView from 'react-native-maps';
-import MapComponent from './MapComponent';
+import MapViewBase from './MapViewBase';
+import { connectStyle } from '@shoutem/theme';
 
 /**
  * Renders an MapView using an Android-specific MapView implementation
@@ -50,29 +51,19 @@ import MapComponent from './MapComponent';
  * ```
  */
 
-class MapViewAndroid extends MapComponent {
+class MapViewAndroid extends MapViewBase {
   getCoordinatesFromNativeEvent(nEvent) {
     return nEvent.nativeEvent.coordinate;
   }
 
   render() {
-    const {
-      initialRegion,
-      markers,
-      markerImage,
-    } = this.props;
-
-    const region = this.state.region || initialRegion;
+    const { markers } = this.props;
+    if (!this.isMapReadyToRender()) {
+      return null;
+    }
     return (
       <MapView
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-        }}
-        region={region}
+        region={this.getInitialRegion()}
         onRegionChange={this.onRegionChange}
         onMarkerPress={this.onMarkerPress}
         {...this.props}
@@ -84,7 +75,7 @@ class MapViewAndroid extends MapComponent {
                 title={marker.title}
                 description={marker.subtitle}
                 key={key}
-                image={markerImage}
+                image={this.getMarkerImage(marker)}
               />
             ))
           }
@@ -94,10 +85,12 @@ class MapViewAndroid extends MapComponent {
 }
 
 MapViewAndroid.propTypes = {
-  ...MapView.propTypes,
+  ...MapViewBase.propTypes,
 };
 
+const StyledMapView = connectStyle('shoutem.ui.MapView')(MapViewAndroid);
+
 export {
-  MapViewAndroid as MapView,
+  StyledMapView as MapView,
 };
 
