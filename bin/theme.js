@@ -329,7 +329,9 @@ export default () => ({
       flex: 0,
       justifyContent: 'flex-start',
     },
-
+    '.centered': {
+      justifyContent: 'center',
+    },
     flex: 1,
     justifyContent: 'space-between',
   },
@@ -651,6 +653,12 @@ export default () => ({
   //
   // Media
   //
+
+  richMediaTextStyle: {
+    [INCLUDE]: ['shoutem.ui.Text'],
+    lineHeight: 26,
+    color: '#666666',
+  },
   'shoutem.ui.RichMedia': {
     b: {
       [INCLUDE]: ['boldTextStyle'],
@@ -723,9 +731,10 @@ export default () => ({
       },
     },
     p: {
-      [INCLUDE]: ['shoutem.ui.Text'],
-      lineHeight: 26,
-      color: '#666666',
+      [INCLUDE]: ['richMediaTextStyle'],
+    },
+    div: {
+      [INCLUDE]: ['richMediaTextStyle'],
     },
     container: {
       margin: MEDIUM_GUTTER,
