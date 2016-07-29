@@ -586,6 +586,9 @@ export default () => ({
       fontSize: 12,
       color: 'black',
       margin: 12,
+      '.regular': {
+        [INCLUDE]: ['defaultFont'],
+      },
     },
 
     'shoutem.ui.Icon': {
@@ -635,6 +638,10 @@ export default () => ({
       flexDirection: 'column',
       paddingTop: 10,
       paddingBottom: SMALL_GUTTER,
+    },
+
+    '.no-border': {
+      borderWidth: 0,
     },
 
     underlayColor: '#ccc',
@@ -911,9 +918,8 @@ export default () => ({
       },
     },
     backgroundImage: {
-      padding: 15,
       backgroundColor: 'transparent',
-      height: 70,
+      flex: 1,
     },
     container: {
       height: 70,
@@ -927,7 +933,10 @@ export default () => ({
     },
     componentsContainer: {
       flex: 1,
-      alignItems: 'flex-end',
+      paddingHorizontal: 15,
+      paddingTop: 30,
+      overflow: 'hidden',
+      alignItems: 'center',
       flexDirection: 'row',
       justifyContent: 'space-between',
     },
