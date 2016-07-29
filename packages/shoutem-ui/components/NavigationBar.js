@@ -4,13 +4,14 @@ import {
   StatusBar,
   Animated,
   Platform,
+  View,
 } from 'react-native';
 
 import _ from 'lodash';
 
 import color from 'tinycolor2';
 
-import { View } from './View';
+// import { View } from './View';
 
 import { connectStyle } from '@shoutem/theme';
 

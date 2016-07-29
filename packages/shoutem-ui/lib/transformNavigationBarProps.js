@@ -9,7 +9,11 @@ import * as _ from 'lodash';
 const composers = {
   title: (value, props) => {
     return {
-      centerComponent: <Animated.Title style={{ color: _.get(props, 'animation.style.color') }}>{value || ''}</Animated.Title>,
+      centerComponent: (
+        <Animated.Title style={{ color: _.get(props, 'animation.style.color') }} numberOfLines={1}>
+          {value || ''}
+        </Animated.Title>
+      ),
     };
   },
   share: (value, props) => {
@@ -42,17 +46,17 @@ const composers = {
       navigateBack();
     }
 
-    return {
-      leftComponent: (
+    const leftComponent = value ? (
         <Button
-          style={props.style.defaultBackButton}
           styleName="clear"
           onPress={navigateBackWithoutEventParameter}
         >
           <Animated.Icon style={{ color: _.get(props, 'animation.style.color') }} name="back" />
         </Button>
-      ),
-    };
+      ) :
+      null;
+
+    return { leftComponent };
   },
   animation: (value, props) => {
     const animation = value;
@@ -69,25 +73,6 @@ const composers = {
     return {
       style: {
         container: { ...containerStyle },
-        leftComponent: {
-          'shoutem.ui.Icon': {
-            color: animation.style.color,
-          },
-        },
-        rightComponent: {
-          'shoutem.ui.Button': {
-            backgroundColor: 'transparent',
-            borderColor: 'transparent',
-            'shoutem.ui.Icon': {
-              color: animation.style.color,
-            },
-          },
-        },
-        centerComponent: {
-          'shoutem.ui.Title': {
-            color: animation.style.color,
-          },
-        },
       },
     };
   },
