@@ -1,8 +1,7 @@
 export { View } from './components/View';
 export { Screen } from './components/Screen';
 
-export { NavigationBar } from './components/NavigationBar';
-export { NavigationBarAnimations } from './components/NavigationBar/NavigationBarAnimations';
+export { NavigationBar, NavigationBarAnimations } from './components/NavigationBar';
 export { DropDownMenu } from './components/DropDownMenu';
 export { Overlay } from './components/Overlay';
 
@@ -21,7 +20,7 @@ export { Image } from './components/Image';
 export { ImagePreview } from './components/ImagePreview';
 export { ImageGallery } from './components/ImageGallery';
 export { RichMedia } from './components/RichMedia';
-export { MapView, InlineMap } from './components/Map/';
+export { MapView, InlineMap } from './components/Map';
 
 export {
   Heading,

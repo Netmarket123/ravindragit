@@ -905,6 +905,7 @@ export default () => ({
       },
     },
     'shoutem.ui.Title': {
+      color: 'black',
       fontSize: 15,
       lineHeight: 18,
     },
@@ -915,6 +916,14 @@ export default () => ({
     'shoutem.ui.Text': {
       color: 'black',
     },
+    backgroundImage: {
+      height: 70,
+      top: 0,
+      left: 0,
+      right: 0,
+      position: 'absolute',
+      padding: 0,
+    },
     container: {
       height: 70,
       top: 0,
@@ -924,7 +933,6 @@ export default () => ({
       backgroundColor: 'white',
       borderBottomColor: 'rgb(242, 242, 242)',
       borderBottomWidth: 1,
-      padding: 15,
     },
     componentsContainer: {
       flex: 1,
@@ -932,6 +940,7 @@ export default () => ({
       flexDirection: 'row',
       justifyContent: 'space-between',
       backgroundColor: 'transparent',
+      padding: 15,
     },
     component: {
       height: 24,

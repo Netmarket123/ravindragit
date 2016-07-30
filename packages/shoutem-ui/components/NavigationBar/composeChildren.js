@@ -59,16 +59,11 @@ const composers = {
     return { leftComponent };
   },
   animation: (value, props) => {
-    const animation = value;
-    const { style } = props;
-    const backgroundColor = _.get(style, 'container.backgroundColor');
-    const textColor = _.get(style, 'textColor.color');
-
-    animation.setColors(backgroundColor, textColor);
+    value.calculateAnimation(props.style);
 
     const containerStyle = {
-      backgroundColor: animation.style.backgroundColor,
-      borderBottomColor: animation.style.borderBottomColor,
+      backgroundColor: value.style.backgroundColor,
+      borderBottomColor: value.style.borderBottomColor,
     };
     return {
       style: {
@@ -80,23 +75,23 @@ const composers = {
 
 export default composeChildren = NavigationBarComponent => class extends Component {
   render() {
-    let newProps = {};
+    let newProps = _.assign({}, this.props);
     const { id, style } = this.props;
 
     if (!id) {
       return null;
     }
 
-    _.forEach(this.props, (value, key) => {
+    _.forEach(newProps, (value, key) => {
       if (_.isFunction(composers[key])) {
-        _.assign(newProps, composers[key](value, this.props));
+        _.assign(newProps, composers[key](value, newProps));
       }
     });
 
     if (newProps.style) {
-      newProps.style = _.merge(style, newProps.style);
+      newProps.style = _.merge({}, style, newProps.style);
     }
 
-    return <NavigationBarComponent {..._.assign(newProps, this.props)} />;
+    return <NavigationBarComponent {...newProps} />;
   }
 };
