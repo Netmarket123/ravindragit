@@ -4,11 +4,15 @@ function getStandardBackgroundColor(style) {
   return _.get(style, 'container.backgroundColor');
 }
 
+function getStandardBorderColor(style) {
+  return _.get(style, 'container.borderBottomColor') || 'rgba(242,242,242,1)';
+}
+
 const presetColorsResolvers = {
   clearToStandard: (style) => {
     const backgroundColor = ['rgba(0,0,0,0)', getStandardBackgroundColor(style)];
     const textColor = ['rgba(0,0,0,0)', 'rgba(0,0,0,1)'];
-    const borderColor = ['rgba(0,0,0,0)', 'rgba(51, 51, 51, 0.2)'];
+    const borderColor = ['rgba(0,0,0,0)', getStandardBorderColor(style)];
 
     return {
       backgroundColor,
@@ -17,10 +21,8 @@ const presetColorsResolvers = {
     };
   },
   borderAndTitle: (style) => {
-    const textColor = ['rgba(0,0,0,0)', _.get(style, 'shoutem.ui.Text.color') ||
-    _.get(style, 'shoutem.ui.Icon.color') ||
-    _.get(style, 'shoutem.ui.Title.color')];
-    const borderColor = ['rgba(0,0,0,0)', 'rgba(51, 51, 51, 0.2)'];
+    const textColor = ['rgba(0,0,0,0)', 'rgba(0,0,0,1)'];
+    const borderColor = ['rgba(0,0,0,0)', getStandardBorderColor(style)];
 
     return {
       textColor,
@@ -40,6 +42,19 @@ class ColorAnimation {
     const { startAt = 0, finishAt = 150 } = options;
     this.inputRange = options.inputRange || [startAt, finishAt];
     this.style = {};
+
+    if (!this.preset) {
+      this.sanitize();
+    }
+  }
+
+  sanitize() {
+    _.forEach(this.colors, (colorRange) => {
+      if (this.colors[colorRange].length !== this.inputRange.length) {
+        throw new Error(`Length of ${colorRange} color animation property
+        ([${this.colors[colorRange]}]) is not equal to given inputRange ${this.inputRange}`);
+      }
+    });
   }
 
   calculateAnimation(navigationBarStyle) {
@@ -55,6 +70,8 @@ class ColorAnimation {
       animatedValue,
       inputRange,
     } = this;
+
+    this.sanitize();
 
     this.style = {
       color: animatedValue.interpolate({
@@ -80,8 +97,8 @@ class ColorAnimation {
   }
 
   clearToStandard() {
-    const startAt = this.startAt || 0;
-    const finishAt = this.finishAt || 150;
+    const startAt = _.first(this.inputRange);
+    const finishAt = _.last(this.inputRange);
     const { textColor, backgroundColor, borderColor } = this.colors;
     const animatedValue = this.animatedValue;
     return {
@@ -104,18 +121,19 @@ class ColorAnimation {
   }
 
   borderAndTitle() {
-    const finishAt = this.finishAt || 150;
-    const startAt = this.startAt || finishAt - 70;
+    const startAt = _.first(this.inputRange);
+    const finishAt = _.last(this.inputRange);
     const animatedValue = this.animatedValue;
+    const { textColor, borderColor } = this.colors;
     return {
       color: animatedValue.interpolate({
         inputRange: [startAt, finishAt],
-        outputRange: this.colors.textColor,
+        outputRange: textColor,
         extrapolate: 'clamp',
       }),
       borderBottomColor: animatedValue.interpolate({
         inputRange: [startAt, finishAt],
-        outputRange: this.colors.borderColor,
+        outputRange: borderColor,
         extrapolate: 'clamp',
       }),
     };
