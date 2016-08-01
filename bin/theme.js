@@ -582,6 +582,11 @@ export default () => ({
     [INCLUDE]: ['commonVariants'],
 
     'shoutem.ui.Text': {
+      '.regular': {
+        fontFamily: 'Rubik-Regular',
+        margin: 0,
+      },
+
       fontFamily: 'Rubik-Medium',
       fontSize: 12,
       color: 'black',
