@@ -47,9 +47,15 @@ function navigatorReducer(state = {}, action) {
   }
 }
 
+function activeNavigatorReducer(state = ROOT_NAVIGATOR_NAME, action) {
+  if (action.type === NAVIGATE_TO) {
+    return action.navigator || state;
+  }
+  return state;
+}
 export default function (state = {}, action) {
-  const navigatorName = action.navigator;
-  if (!navigatorName) {
+  const activeNavigator = activeNavigatorReducer(state.activeNavigator, action);
+  if (!activeNavigator) {
     // We can only handle navigation actions that
     // target a specific navigator.
     return state;
@@ -57,7 +63,8 @@ export default function (state = {}, action) {
 
   return {
     ...state,
-    [navigatorName]: navigatorReducer(state[navigatorName], action),
+    activeNavigator,
+    [activeNavigator]: navigatorReducer(state[activeNavigator], action),
   };
 }
 
@@ -69,7 +76,7 @@ export default function (state = {}, action) {
  * @returns {*} The action.
  */
 // eslint-disable-next-line func-names
-export const navigateTo = function (route, navigator = ROOT_NAVIGATOR_NAME) {
+export const navigateTo = function (route, navigator) {
   return {
     type: NAVIGATE_TO,
     route,
@@ -84,7 +91,7 @@ export const navigateTo = function (route, navigator = ROOT_NAVIGATOR_NAME) {
  * @returns {*} The action.
  */
 // eslint-disable-next-line func-names
-export const navigateBack = function (navigator = ROOT_NAVIGATOR_NAME) {
+export const navigateBack = function (navigator) {
   return {
     type: NAVIGATE_BACK,
     navigator,
