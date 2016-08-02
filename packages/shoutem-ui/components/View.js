@@ -1,5 +1,5 @@
 import React from 'react';
-import { View as RNView } from 'react-native';
+import { View as RNView, Animated as RNAnimated } from 'react-native';
 
 import { connectStyle } from '@shoutem/theme';
 
@@ -17,6 +17,11 @@ View.propTypes = {
 
 const StyledView = connectStyle('shoutem.ui.View', {})(View);
 
+const Animated = {
+  View: RNAnimated.createAnimatedComponent(StyledView),
+};
+
 export {
   StyledView as View,
+  Animated,
 };

@@ -188,27 +188,7 @@ export default () => ({
       },
     },
   },
-  'shoutem.ui.Image': {
-    [INCLUDE]: ['imageChildren', 'guttersPadding', 'commonVariants'],
-
-    'shoutem.ui.Overlay': {
-      'shoutem.ui.View': {
-        [INCLUDE]: ['imageChildren'],
-
-        'shoutem.ui.Button': {
-          '.action': {
-            marginTop: LARGE_GUTTER,
-          },
-        },
-      },
-
-      alignSelf: 'stretch',
-      marginVertical: -33,
-      marginHorizontal: -33,
-      paddingVertical: 33,
-      paddingHorizontal: 33,
-    },
-
+  imageSizes: {
     '.small-avatar': {
       width: 25,
       height: 25,
@@ -239,18 +219,39 @@ export default () => ({
     },
 
     '.large-portrait': {
-      flex: 1,
+      alignSelf: 'stretch',
       height: (518 / 375) * window.width,
     },
 
     '.large-square': {
-      flex: 1,
+      alignSelf: 'stretch',
       height: (330 / 375) * window.width,
     },
 
     '.large-wide': {
       alignSelf: 'stretch',
       height: (200 / 375) * window.width,
+    },
+  },
+  'shoutem.ui.Image': {
+    [INCLUDE]: ['imageChildren', 'guttersPadding', 'commonVariants', 'imageSizes'],
+
+    'shoutem.ui.Overlay': {
+      'shoutem.ui.View': {
+        [INCLUDE]: ['imageChildren'],
+
+        'shoutem.ui.Button': {
+          '.action': {
+            marginTop: LARGE_GUTTER,
+          },
+        },
+      },
+
+      alignSelf: 'stretch',
+      marginVertical: -33,
+      marginHorizontal: -33,
+      paddingVertical: 33,
+      paddingHorizontal: 33,
     },
 
     '.top-aligned': {
@@ -584,6 +585,11 @@ export default () => ({
     [INCLUDE]: ['commonVariants'],
 
     'shoutem.ui.Text': {
+      '.regular': {
+        fontFamily: 'Rubik-Regular',
+        margin: 0,
+      },
+
       fontFamily: 'Rubik-Medium',
       fontSize: 12,
       color: 'black',
@@ -895,34 +901,34 @@ export default () => ({
   //
   'shoutem.ui.NavigationBar': {
     '.clear': {
-      container: {
-        backgroundColor: 'transparent',
-        borderBottomColor: 'transparent',
+      'shoutem.ui.Title': {
+        color: 'white',
       },
-      defaultBackButton: {
+      'shoutem.ui.Icon': {
+        color: 'white',
+      },
+      'shoutem.ui.Button': {
+        backgroundColor: 'transparent',
+        borderColor: 'transparent',
         'shoutem.ui.Icon': {
           color: 'white',
         },
       },
-      rightComponent: {
-        'shoutem.ui.Button': {
-          backgroundColor: 'transparent',
-          borderColor: 'transparent',
-          'shoutem.ui.Icon': {
-            color: 'white',
-          },
-        },
-      },
-      centerComponent: {
-        'shoutem.ui.Title': {
-          color: 'white',
-        },
+      container: {
+        backgroundColor: 'transparent',
+        borderBottomColor: 'transparent',
       },
     },
-    backgroundImage: {
-      padding: 15,
-      backgroundColor: 'transparent',
-      height: 70,
+    'shoutem.ui.Title': {
+      fontSize: 15,
+      lineHeight: 18,
+    },
+    'shoutem.ui.Icon': {
+      color: 'black',
+      fontSize: 24,
+    },
+    'shoutem.ui.Text': {
+      color: 'black',
     },
     container: {
       height: 70,
@@ -933,12 +939,14 @@ export default () => ({
       backgroundColor: 'white',
       borderBottomColor: 'rgb(242, 242, 242)',
       borderBottomWidth: 1,
+      padding: 15,
     },
     componentsContainer: {
       flex: 1,
       alignItems: 'flex-end',
       flexDirection: 'row',
       justifyContent: 'space-between',
+      backgroundColor: 'transparent',
     },
     component: {
       height: 24,
@@ -948,18 +956,15 @@ export default () => ({
     },
     leftComponent: {
       alignItems: 'flex-start',
+      flex: 1,
     },
     centerComponent: {
       alignItems: 'center',
+      flex: 1,
     },
     rightComponent: {
       alignItems: 'flex-end',
-    },
-    defaultBackButton: {
-      'shoutem.ui.Icon': {
-        color: 'black',
-        fontSize: 24,
-      },
+      flex: 1,
     },
   },
 
@@ -1009,53 +1014,8 @@ export default () => ({
   },
 
   'shoutem.ui.InlineMap': {
-    '.small-avatar': {
-      width: 25,
-      height: 25,
-      borderRadius: 13,
-      borderColor: 'rgba(0, 0, 0, 0)',
-      borderWidth: 1,
-      resizeMode: 'cover',
-    },
-
-    '.small': {
-      width: 65,
-      height: 65,
-    },
-
-    '.medium': {
-      width: 145,
-      height: 92,
-    },
-
-    '.medium-square': {
-      width: 145,
-      height: 145,
-    },
-
-    '.medium-tall': {
-      height: 160,
-    },
-
-    '.large': {
-      width: 375,
-      height: 240,
-    },
-
-    '.large-portrait': {
-      width: 375,
-      height: 375,
-    },
-
-    '.large-square': {
-      width: 345,
-      height: 330,
-    },
-
-    '.large-wide': {
-      width: 375,
-      height: 200,
-    },
+    // TODO: why do we need all image sizes and styles here?
+    [INCLUDE]: ['imageSizes'],
 
     '.top-aligned': {
       justifyContent: 'flex-start',
