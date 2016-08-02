@@ -185,11 +185,11 @@ class ListView extends React.Component {
 
   // eslint-disable-next-line consistent-return
   createOnLoadMore() {
-    const { onLoadMore } = this.props;
+    const { onLoadMore, data } = this.props;
     const { status } = this.state;
     if (onLoadMore) {
       return _.throttle(() => {
-        if (status === Status.IDLE) {
+        if (!_.isEmpty(data) && status === Status.IDLE) {
           onLoadMore();
         }
       }, 2000, { leading: true });
