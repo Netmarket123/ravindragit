@@ -20,7 +20,6 @@ class ColorAnimation {
 
   clearToStandard(atAnimatedValue) {
     const defaultAnimatedValue = atAnimatedValue || 150;
-    const standardBackgroundColor = this.backgroundColor;
     const standardTextColor = this.textColor || 'rgba(0,0,0,1)';
     const animatedValue = this.animatedValue;
     return {

@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Image as RNImage,
-  Dimensions,
   Animated as RNAnimated,
   Platform,
 } from 'react-native';
