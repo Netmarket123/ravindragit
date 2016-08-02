@@ -890,6 +890,12 @@ export default () => ({
   // Other
   //
   'shoutem.ui.NavigationBar': {
+    '.tabbar': {
+      container: {
+        top: null,
+        bottom: 0,
+      },
+    },
     '.clear': {
       'shoutem.ui.Title': {
         color: 'white',
