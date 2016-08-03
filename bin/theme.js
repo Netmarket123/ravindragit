@@ -741,12 +741,10 @@ export default () => ({
       },
     },
     p: {
-      [INCLUDE]: ['shoutem.ui.Text'],
-      [INCLUDE]: ['richMediaTextStyle'],
+      [INCLUDE]: ['shoutem.ui.Text', 'richMediaTextStyle'],
     },
     div: {
-      [INCLUDE]: ['shoutem.ui.Text'],
-      [INCLUDE]: ['richMediaTextStyle'],
+      [INCLUDE]: ['shoutem.ui.Text', 'richMediaTextStyle'],
     },
     container: {
       margin: MEDIUM_GUTTER,
