@@ -83,6 +83,11 @@ export default () => ({
     fontFamily: 'Menlo',
   },
 
+  richMediaTextStyle: {
+    lineHeight: 26,
+    color: '#666666',
+  },
+
   'shoutem.ui.Text': {
     [INCLUDE]: ['commonVariants', 'defaultFont', 'guttersMargin'],
 
@@ -100,6 +105,10 @@ export default () => ({
 
     '.bold': {
       [INCLUDE]: ['boldTextStyle'],
+    },
+
+    '.body': {
+      [INCLUDE]: ['richMediaTextStyle'],
     },
 
     color: '#555555',
@@ -660,11 +669,6 @@ export default () => ({
   // Media
   //
 
-  richMediaTextStyle: {
-    [INCLUDE]: ['shoutem.ui.Text'],
-    lineHeight: 26,
-    color: '#666666',
-  },
   'shoutem.ui.RichMedia': {
     b: {
       [INCLUDE]: ['boldTextStyle'],
@@ -737,9 +741,11 @@ export default () => ({
       },
     },
     p: {
+      [INCLUDE]: ['shoutem.ui.Text'],
       [INCLUDE]: ['richMediaTextStyle'],
     },
     div: {
+      [INCLUDE]: ['shoutem.ui.Text'],
       [INCLUDE]: ['richMediaTextStyle'],
     },
     container: {
