@@ -255,6 +255,7 @@ ScreenNavigator.propTypes = {
 
 ScreenNavigator.contextTypes = {
   screens: React.PropTypes.object,
+  parentNavigator: React.PropTypes.object,
 };
 
 ScreenNavigator.childContextTypes = {
