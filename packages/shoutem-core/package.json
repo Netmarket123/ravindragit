@@ -1,9 +1,9 @@
 {
   "name": "@shoutem/core",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "main": "index.js",
   "dependencies": {
-    "@shoutem/redux-io": "0.2.0-alpha.6",
+    "@shoutem/redux-io": "0.2.1",
     "@shoutem/theme": "0.0.5",
     "@shoutem/ui": "0.0.15",
     "es6-symbol": "^3.0.2",

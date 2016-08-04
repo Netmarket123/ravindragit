@@ -83,6 +83,11 @@ export default () => ({
     fontFamily: 'Menlo',
   },
 
+  richMediaTextStyle: {
+    lineHeight: 26,
+    color: '#666666',
+  },
+
   'shoutem.ui.Text': {
     [INCLUDE]: ['commonVariants', 'defaultFont', 'guttersMargin'],
 
@@ -100,6 +105,10 @@ export default () => ({
 
     '.bold': {
       [INCLUDE]: ['boldTextStyle'],
+    },
+
+    '.body': {
+      [INCLUDE]: ['richMediaTextStyle'],
     },
 
     color: '#555555',
@@ -188,27 +197,7 @@ export default () => ({
       },
     },
   },
-  'shoutem.ui.Image': {
-    [INCLUDE]: ['imageChildren', 'guttersPadding', 'commonVariants'],
-
-    'shoutem.ui.Overlay': {
-      'shoutem.ui.View': {
-        [INCLUDE]: ['imageChildren'],
-
-        'shoutem.ui.Button': {
-          '.action': {
-            marginTop: LARGE_GUTTER,
-          },
-        },
-      },
-
-      alignSelf: 'stretch',
-      marginVertical: -33,
-      marginHorizontal: -33,
-      paddingVertical: 33,
-      paddingHorizontal: 33,
-    },
-
+  imageSizes: {
     '.small-avatar': {
       width: 25,
       height: 25,
@@ -239,18 +228,39 @@ export default () => ({
     },
 
     '.large-portrait': {
-      flex: 1,
+      alignSelf: 'stretch',
       height: (518 / 375) * window.width,
     },
 
     '.large-square': {
-      flex: 1,
+      alignSelf: 'stretch',
       height: (330 / 375) * window.width,
     },
 
     '.large-wide': {
       alignSelf: 'stretch',
       height: (200 / 375) * window.width,
+    },
+  },
+  'shoutem.ui.Image': {
+    [INCLUDE]: ['imageChildren', 'guttersPadding', 'commonVariants', 'imageSizes'],
+
+    'shoutem.ui.Overlay': {
+      'shoutem.ui.View': {
+        [INCLUDE]: ['imageChildren'],
+
+        'shoutem.ui.Button': {
+          '.action': {
+            marginTop: LARGE_GUTTER,
+          },
+        },
+      },
+
+      alignSelf: 'stretch',
+      marginVertical: -33,
+      marginHorizontal: -33,
+      paddingVertical: 33,
+      paddingHorizontal: 33,
     },
 
     '.top-aligned': {
@@ -329,7 +339,9 @@ export default () => ({
       flex: 0,
       justifyContent: 'flex-start',
     },
-
+    '.centered': {
+      justifyContent: 'center',
+    },
     flex: 1,
     justifyContent: 'space-between',
   },
@@ -582,6 +594,11 @@ export default () => ({
     [INCLUDE]: ['commonVariants'],
 
     'shoutem.ui.Text': {
+      '.regular': {
+        fontFamily: 'Rubik-Regular',
+        margin: 0,
+      },
+
       fontFamily: 'Rubik-Medium',
       fontSize: 12,
       color: 'black',
@@ -651,6 +668,7 @@ export default () => ({
   //
   // Media
   //
+
   'shoutem.ui.RichMedia': {
     b: {
       [INCLUDE]: ['boldTextStyle'],
@@ -723,9 +741,10 @@ export default () => ({
       },
     },
     p: {
-      [INCLUDE]: ['shoutem.ui.Text'],
-      lineHeight: 26,
-      color: '#666666',
+      [INCLUDE]: ['shoutem.ui.Text', 'richMediaTextStyle'],
+    },
+    div: {
+      [INCLUDE]: ['shoutem.ui.Text', 'richMediaTextStyle'],
     },
     container: {
       margin: MEDIUM_GUTTER,
@@ -999,53 +1018,8 @@ export default () => ({
   },
 
   'shoutem.ui.InlineMap': {
-    '.small-avatar': {
-      width: 25,
-      height: 25,
-      borderRadius: 13,
-      borderColor: 'rgba(0, 0, 0, 0)',
-      borderWidth: 1,
-      resizeMode: 'cover',
-    },
-
-    '.small': {
-      width: 65,
-      height: 65,
-    },
-
-    '.medium': {
-      width: 145,
-      height: 92,
-    },
-
-    '.medium-square': {
-      width: 145,
-      height: 145,
-    },
-
-    '.medium-tall': {
-      height: 160,
-    },
-
-    '.large': {
-      width: 375,
-      height: 240,
-    },
-
-    '.large-portrait': {
-      width: 375,
-      height: 375,
-    },
-
-    '.large-square': {
-      width: 345,
-      height: 330,
-    },
-
-    '.large-wide': {
-      width: 375,
-      height: 200,
-    },
+    // TODO: why do we need all image sizes and styles here?
+    [INCLUDE]: ['imageSizes'],
 
     '.top-aligned': {
       justifyContent: 'flex-start',
