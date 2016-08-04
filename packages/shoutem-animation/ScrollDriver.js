@@ -1,4 +1,5 @@
 import { Animated } from 'react-native';
+import * as _ from 'lodash';
 
 /**
  * Animation driver that creates animated value changed on scroll event.
@@ -19,6 +20,12 @@ export class ScrollDriver {
     this.scrollViewProps = {
       onScroll: this.onScroll(),
       scrollEventThrottle: 1,
+      style: {
+        overflow: 'visible',
+      },
+      contentContainerStyle: {
+        overflow: 'visible',
+      },
     };
   }
 
