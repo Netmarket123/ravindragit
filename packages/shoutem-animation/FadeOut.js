@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Animated, View } from 'react-native';
+import { DriverShape } from 'DriverShape';
 /*
  * FadeOut Component adds fade out effect to its children components.
  * Connect it to driver and pass the input range to animate it.
@@ -45,7 +46,17 @@ export class FadeOut extends Component {
 }
 
 FadeOut.propTypes = {
-  driver: React.PropTypes.object,
+  /**
+   * An instance of animation driver, usually ScrollDriver
+   */
+  driver: DriverShape.isRequired,
+  /**
+   * Components to which an effect will be applied
+   */
   children: React.PropTypes.children,
+  /**
+   * pair of [start, end] values from animation driver, how
+   * children would fade out
+   */
   inputRange: React.PropTypes.array,
 };

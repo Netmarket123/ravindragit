@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { ZoomOut } from './ZoomOut';
 import { Parallax } from './Parallax';
+import { DriverShape } from 'DriverShape';
 /*
  * HeroHeader adds complex effect to its children components.
  * Connect it to driver to animate it.
@@ -24,10 +25,17 @@ import { Parallax } from './Parallax';
  *
  * ...
  * Above code will create scroll dependent parallax animation over Image component
- * where image will be scrolled 1.5 times faster then Title but it will have Zoom effect
- * on scroll bounce
+ * where image will be scrolled 1.5 times faster than Title and the image will have
+ * a zoom in effect when the scroll reaches the top of the screen (on bounce)
  */
 export class HeroHeader extends Component {
+  static propTypes = {
+    driver: DriverShape.isRequired,
+    /**
+     * Components to which an effect will be applied
+     */
+    children: React.PropTypes.children,
+  }
   constructor(props) {
     super(props);
     this.onLayout = this.onLayout.bind(this);
@@ -63,8 +71,3 @@ export class HeroHeader extends Component {
     );
   }
 }
-
-HeroHeader.propTypes = {
-  driver: React.PropTypes.object,
-  children: React.PropTypes.children,
-};

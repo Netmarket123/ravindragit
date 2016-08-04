@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Animated, View } from 'react-native';
+import { DriverShape } from 'DriverShape';
 /*
  * FadeIn Component adds fade in effect to its children components.
- * Connect it to driver and pass the input range to animate it.
+ * Connect it to an animation driver and pass the input range to animate it.
  * e.g.:
  * ...
  * const driver = new ScrollDriver();
@@ -22,12 +23,28 @@ import { Animated, View } from 'react-native';
  *
  * ...
  * Above code will create scroll dependent fade in animation over Image component
- * from scroll 100, to scroll 150 where image is fully transparent at scroll 100,
- * and opaque at scroll 150
+ * from scroll position 100, to scroll position 150 where image is fully transparent at
+ * scroll position 100, and opaque at scroll position 150
  */
 export class FadeIn extends Component {
+  static propTypes = {
+    /**
+     * An instance of animation driver, usually ScrollDriver
+     */
+    driver: DriverShape.isRequired,
+    /**
+     * Components to which an effect will be applied
+     */
+    children: React.PropTypes.children,
+    /**
+     * pair of [start, end] values from animation driver, how
+     * children would fade in
+     */
+    inputRange: React.PropTypes.array,
+  }
+
   render() {
-    const { driver, children, inputRange = [0,1] } = this.props;
+    const { driver, children, inputRange = [0, 1] } = this.props;
 
     return (
       <Animated.View style={{
@@ -43,9 +60,3 @@ export class FadeIn extends Component {
     );
   }
 }
-
-FadeIn.propTypes = {
-  driver: React.PropTypes.object,
-  children: React.PropTypes.children,
-  inputRange: React.PropTypes.array,
-};

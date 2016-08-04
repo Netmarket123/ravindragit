@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Animated, View } from 'react-native';
+import { DriverShape } from 'DriverShape';
 /*
  * ZoomIn Component adds zoom in effect to its children components.
  * Connect it to driver and pass the input range to animate it.
@@ -27,6 +28,26 @@ import { Animated, View } from 'react-native';
  * and is scaled by maxFactor at scroll 150
  */
 export class ZoomIn extends Component {
+  static propTypes = {
+    /**
+     * An instance of animation driver, usually ScrollDriver
+     */
+    driver: DriverShape.isRequired,
+    /**
+     * Components to which an effect will be applied
+     */
+    children: React.PropTypes.children,
+    /**
+     * pair of [start, end] values from animation driver, how
+     * children would zoom in to maxFactor
+     */
+    inputRange: React.PropTypes.array,
+    /**
+     * To which factor children would zoom in
+     */
+    maxFactor: React.PropTypes.number,
+  }
+
   render() {
     const { driver, children, inputRange = [0,1], maxFactor = 1.5 } = this.props;
 
@@ -48,10 +69,3 @@ export class ZoomIn extends Component {
     );
   }
 }
-
-ZoomIn.propTypes = {
-  driver: React.PropTypes.object,
-  children: React.PropTypes.children,
-  inputRange: React.PropTypes.array,
-  maxFactor: React.PropTypes.number,
-};

@@ -17,7 +17,6 @@ export class ScrollDriver {
   constructor() {
     this.value = new Animated.Value(0);
     this.onScroll = this.onScroll.bind(this);
-    this.setPassedProps = this.setPassedProps.bind(this);
     this.scrollViewProps = {
       onScroll: this.onScroll(),
       scrollEventThrottle: 1,
@@ -28,10 +27,6 @@ export class ScrollDriver {
         overflow: 'visible',
       },
     };
-  }
-
-  setPassedProps(props) {
-    _.merge({}, this.scrollViewProps.contentContainerStyle, props.contentContainerStyle);
   }
 
   onScroll() {

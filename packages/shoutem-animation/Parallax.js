@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Animated, View } from 'react-native';
+import { DriverShape } from 'DriverShape';
 /*
  * Parallax Component adds parallax effect to its children components.
  * Connect it to driver to animate it. By default children will by
@@ -25,9 +26,35 @@ import { Animated, View } from 'react-native';
  *
  * ...
  * Above code will create scroll dependent parallax animation over Image component
- * where image will be scrolled 2 times faster then Title
+ * where image will be scrolled 2 times faster than Title
  */
 export class Parallax extends Component {
+  static propTypes = {
+    /**
+     * An instance of animation driver, usually ScrollDriver
+     */
+    driver: DriverShape.isRequired,
+    /**
+     * Components to which an effect will be applied
+     */
+    children: React.PropTypes.children,
+    /**
+     * extrapolation options for parallax translation
+     * if not passed children would be translated by
+     * scrollVector * (scrollSpeed - 1) * driver.value
+     * where scroll vector is defined by scrolling direction
+     */
+    extrapolation: React.PropTypes.object,
+    /**
+     * how fast passed children would scroll
+     */
+    scrollSpeed: React.PropTypes.number,
+    /**
+     * Is Parallax placed in or outside the ScrollView
+     */
+    insideScroll: React.PropTypes.bool,
+  }
+
   componentWillMount() {
     const { driver } = this.props;
     this.scrollSpeed = new Animated.Value(0);
@@ -55,7 +82,6 @@ export class Parallax extends Component {
                 ...extrapolation,
               }),
             },
-
             {
               scale: 1.1,
             },
@@ -68,11 +94,3 @@ export class Parallax extends Component {
     );
   }
 }
-
-Parallax.propTypes = {
-  driver: React.PropTypes.object,
-  children: React.PropTypes.children,
-  extrapolation: React.PropTypes.object,
-  scrollSpeed: React.PropTypes.number,
-  insideScroll: React.PropTypes.bool,
-};
