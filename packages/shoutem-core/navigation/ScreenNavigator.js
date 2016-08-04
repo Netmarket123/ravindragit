@@ -135,11 +135,27 @@ export class ScreenNavigator extends Component {
   captureNavigatorRef(navigator) {
     const { action, name } = this.props;
     this.navigator = navigator;
+    if (!navigator) {
+      // On componentWillUnMount ref is called with null
+      // In that case NO navigation action is performed
+      // (at least not with this navigator)
+      return;
+    }
     this.props.navigationActionPerformed(action, this.navigator.getCurrentRoutes(), name);
   }
 
   configureScene(route) {
     return route.sceneConfig || Navigator.SceneConfigs.PushFromRight;
+  }
+
+  resolveScreenFromRoute(newRoute) {
+    const routeStack = this.props.initialRouteStack;
+
+    if (routeStack) {
+      return routeStack.find(route => _.isEqual(route, newRoute));
+    }
+
+    return this.context.screens[newRoute.screen];
   }
 
   renderNavigationBar() {
@@ -162,7 +178,7 @@ export class ScreenNavigator extends Component {
   }
 
   renderScene(route) {
-    const Screen = this.context.screens[route.screen];
+    const Screen = this.resolveScreenFromRoute(route);
 
     if (!Screen) {
       throw new Error(`You are trying to navigate to screen (${route.screen}) that doesn't exist. 
@@ -183,6 +199,7 @@ export class ScreenNavigator extends Component {
       <Navigator
         ref={this.captureNavigatorRef}
         initialRoute={this.initialRoute}
+        initialRouteStack={this.props.initialRouteStack}
         configureScene={this.configureScene}
         renderScene={this.renderScene}
         navigationBar={this.renderNavigationBar()}
@@ -211,6 +228,11 @@ ScreenNavigator.propTypes = {
     props: React.PropTypes.object,
     sceneConfig: React.PropTypes.object,
   }),
+
+  /**
+   * Initial route stack to which routes we can perform navigate action
+   */
+  initialRouteStack: React.PropTypes.array,
 
   /**
    * Action to be triggered by screen navigator.
