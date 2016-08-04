@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 /**
  * This file contains the reducer and action creators for
  * all ScreenNavigators in the application. Each navigator
@@ -15,7 +17,8 @@
  */
 
 export const NAVIGATE_TO = 'shoutem.core.navigation.NAVIGATE_TO';
-export const SET_ACTIVE_NAVIGATOR = 'shoutem.core.navigation.SET_ACTIVE_NAVIGATOR';
+export const ADD_NAVIGATOR = 'shoutem.core.navigation.ADD_NAVIGATOR';
+export const POP_NAVIGATOR = 'shoutem.core.navigation.POP_NAVIGATOR';
 export const NAVIGATE_BACK = 'shoutem.core.navigation.NAVIGATE_BACK';
 
 export const NAVIGATION_ACTION_PERFORMED = 'shoutem.core.navigation.NAVIGATION_ACTION_PERFORMED';
@@ -55,20 +58,23 @@ function navigatorReducer(state = {}, action) {
  * @param action
  * @returns {*}
  */
-function activeNavigatorReducer(state = ROOT_NAVIGATOR_NAME, action) {
+function navigatorsStackReducer(state = [], action) {
   switch (action.type) {
-    case NAVIGATE_TO:
-    case SET_ACTIVE_NAVIGATOR:
-      return action.navigator || state;
+    // case NAVIGATE_TO:
+    case ADD_NAVIGATOR:
+      return [...state, action.navigator];
+    case POP_NAVIGATOR:
+      const navigatorIndex = state.indexOf(action.navigator);
+      return _.take(state, navigatorIndex);
     default:
       return state;
   }
 }
 
 export default function (state = {}, action) {
-  const activeNavigator = activeNavigatorReducer(state.activeNavigator, action);
-  const currentNavigator = action.navigator || activeNavigator;
-  if (!activeNavigator) {
+  const navigatorsStack = navigatorsStackReducer(state.navigatorsStack, action);
+  const currentNavigator = action.navigator || _.last(navigatorsStack);
+  if (!currentNavigator) {
     // We can only handle navigation actions that
     // target a specific navigator.
     return state;
@@ -76,7 +82,7 @@ export default function (state = {}, action) {
 
   return {
     ...state,
-    activeNavigator,
+    navigatorsStack,
     [currentNavigator]: navigatorReducer(state[currentNavigator], action),
   };
 }
@@ -85,9 +91,20 @@ export default function (state = {}, action) {
  * @param navigator {string}
  * @returns {{type: string, navigator: string}}
  */
-export const setActiveNavigator = function (navigator) {
+export const addNavigator = function (navigator) {
   return {
-    type: SET_ACTIVE_NAVIGATOR,
+    type: ADD_NAVIGATOR,
+    navigator,
+  };
+};
+
+/**
+ * @param navigator {string}
+ * @returns {{type: string, navigator: string}}
+ */
+export const popNavigator = function (navigator) {
+  return {
+    type: POP_NAVIGATOR,
     navigator,
   };
 };
@@ -150,7 +167,7 @@ const getNavigationProperty = function (state, prop) {
  * @param state - root state
  */
 export const getActiveNavigator = function (state) {
-  return getNavigationProperty(state, 'activeNavigator');
+  return _.last(getNavigationProperty(state, 'navigatorsStack'));
 };
 
 /**

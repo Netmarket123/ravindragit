@@ -11,6 +11,9 @@ import {
 
   navigationActionPerformed,
   navigateBack,
+
+  addNavigator,
+  popNavigator,
 } from './actions';
 
 import NavigationBarStateManager from './NavigationBarStateManager';
@@ -24,6 +27,10 @@ import NavigationBarContainer from './NavigationBarContainer';
  * actions.
  */
 export class ScreenNavigator extends Component {
+  static defaultProps = {
+    active: true,
+  }
+
   constructor(props, context) {
     super(props, context);
 
@@ -46,7 +53,36 @@ export class ScreenNavigator extends Component {
     };
   }
 
+  addNavigator() {
+    this.props.addNavigator(this.props.name);
+  }
+
+  popNavigator() {
+    this.props.popNavigator(this.props.name);
+  }
+
+  componentWillMount() {
+    if (this.props.active) {
+      this.addNavigator();
+    }
+  }
+
+  componentWillUnMount() {
+    this.popNavigator();
+  }
+
   componentWillReceiveProps(nextProps) {
+    if (
+      (nextProps.active && !this.props.active)
+      // (nextContext.isParentActive && !this.context.isParentActive) // TODO(Braco)
+    ) {
+      this.addNavigator();
+    }
+
+    if (!nextProps.active && this.props.active) {
+      this.popNavigator();
+    }
+
     if (!nextProps.action || nextProps.action === this.props.action) {
       return;
     }
@@ -189,7 +225,13 @@ export class ScreenNavigator extends Component {
       <Screen
         {...route.props}
         // eslint-disable-next-line react/jsx-no-bind
-        setNavBarProps={(state) => { this.setNavigationBarState(state, route); }}
+        setNavBarProps={
+          (state) => {
+            if (this.props.active) {
+              this.setNavigationBarState(state, route);
+            }
+          }
+        }
       />
     );
   }
@@ -269,10 +311,17 @@ ScreenNavigator.propTypes = {
    */
   allowActions: React.PropTypes.func,
 
+  addNavigator: React.PropTypes.func,
+  popNavigator: React.PropTypes.func,
+
   /**
    * This is default style to apply to the container of each scene
    */
   sceneStyle: React.PropTypes.object,
+
+  active: React.PropTypes.bool,
+
+  activeNavigator: React.PropTypes.string,
 };
 
 ScreenNavigator.contextTypes = {
@@ -298,6 +347,8 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     navigationActionPerformed,
     navigateBack,
+    addNavigator,
+    popNavigator,
     blockActions() {
       return { type: 'BLOCK_ACTIONS' };
     },
