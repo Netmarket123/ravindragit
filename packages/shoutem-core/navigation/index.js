@@ -4,6 +4,9 @@ import reducer, {
   NAVIGATE_TO,
   navigateTo,
   navigateBack,
+  setActiveNavigator,
+  getActiveNavigator,
+  getNavigator,
 } from './actions';
 import ScreenNavigator from './ScreenNavigator';
 
@@ -17,6 +20,11 @@ export {
   // Action creators
   navigateTo,
   navigateBack,
+  setActiveNavigator,
+
+  // Getters
+  getActiveNavigator,
+  getNavigator,
 
   // Action types
   NAVIGATE_TO,

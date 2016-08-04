@@ -15,6 +15,7 @@
  */
 
 export const NAVIGATE_TO = 'shoutem.core.navigation.NAVIGATE_TO';
+export const SET_ACTIVE_NAVIGATOR = 'shoutem.core.navigation.SET_ACTIVE_NAVIGATOR';
 export const NAVIGATE_BACK = 'shoutem.core.navigation.NAVIGATE_BACK';
 
 export const NAVIGATION_ACTION_PERFORMED = 'shoutem.core.navigation.NAVIGATION_ACTION_PERFORMED';
@@ -47,14 +48,26 @@ function navigatorReducer(state = {}, action) {
   }
 }
 
+/**
+ * Active navigator is used as default navigator
+ * for navigateTo action if navigator not explicitly defined in call.
+ * @param state
+ * @param action
+ * @returns {*}
+ */
 function activeNavigatorReducer(state = ROOT_NAVIGATOR_NAME, action) {
-  if (action.type === NAVIGATE_TO) {
-    return action.navigator || state;
+  switch (action.type) {
+    case NAVIGATE_TO:
+    case SET_ACTIVE_NAVIGATOR:
+      return action.navigator || state;
+    default:
+      return state;
   }
-  return state;
 }
+
 export default function (state = {}, action) {
   const activeNavigator = activeNavigatorReducer(state.activeNavigator, action);
+  const currentNavigator = action.navigator || activeNavigator;
   if (!activeNavigator) {
     // We can only handle navigation actions that
     // target a specific navigator.
@@ -64,15 +77,26 @@ export default function (state = {}, action) {
   return {
     ...state,
     activeNavigator,
-    [activeNavigator]: navigatorReducer(state[activeNavigator], action),
+    [currentNavigator]: navigatorReducer(state[currentNavigator], action),
   };
 }
+
+/**
+ * @param navigator {string}
+ * @returns {{type: string, navigator: string}}
+ */
+export const setActiveNavigator = function (navigator) {
+  return {
+    type: SET_ACTIVE_NAVIGATOR,
+    navigator,
+  };
+};
 
 /**
  * Navigates to the specified route using the specified navigator.
  * @param route The route to navigate to
  * @param navigator The navigator to use, this is an optional
- *  parameter, the root navigator will be used if it is undefined.
+ *  parameter, the activeNavigator will be used if it is undefined.
  * @returns {*} The action.
  */
 // eslint-disable-next-line func-names
@@ -87,7 +111,7 @@ export const navigateTo = function (route, navigator) {
 /**
  * Navigates one step back on the specified navigator.
  * @param navigator The navigator to use, this is an optional
- *  parameter, the root navigator will be used if it is undefined.
+ *  parameter, the activeNavigator will be used if it is undefined.
  * @returns {*} The action.
  */
 // eslint-disable-next-line func-names
@@ -115,4 +139,26 @@ export const navigationActionPerformed = function (navigationAction, navigationS
     navigationAction,
     navigationStack,
   };
+};
+
+const getNavigationProperty = function (state, prop) {
+  return state['shoutem.core'].navigation[prop];
+};
+
+/**
+ * Return active navigator name from application state
+ * @param state - root state
+ */
+export const getActiveNavigator = function (state) {
+  return getNavigationProperty(state, 'activeNavigator');
+};
+
+/**
+ * Return specified navigator from application state
+ * @param state
+ * @param navigator
+ * @returns {*}
+ */
+export const getNavigator = function (state, navigator) {
+  return getNavigationProperty(state, navigator);
 };
