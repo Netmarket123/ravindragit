@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Animated, View } from 'react-native';
-import { DriverShape } from 'DriverShape';
+import { DriverShape } from './DriverShape';
 /*
  * Parallax Component adds parallax effect to its children components.
  * Connect it to driver to animate it. By default children will by
@@ -37,7 +37,7 @@ export class Parallax extends Component {
     /**
      * Components to which an effect will be applied
      */
-    children: React.PropTypes.children,
+    children: React.PropTypes.node,
     /**
      * extrapolation options for parallax translation
      * if not passed children would be translated by

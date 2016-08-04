@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Animated, View } from 'react-native';
-import { DriverShape } from 'DriverShape';
+import { DriverShape } from './DriverShape';
 /*
  * ZoomOut Component adds zoom out effect to its children components.
  * Connect it to driver and pass the input range to animate it.
@@ -36,7 +36,7 @@ export class ZoomOut extends Component {
     /**
      * Components to which an effect will be applied
      */
-    children: React.PropTypes.children,
+    children: React.PropTypes.node,
     /**
      * pair of [start, end] values from animation driver, how
      * children would zoom out from maxFactor
