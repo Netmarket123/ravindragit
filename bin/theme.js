@@ -207,9 +207,8 @@ export default () => ({
     '.small-avatar': {
       width: 25,
       height: 25,
-      borderRadius: 13,
-      borderColor: 'rgba(0, 0, 0, 0)',
-      borderWidth: 1,
+      borderRadius: 12.5,
+      borderWidth: 0,
       resizeMode: 'cover',
     },
 
@@ -218,9 +217,22 @@ export default () => ({
       height: 65,
     },
 
+    '.medium-avatar': {
+      width: 145,
+      height: 145,
+      borderRadius: 72.5,
+      borderWidth: 0,
+      resizeMode: 'cover',
+    },
+
     '.medium': {
       width: 145,
       height: 92,
+    },
+
+    '.medium-wide': {
+      width: 180,
+      height: 85,
     },
 
     '.medium-square': {
@@ -228,24 +240,45 @@ export default () => ({
       height: 145,
     },
 
+    // NOTE: Image resizing doesn't work correctly if both
+    // dimensions are not explicitly defined, so we can't
+    // use flex: 1, or alignSelf: 'stretch' here...
+
+    // TODO (zeljko): See if we can avoid this size
+    '.featured': {
+      width: (365 / 375) * window.width,
+      height: (345 / 375) * window.width,
+    },
+
     '.large': {
-      width: 375,
-      height: 240,
+      width: window.width,
+      height: (280 / 375) * window.width,
     },
 
     '.large-portrait': {
-      alignSelf: 'stretch',
+      width: window.width,
       height: (518 / 375) * window.width,
     },
 
+    '.large-banner': {
+      width: window.width,
+      height: (200 / 375) * window.width,
+    },
+
     '.large-square': {
-      alignSelf: 'stretch',
-      height: (330 / 375) * window.width,
+      width: window.width,
+      height: window.width,
     },
 
     '.large-wide': {
-      alignSelf: 'stretch',
-      height: (200 / 375) * window.width,
+      width: window.width,
+      height: (238 / 375) * window.width,
+    },
+
+    // TODO (zeljko): Used only in one place (up next), maybe hardcode it?
+    '.large-ultra-wide': {
+      width: window.width,
+      height: (130 / 375) * window.width,
     },
   },
   'shoutem.ui.Image': {
@@ -281,7 +314,6 @@ export default () => ({
     alignItems: 'center',
     justifyContent: 'center',
     resizeMode: 'cover',
-    padding: 33,
   },
 
   'shoutem.ui.ImagePreview': {

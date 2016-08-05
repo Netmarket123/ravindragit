@@ -20,8 +20,8 @@ Stage.propTypes = {
 
 const styles =  {
   container: {
-    flex: 1,
     marginVertical: 24,
+    flexDirection: 'column',
   },
   title: {
     fontSize: 18,
