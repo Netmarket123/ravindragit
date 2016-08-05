@@ -15,25 +15,19 @@ Text.propTypes = {
   ...RNText.propTypes,
 };
 
-const StyledText = connectStyle('shoutem.ui.Text', {})(Text);
-
-const Heading = connectStyle('shoutem.ui.Heading', {})(Text);
-
-const Title = connectStyle('shoutem.ui.Title', {})(Text);
-
-const Subtitle = connectStyle('shoutem.ui.Subtitle', {})(Text);
-
-const Caption = connectStyle('shoutem.ui.Caption', {})(Text);
+const StyledText = connectStyle('shoutem.ui.Text')(Text);
+const Heading = connectStyle('shoutem.ui.Heading')(Text);
+const Title = connectStyle('shoutem.ui.Title')(Text);
+const Subtitle = connectStyle('shoutem.ui.Subtitle')(Text);
+const Description = connectStyle('shoutem.ui.Description')(Text);
+const Caption = connectStyle('shoutem.ui.Caption')(Text);
 
 const Animated = {
   Text: RNAnimated.createAnimatedComponent(StyledText),
-
   Heading: RNAnimated.createAnimatedComponent(Heading),
-
   Title: RNAnimated.createAnimatedComponent(Title),
-
   Subtitle: RNAnimated.createAnimatedComponent(Subtitle),
-
+  Description: RNAnimated.createAnimatedComponent(Description),
   Caption: RNAnimated.createAnimatedComponent(Caption),
 };
 
@@ -42,6 +36,7 @@ export {
   Heading,
   Title,
   Subtitle,
+  Description,
   Caption,
   Animated,
 };

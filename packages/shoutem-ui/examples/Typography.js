@@ -7,6 +7,7 @@ import {
   Heading,
   Title,
   Subtitle,
+  Description,
   Caption,
 } from '../components/Text';
 
@@ -27,6 +28,14 @@ export function Typography() {
 
       <Stage title="Text">
         <Text>Mobile App Creator</Text>
+      </Stage>
+
+      <Stage title="Text strong">
+        <Text styleName="bold">Mobile App Creator</Text>
+      </Stage>
+
+      <Stage title="Description">
+        <Description>Mobile App Creator</Description>
       </Stage>
 
       <Stage title="Caption">
