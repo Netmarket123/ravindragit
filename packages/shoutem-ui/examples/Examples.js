@@ -9,8 +9,8 @@ import { Images } from './Images';
 export function Examples() {
   return (
     <ScrollView>
-      <Images />
       <Typography />
+      <Images />
     </ScrollView>
   );
 }
