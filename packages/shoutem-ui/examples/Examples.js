@@ -5,11 +5,13 @@ import {
 
 import { Typography } from './Typography';
 import { Images } from './Images';
+import { Cards } from './Cards';
 
 export function Examples() {
   return (
     <ScrollView>
       <Typography />
+      <Cards />
       <Images />
     </ScrollView>
   );

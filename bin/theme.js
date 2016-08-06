@@ -11,6 +11,9 @@ const window = Dimensions.get('window');
 const Colors = {
   DARK: '#333333',
   LIGHT_GRAY: '#f2f2f2',
+  BACKGROUND: '#fff',
+  SHADOW: '#000',
+  CLEAR: 'rgba(0, 0, 0, 0)',
 };
 
 const SMALL_GUTTER = 5;
@@ -134,6 +137,7 @@ export default () => ({
     [INCLUDE]: ['shoutem.ui.Text'],
 
     color: '#222222',
+    lineHeight: 18,
   },
 
   'shoutem.ui.Description': {
@@ -231,7 +235,7 @@ export default () => ({
     },
 
     '.medium-wide': {
-      width: 180,
+      width: (180 / 375) * window.width,
       height: 85,
     },
 
@@ -355,33 +359,37 @@ export default () => ({
     [INCLUDE]: ['commonVariants', 'guttersPadding'],
 
     '.horizontal': {
+      '.h-center': {
+        justifyContent: 'center',
+      },
+
+      '.v-center': {
+        alignItems: 'center',
+      },
+
       flexDirection: 'row',
       alignItems: 'flex-end',
     },
 
     '.vertical': {
-      'shoutem.ui.View': {
-        marginBottom: 5,
+      '.h-center': {
+        alignItems: 'center',
+      },
+
+      '.v-center': {
+        justifyContent: 'center',
       },
 
       flexDirection: 'column',
-      alignSelf: 'stretch',
     },
 
-    '.wrapped': {
+    '.wrap': {
       flexWrap: 'wrap',
-      justifyContent: 'flex-start',
     },
 
-    '.collapsed': {
-      flex: 0,
-      justifyContent: 'flex-start',
+    '.space-between': {
+      justifyContent: 'space-between',
     },
-    '.centered': {
-      justifyContent: 'center',
-    },
-    flex: 1,
-    justifyContent: 'space-between',
   },
 
   'shoutem.ui.Screen': {
@@ -535,26 +543,23 @@ export default () => ({
   'shoutem.ui.Card': {
     [INCLUDE]: ['commonVariants'],
 
-    '*.content': {
+    'shoutem.ui.View.content': {
+      'shoutem.ui.Subtitle': {
+        marginBottom: MEDIUM_GUTTER,
+      },
+
       padding: 10,
       alignSelf: 'stretch',
     },
 
-    'shoutem.ui.Image': {
-      '.medium-wide': {
-        height: (85.0 / 375) * window.width,
-      },
-
-      alignSelf: 'stretch',
-      padding: 15,
-    },
-
+    // TODO (zeljko): Can we avoid fixed width here?
+    width: (180 / 375) * window.width,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'flex-start',
-    backgroundColor: 'white',
+    backgroundColor: Colors.BACKGROUND,
     borderRadius: 2,
-    shadowColor: 'black',
+    shadowColor: Colors.SHADOW,
     shadowOpacity: 0.1,
     shadowOffset: { width: 1, height: 1 },
   },
@@ -650,12 +655,10 @@ export default () => ({
 
     '.clear': {
       'shoutem.ui.Icon': {
-        color: 'white',
         marginHorizontal: 0,
       },
 
-      backgroundColor: 'rgba(0, 0, 0, 0)',
-      borderColor: 'rgba(0, 0, 0, 0)',
+      backgroundColor: Colors.CLEAR,
       borderWidth: 0,
       borderRadius: 0,
     },
@@ -671,7 +674,6 @@ export default () => ({
       },
 
       backgroundColor: Colors.DARK,
-      borderColor: Colors.DARK,
     },
 
     '.stacked': {
