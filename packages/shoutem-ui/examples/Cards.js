@@ -8,7 +8,6 @@ import {
   Image,
   Subtitle,
   Caption,
-  Divider,
   Icon,
   Button,
 } from '../index';
