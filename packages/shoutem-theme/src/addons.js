@@ -48,3 +48,46 @@ export function createVariations(baseName, nameSuffixes, key, value) {
     return result;
   }, {});
 }
+
+/**
+ * Creates a set of style rules for the provided components. This function
+ * is useful when a set of components needs to have the same style. The
+ * shared style will be applied to each component. It is also possible to
+ * provide custom style for each component that will be applied on top of
+ * the shared style.
+ *
+ * Example:
+ * createSharedStyle(['shoutem.ui.Text', 'shoutem.ui.Title'], {
+ *   color: 'white'
+ * }, {
+ *   'shoutem.ui.Title: {
+ *     marginBottom: 15
+ *   }
+ * );
+ * will return:
+ * {
+ *   'shoutem.ui.Text': {
+ *     color: 'white'
+ *   },
+ *   'shoutem.ui.Title': {
+ *     color: 'white',
+ *     marginBottom: 15
+ *   }
+ * }
+ *
+ * @param componentNames The names of the components to generate styles for.
+ * @param sharedStyle The style to apply to each component.
+ * @param customStyles Style overrides by component names.
+ * @returns {object} An object with the generated styles.
+ */
+export function createSharedStyle(componentNames, sharedStyle = {}, customStyles = {}) {
+  return _.reduce(componentNames, (result, componentName) => {
+    // eslint-disable-next-line no-param-reassign
+    result[componentName] = {
+      ...sharedStyle,
+      ...customStyles[componentName]
+    };
+
+    return result;
+  }, {});
+}
