@@ -28,7 +28,7 @@ Button.propTypes = {
   ...TouchableOpacity.propTypes,
 };
 
-const StyledButton = connectStyle('shoutem.ui.Button', {})(Button);
+const StyledButton = connectStyle('shoutem.ui.Button')(Button);
 export {
   StyledButton as Button,
 };

@@ -4,16 +4,24 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import { INCLUDE, createVariations } from '@shoutem/theme';
+import { INCLUDE, createVariations, createSharedStyle } from '@shoutem/theme';
 
 const window = Dimensions.get('window');
 
+function generateComponentStyles(components, sharedStyle = {}, customStyles ={}) {
+
+}
+
 const Colors = {
   DARK: '#333333',
+  DARKER: '#222222',
   LIGHT_GRAY: '#f2f2f2',
+  LIGHT: '#fff',
   BACKGROUND: '#fff',
   SHADOW: '#000',
   CLEAR: 'rgba(0, 0, 0, 0)',
+  OVERLAY: 'rgba(0, 0, 0, 0.2)',
+  OVERLAY_DARK: 'rgba(0, 0, 0, 0.4)',
 };
 
 const SMALL_GUTTER = 5;
@@ -25,6 +33,14 @@ const STATUS_BAR_OFFSET = (Platform.OS === 'android' ? -25 : 0);
 const NAVIGATION_BAR_HEIGHT = 70;
 
 const sizeVariants = ['', 'left', 'right', 'top', 'bottom', 'horizontal', 'vertical'];
+const textComponents = [
+  'shoutem.ui.Heading',
+  'shoutem.ui.Title',
+  'shoutem.ui.Subtitle',
+  'shoutem.ui.Description',
+  'shoutem.ui.Text',
+  'shoutem.ui.Caption'
+];
 
 export default () => ({
   //
@@ -286,33 +302,7 @@ export default () => ({
     },
   },
   'shoutem.ui.Image': {
-    [INCLUDE]: ['imageChildren', 'guttersPadding', 'commonVariants', 'imageSizes'],
-
-    'shoutem.ui.Overlay': {
-      'shoutem.ui.View': {
-        [INCLUDE]: ['imageChildren'],
-
-        'shoutem.ui.Button': {
-          '.action': {
-            marginTop: LARGE_GUTTER,
-          },
-        },
-      },
-
-      alignSelf: 'stretch',
-      marginVertical: -33,
-      marginHorizontal: -33,
-      paddingVertical: 33,
-      paddingHorizontal: 33,
-    },
-
-    '.top-aligned': {
-      justifyContent: 'flex-start',
-    },
-
-    '.bottom-aligned': {
-      justifyContent: 'flex-end',
-    },
+    [INCLUDE]: ['commonVariants', 'imageSizes'],
 
     flexDirection: 'column',
     alignItems: 'center',
@@ -397,7 +387,7 @@ export default () => ({
       marginTop: -NAVIGATION_BAR_HEIGHT,
     },
 
-    backgroundColor: '#fff',
+    backgroundColor: Colors.BACKGROUND,
     flex: 1,
   },
 
@@ -460,84 +450,45 @@ export default () => ({
   'shoutem.ui.Tile': {
     [INCLUDE]: ['commonVariants'],
 
-    'shoutem.ui.Image': {
-      'shoutem.ui.Icon': {
-        color: 'white',
-      },
-
-      'shoutem.ui.Heading': {
-        marginVertical: 8,
-      },
-
-      'shoutem.ui.Title': {
-        marginVertical: 12,
-        textAlign: 'center',
-      },
-
-      'shoutem.ui.Caption': {
-        marginTop: 5,
-      },
-
-      'shoutem.ui.Button': {
-        marginVertical: 12,
-      },
-
-      'shoutem.ui.View': {
-        '.actions': {
-          marginTop: -18,
-          marginRight: -18,
-          marginBottom: 15,
+    'shoutem.ui.View': {
+      '.content': {
+        '*': {
+          marginBottom: MEDIUM_GUTTER - SMALL_GUTTER,
         },
+
+        alignSelf: 'stretch',
+        paddingTop: MEDIUM_GUTTER,
+        paddingBottom: SMALL_GUTTER,
+        paddingHorizontal: MEDIUM_GUTTER,
       },
-
-      flex: 1,
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      alignSelf: 'stretch',
-      resizeMode: 'cover',
-      padding: 33,
-    },
-
-    'shoutem.ui.Subtitle': {
-      paddingTop: 15,
-    },
-
-    'shoutem.ui.Caption': {
-      paddingTop: 5,
-    },
-
-    '*.content': {
-      '*': {
-        marginTop: 10,
-      },
-
-      marginTop: 5,
-      marginBottom: 15,
-      marginHorizontal: 15,
     },
 
     '.light': {
-      backgroundColor: 'white',
+      backgroundColor: Colors.BACKGROUND,
     },
 
-    '.text-centric': {
-      'shoutem.ui.Title': {
-        marginBottom: MEDIUM_GUTTER,
+    '.small': {
+      'shoutem.ui.View': {
+        '.content': {
+          '*': {
+            marginBottom: SMALL_GUTTER,
+          },
+
+          alignSelf: 'stretch',
+          paddingTop: MEDIUM_GUTTER,
+          paddingBottom: 0,
+          paddingHorizontal: 0,
+          marginBottom: -SMALL_GUTTER,
+        },
       },
 
-      'shoutem.ui.Button': {
-        marginTop: LARGE_GUTTER,
-      },
-
-      padding: LARGE_GUTTER,
-      justifyContent: 'center',
-      alignItems: 'center',
+      width: 145,
     },
 
+    flex: -1,
     flexDirection: 'column',
     alignItems: 'flex-start',
-    backgroundColor: 'rgba(0, 0, 0, 0)',
+    backgroundColor: Colors.CLEAR,
   },
 
   'shoutem.ui.Card': {
@@ -565,65 +516,63 @@ export default () => ({
   },
 
   'shoutem.ui.Overlay': {
-    '.solid-light': {
-      'shoutem.ui.View': {
-        'shoutem.ui.Heading': {
-          color: 'black',
-        },
-
-        'shoutem.ui.Title': {
-          color: 'black',
-        },
-
-        'shoutem.ui.Subtitle': {
-          color: 'black',
-        },
-
-        'shoutem.ui.Text': {
-          color: 'black',
-        },
-
-        'shoutem.ui.Caption': {
-          color: 'black',
-        },
+    '.collapsed': {
+      '*': {
+        marginBottom: 0,
       },
 
-      backgroundColor: 'white',
+      position: 'relative',
+      borderRadius: 2,
+      borderWidth: 0,
+      paddingTop: 2 * SMALL_GUTTER,
+      paddingBottom: 2 * SMALL_GUTTER,
+      paddingHorizontal: MEDIUM_GUTTER,
+      backgroundColor: Colors.OVERLAY_DARK,
+    },
+
+    '.solid-light': {
+      ...createSharedStyle(textComponents, {
+        color: Colors.DARKER,
+      }),
+
+      borderRadius: 0,
+      backgroundColor: Colors.BACKGROUND,
     },
 
     'shoutem.ui.View': {
-      'shoutem.ui.Heading': {
-        color: 'white',
-      },
+      '.actions': {
+        'shoutem.ui.Button': {
+          'shoutem.ui.Icon': {
+            color: Colors.LIGHT,
+          },
+        },
 
-      'shoutem.ui.Title': {
-        color: 'white',
-      },
-
-      'shoutem.ui.Subtitle': {
-        color: 'white',
-      },
-
-      'shoutem.ui.Text': {
-        color: 'white',
-      },
-
-      'shoutem.ui.Caption': {
-        color: 'white',
+        position: 'absolute',
+        top: MEDIUM_GUTTER,
+        right: 0,
       },
     },
 
-    '.dark': {
-      backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    '*': {
+      marginBottom: SMALL_GUTTER,
     },
 
+    ...createSharedStyle(textComponents, {
+      color: Colors.LIGHT,
+      textAlign: 'center',
+    }),
+
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 12,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    backgroundColor: 'rgba(85, 85, 85, 0.5)',
+    paddingHorizontal: 25,
+    paddingTop: SMALL_GUTTER,
+    backgroundColor: Colors.OVERLAY,
   },
 
   //
@@ -634,7 +583,7 @@ export default () => ({
   },
 
   'shoutem.ui.Button': {
-    [INCLUDE]: ['commonVariants'],
+    [INCLUDE]: ['commonVariants', 'guttersMargin'],
 
     'shoutem.ui.Text': {
       '.regular': {
@@ -644,13 +593,16 @@ export default () => ({
 
       fontFamily: 'Rubik-Medium',
       fontSize: 12,
-      color: 'black',
-      margin: 12,
+      color: Colors.DARK,
+      letterSpacing: 1,
+      lineHeight: null,
+      marginVertical: 12,
+      marginRight: 10,
     },
 
     'shoutem.ui.Icon': {
       fontSize: 24,
-      marginHorizontal: 10,
+      marginRight: 10,
     },
 
     '.clear': {
@@ -667,10 +619,10 @@ export default () => ({
       [INCLUDE]: ['commonVariants'],
 
       'shoutem.ui.Icon': {
-        color: '#ffffff',
+        color: Colors.LIGHT,
       },
       'shoutem.ui.Text': {
-        color: '#ffffff',
+        color: Colors.LIGHT,
       },
 
       backgroundColor: Colors.DARK,
@@ -703,6 +655,8 @@ export default () => ({
     borderRadius: 2,
     borderWidth: 1,
     borderColor: 'white',
+    paddingLeft: MEDIUM_GUTTER,
+    paddingRight: SMALL_GUTTER,
   },
 
   //
@@ -797,19 +751,32 @@ export default () => ({
     },
   },
 
+  roundedOverlay: {
+    backgroundColor: Colors.LIGHT,
+    color: Colors.DARKER,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    borderWidth: 0,
+    // Rounded corners don't work if
+    // element is opaque
+    opacity: 0.99,
+    padding: 12,
+  },
   'shoutem.ui.Icon': {
-    '.rounded-overlay': {
-      backgroundColor: '#333333',
-      color: 'white',
-      opacity: 0.7,
-      fontSize: 24,
-      width: 38,
-      height: 38,
-      borderRadius: 19,
-      padding: 7,
+    '.rounded-overlay-small': {
+      [INCLUDE]: ['roundedOverlay'],
+      width: 34,
+      height: 34,
+      borderRadius: 17,
+      padding: 4,
     },
 
-    backgroundColor: 'rgba(0, 0, 0, 0)',
+    '.rounded-overlay': {
+      [INCLUDE]: ['roundedOverlay'],
+    },
+
+    backgroundColor: Colors.CLEAR,
     textAlign: 'center',
     textAlignVertical: 'center',
     fontSize: 24,
