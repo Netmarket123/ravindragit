@@ -106,7 +106,7 @@ export function Rows() {
             source={require('../assets/examples/road.png')}
           />
           <View styleName="vertical space-between">
-            <Subtitle>Wilco Cover David Bowie's "Space Oddity"</Subtitle>
+            <Subtitle>Wilco Cover David Bowie&#39;s "Space Oddity"</Subtitle>
             <Caption>June 21  ·  20:00</Caption>
           </View>
           <Button styleName="right-icon"><Icon name="add-event" /></Button>

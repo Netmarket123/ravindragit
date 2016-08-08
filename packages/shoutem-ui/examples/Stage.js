@@ -30,7 +30,7 @@ const styles =  {
   },
   stage: {
     paddingVertical: 40,
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#f5f6f7',

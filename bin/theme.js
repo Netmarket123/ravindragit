@@ -511,8 +511,9 @@ export default () => ({
         marginBottom: MEDIUM_GUTTER,
       },
 
-      padding: 10,
+      flex: 1,
       alignSelf: 'stretch',
+      padding: 10,
     },
 
     // TODO (zeljko): Can we avoid fixed width here?
@@ -528,7 +529,7 @@ export default () => ({
   },
 
   'shoutem.ui.Overlay': {
-    [INCLUDE]: ['overlayParent'],
+    [INCLUDE]: ['overlayParent', 'guttersPadding'],
 
     '.collapsed': {
       '*': {
@@ -664,6 +665,7 @@ export default () => ({
       },
 
       flex: 1,
+      alignSelf: 'stretch',
       borderRadius: 0,
       borderWidth: 0,
     },
@@ -1063,7 +1065,7 @@ export default () => ({
       [INCLUDE]: ['sectionHeaderDivider'],
     },
 
-    flex: 1,
+    alignSelf: 'stretch',
     backgroundColor: Colors.LIGHT,
     paddingTop: 25,
     flexDirection: 'row',
