@@ -8,10 +8,6 @@ import { INCLUDE, createVariations, createSharedStyle } from '@shoutem/theme';
 
 const window = Dimensions.get('window');
 
-function generateComponentStyles(components, sharedStyle = {}, customStyles ={}) {
-
-}
-
 const Colors = {
   DARK: '#333333',
   DARKER: '#222222',
@@ -23,7 +19,9 @@ const Colors = {
   OVERLAY: 'rgba(0, 0, 0, 0.2)',
   OVERLAY_DARK: 'rgba(0, 0, 0, 0.4)',
   BUTTON_UNDERLAY: '#cccccc',
-  BORDER: '#cccccc'
+  BORDER: '#cccccc',
+  DIVIDER_LINE: '#eeeeee',
+  DIVIDER_BORDER: 'rgba(51, 51, 51, 0.1)',
 };
 
 const SMALL_GUTTER = 5;
@@ -850,19 +848,10 @@ export default () => ({
   //
   'shoutem.ui.ListView': {
     'shoutem.ui.Divider': {
-      'shoutem.ui.View': {
-        'shoutem.ui.Caption': {
-          marginVertical: SMALL_GUTTER,
-          marginHorizontal: MEDIUM_GUTTER,
-        },
-      },
+      [INCLUDE]: ['sectionHeaderDivider'],
 
-      backgroundColor: 'white',
-      paddingTop: 20,
-      flex: 0,
-      height: null,
-      borderBottomWidth: StyleSheet.hairlineWidth,
-      borderColor: 'rgb(242, 242, 242)',
+      backgroundColor: Colors.LIGHT,
+      borderTopWidth: 0,
     },
 
     header: {
@@ -1050,37 +1039,35 @@ export default () => ({
     },
   },
 
-  'shoutem.ui.Divider': {
-    '.line': {
-      height: 0,
-      borderBottomWidth: StyleSheet.hairlineWidth,
-      borderColor: 'rgb(242, 242, 242)',
+  sectionHeaderDivider: {
+    'shoutem.ui.Caption': {
+      marginTop: -1,
+      marginBottom: SMALL_GUTTER,
+      marginHorizontal: MEDIUM_GUTTER,
     },
 
-    '.medium-vertical-margin': {
-      marginVertical: MEDIUM_GUTTER,
+    paddingTop: 23,
+    backgroundColor: Colors.LIGHT_GRAY,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderColor: Colors.DIVIDER_BORDER,
+  },
+  'shoutem.ui.Divider': {
+    '.line': {
+      paddingTop: 0,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderColor: Colors.DIVIDER_LINE,
     },
 
     '.section-header': {
-      'shoutem.ui.View': {
-        'shoutem.ui.Caption': {
-          marginVertical: SMALL_GUTTER,
-          marginHorizontal: MEDIUM_GUTTER,
-          color: '#888888',
-        },
-      },
-
-      backgroundColor: '#f2f2f2',
-      paddingTop: 20,
-      flex: 0,
-      height: null,
-      borderBottomWidth: StyleSheet.hairlineWidth,
-      borderTopWidth: StyleSheet.hairlineWidth,
-      borderColor: '#e5e5e5',
+      [INCLUDE]: ['sectionHeaderDivider'],
     },
 
-    alignSelf: 'stretch',
-    height: 20,
+    flex: 1,
+    backgroundColor: Colors.LIGHT,
+    paddingTop: 25,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 
   'shoutem.ui.MapView': {
