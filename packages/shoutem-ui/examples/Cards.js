@@ -40,7 +40,7 @@ export function Cards() {
             <Subtitle>Choosing The Right Boutique Hotel For You</Subtitle>
             <View styleName="horizontal v-center space-between">
               <Caption>Dec 21, 13:45</Caption>
-              <Button styleName="clear"><Icon name="add-event" /></Button>
+              <Button styleName="tight clear"><Icon name="add-event" /></Button>
             </View>
           </View>
         </Card>
@@ -63,7 +63,7 @@ export function Cards() {
                 // TODO (zeljko): Should we add an IconButton?
                 // <IconButton icon="cart" onPress={...} />
               }
-              <Button styleName="clear"><Icon name="cart" /></Button>
+              <Button styleName="tight clear"><Icon name="cart" /></Button>
             </View>
           </View>
         </Card>

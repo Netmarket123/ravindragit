@@ -552,7 +552,7 @@ export default () => ({
 
         position: 'absolute',
         top: MEDIUM_GUTTER,
-        right: 0,
+        right: MEDIUM_GUTTER,
       },
     },
 
@@ -587,6 +587,19 @@ export default () => ({
 
   'shoutem.ui.Button': {
     [INCLUDE]: ['commonVariants', 'guttersMargin'],
+
+    '.tight': {
+      'shoutem.ui.Icon': {
+        marginRight: 0,
+      },
+
+      'shoutem.ui.Text': {
+        marginRight: 0,
+      },
+
+      paddingLeft: 0,
+      paddingRight: 0,
+    },
 
     '.clear': {
       backgroundColor: Colors.CLEAR,

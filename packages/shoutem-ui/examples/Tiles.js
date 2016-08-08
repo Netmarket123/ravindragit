@@ -142,7 +142,7 @@ export function Tiles() {
         >
           <Overlay>
             <View styleName="actions">
-              <Button styleName="clear"><Icon name="add-to-favorites" /></Button>
+              <Button styleName="tight clear"><Icon name="add-to-favorites" /></Button>
             </View>
             <Title>HOW TO MAINTAIN YOUR MENTAL HEALTH IN 2016</Title>
             <Caption>6557 Americo Hills Apt. 118</Caption>

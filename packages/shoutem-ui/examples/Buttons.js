@@ -59,7 +59,7 @@ export function Buttons() {
       </Stage>
 
       <Stage title="Button / Navbar">
-        <Button styleName="clear">
+        <Button styleName="tight clear">
           <Icon name="add-to-favorites-full" />
         </Button>
       </Stage>
