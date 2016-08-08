@@ -16,12 +16,14 @@ const Colors = {
   DARK: '#333333',
   DARKER: '#222222',
   LIGHT_GRAY: '#f2f2f2',
-  LIGHT: '#fff',
-  BACKGROUND: '#fff',
-  SHADOW: '#000',
+  LIGHT: '#ffffff',
+  BACKGROUND: '#ffffff',
+  SHADOW: '#000000',
   CLEAR: 'rgba(0, 0, 0, 0)',
   OVERLAY: 'rgba(0, 0, 0, 0.2)',
   OVERLAY_DARK: 'rgba(0, 0, 0, 0.4)',
+  BUTTON_UNDERLAY: '#cccccc',
+  BORDER: '#cccccc'
 };
 
 const SMALL_GUTTER = 5;
@@ -66,6 +68,7 @@ export default () => ({
       borderWidth: 0,
       borderColor: 'rgba(0, 0, 0, 0)',
     },
+
     '.flexible': {
       flex: 1,
     },
@@ -585,15 +588,84 @@ export default () => ({
   'shoutem.ui.Button': {
     [INCLUDE]: ['commonVariants', 'guttersMargin'],
 
-    'shoutem.ui.Text': {
-      '.regular': {
-        fontFamily: 'Rubik-Regular',
-        margin: 0,
+    '.clear': {
+      backgroundColor: Colors.CLEAR,
+      borderWidth: 0,
+      borderRadius: 0,
+    },
+
+    '.dark': {
+      'shoutem.ui.Icon': {
+        color: Colors.LIGHT,
+      },
+      'shoutem.ui.Text': {
+        color: Colors.LIGHT,
       },
 
+      backgroundColor: Colors.DARKER,
+      borderColor: Colors.DARKER,
+    },
+
+    '.muted': {
+      'shoutem.ui.Icon': {
+        opacity: 0.5,
+      },
+
+      'shoutem.ui.Text': {
+        opacity: 0.5,
+      },
+    },
+
+    // Buttons at the bottom of dialogs, widgets, etc.,
+    // usually Cancel/Confirm, No/Yes, etc.
+    '.confirmation': {
+      // Show the border around light buttons
+      borderColor: Colors.BORDER,
+
+      // Medium gutter on both sides, 25 between buttons
+      flex: 1,
+      marginHorizontal: MEDIUM_GUTTER,
+    },
+
+    '.full-width': {
+      'shoutem.ui.Icon': {
+        fontSize: 16,
+      },
+
+      'shoutem.ui.Text': {
+        marginVertical: 20,
+      },
+
+      flex: 1,
+      borderRadius: 0,
+      borderWidth: 0,
+    },
+
+    '.border': {
+      borderColor: Colors.BORDER,
+    },
+
+    '.stacked': {
+      'shoutem.ui.Icon': {
+        marginVertical: MEDIUM_GUTTER,
+        marginRight: 0,
+      },
+
+      'shoutem.ui.Text': {
+        textAlign: 'center',
+        marginVertical: 0,
+        marginRight: 0,
+      },
+
+      width: 125,
+      height: 82,
+      flexDirection: 'column',
+    },
+
+    'shoutem.ui.Text': {
       fontFamily: 'Rubik-Medium',
       fontSize: 12,
-      color: Colors.DARK,
+      color: Colors.DARKER,
       letterSpacing: 1,
       lineHeight: null,
       marginVertical: 12,
@@ -601,60 +673,20 @@ export default () => ({
     },
 
     'shoutem.ui.Icon': {
+      color: Colors.DARKER,
       fontSize: 24,
       marginRight: 10,
     },
 
-    '.clear': {
-      'shoutem.ui.Icon': {
-        marginHorizontal: 0,
-      },
+    underlayColor: Colors.BUTTON_UNDERLAY,
 
-      backgroundColor: Colors.CLEAR,
-      borderWidth: 0,
-      borderRadius: 0,
-    },
-
-    '.dark': {
-      [INCLUDE]: ['commonVariants'],
-
-      'shoutem.ui.Icon': {
-        color: Colors.LIGHT,
-      },
-      'shoutem.ui.Text': {
-        color: Colors.LIGHT,
-      },
-
-      backgroundColor: Colors.DARK,
-    },
-
-    '.stacked': {
-      'shoutem.ui.Icon': {
-        color: '#666666',
-        fontSize: 32,
-      },
-
-      'shoutem.ui.Text': {
-        [INCLUDE]: ['defaultFont'],
-        fontSize: 13,
-        margin: 10,
-      },
-
-      width: 125,
-      flexDirection: 'column',
-      paddingTop: 10,
-      paddingBottom: SMALL_GUTTER,
-    },
-
-    underlayColor: '#ccc',
-
-    backgroundColor: 'white',
+    backgroundColor: Colors.BACKGROUND,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 2,
     borderWidth: 1,
-    borderColor: 'white',
+    borderColor: Colors.BACKGROUND,
     paddingLeft: MEDIUM_GUTTER,
     paddingRight: SMALL_GUTTER,
   },
