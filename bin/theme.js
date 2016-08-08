@@ -73,6 +73,10 @@ export default () => ({
       flex: 1,
     },
 
+    '.inflexible': {
+      flex: 0,
+    },
+
     '.collapsible': {
       flex: -1,
     },
@@ -105,6 +109,13 @@ export default () => ({
     fontFamily: 'Menlo',
   },
 
+  vCenterText: {
+    // Compensate for lineHeight, because
+    // textAlignVertical is not supported on iOS
+    marginTop: -4,
+    marginBottom: 4,
+  },
+
   'shoutem.ui.Text': {
     [INCLUDE]: ['commonVariants', 'defaultFont', 'guttersMargin'],
 
@@ -112,18 +123,23 @@ export default () => ({
       textDecorationLine: 'line-through',
     },
 
-    '.centered': {
+    '.h-center': {
       textAlign: 'center',
     },
 
+    '.v-center': {
+      [INCLUDE]: ['vCenterText'],
+    },
+
     '.bright': {
-      color: '#fff',
+      color: Colors.LIGHT,
     },
 
     '.bold': {
       [INCLUDE]: ['boldTextStyle'],
     },
 
+    backgroundColor: Colors.CLEAR,
     color: '#666666',
     fontSize: 15,
     lineHeight: 26,
@@ -131,6 +147,10 @@ export default () => ({
 
   'shoutem.ui.Heading': {
     [INCLUDE]: ['shoutem.ui.Text'],
+
+    '.v-center': {
+      marginTop: 0,
+    },
 
     color: '#222222',
     fontSize: 25,
@@ -140,6 +160,10 @@ export default () => ({
 
   'shoutem.ui.Title': {
     [INCLUDE]: ['shoutem.ui.Text'],
+
+    '.v-center': {
+      marginTop: 0,
+    },
 
     '.navigationBarTitle': {
       fontSize: 15,
@@ -155,12 +179,20 @@ export default () => ({
   'shoutem.ui.Subtitle': {
     [INCLUDE]: ['shoutem.ui.Text'],
 
+    '.v-center': {
+      marginTop: 0,
+    },
+
     color: '#222222',
     lineHeight: 18,
   },
 
   'shoutem.ui.Description': {
     [INCLUDE]: ['shoutem.ui.Text'],
+
+    '.v-center': {
+      marginTop: -1,
+    },
 
     color: '#333333',
     fontSize: 13,
@@ -171,6 +203,10 @@ export default () => ({
   'shoutem.ui.Caption': {
     [INCLUDE]: ['shoutem.ui.Text'],
 
+    '.v-center': {
+      marginTop: 0,
+    },
+
     color: '#555555',
     fontSize: 12,
     lineHeight: 16,
@@ -180,52 +216,6 @@ export default () => ({
   //
   // Images
   //
-  imageChildren: {
-    'shoutem.ui.Text': {
-      color: 'white',
-    },
-
-    'shoutem.ui.Heading': {
-      marginVertical: 8,
-    },
-
-    'shoutem.ui.Title': {
-      marginVertical: 12,
-    },
-
-    'shoutem.ui.Icon': {
-      '.scroll-indicator': {
-        color: 'white',
-        fontSize: 32,
-        position: 'absolute',
-        bottom: 15,
-        left: 0,
-        right: 0,
-      },
-    },
-
-    'shoutem.ui.View': {
-      [INCLUDE]: ['commonVariants'],
-
-      '.actions': {
-        'shoutem.ui.Icon': {
-          color: 'white',
-        },
-
-        '*': {
-          marginRight: 0,
-          marginVertical: 0,
-          marginLeft: 10,
-        },
-
-        flex: 0,
-        alignSelf: 'flex-end',
-        flexDirection: 'row',
-        alignItems: 'flex-end',
-        justifyContent: 'center',
-      },
-    },
-  },
   imageSizes: {
     '.small-avatar': {
       width: 25,
@@ -395,59 +385,80 @@ export default () => ({
   },
 
   'shoutem.ui.Row': {
+    ...createSharedStyle(textComponents, {
+      flex: 1,
+    }, {
+      'shoutem.ui.Text': {
+        // This is to compensate for the line height,
+        // otherwise the text is not aligned correctly
+        // with the rest of the views.
+        [INCLUDE]: ['vCenterText'],
+      },
+    }),
+
     'shoutem.ui.Image': {
-      marginRight: 15,
+      marginRight: MEDIUM_GUTTER,
     },
 
     'shoutem.ui.Icon': {
-      '.right': {
-        marginRight: 0,
-        marginLeft: 15,
-      },
-
       '.disclosure': {
-        marginRight: -8,
-        marginLeft: 15,
+        opacity: 0.5,
+        marginRight: -7,
+        marginLeft: 4,
       },
 
-      marginRight: 15,
-      padding: 1,
+      marginRight: MEDIUM_GUTTER,
     },
 
     'shoutem.ui.Button': {
       '.right-icon': {
-        marginRight: -10,
-        marginLeft: 5,
+        [INCLUDE]: ['tightButton', 'clearButton'],
+        marginLeft: MEDIUM_GUTTER,
       },
     },
 
     'shoutem.ui.View': {
       '.notification-dot': {
+        alignSelf: 'center',
         flex: 0,
         width: 6,
         height: 6,
         borderRadius: 3,
-        borderColor: '#333333',
-        backgroundColor: '#333333',
+        borderColor: Colors.DARK,
+        backgroundColor: Colors.DARK,
         marginLeft: -10,
         marginRight: 4,
       },
+
+      '.vertical': {
+        '*': {
+          // Add a small gutter below each view
+          marginBottom: SMALL_GUTTER,
+        },
+
+        'shoutem.ui.Text': {
+          [INCLUDE]: ['vCenterText'],
+        },
+
+        // Compensate for the last view
+        marginBottom: -SMALL_GUTTER,
+      },
+
+      flex: 1,
+      alignSelf: 'stretch',
     },
 
     '*.top': {
       alignSelf: 'flex-start',
     },
 
-    '.top-aligned': {
-      alignItems: 'flex-start',
-    },
-
+    flex: 1,
     flexDirection: 'row',
-    alignSelf: 'stretch',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: 'white',
-    padding: 15,
+    backgroundColor: Colors.BACKGROUND,
+    paddingHorizontal: MEDIUM_GUTTER,
+    paddingVertical: MEDIUM_GUTTER,
   },
 
   'shoutem.ui.Tile': {
@@ -519,6 +530,8 @@ export default () => ({
   },
 
   'shoutem.ui.Overlay': {
+    [INCLUDE]: ['overlayParent'],
+
     '.collapsed': {
       '*': {
         marginBottom: 0,
@@ -565,11 +578,6 @@ export default () => ({
       textAlign: 'center',
     }),
 
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
@@ -585,26 +593,34 @@ export default () => ({
     activeOpacity: 0.8,
   },
 
+  // TODO (zeljko): Support inclusion of style names, so we don't have to define these
+  tightButton: {
+    'shoutem.ui.Icon': {
+      marginRight: 0,
+    },
+
+    'shoutem.ui.Text': {
+      marginRight: 0,
+    },
+
+    paddingLeft: 0,
+    paddingRight: 0,
+  },
+
+  clearButton: {
+    backgroundColor: Colors.CLEAR,
+    borderWidth: 0,
+    borderRadius: 0,
+  },
   'shoutem.ui.Button': {
     [INCLUDE]: ['commonVariants', 'guttersMargin'],
 
     '.tight': {
-      'shoutem.ui.Icon': {
-        marginRight: 0,
-      },
-
-      'shoutem.ui.Text': {
-        marginRight: 0,
-      },
-
-      paddingLeft: 0,
-      paddingRight: 0,
+      [INCLUDE]: ['tightButton'],
     },
 
     '.clear': {
-      backgroundColor: Colors.CLEAR,
-      borderWidth: 0,
-      borderRadius: 0,
+      [INCLUDE]: ['clearButton'],
     },
 
     '.dark': {
@@ -658,6 +674,7 @@ export default () => ({
       borderColor: Colors.BORDER,
     },
 
+    // Vertically stacked icon and text
     '.stacked': {
       'shoutem.ui.Icon': {
         marginVertical: MEDIUM_GUTTER,
@@ -803,8 +820,8 @@ export default () => ({
     height: 48,
     borderRadius: 24,
     borderWidth: 0,
-    // Rounded corners don't work if
-    // element is opaque
+    // Rounded corners don't work on Text if
+    // element is opaque for some reason
     opacity: 0.99,
     padding: 12,
   },
@@ -822,6 +839,7 @@ export default () => ({
     },
 
     backgroundColor: Colors.CLEAR,
+    color: Colors.DARKER,
     textAlign: 'center',
     textAlignVertical: 'center',
     fontSize: 24,

@@ -28,6 +28,7 @@ export {
   Title,
   Subtitle,
   Text,
+  Description,
   Caption,
 } from './components/Text';
 

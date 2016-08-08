@@ -5,6 +5,7 @@ import {
 
 import { Typography } from './Typography';
 import { Images } from './Images';
+import { Rows } from './Rows';
 import { Cards } from './Cards';
 import { Tiles } from './Tiles';
 import { Spinners } from './Spinners';
@@ -15,6 +16,7 @@ export function Examples() {
     <ScrollView>
       <Typography />
       <Cards />
+      <Rows />
       <Tiles />
       <Spinners />
       <Buttons />
