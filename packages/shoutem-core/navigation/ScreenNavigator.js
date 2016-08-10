@@ -211,16 +211,6 @@ export class ScreenNavigator extends Component {
     return route.sceneConfig || Navigator.SceneConfigs.PushFromRight;
   }
 
-  resolveScreenFromRoute(newRoute) {
-    const routeStack = this.props.initialRouteStack;
-
-    if (routeStack) {
-      return routeStack.find(route => _.isEqual(route, newRoute));
-    }
-
-    return this.context.screens[newRoute.screen];
-  }
-
   renderNavigationBar() {
     // Navigation bar container should attach itself to the
     // navigation bar manager and call renderNavigationBar with
@@ -241,7 +231,7 @@ export class ScreenNavigator extends Component {
   }
 
   renderScene(route) {
-    const Screen = this.resolveScreenFromRoute(route);
+    const Screen = this.context.screens[route.screen];
 
     if (!Screen) {
       throw new Error(`You are trying to navigate to screen (${route.screen}) that doesn't exist. 
