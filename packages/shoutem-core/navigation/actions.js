@@ -178,11 +178,22 @@ const getNavigationProperty = function (state, prop) {
 };
 
 /**
- * Return active navigator name from application state
+ * Return top (default) navigator name from application state
  * @param state - root state
  */
-export const getActiveNavigator = function (state) {
+export const getTopNavigator = function (state) {
   return _.last(getNavigationProperty(state, 'navigatorsStack'));
+};
+
+/**
+ * Navigator is active if it is in navigators stack.
+ *
+ * @param state
+ * @param navigator
+ * @returns {boolean}
+ */
+export const isNavigatorActive = function (state, navigator) {
+  return _.indexOf(getNavigationProperty(state, 'navigatorsStack'), navigator) >= 0;
 };
 
 /**
