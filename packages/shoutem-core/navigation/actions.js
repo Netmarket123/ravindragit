@@ -65,6 +65,10 @@ function navigatorsStackReducer(state = [], action) {
       return [...state, action.navigator];
     case POP_NAVIGATOR:
       const navigatorIndex = state.indexOf(action.navigator);
+      if (navigatorIndex < 0) {
+        // Can not pop unexisting navigator!
+        return state;
+      }
       return _.take(state, navigatorIndex);
     default:
       return state;
