@@ -45,6 +45,10 @@ export class ScreenNavigator extends Component {
     this.initialRoute = props.initialRoute;
     this.navBarManager = props.renderNavigationBar ? new NavigationBarStateManager()
       : this.context.parentNavigator.navBarManager;
+    this.state = {
+      deactivatedRoute: null,
+      activeRoute: null,
+    };
   }
 
   getChildContext() {
@@ -91,14 +95,17 @@ export class ScreenNavigator extends Component {
     if (!this.initialRoute && nextProps.action.route) {
       this.initialRoute = nextProps.action.route;
     } else {
-      this.performNavigationAction(nextProps.action);
+      this.deactivateRoute(this.state.activeRoute, () => {
+        this.performNavigationAction(nextProps.action);
+      });
     }
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextState) {
     // We should re-render only if there is a
     // pending navigation action available.
-    return !!nextProps.action;
+    // Or if navigator has became active as child
+    return !!nextProps.action || nextState !== this.state;
   }
 
   onRouteWillChange(route) {
@@ -107,12 +114,12 @@ export class ScreenNavigator extends Component {
       // eslint-disable-next-line  no-param-reassign
       route.id = this.props.name + this.getLastRouteIndex();
     }
+    this.activateRoute(route);
     this.props.blockActions();
   }
 
-  onRouteChanged(route) {
+  onRouteChanged() {
     this.props.allowActions();
-    this.navBarManager.onRouteChanged(route);
   }
 
   getLastRouteIndex() {
@@ -134,6 +141,14 @@ export class ScreenNavigator extends Component {
 
   setNavigationBarState(state, route) {
     this.navBarManager.setState(state, route);
+  }
+
+  activateRoute(activeRoute, cb = () => {}) {
+    this.setState({ activeRoute }, cb);
+  }
+
+  deactivateRoute(deactivatedRoute, cb = () => {}) {
+    this.setState({ deactivatedRoute }, cb);
   }
 
   /**
