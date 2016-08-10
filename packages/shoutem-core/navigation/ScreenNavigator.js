@@ -241,6 +241,7 @@ export class ScreenNavigator extends Component {
     return (
       <Screen
         {...route.props}
+        focused={route === this.state.activeRoute && route !== this.state.deactivatedRoute}
         // eslint-disable-next-line react/jsx-no-bind
         setNavBarProps={state => this.isActive() && this.setNavBarState(state, route)}
       />
