@@ -171,7 +171,10 @@ export class ScreenNavigator extends Component {
     const navigator = this.navigator;
     switch (action.type) {
       case NAVIGATE_TO: {
-        navigator.push(action.route);
+        if (!action.navigatorMethod) {
+          throw new Error(`Unexisting navigator method: ${action.navigatorMethod}`);
+        }
+        navigator[action.navigatorMethod](action.route);
         break;
       }
       case NAVIGATE_BACK: {

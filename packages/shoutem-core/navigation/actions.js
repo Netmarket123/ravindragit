@@ -117,11 +117,12 @@ export const popNavigator = function (navigator) {
  * @returns {*} The action.
  */
 // eslint-disable-next-line func-names
-export const navigateTo = function (route, navigator) {
+export const navigateTo = function (route, navigator, navigatorMethod = 'push') {
   return {
     type: NAVIGATE_TO,
     route,
     navigator,
+    navigatorMethod,
   };
 };
 
