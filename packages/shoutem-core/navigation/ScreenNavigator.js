@@ -323,7 +323,14 @@ ScreenNavigator.propTypes = {
    */
   allowActions: React.PropTypes.func,
 
+  /**
+   * Adds navigator to global navigator stack.
+   */
   addNavigator: React.PropTypes.func,
+
+  /**
+   * Pops navigator and it children from global navigator stack.
+   */
   popNavigator: React.PropTypes.func,
 
   /**
@@ -331,9 +338,11 @@ ScreenNavigator.propTypes = {
    */
   sceneStyle: React.PropTypes.object,
 
+  /**
+   * Indicates if navigator is active.
+   * Only active navigators are rendered (it children and navBar).
+   */
   active: React.PropTypes.bool,
-
-  activeNavigator: React.PropTypes.string,
 };
 
 ScreenNavigator.contextTypes = {
