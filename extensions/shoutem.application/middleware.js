@@ -22,6 +22,16 @@ function createScreenSettings(shortcut) {
   };
 }
 
+function getChildShortcuts(store, parentShortcut) {
+  const childrenDescriptors = _.get(parentShortcut, 'relationships.children.data', []);
+  const shortcuts = _.get(store.getState(), ['shoutem.application', 'shortcuts']);
+
+  return childrenDescriptors.reduce((result, child) => {
+    result.push(shortcuts[child.id]);
+    return result;
+  }, []);
+}
+
 let activeLayouts = [];
 
 function createExecuteShortcutMiddleware(actions) {
@@ -36,7 +46,7 @@ function createExecuteShortcutMiddleware(actions) {
       if (actionName) {
         const shortcutAction = actions[actionName];
         const settings = createScreenSettings(action.shortcut);
-        const children = _.get(action.shortcut, 'relationships.children.data');
+        const children = getChildShortcuts(store, action.shortcut);
 
         if (typeof shortcutAction === 'function') {
           return next(shortcutAction(settings, children, store.getState()));
@@ -78,7 +88,7 @@ const navigateToShortcutScreen = store => next => action => {
   if (action.type === EXECUTE_SHORTCUT) {
     const screenName = _.get(action, 'shortcut.attributes.screen');
     const settings = createScreenSettings(action.shortcut);
-    const children = _.get(action.shortcut, 'relationships.children.data');
+    const children = getChildShortcuts(store, action.shortcut);
 
     activeLayouts = _.get(action, 'shortcut.attributes.screens');
 
