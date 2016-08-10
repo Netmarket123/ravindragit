@@ -130,8 +130,7 @@ export const popNavigator = function (navigator) {
  *  parameter, the activeNavigator will be used if it is undefined.
  * @returns {*} The action.
  */
-// eslint-disable-next-line func-names
-export const navigateTo = function (route, navigator, navigatorMethod = 'push') {
+const navigate = function (route, navigator, navigatorMethod = 'push') {
   return {
     type: NAVIGATE_TO,
     route,
@@ -139,6 +138,27 @@ export const navigateTo = function (route, navigator, navigatorMethod = 'push') 
     navigatorMethod,
   };
 };
+
+/**
+ * Navigate to another screen with push navigation action.
+ * @param route
+ * @param navigator
+ * @returns {{type, route, navigator, navigatorMethod}}
+ */
+export const navigateTo = function (route, navigator) {
+  return navigate(route, navigator, 'push');
+};
+
+/**
+ * Navigate to another screen with jump navigation action.
+ * @param route
+ * @param navigator
+ * @returns {{type, route, navigator, navigatorMethod}}
+ */
+export const navigateJumpTo = function (route, navigator) {
+  return navigate(route, navigator, 'jumpTo');
+};
+
 
 /**
  * Navigates one step back on the specified navigator.

@@ -3,6 +3,7 @@ import reducer, {
   NAVIGATION_ACTION_PERFORMED,
   NAVIGATE_TO,
   navigateTo,
+  navigateJumpTo,
   navigateBack,
   setActiveNavigator,
   getTopNavigator,
@@ -20,6 +21,7 @@ export {
 
   // Action creators
   navigateTo,
+  navigateJumpTo,
   navigateBack,
   setActiveNavigator,
 

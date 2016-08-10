@@ -968,8 +968,7 @@ export default () => ({
     android: {
       height: 20,
     },
-    ios: {
-    },
+    ios: {},
   },
 
   'shoutem.ui.Divider': {
@@ -1105,5 +1104,29 @@ export default () => ({
 
     [INCLUDE]: ['commonVariants'],
     flex: 0,
+  },
+  'shoutem.navigation.TabBar': {
+    'shoutem.ui.Screen': {
+      'shoutem.ui.View': {
+        'shoutem.navigation.TabBarItem': {
+          'shoutem.ui.Button': {
+            'shoutem.ui.View': {
+              'shoutem.ui.Image': {
+                padding: 15,
+                height: 20,
+              },
+              alignItems: 'center',
+            },
+          },
+        },
+
+        backgroundColor: '#fff',
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+      },
+      paddingBottom: 70, // TabBar height
+    },
   },
 });
