@@ -52,6 +52,22 @@ function navigatorReducer(state = {}, action) {
 }
 
 /**
+ * Pop navigator and it children.
+ * (all navigators in stack located right (after))
+ * @param state
+ * @param navigator
+ * @returns {*}
+ */
+function popNavigatorActionHandle(state, navigator) {
+  const navigatorIndex = state.indexOf(navigator);
+  if (navigatorIndex < 0) {
+    // Can not pop unexisting navigator!
+    return state;
+  }
+  return _.take(state, navigatorIndex);
+}
+
+/**
  * Active navigator is used as default navigator
  * for navigateTo action if navigator not explicitly defined in call.
  * @param state
@@ -60,16 +76,10 @@ function navigatorReducer(state = {}, action) {
  */
 function navigatorsStackReducer(state = [], action) {
   switch (action.type) {
-    // case NAVIGATE_TO:
     case ADD_NAVIGATOR:
       return [...state, action.navigator];
     case POP_NAVIGATOR:
-      const navigatorIndex = state.indexOf(action.navigator);
-      if (navigatorIndex < 0) {
-        // Can not pop unexisting navigator!
-        return state;
-      }
-      return _.take(state, navigatorIndex);
+      return popNavigatorActionHandle(state, action.navigator);
     default:
       return state;
   }
