@@ -1107,26 +1107,78 @@ export default () => ({
   },
   'shoutem.navigation.TabBar': {
     'shoutem.ui.Screen': {
+      // TabBar container
       'shoutem.ui.View': {
         'shoutem.navigation.TabBarItem': {
           'shoutem.ui.Button': {
             'shoutem.ui.View': {
               'shoutem.ui.Image': {
-                padding: 15,
-                height: 20,
+                height: 24,
+                padding: 12,
+                width: null,
+                flex: 0,
+                resizeMode: 'contain',
+                marginTop: 8,
               },
+              'shoutem.ui.Text': {
+                fontSize: 10,
+                height: 12,
+                marginBottom: 8,
+              },
+              height: 60,
+              flexDirection: 'column',
               alignItems: 'center',
+              justifyContent: 'space-between',
             },
           },
         },
 
         backgroundColor: '#fff',
         position: 'absolute',
+        borderTopWidth: 1,
+        borderColor: '#e0e0e0',
         bottom: 0,
         left: 0,
         right: 0,
       },
-      paddingBottom: 70, // TabBar height
+      paddingBottom: 60, // TabBar height
+    },
+  },
+  'shoutem.navigation.TabBarItem': {
+    'shoutem.ui.Button': {
+      'shoutem.ui.View': {
+        'shoutem.ui.Image': {
+          height: 24,
+          padding: 12,
+          width: null,
+          flex: 0,
+          resizeMode: 'contain',
+          marginTop: 8,
+        },
+        'shoutem.ui.Text': {
+          color: '#b1b1b1',
+          fontSize: 10,
+          height: 12,
+          marginBottom: 6,
+        },
+        height: 60,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      },
+
+      '.selected': {
+        'shoutem.ui.View': {
+          'shoutem.ui.Text': {
+            color: '#666',
+          },
+        },
+        borderColor: '#222',
+      },
+
+      borderWidth: 0,
+      borderBottomWidth: 2,
+      borderColor: 'transparent',
     },
   },
 });
