@@ -57,33 +57,18 @@ export class ScreenNavigator extends Component {
     };
   }
 
-  addNavigator() {
-    this.props.addNavigator(this.props.name);
-  }
-
-  popNavigator() {
-    this.props.popNavigator(this.props.name);
-  }
-
   componentWillMount() {
-    if (this.props.active) {
+    if (this.isActive()) {
       this.addNavigator();
     }
   }
 
-  componentWillUnMount() {
-    this.popNavigator();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (
-      (nextProps.active && !this.props.active)
-      // (nextContext.isParentActive && !this.context.isParentActive) // TODO(Braco)
-    ) {
+  componentWillReceiveProps(nextProps, nextContext) {
+    if (this.willBecomeActive(nextProps, nextContext)) {
       this.addNavigator();
     }
 
-    if (!nextProps.active && this.props.active) {
+    if (this.willBecomeInActive(nextProps, nextContext)) {
       this.popNavigator();
     }
 
@@ -149,6 +134,30 @@ export class ScreenNavigator extends Component {
 
   deactivateRoute(deactivatedRoute, cb = () => {}) {
     this.setState({ deactivatedRoute }, cb);
+  }
+
+  componentWillUnMount() {
+    this.popNavigator();
+  }
+
+  addNavigator() {
+    this.props.addNavigator(this.props.name);
+  }
+
+  popNavigator() {
+    this.props.popNavigator(this.props.name);
+  }
+
+  isActive(props = this.props) {
+    return props.active;
+  }
+
+  willBecomeActive(nextProps) {
+    return this.isActive(nextProps) && !this.isActive();
+  }
+
+  willBecomeInActive(nextProps) {
+    return !this.isActive(nextProps) && this.isActive();
   }
 
   /**
