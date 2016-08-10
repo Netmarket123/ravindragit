@@ -38,7 +38,7 @@ export class ScreenNavigator extends Component {
     this.configureScene = this.configureScene.bind(this);
     this.renderNavigationBar = this.renderNavigationBar.bind(this);
     this.captureNavigatorRef = this.captureNavigatorRef.bind(this);
-    this.setNavigationBarState = this.setNavigationBarState.bind(this);
+    this.setNavBarState = this.setNavBarState.bind(this);
     this.onRouteChanged = this.onRouteChanged.bind(this);
     this.onRouteWillChange = this.onRouteWillChange.bind(this);
 
@@ -139,7 +139,7 @@ export class ScreenNavigator extends Component {
     return undefined;
   }
 
-  setNavigationBarState(state, route) {
+  setNavBarState(state, route) {
     this.navBarManager.setState(state, route);
   }
 
@@ -240,13 +240,7 @@ export class ScreenNavigator extends Component {
       <Screen
         {...route.props}
         // eslint-disable-next-line react/jsx-no-bind
-        setNavBarProps={
-          (state) => {
-            if (this.props.active) {
-              this.setNavigationBarState(state, route);
-            }
-          }
-        }
+        setNavBarProps={state => this.isActive() && this.setNavBarState(state, route)}
       />
     );
   }
