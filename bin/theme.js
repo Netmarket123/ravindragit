@@ -1147,6 +1147,7 @@ export default () => ({
 
       borderWidth: 0,
       borderBottomWidth: 2,
+      borderRadius: 0,
       borderColor: 'transparent',
     },
   },
