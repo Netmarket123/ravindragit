@@ -149,14 +149,12 @@ export const navigateTo = function (route, navigator) {
   return navigate(route, navigator, 'push');
 };
 
-/**
- * Navigate to another screen with jump navigation action.
- * @param route
- * @param navigator
- * @returns {{type, route, navigator, navigatorMethod}}
- */
 export const navigateJumpTo = function (route, navigator) {
   return navigate(route, navigator, 'jumpTo');
+};
+
+export const navigateSwap = function (route, navigator) {
+  return navigate(route, navigator, 'replacePrevious');
 };
 
 
