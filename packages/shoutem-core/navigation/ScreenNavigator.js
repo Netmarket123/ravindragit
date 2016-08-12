@@ -4,6 +4,7 @@ import React, {
 import { Navigator } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import _ from 'lodash';
 
 import {
   NAVIGATE_TO,
@@ -65,6 +66,9 @@ export class ScreenNavigator extends Component {
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
+    const nextAction = this.getActionFromProps(nextProps);
+    const action = this.getActionFromProps();
+
     if (this.willBecomeActive(nextProps, nextContext)) {
       this.addNavigator();
     }
@@ -73,25 +77,27 @@ export class ScreenNavigator extends Component {
       this.popNavigator();
     }
 
-    if (!nextProps.action || nextProps.action === this.props.action) {
+    if (!nextAction || nextAction === action) {
       return;
     }
 
     // Set initial route if this is first executed action with route
-    if (!this.initialRoute && nextProps.action.route) {
-      this.initialRoute = nextProps.action.route;
+    if (!this.initialRoute && nextAction.route) {
+      this.initialRoute = nextAction.route;
     } else {
       this.deactivateRoute(this.state.activeRoute, () => {
-        this.performNavigationAction(nextProps.action);
+        this.performNavigationAction(nextAction);
       });
     }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    const nextAction = this.getActionFromProps(nextProps);
+
     // We should re-render only if there is a
     // pending navigation action available.
     // Or if navigator has became active as child
-    return !!nextProps.action || nextState !== this.state;
+    return !!nextAction || nextState !== this.state;
   }
 
   onRouteWillChange(route) {
@@ -126,7 +132,11 @@ export class ScreenNavigator extends Component {
   }
 
   setNavBarState(state, route) {
-    this.navBarManager.setState(state, route);
+    this.navBarManager.setState(this.customizeNavBarState(state, route), route);
+  }
+
+  getActionFromProps(props = this.props) {
+    return _.get(props, 'navigatorState.action');
   }
 
   activateRoute(activeRoute, cb = () => {}) {
@@ -197,7 +207,8 @@ export class ScreenNavigator extends Component {
   }
 
   captureNavigatorRef(navigator) {
-    const { action, name } = this.props;
+    const { name } = this.props;
+    const action = this.getActionFromProps();
     this.navigator = navigator;
     if (!navigator) {
       // On componentWillUnMount ref is called with null
@@ -309,9 +320,10 @@ ScreenNavigator.propTypes = {
   initialRouteStack: React.PropTypes.array,
 
   /**
-   * Action to be triggered by screen navigator.
+   * Public navigator state saved in redux store
+   * Used to change navigator with redux actions
    */
-  action: React.PropTypes.object,
+  navigatorState: React.PropTypes.object,
 
   /**
    * The action that will be triggered after each
@@ -378,9 +390,9 @@ ScreenNavigator.childContextTypes = {
 
 function mapStateToProps(state, ownProps) {
   const navigationState = state['shoutem.core'].navigation;
-  const navigatorState = navigationState[ownProps.name] || {};
+  const navigatorState = navigationState[ownProps.name];
   return {
-    action: navigatorState.action,
+    navigatorState,
   };
 }
 
