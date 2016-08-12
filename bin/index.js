@@ -11,16 +11,10 @@ import themeInit from './theme';
 
 import extensions from './extensions.js';
 
-function renderNavigationBar(navBarProps) {
-  return (
-    <NavigationBar {...navBarProps} />
-  );
-}
-
 const App = new AppBuilder()
   .setExtensions(extensions)
   .setThemeInit(themeInit)
-  .setRenderNavigationBar(renderNavigationBar)
+  .setRenderNavigationBar(NavigationBar.renderSelf)
   .build();
 
 // noinspection JSCheckFunctionSignatures

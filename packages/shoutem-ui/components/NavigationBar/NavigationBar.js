@@ -82,6 +82,8 @@ class NavigationBar extends Component {
   }
 }
 
+NavigationBar.renderSelf = (navBarProps) => <StyledNavigationBar {...navBarProps} />;
+
 NavigationBar.propTypes = {
   backgroundImage: Image.propTypes.source,
   leftComponent: React.PropTypes.object,
