@@ -139,6 +139,11 @@ export class ScreenNavigator extends Component {
     return _.get(props, 'navigatorState.action');
   }
 
+  customizeNavBarState(state, route) {
+    const { navBarStateCustomizer, navigatorState } = this.props;
+    return navBarStateCustomizer ? navBarStateCustomizer(state, navigatorState, route) : state;
+  }
+
   activateRoute(activeRoute, cb = () => {}) {
     this.setState({ activeRoute }, cb);
   }
@@ -161,6 +166,10 @@ export class ScreenNavigator extends Component {
 
   isActive(props = this.props) {
     return props.active;
+  }
+
+  isScreenFocused(route, state = this.state) {
+    return route === state.activeRoute && route !== state.deactivatedRoute;
   }
 
   willBecomeActive(nextProps) {
@@ -268,12 +277,14 @@ export class ScreenNavigator extends Component {
       Check exports of your extension or route you are trying to navigate to.`);
     }
 
+    const focused = this.isScreenFocused(route);
+
     return (
       <Screen
         {...route.props}
-        focused={route === this.state.activeRoute && route !== this.state.deactivatedRoute}
+        focused={focused}
         // eslint-disable-next-line react/jsx-no-bind
-        setNavBarProps={state => this.isActive() && this.setNavBarState(state, route)}
+        setNavBarProps={state => focused && this.setNavBarState(state, route)}
         shouldNavBarRender={withNavBar => this.setState({ withNavBar })}
       />
     );
@@ -364,6 +375,11 @@ ScreenNavigator.propTypes = {
    * Pops navigator and it children from global navigator stack.
    */
   popNavigator: React.PropTypes.func,
+
+  /**
+   * Customize navBarState when state is updated from screen.
+   */
+  navBarStateCustomizer: React.PropTypes.func,
 
   /**
    * This is default style to apply to the container of each scene
