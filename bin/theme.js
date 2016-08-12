@@ -1151,4 +1151,50 @@ export default () => ({
       borderColor: 'transparent',
     },
   },
+  'shoutem.navigation.Drawer': {
+    menu: {
+      paddingTop: NAVIGATION_BAR_HEIGHT,
+    },
+    underlayScreens: {
+      paddingTop: NAVIGATION_BAR_HEIGHT,
+    },
+  },
+  'shoutem.navigation.DrawerItem': {
+    'shoutem.ui.Row': {
+      'shoutem.ui.Button': {
+        'shoutem.ui.Image': {
+          height: 24,
+          padding: 12,
+          width: null,
+          flex: 0,
+          resizeMode: 'contain',
+          marginRight: LARGE_GUTTER,
+        },
+        'shoutem.ui.Text': {
+          color: '#222',
+          fontSize: 15,
+          margin: 0,
+        },
+
+        '.selected': {
+          'shoutem.ui.View': {
+            'shoutem.ui.Text': {
+              color: '#666',
+            },
+          },
+        },
+
+        borderWidth: 0,
+        borderRadius: 0,
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        alignSelf: 'stretch',
+        paddingLeft: LARGE_GUTTER,
+      },
+
+      height: 30,
+      marginBottom: MEDIUM_GUTTER,
+      padding: 0,
+    },
+  },
 });
