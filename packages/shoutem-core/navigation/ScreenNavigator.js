@@ -48,6 +48,7 @@ export class ScreenNavigator extends Component {
     this.state = {
       deactivatedRoute: null,
       activeRoute: null,
+      withNavBar: true,
     };
   }
 
@@ -211,6 +212,24 @@ export class ScreenNavigator extends Component {
     return route.sceneConfig || Navigator.SceneConfigs.PushFromRight;
   }
 
+  /**
+   * If ScreenManager shouldn't render NavBar we provide function to render null.
+   * NavBarCont must be rendered because we do not know when underlay
+   * screens called setNavBarProps which update state of container.
+   * Because of async operations, if we wouldn't render NavBarCont, it could lead
+   * to case when NavBarCont is un-mounted and we are still setting it state,
+   * which is anti-pattern in React.
+   * This way we also keep last state of NavBarCont active so whenever NavBar should
+   * be rendered again it will be render properly with last state.
+   * @returns {function(): null}
+   */
+  createRenderNavigationBar() {
+    if (this.state.withNavBar) {
+      return this.props.renderNavigationBar;
+    }
+    return () => null;
+  }
+
   renderNavigationBar() {
     // Navigation bar container should attach itself to the
     // navigation bar manager and call renderNavigationBar with
@@ -221,7 +240,7 @@ export class ScreenNavigator extends Component {
       navigationBarContainer = (
         <NavigationBarContainer
           manager={this.navBarManager}
-          renderNavigationBar={this.props.renderNavigationBar}
+          renderNavigationBar={this.createRenderNavigationBar()}
           navigateBack={this.props.navigateBack}
         />
       );
@@ -244,6 +263,7 @@ export class ScreenNavigator extends Component {
         focused={route === this.state.activeRoute && route !== this.state.deactivatedRoute}
         // eslint-disable-next-line react/jsx-no-bind
         setNavBarProps={state => this.isActive() && this.setNavBarState(state, route)}
+        shouldNavBarRender={withNavBar => this.setState({ withNavBar })}
       />
     );
   }
