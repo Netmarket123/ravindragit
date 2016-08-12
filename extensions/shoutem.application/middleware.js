@@ -1,10 +1,9 @@
 import * as _ from 'lodash';
-import {
-  navigateTo,
+import * as navigation from '@shoutem/core/navigation';
+const {
   NAVIGATION_ACTION_PERFORMED,
   NAVIGATE_TO,
-} from '@shoutem/core/navigation';
-
+} = navigation;
 import { EXECUTE_SHORTCUT } from './actions';
 
 /**
@@ -89,12 +88,17 @@ const navigateToShortcutScreen = store => next => action => {
     const screenName = _.get(action, 'shortcut.attributes.screen');
     const settings = createScreenSettings(action.shortcut);
     const children = getChildShortcuts(store, action.shortcut);
+    const navigateAction = navigation[action.navigateAction];
 
     activeLayouts = _.get(action, 'shortcut.attributes.screens');
 
     if (screenName) {
+      if (!navigateAction) {
+        throw Error('Unexisting navigate action');
+      }
+
       const openScreenAction = () =>
-        navigateTo({
+        navigateAction({
           screen: screenName,
           props: {
             children,
