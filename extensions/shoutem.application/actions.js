@@ -3,7 +3,7 @@ import { OBJECT_FETCHED } from '@shoutem/redux-io';
 
 export const EXECUTE_SHORTCUT = 'shoutem.application.EXECUTE_SHORTCUT';
 
-export function configurationReducer(state = {}, action) {
+export const configurationReducer = function (state = {}, action) {
   if (_.get(action, 'meta.schema') !== 'shoutem.core.configuration') {
     return state;
   }
@@ -14,7 +14,7 @@ export function configurationReducer(state = {}, action) {
     default:
       return state;
   }
-}
+};
 
 /**
  * Creates a redux action that is used to execute shortcuts provided by configuration
@@ -22,13 +22,13 @@ export function configurationReducer(state = {}, action) {
  * that should be provided to an action
  * @returns {{type: string, shortcut: *}} a redux action with type EXECUTE_SHORTCUT
  */
-export function executeShortcut(shortcut, navigationAction = 'navigateTo') {
+export const executeShortcut = function (shortcut, navigationAction = 'navigateTo') {
   return {
     type: EXECUTE_SHORTCUT,
     navigationAction,
     shortcut,
   };
-}
+};
 
 /**
  * A selector that returns the id of the currently running application.
@@ -36,7 +36,7 @@ export function executeShortcut(shortcut, navigationAction = 'navigateTo') {
  * @param state The redux state.
  * @returns {*} The app id.
  */
-export function getAppId(state) {
+export const getAppId = function (state) {
   return _.get(state, [
     'shoutem.application',
     'configuration',
@@ -45,4 +45,4 @@ export function getAppId(state) {
     'data',
     'id',
   ]);
-}
+};
