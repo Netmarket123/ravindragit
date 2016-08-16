@@ -56,6 +56,7 @@ function setStatusBarStyle(backgroundColor) {
 }
 
 @composeChildren
+// eslint-disable-next-line react/prefer-stateless-function
 class NavigationBar extends Component {
   render() {
     const {
