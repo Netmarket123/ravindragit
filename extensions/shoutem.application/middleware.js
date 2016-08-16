@@ -88,7 +88,7 @@ const navigateToShortcutScreen = store => next => action => {
     const screenName = _.get(action, 'shortcut.attributes.screen');
     const settings = createScreenSettings(action.shortcut);
     const children = getChildShortcuts(store, action.shortcut);
-    const navigateAction = navigation[action.navigateAction];
+    const navigateAction = navigation[action.navigationAction];
 
     activeLayouts = _.get(action, 'shortcut.attributes.screens');
 
