@@ -11,6 +11,7 @@ const window = Dimensions.get('window');
 const Colors = {
   DARK: '#333333',
   LIGHT_GRAY: '#f2f2f2',
+  NAVIGATION_TINT_COLOR: '#333333',
 };
 
 const SMALL_GUTTER = 5;
@@ -1123,6 +1124,7 @@ export default () => ({
           flex: 0,
           resizeMode: 'contain',
           marginTop: 8,
+          tintColor: Colors.NAVIGATION_TINT_COLOR,
         },
         'shoutem.ui.Text': {
           color: '#b1b1b1',
@@ -1169,6 +1171,7 @@ export default () => ({
           flex: 0,
           resizeMode: 'contain',
           marginRight: LARGE_GUTTER,
+          tintColor: Colors.NAVIGATION_TINT_COLOR,
         },
         'shoutem.ui.Text': {
           color: '#222',
