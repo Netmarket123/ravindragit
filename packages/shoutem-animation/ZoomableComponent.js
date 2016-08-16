@@ -93,20 +93,26 @@ export default function makeZoomable(ComponentToBeDecorated) {
         onMoveShouldSetPanResponder: () => true,
         onMoveShouldSetPanResponderCapture: () => true,
         onPanResponderGrant: () => {},
-        onPanResponderMove: (evt) => {
+        onPanResponderMove: (evt, gesture) => {
           const touches = evt.nativeEvent.touches;
           const touch1 = touches[0];
           const touch2 = touches[1];
 
           if (touches.length === 2) {
             this.processPinch(touch1, touch2);
-          } else if (touches.length === 1 && !this.state.isZooming) {
+            if (this.props.onZoom) this.props.onZoom();
+          } else if (touches.length === 1 && !this.state.isZooming && !this.isMoveSmall(gesture)){
+            //Process touch only if touch (move) is very small so that we can ignore it, and consider that small move it isn't panning. 
+            //small touch will be processed by calling props.onPress() in onPanResponderRelease()
             this.processTouch(touch1.pageX, touch1.pageY);
-          }
+          } 
         },
 
-        onPanResponderTerminationRequest: () => true,
+        onPanResponderTerminationRequest: () => false, 
+        //Due to changes in RN>0.26, onPanResponderTerminationRequest should be set false, as with `true`, 
+        //Modal takes over PanResponder handlers and PanResponder then doesn't work :(
         onPanResponderRelease: () => {
+          if(!this.state.isMoving && !this.state.isZooming && this.props.onPress) this.props.onPress();
           this.setState({
             isZooming: false,
             isMoving: false,
@@ -115,6 +121,10 @@ export default function makeZoomable(ComponentToBeDecorated) {
         onPanResponderTerminate: () => {},
         onShouldBlockNativeResponder: () => true,
       });
+    }
+
+    isMoveSmall(gesture){
+      return Math.abs(gesture.dx) <2 && Math.abs(gesture.dy) <2 ? true : false;
     }
 
     processPinch(touch1, touch2) {
@@ -214,8 +224,8 @@ export default function makeZoomable(ComponentToBeDecorated) {
       return (
         <View
           style={style}
-          {...this._panResponder.panHandlers}
           onLayout={this._onLayout}
+          {...this._panResponder.panHandlers}
         >
           <ComponentToBeDecorated
             style={[style, {
@@ -236,6 +246,7 @@ export default function makeZoomable(ComponentToBeDecorated) {
     componentWidth: PropTypes.number.isRequired,
     componentHeight: PropTypes.number.isRequired,
     style: PropTypes.object,
+    onPress:PropTypes.func,
   };
 
   return ZoomDecorator;
