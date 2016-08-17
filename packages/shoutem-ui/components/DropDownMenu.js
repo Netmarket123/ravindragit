@@ -137,8 +137,8 @@ class DropDownMenu extends Component {
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     const button = selectedItem ? (
       <Button onPress={this.collapse} styleName="clear">
-        <Text>{selectedItem[bindings.text]}</Text>
-        <Icon name="drop-down" style={style.modalCloseButton.buttonIcon} />
+        <Text style={style.selectedItem}>{selectedItem[bindings.text]}</Text>
+        <Icon name="drop-down" style={style.arrowIcon} />
       </Button>
     ) : null;
     const modalAnimatedStyle = createModalAnimatedStyle(dropDownAnimation);

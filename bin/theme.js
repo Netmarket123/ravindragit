@@ -891,6 +891,13 @@ export default () => ({
         fontSize: 24,
       },
     },
+    selectedItem: {
+      color: 'black',
+    },
+    arrowIcon: {
+      color: 'black',
+      fontSize: 24,
+    },
   },
 
   'shoutem.ui.HorizontalPager': {
