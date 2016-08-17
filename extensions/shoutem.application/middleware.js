@@ -94,7 +94,8 @@ const navigateToShortcutScreen = store => next => action => {
 
     if (screenName) {
       if (!navigateAction) {
-        throw Error('Unexisting navigate action');
+        throw Error('Shortcut you are trying to execute doesn\'t have proper navigation action.' +
+          ' Please, check your extension.json or call of executeShortcut action creator.');
       }
 
       const openScreenAction = () =>
