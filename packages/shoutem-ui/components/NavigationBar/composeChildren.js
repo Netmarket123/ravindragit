@@ -7,21 +7,19 @@ import Share from 'react-native-share';
 import * as _ from 'lodash';
 
 const composers = {
-  title: (value, props) => {
-    return {
-      centerComponent: (
-        <Animated.Title style={{ color: _.get(props, 'animation.style.color') }} numberOfLines={1}>
-          {value || ''}
-        </Animated.Title>
-      ),
-    };
-  },
+  title: (value, props) => ({
+    centerComponent: (
+      <Animated.Title style={{ color: _.get(props, 'animation.style.color') }} numberOfLines={1}>
+        {value || ''}
+      </Animated.Title>
+    ),
+  }),
   share: (value, props) => {
     const onShare = () =>
       Share.open({
         title: value.title || props.title,
-        share_text: value.text,
-        share_URL: value.link,
+        message: value.text,
+        url: value.link,
       }, (sharingError) => {
         console.error(sharingError);
       });
@@ -47,13 +45,13 @@ const composers = {
     }
 
     const leftComponent = value ? (
-        <Button
-          styleName="clear"
-          onPress={navigateBackWithoutEventParameter}
-        >
-          <Animated.Icon style={{ color: _.get(props, 'animation.style.color') }} name="back" />
-        </Button>
-      ) :
+      <Button
+        styleName="clear"
+        onPress={navigateBackWithoutEventParameter}
+      >
+        <Animated.Icon style={{ color: _.get(props, 'animation.style.color') }} name="back" />
+      </Button>
+    ) :
       null;
 
     return { leftComponent };
@@ -78,9 +76,14 @@ const composers = {
   },
 };
 
-export default composeChildren = NavigationBarComponent => class extends Component {
+const composeChildren = NavigationBarComponent => class extends Component {
+  static propTypes = {
+    id: React.PropTypes.any,
+    style: React.PropTypes.object,
+  };
+
   render() {
-    let newProps = {};
+    const newProps = {};
     const { id, style } = this.props;
 
     if (!id) {
@@ -100,3 +103,5 @@ export default composeChildren = NavigationBarComponent => class extends Compone
     return <NavigationBarComponent {..._.assign(newProps, this.props)} />;
   }
 };
+
+export default composeChildren;

@@ -185,7 +185,7 @@ class ExtensionsInstaller {
     });
 
     const extensionsString = extensionsMapping.join(',\n  ');
-    const data = `export default {\n  ${extensionsString},\n};`;
+    const data = `export default {\n  ${extensionsString},\n};\n`;
 
     console.time('create extensions.js');
     return new Promise((resolve, reject) => {

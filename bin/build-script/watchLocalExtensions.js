@@ -4,6 +4,7 @@ const path = require('path');
 const fsExtra = require('fs-extra');
 const watch = require('node-watch');
 const getLocalExtensions = require('./getLocalExtensions.js');
+// eslint-disable-next-line import/no-unresolved
 const config = require('../config.json');
 
 const localExtensions = getLocalExtensions(config.workingDirectories);
