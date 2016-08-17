@@ -115,7 +115,7 @@ export class ScreenNavigator extends Component {
 
   onRouteChanged(route) {
     // Action navigationActionPerformed must be called after navigator updates it state.
-    // Navigator hasn't update it state until this very moment. In any step before,
+    // Navigator hasn't update its state until this very moment. In any step before,
     // getCurrentRoutes return old routes stack.
     if (this.navigator) {
       // We should end up here only if we successfully performed
