@@ -39,7 +39,6 @@ export class ScreenNavigator extends Component {
     this.configureScene = this.configureScene.bind(this);
     this.renderNavigationBar = this.renderNavigationBar.bind(this);
     this.captureNavigatorRef = this.captureNavigatorRef.bind(this);
-    this.setNavBarState = this.setNavBarState.bind(this);
     this.onRouteChanged = this.onRouteChanged.bind(this);
     this.onRouteWillChange = this.onRouteWillChange.bind(this);
 
@@ -73,7 +72,7 @@ export class ScreenNavigator extends Component {
       this.addNavigator();
     }
 
-    if (this.willBecomeInActive(nextProps, nextContext)) {
+    if (this.willBecomeInactive(nextProps, nextContext)) {
       this.popNavigator();
     }
 
@@ -106,7 +105,8 @@ export class ScreenNavigator extends Component {
     }
     // It is important that route deactivation and activation occur in separated "tick"
     // to have activated and deactivated screen re-rendered. Navigator only re-render
-    // active screen so we have to deactivate it while screen is still active.
+    // active screen so we have to deactivate it while screen is still active, in another
+    // words, we can only change props of active route.
 
     // Native "force touch back" on iOS doesn't trigger any action so we must deactivate route here.
     this.deactivateRoute(this.state.activeRoute);
@@ -126,7 +126,7 @@ export class ScreenNavigator extends Component {
       this.props.navigationActionPerformed(navigatorState.action, routes, name);
     }
     // TODO(Braco) - is there a better way to trigger activateRoute when store is updated?
-    // Defer prolong route activation until store is updated
+    // Defer prolongs route activation until store is updated
     // activateRoute is connected with deactivateRoute, it should NOT be call in same store update.
     _.defer(() => this.activateRoute(route));
     this.props.allowActions();
@@ -149,13 +149,25 @@ export class ScreenNavigator extends Component {
     return undefined;
   }
 
-  setNavBarState(state, route, ignoreCustomizer = false) {
-    const navBarState = ignoreCustomizer ? state : this.customizeNavBarState(state, route);
-    this.navBarManager.setState(navBarState, route);
+  setNavBarState(state, route) {
+    this.navBarManager.setState(state, route);
   }
 
   getActionFromProps(props = this.props) {
     return _.get(props, 'navigatorState.action');
+  }
+
+  createResolveAndUpdateNavBarProps(route, focused) {
+    return (state, force) => {
+      if (focused) {
+        const navBarState = this.resolveNavBarProps(state, route, force);
+        this.setNavBarState(navBarState, route);
+      }
+    };
+  }
+
+  resolveNavBarProps(state, route, ignoreCustomizer = false) {
+    return ignoreCustomizer ? state : this.customizeNavBarState(state, route);
   }
 
   customizeNavBarState(state, route) {
@@ -163,12 +175,12 @@ export class ScreenNavigator extends Component {
     return navBarStateCustomizer ? navBarStateCustomizer(state, navigatorState, route) : state;
   }
 
-  activateRoute(activeRoute, cb = () => {}) {
-    this.setState({ activeRoute }, cb);
+  activateRoute(activeRoute) {
+    this.setState({ activeRoute });
   }
 
-  deactivateRoute(deactivatedRoute, cb = () => {}) {
-    this.setState({ deactivatedRoute }, cb);
+  deactivateRoute(deactivatedRoute) {
+    this.setState({ deactivatedRoute });
   }
 
   componentWillUnMount() {
@@ -187,6 +199,15 @@ export class ScreenNavigator extends Component {
     return props.active;
   }
 
+  /**
+   * As we can change only active route props, every time we deactivate current route
+   * it still has status active so to know if screen is really focused we need to check
+   * if it is also about to be deactivated.
+   * Related with onRouteWillChange.
+   * @param route
+   * @param state
+   * @returns {boolean}
+   */
   isScreenFocused(route, state = this.state) {
     return route === state.activeRoute && route !== state.deactivatedRoute;
   }
@@ -195,7 +216,7 @@ export class ScreenNavigator extends Component {
     return this.isActive(nextProps) && !this.isActive();
   }
 
-  willBecomeInActive(nextProps) {
+  willBecomeInactive(nextProps) {
     return !this.isActive(nextProps) && this.isActive();
   }
 
@@ -210,7 +231,7 @@ export class ScreenNavigator extends Component {
     const navigator = this.navigator;
     switch (action.type) {
       case NAVIGATE_TO: {
-        if (!action.navigatorMethod) {
+        if (!action.navigatorMethod || !navigator[action.navigatorMethod]) {
           throw new Error(`Unexisting navigator method: ${action.navigatorMethod}`);
         }
         navigator[action.navigatorMethod](action.route);
@@ -298,7 +319,7 @@ export class ScreenNavigator extends Component {
         {...route.props}
         focused={focused}
         // eslint-disable-next-line react/jsx-no-bind
-        setNavBarProps={(state, force) => focused && this.setNavBarState(state, route, force)}
+        setNavBarProps={this.createResolveAndUpdateNavBarProps(route, focused)}
         shouldNavBarRender={withNavBar => this.setState({ withNavBar })}
       />
     );
