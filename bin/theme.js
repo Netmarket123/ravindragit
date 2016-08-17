@@ -905,12 +905,6 @@ export default () => ({
   // Other
   //
   'shoutem.ui.NavigationBar': {
-    '.tabbar': {
-      container: {
-        top: null,
-        bottom: 0,
-      },
-    },
     '.clear': {
       'shoutem.ui.Title': {
         color: 'white',
@@ -1079,30 +1073,6 @@ export default () => ({
     'shoutem.ui.Screen': {
       // TabBar container
       'shoutem.ui.View': {
-        'shoutem.navigation.TabBarItem': {
-          'shoutem.ui.Button': {
-            'shoutem.ui.View': {
-              'shoutem.ui.Image': {
-                height: 24,
-                padding: 12,
-                width: null,
-                flex: 0,
-                resizeMode: 'contain',
-                marginTop: 8,
-              },
-              'shoutem.ui.Text': {
-                fontSize: 10,
-                height: 12,
-                marginBottom: 8,
-              },
-              height: 60,
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            },
-          },
-        },
-
         backgroundColor: '#fff',
         position: 'absolute',
         borderTopWidth: 1,
@@ -1116,26 +1086,20 @@ export default () => ({
   },
   'shoutem.navigation.TabBarItem': {
     'shoutem.ui.Button': {
-      'shoutem.ui.View': {
-        'shoutem.ui.Image': {
-          height: 24,
-          padding: 12,
-          width: null,
-          flex: 0,
-          resizeMode: 'contain',
-          marginTop: 8,
-          tintColor: Colors.NAVIGATION_TINT_COLOR,
-        },
-        'shoutem.ui.Text': {
-          color: '#b1b1b1',
-          fontSize: 10,
-          height: 12,
-          marginBottom: 6,
-        },
-        height: 60,
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+      'shoutem.ui.Image': {
+        height: 24,
+        padding: 12,
+        width: null,
+        flex: 0,
+        resizeMode: 'contain',
+        marginTop: 8,
+        tintColor: Colors.NAVIGATION_TINT_COLOR,
+      },
+      'shoutem.ui.Text': {
+        color: '#b1b1b1',
+        fontSize: 10,
+        height: 12,
+        marginBottom: 6,
       },
 
       '.selected': {
@@ -1147,6 +1111,10 @@ export default () => ({
         borderColor: '#222',
       },
 
+      height: 60,
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'space-between',
       borderWidth: 0,
       borderBottomWidth: 2,
       borderRadius: 0,
