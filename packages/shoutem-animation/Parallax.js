@@ -68,11 +68,11 @@ export class Parallax extends Component {
 
   render() {
     const { scrollSpeed, driver, children, extrapolation, insideScroll = true } = this.props;
-    const scrollVector = insideScroll ? 1 : -1;
+    const scrollVector = insideScroll ? -1 : 1;
     const scrollFactor = scrollVector * (scrollSpeed - 1);
 
     return (
-      <View style={{ overflow: 'hidden' }}>
+      <View>
         <Animated.View style={{
           transform: [
             {
