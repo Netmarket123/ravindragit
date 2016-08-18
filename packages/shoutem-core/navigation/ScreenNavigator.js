@@ -235,7 +235,8 @@ export class ScreenNavigator extends Component {
     switch (action.type) {
       case NAVIGATE_TO: {
         if (!action.navigatorMethod || !navigator[action.navigatorMethod]) {
-          throw new Error(`Unexisting navigator method: ${action.navigatorMethod}`);
+          throw new Error(`Calling unexisting navigator method: ${action.navigatorMethod}, 
+            while performing navigation action`);
         }
         navigator[action.navigatorMethod](action.route);
         break;
@@ -248,7 +249,8 @@ export class ScreenNavigator extends Component {
         break;
       }
       default: {
-        throw new Error(`Unsupported navigation action: ${action.type}`);
+        throw new Error(`Can not perform navigation action 
+          with unsupported navigation type: ${action.type}. Can not perform`);
       }
     }
   }
