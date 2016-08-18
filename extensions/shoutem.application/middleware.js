@@ -22,9 +22,8 @@ function createScreenSettings(shortcut) {
 }
 
 /**
- * Find selected screen layout for screenType.
- * Used to get proper screen when navigating to specific screen type.
- * Screen layouts are selected for shortcut in builder.
+ * Find selected screen layout for screen type.
+ * Layouts are selected per shortcut in builder, for shortcut screen itself and child screens.
  * @param screens
  * @param screenType
  * @returns {V}
