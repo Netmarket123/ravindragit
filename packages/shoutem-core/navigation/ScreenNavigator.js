@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import _ from 'lodash';
 
 import {
-  NAVIGATE_TO,
+  NAVIGATE,
   NAVIGATE_BACK,
 
   navigationActionPerformed,
@@ -234,7 +234,7 @@ export class ScreenNavigator extends Component {
   performNavigationAction(action) {
     const navigator = this.navigator;
     switch (action.type) {
-      case NAVIGATE_TO: {
+      case NAVIGATE: {
         if (!action.navigatorMethod || !navigator[action.navigatorMethod]) {
           throw new Error(`Calling unexisting navigator method: ${action.navigatorMethod}, 
             while performing navigation action`);

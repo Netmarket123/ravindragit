@@ -1,7 +1,7 @@
 import reducer, {
   ROOT_NAVIGATOR_NAME,
   NAVIGATION_ACTION_PERFORMED,
-  NAVIGATE_TO,
+  NAVIGATE,
   navigateTo,
   navigateJumpTo,
   replaceWith,
@@ -33,6 +33,6 @@ export {
   isNavigatorActive,
 
   // Action types
-  NAVIGATE_TO,
+  NAVIGATE,
   NAVIGATION_ACTION_PERFORMED,
 };

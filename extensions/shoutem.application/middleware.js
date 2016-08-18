@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import * as navigation from '@shoutem/core/navigation';
 const {
   NAVIGATION_ACTION_PERFORMED,
-  NAVIGATE_TO,
+  NAVIGATE,
 } = navigation;
 import { EXECUTE_SHORTCUT } from './actions';
 
@@ -62,7 +62,7 @@ function createExecuteShortcutMiddleware(actions) {
 
 // eslint-disable-next-line no-unused-vars
 const selectScreenLayout = store => next => action => {
-  if (action.type === NAVIGATE_TO) {
+  if (action.type === NAVIGATE) {
     const screenLayout = _.find(activeLayouts, { canonicalType: action.route.screen });
     if (screenLayout) {
       const newAction = _.merge(action, {

@@ -16,7 +16,7 @@ import _ from 'lodash';
  * 7. The navigation reducer records the new navigation stack of the navigator
  */
 
-export const NAVIGATE_TO = 'shoutem.core.navigation.NAVIGATE_TO';
+export const NAVIGATE = 'shoutem.core.navigation.NAVIGATE';
 export const ADD_NAVIGATOR = 'shoutem.core.navigation.ADD_NAVIGATOR';
 export const POP_NAVIGATOR = 'shoutem.core.navigation.POP_NAVIGATOR';
 export const NAVIGATE_BACK = 'shoutem.core.navigation.NAVIGATE_BACK';
@@ -27,7 +27,7 @@ export const ROOT_NAVIGATOR_NAME = 'root';
 
 function navigatorReducer(state = {}, action) {
   switch (action.type) {
-    case NAVIGATE_TO:
+    case NAVIGATE:
     case NAVIGATE_BACK:
       // We only save all valid actions in the
       // state here, the ScreenNavigator component
@@ -132,7 +132,7 @@ export const popNavigator = function (navigator) {
  */
 const navigate = function (route, navigator, navigatorMethod = 'push') {
   return {
-    type: NAVIGATE_TO,
+    type: NAVIGATE,
     route,
     navigator,
     navigatorMethod,
