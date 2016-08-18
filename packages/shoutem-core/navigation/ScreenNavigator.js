@@ -30,6 +30,7 @@ import NavigationBarContainer from './NavigationBarContainer';
 export class ScreenNavigator extends Component {
   static defaultProps = {
     active: true,
+    defaultSceneConfig: Navigator.SceneConfigs.PushFromRight,
   }
 
   constructor(props, context) {
@@ -269,7 +270,7 @@ export class ScreenNavigator extends Component {
   }
 
   configureScene(route) {
-    return route.sceneConfig || Navigator.SceneConfigs.PushFromRight;
+    return route.sceneConfig || this.props.defaultSceneConfig;
   }
 
   /**
@@ -425,6 +426,11 @@ ScreenNavigator.propTypes = {
    * This is default style to apply to the container of each scene
    */
   sceneStyle: React.PropTypes.object,
+
+  /**
+   * This is default scene config applied to route if not specified by route it self
+   */
+  defaultSceneConfig: React.PropTypes.object,
 
   /**
    * Indicates if navigator is active.
