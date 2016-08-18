@@ -107,6 +107,9 @@ export class ScreenNavigator extends Component {
     // to have activated and deactivated screen re-rendered. Navigator only re-render
     // active screen so we have to deactivate it while screen is still active, in another
     // words, we can only change props of active route.
+    // If we would only have activeRoute in state, changing it would only re-render active
+    // screen once, so either we wouldn't be able to mark previous screen as unfocused or
+    // next one as focused depending on location where we change activeRoute.
 
     // Native "force touch back" on iOS doesn't trigger any action so we must deactivate route here.
     this.deactivateRoute(this.state.activeRoute);
