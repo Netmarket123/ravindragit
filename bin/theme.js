@@ -1029,6 +1029,10 @@ export default () => ({
       justifyContent: 'flex-end',
     },
 
+    '.medium-tall': {
+      height: 160,
+    },
+
     'shoutem.ui.View': {
       'shoutem.ui.View': {
         'shoutem.ui.Overlay': {

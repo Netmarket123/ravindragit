@@ -55,13 +55,13 @@ export class HeroHeader extends Component {
       <View onLayout={this.onLayout}>
         <ZoomOut
           driver={driver}
-          inputRange={[-(this.state.height), 0]}
-          maxFactor={2.5}
+          inputRange={[-(0.9 * this.state.height), 0]}
+          maxFactor={3}
         >
           <Parallax
             driver={driver}
-            scrollSpeed={1.5}
-            insideScroll={false}
+            scrollSpeed={0.5}
+            insideScroll={true}
             extrapolation={{ extrapolateLeft: 'clamp' }}
           >
             {children}

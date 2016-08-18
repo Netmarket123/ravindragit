@@ -18,8 +18,8 @@ const composers = {
     const onShare = () =>
       Share.open({
         title: value.title || props.title,
-        share_text: value.text,
-        share_URL: value.link,
+        message: value.text,
+        url: value.link,
       }, (sharingError) => {
         console.error(sharingError);
       });
