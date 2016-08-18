@@ -153,7 +153,7 @@ export const navigateJumpTo = function (route, navigator) {
   return navigate(route, navigator, 'jumpTo');
 };
 
-export const navigateSwap = function (route, navigator) {
+export const replaceWith = function (route, navigator) {
   return navigate(route, navigator, 'replacePrevious');
 };
 
