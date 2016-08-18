@@ -43,13 +43,13 @@ export class ScreenNavigator extends Component {
     this.onRouteChanged = this.onRouteChanged.bind(this);
     this.onRouteWillChange = this.onRouteWillChange.bind(this);
 
-    this.initialRoute = props.initialRoute;
     this.navBarManager = props.renderNavigationBar ? new NavigationBarStateManager()
       : this.context.parentNavigator.navBarManager;
     this.state = {
       deactivatedRoute: null,
       activeRoute: null,
       withNavBar: true,
+      initialRoute: props.initialRoute,
     };
   }
 
@@ -66,6 +66,9 @@ export class ScreenNavigator extends Component {
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
+    // TODO(Braco)
+    // Mark inactive if parent navigator is becoming inactive
+    // NOTE: additional check if navigator is active can be done by checking active navigators stack
     const nextAction = this.getActionFromProps(nextProps);
     const action = this.getActionFromProps();
 
@@ -82,20 +85,28 @@ export class ScreenNavigator extends Component {
     }
 
     // Set initial route if this is first executed action with route
-    if (!this.initialRoute && nextAction.route) {
-      this.initialRoute = nextAction.route;
+    if (!this.state.initialRoute && nextAction.route) {
+      this.setState({ initialRoute: nextAction.route });
     } else {
-      this.performNavigationAction(nextAction);
+      // It is important that route deactivation and activation occur in separated "tick"
+      // to have activated and deactivated screen re-rendered. Navigator only re-render
+      // active screen so we have to deactivate it while screen is still active, in another
+      // words, we can only change props of active route.
+      // If we would only have activeRoute in state, changing it would only re-render active
+      // screen once, so either we wouldn't be able to mark previous screen as unfocused or
+      // next one as focused depending on location where we change activeRoute.
+      this.deactivateRoute(this.state.activeRoute, () => this.performNavigationAction(nextAction));
     }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const nextAction = this.getActionFromProps(nextProps);
+    const { active: nextActive } = nextProps;
+    const { active } = this.props;
 
     // We should re-render only if there is a
     // pending navigation action available.
     // Or if navigator has became active as child
-    return !!nextAction || nextState !== this.state;
+    return nextState !== this.state || (nextActive !== active);
   }
 
   onRouteWillChange(route) {
@@ -104,16 +115,11 @@ export class ScreenNavigator extends Component {
       // eslint-disable-next-line  no-param-reassign
       route.id = this.props.name + this.getLastRouteIndex();
     }
-    // It is important that route deactivation and activation occur in separated "tick"
-    // to have activated and deactivated screen re-rendered. Navigator only re-render
-    // active screen so we have to deactivate it while screen is still active, in another
-    // words, we can only change props of active route.
-    // If we would only have activeRoute in state, changing it would only re-render active
-    // screen once, so either we wouldn't be able to mark previous screen as unfocused or
-    // next one as focused depending on location where we change activeRoute.
 
     // Native "force touch back" on iOS doesn't trigger any action so we must deactivate route here.
-    this.deactivateRoute(this.state.activeRoute);
+    if (this.state.deactivatedRoute !== this.state.activeRoute) {
+      this.deactivateRoute(this.state.activeRoute);
+    }
     this.props.blockActions();
   }
 
@@ -154,37 +160,19 @@ export class ScreenNavigator extends Component {
   }
 
   setNavBarState(state, route) {
-    this.navBarManager.setState(state, route);
+    this.navBarManager.setState(state, route, this.props.navigatorState);
   }
 
   getActionFromProps(props = this.props) {
     return _.get(props, 'navigatorState.action');
   }
 
-  createResolveAndUpdateNavBarProps(route, focused) {
-    return (state, force) => {
-      if (focused) {
-        const navBarState = this.resolveNavBarProps(state, route, force);
-        this.setNavBarState(navBarState, route);
-      }
-    };
-  }
-
-  resolveNavBarProps(state, route, ignoreCustomizer = false) {
-    return ignoreCustomizer ? state : this.customizeNavBarState(state, route);
-  }
-
-  customizeNavBarState(state, route) {
-    const { navBarStateCustomizer, navigatorState } = this.props;
-    return navBarStateCustomizer ? navBarStateCustomizer(state, navigatorState, route) : state;
-  }
-
   activateRoute(activeRoute) {
     this.setState({ activeRoute });
   }
 
-  deactivateRoute(deactivatedRoute) {
-    this.setState({ deactivatedRoute });
+  deactivateRoute(deactivatedRoute, onRouteDeactivated = () => {}) {
+    this.setState({ deactivatedRoute }, onRouteDeactivated);
   }
 
   componentWillUnMount() {
@@ -213,7 +201,7 @@ export class ScreenNavigator extends Component {
    * @returns {boolean}
    */
   isScreenFocused(route, state = this.state) {
-    return route === state.activeRoute && route !== state.deactivatedRoute;
+    return this.isActive() && route === state.activeRoute && route !== state.deactivatedRoute;
   }
 
   willBecomeActive(nextProps) {
@@ -245,7 +233,6 @@ export class ScreenNavigator extends Component {
       case NAVIGATE_BACK: {
         if (this.navigator.getCurrentRoutes().length > 1) {
           navigator.pop();
-          this.navBarManager.onRouteRemoved(this.getCurrentRoute());
         }
         break;
       }
@@ -325,17 +312,17 @@ export class ScreenNavigator extends Component {
         {...route.props}
         focused={focused}
         // eslint-disable-next-line react/jsx-no-bind
-        setNavBarProps={this.createResolveAndUpdateNavBarProps(route, focused)}
+        setNavBarProps={state => focused && this.setNavBarState(state, route)}
         shouldNavBarRender={withNavBar => this.setState({ withNavBar })}
       />
     );
   }
 
   render() {
-    const navigatorComponent = this.initialRoute ? (
+    const navigatorComponent = this.state.initialRoute ? (
       <Navigator
         ref={this.captureNavigatorRef}
-        initialRoute={this.initialRoute}
+        initialRoute={this.state.initialRoute}
         initialRouteStack={this.props.initialRouteStack}
         configureScene={this.configureScene}
         renderScene={this.renderScene}
