@@ -11,7 +11,7 @@ import reducer, {
   getNavigator,
   isNavigatorActive,
 } from './actions';
-import ScreenNavigator from './ScreenNavigator';
+import { ScreenNavigator } from './screen-navigator';
 
 export default reducer;
 export {

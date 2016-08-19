@@ -5,7 +5,8 @@ import { Navigator } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import _ from 'lodash';
-import { SceneConfigs, SceneStyles } from './screen-navigator-addons';
+import { SceneConfigs } from './SceneConfigs';
+import { SceneStyles } from './SceneStyles';
 
 import {
   NAVIGATE,
@@ -16,10 +17,10 @@ import {
 
   addNavigator,
   popNavigator,
-} from './actions';
+} from '../actions';
 
-import NavigationBarStateManager from './NavigationBarStateManager';
-import NavigationBarContainer from './NavigationBarContainer';
+import NavigationBarStateManager from '../NavigationBarStateManager';
+import NavigationBarContainer from '../NavigationBarContainer';
 
 /**
  * The ScreenNavigator handles navigation to any of the
