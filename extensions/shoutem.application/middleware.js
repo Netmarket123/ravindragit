@@ -21,17 +21,6 @@ function createScreenSettings(shortcut) {
   };
 }
 
-/**
- * Find selected screen layout for screen type.
- * Layouts are selected per shortcut in builder, for shortcut screen itself and child screens.
- * @param screens
- * @param screenType
- * @returns {V}
- */
-function getSelectedLayoutScreen(screens, screenType) {
-  return _.get(screens.find(screen => screen.canonicalType === screenType), 'canonicalName');
-}
-
 function getChildShortcuts(store, parentShortcut) {
   const childrenDescriptors = _.get(parentShortcut, 'relationships.children.data', []);
   const shortcuts = _.get(store.getState(), ['shoutem.application', 'shortcuts']);
@@ -93,9 +82,7 @@ const selectScreenLayout = store => next => action => {
 // eslint-disable-next-line no-unused-vars
 const navigateToShortcutScreen = store => next => action => {
   if (action.type === EXECUTE_SHORTCUT) {
-    const screenType = _.get(action, 'shortcut.attributes.screen');
-    const screens = _.get(action, 'shortcut.attributes.screens', []);
-    const screenName = getSelectedLayoutScreen(screens, screenType) || screenType;
+    const screenName = _.get(action, 'shortcut.attributes.screen');
     const settings = createScreenSettings(action.shortcut);
     const children = getChildShortcuts(store, action.shortcut);
     const navigateAction = navigation[action.navigationAction];
