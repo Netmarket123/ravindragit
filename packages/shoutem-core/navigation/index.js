@@ -12,14 +12,10 @@ import reducer, {
   isNavigatorActive,
 } from './actions';
 import ScreenNavigator from './ScreenNavigator';
-import { SceneConfigs } from './SceneConfigs';
 
 export default reducer;
 export {
   ROOT_NAVIGATOR_NAME,
-
-  // Scene configurations
-  SceneConfigs,
 
   // Components
   ScreenNavigator,

@@ -5,6 +5,7 @@ import { Navigator } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import _ from 'lodash';
+import { SceneConfigs, SceneStyles } from './screen-navigator-addons';
 
 import {
   NAVIGATE,
@@ -32,6 +33,9 @@ export class ScreenNavigator extends Component {
     active: true,
     defaultSceneConfig: Navigator.SceneConfigs.PushFromRight,
   }
+
+  static SceneConfigs = SceneConfigs;
+  static SceneStyles = SceneStyles;
 
   constructor(props, context) {
     super(props, context);
