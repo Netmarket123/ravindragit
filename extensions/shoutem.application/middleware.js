@@ -36,10 +36,7 @@ function getChildShortcuts(store, parentShortcut) {
   const childrenDescriptors = _.get(parentShortcut, 'relationships.children.data', []);
   const shortcuts = _.get(store.getState(), ['shoutem.application', 'shortcuts']);
 
-  return childrenDescriptors.reduce((result, child) => {
-    result.push(shortcuts[child.id]);
-    return result;
-  }, []);
+  return childrenDescriptors.map(child => shortcuts[child.id]);
 }
 
 let activeLayouts = [];
