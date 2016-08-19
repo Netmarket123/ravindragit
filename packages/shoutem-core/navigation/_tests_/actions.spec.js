@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import deepFreeze from 'deep-freeze';
 
 import reducer, {
-  NAVIGATE_TO,
+  NAVIGATE,
   NAVIGATE_BACK,
   NAVIGATION_ACTION_PERFORMED,
 
@@ -29,7 +29,7 @@ describe('navigation redux support', () => {
       const route = getRoute();
 
       assert.deepEqual(navigateTo(route), {
-        type: NAVIGATE_TO,
+        type: NAVIGATE,
         navigator: ROOT_NAVIGATOR_NAME,
         route,
       });
@@ -43,7 +43,7 @@ describe('navigation redux support', () => {
       };
 
       assert.deepEqual(navigateTo(route, navigator), {
-        type: NAVIGATE_TO,
+        type: NAVIGATE,
         navigator,
         route,
       });
@@ -68,7 +68,7 @@ describe('navigation redux support', () => {
     it('creates an action to broadcast that a navigation was performed', () => {
       const navigator = 'side-menu';
       const navigationAction = {
-        type: NAVIGATE_TO,
+        type: NAVIGATE,
         navigator,
         route: getRoute(),
       };
@@ -110,7 +110,7 @@ describe('navigation redux support', () => {
         },
       };
       const action = {
-        type: NAVIGATE_TO,
+        type: NAVIGATE,
         navigator: 'new-navigator',
       };
 
@@ -138,7 +138,7 @@ describe('navigation redux support', () => {
         otherNavigatorState,
       };
       const action = {
-        type: NAVIGATE_TO,
+        type: NAVIGATE,
         navigator: ROOT_NAVIGATOR_NAME,
       };
 
@@ -176,12 +176,12 @@ describe('navigation redux support', () => {
     it('updates the navigation stack when the navigation is performed', () => {
       const navigator = 'navigator';
       const stack = [{
-        type: NAVIGATE_TO,
+        type: NAVIGATE,
         route: {
           screen: 'screen1',
         },
       }, {
-        type: NAVIGATE_TO,
+        type: NAVIGATE,
         route: {
           screen: 'screen2',
         },

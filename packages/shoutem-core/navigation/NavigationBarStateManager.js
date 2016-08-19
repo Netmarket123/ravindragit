@@ -5,21 +5,7 @@ export default class NavigationBarStateManager {
     this.setStateChangeListener = this.setStateChangeListener.bind(this);
     this.state = {};
 
-    this.routeStates = new Map();
-  }
-
-  onRouteChanged(route) {
-    const state = this.routeStates.get(route);
-    this.currentRoute = route;
-    this.setState(state, route);
-  }
-
-  onRouteRemoved(route) {
-    this.routeStates.delete(route);
-    // we need to save this route, because render method of
-    // outgoing screen is called one more time after back action is performed
-    // so, we want to escape possible addition of deleted route to routeStates again
-    this.deletedRoute = route;
+    this.navigatorState = null;
   }
 
   setStateChangeListener(listener) {
@@ -36,25 +22,12 @@ export default class NavigationBarStateManager {
     listener(_.assign({}, oldState), _.assign({}, newState));
   }
 
-  isRouteRemoved(route) {
-    return this.deletedRoute && route === this.deletedRoute;
-  }
-
-  stateShouldChange(route, newState) {
-    return (!this.routeStates.get(route) ||
-    this.routeStates.size < 1 ||
-    newState !== this.routeStates.get(route));
-  }
-
-  setState(state, route) {
+  setState(state, route, navigatorState) {
     const oldState = this.state;
-    // Used as NavigationBar key to render new screen navigation bar
     const newState = _.assign({}, state, { id: route.id });
 
-    if (!this.isRouteRemoved(route) && this.stateShouldChange(route, newState)) {
-      this.routeStates.set(route, newState);
-      this.state = newState;
-      this.triggerStateChangeListener(oldState, newState);
-    }
+    this.navigatorState = navigatorState;
+    this.state = newState;
+    this.triggerStateChangeListener(oldState, newState);
   }
 }

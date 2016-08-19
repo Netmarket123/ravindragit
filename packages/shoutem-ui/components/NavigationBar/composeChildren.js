@@ -76,6 +76,17 @@ const composers = {
   },
 };
 
+/**
+ * If source (usually state set by component) has undefined
+ * property values, ignore those properties.
+ * @param objValue
+ * @param srcValue
+ * @returns {*}
+ */
+function skipUndefined(objValue, srcValue) {
+  return _.isUndefined(srcValue) ? objValue : srcValue;
+}
+
 const composeChildren = NavigationBarComponent => class extends Component {
   static propTypes = {
     id: React.PropTypes.any,
@@ -100,7 +111,7 @@ const composeChildren = NavigationBarComponent => class extends Component {
       newProps.style = _.merge(style, newProps.style);
     }
 
-    return <NavigationBarComponent {..._.assign(newProps, this.props)} />;
+    return <NavigationBarComponent {..._.assignWith(newProps, this.props, skipUndefined)} />;
   }
 };
 

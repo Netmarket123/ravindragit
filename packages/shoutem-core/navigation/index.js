@@ -1,11 +1,17 @@
 import reducer, {
   ROOT_NAVIGATOR_NAME,
   NAVIGATION_ACTION_PERFORMED,
-  NAVIGATE_TO,
+  NAVIGATE,
   navigateTo,
+  jumpTo,
+  replaceWith,
   navigateBack,
+  setActiveNavigator,
+  getTopNavigator,
+  getNavigator,
+  isNavigatorActive,
 } from './actions';
-import ScreenNavigator from './ScreenNavigator';
+import { ScreenNavigator } from './screen-navigator';
 
 export default reducer;
 export {
@@ -16,9 +22,17 @@ export {
 
   // Action creators
   navigateTo,
+  jumpTo,
+  replaceWith,
   navigateBack,
+  setActiveNavigator,
+
+  // Getters
+  getTopNavigator,
+  getNavigator,
+  isNavigatorActive,
 
   // Action types
-  NAVIGATE_TO,
+  NAVIGATE,
   NAVIGATION_ACTION_PERFORMED,
 };

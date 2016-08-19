@@ -110,7 +110,7 @@ function createApplication(appContext) {
         <ScreenNavigator
           name={ROOT_NAVIGATOR_NAME}
           renderNavigationBar={appContext.renderNavigationBar}
-          sceneStyle={{ paddingTop: 70 }}
+          sceneStyle={ScreenNavigator.SceneStyles.DEFAULT}
         />
       );
       return (

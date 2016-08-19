@@ -11,6 +11,7 @@ const window = Dimensions.get('window');
 const Colors = {
   DARK: '#333333',
   LIGHT_GRAY: '#f2f2f2',
+  NAVIGATION_TINT_COLOR: '#333333',
 };
 
 const SMALL_GUTTER = 5;
@@ -976,8 +977,7 @@ export default () => ({
     android: {
       height: 20,
     },
-    ios: {
-    },
+    ios: {},
   },
 
   'shoutem.ui.Divider': {
@@ -1072,5 +1072,104 @@ export default () => ({
 
     [INCLUDE]: ['commonVariants'],
     flex: 0,
+  },
+  'shoutem.navigation.TabBar': {
+    'shoutem.ui.Screen': {
+      // TabBar container
+      'shoutem.ui.View': {
+        backgroundColor: '#fff',
+        position: 'absolute',
+        borderTopWidth: 1,
+        borderColor: '#e0e0e0',
+        bottom: 0,
+        left: 0,
+        right: 0,
+      },
+      paddingBottom: 60, // TabBar height
+    },
+  },
+  'shoutem.navigation.TabBarItem': {
+    'shoutem.ui.Button': {
+      'shoutem.ui.Image': {
+        height: 24,
+        padding: 12,
+        width: null,
+        flex: 0,
+        resizeMode: 'contain',
+        marginTop: 8,
+        tintColor: Colors.NAVIGATION_TINT_COLOR,
+      },
+      'shoutem.ui.Text': {
+        color: '#b1b1b1',
+        fontSize: 10,
+        height: 12,
+        marginBottom: 6,
+      },
+
+      '.selected': {
+        'shoutem.ui.View': {
+          'shoutem.ui.Text': {
+            color: '#666',
+          },
+        },
+        borderColor: '#222',
+      },
+
+      height: 60,
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      borderWidth: 0,
+      borderBottomWidth: 2,
+      borderRadius: 0,
+      borderColor: 'transparent',
+    },
+  },
+  'shoutem.navigation.Drawer': {
+    menu: {
+      paddingTop: NAVIGATION_BAR_HEIGHT,
+    },
+    underlayScreens: {
+      paddingTop: NAVIGATION_BAR_HEIGHT,
+    },
+  },
+  'shoutem.navigation.DrawerItem': {
+    'shoutem.ui.Row': {
+      'shoutem.ui.Button': {
+        'shoutem.ui.Image': {
+          height: 24,
+          padding: 12,
+          width: null,
+          flex: 0,
+          resizeMode: 'contain',
+          marginRight: LARGE_GUTTER,
+          tintColor: Colors.NAVIGATION_TINT_COLOR,
+        },
+        'shoutem.ui.Text': {
+          color: '#222',
+          fontSize: 15,
+          margin: 0,
+        },
+
+        '.selected': {
+          'shoutem.ui.View': {
+            'shoutem.ui.Text': {
+              color: '#666',
+            },
+          },
+        },
+
+        borderWidth: 0,
+        borderRadius: 0,
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        alignSelf: 'stretch',
+        paddingLeft: LARGE_GUTTER,
+      },
+
+      height: 30,
+      marginBottom: MEDIUM_GUTTER,
+      padding: 0,
+    },
   },
 });
