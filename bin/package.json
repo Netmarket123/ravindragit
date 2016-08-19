@@ -11,7 +11,7 @@
   "dependencies": {
     "react-native": "0.28.0",
     "react-native-calendar-manager": "git+ssh://git@bitbucket.org/fiveminutes/react-native-calendar-manager.git",
-    "@shoutem/core": "0.0.13",
+    "@shoutem/core": "0.0.14",
     "code-push-cli": "1.12.0-beta",
     "code-push": "1.10.0-beta",
     "command-line-args": "^2.1.6",

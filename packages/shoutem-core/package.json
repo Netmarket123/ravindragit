@@ -1,11 +1,11 @@
 {
   "name": "@shoutem/core",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "main": "index.js",
   "dependencies": {
     "@shoutem/redux-io": "0.2.1",
     "@shoutem/theme": "0.0.5",
-    "@shoutem/ui": "0.0.15",
+    "@shoutem/ui": "0.0.16",
     "es6-symbol": "^3.0.2",
     "lodash": "^4.10.1",
     "react": "15.1.0",
