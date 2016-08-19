@@ -3,7 +3,7 @@ import reducer, {
   NAVIGATION_ACTION_PERFORMED,
   NAVIGATE,
   navigateTo,
-  navigateJumpTo,
+  jumpTo,
   replaceWith,
   navigateBack,
   setActiveNavigator,
@@ -26,7 +26,7 @@ export {
 
   // Action creators
   navigateTo,
-  navigateJumpTo,
+  jumpTo,
   replaceWith,
   navigateBack,
   setActiveNavigator,

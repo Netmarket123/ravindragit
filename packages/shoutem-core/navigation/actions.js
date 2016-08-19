@@ -149,7 +149,7 @@ export const navigateTo = function (route, navigator) {
   return navigate(route, navigator, 'push');
 };
 
-export const navigateJumpTo = function (route, navigator) {
+export const jumpTo = function (route, navigator) {
   return navigate(route, navigator, 'jumpTo');
 };
 
