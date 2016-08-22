@@ -54,8 +54,13 @@ export default function connectStyle(componentStyleName, componentStyle = {}) {
     return isClassComponent(WrappedComponent);
   }
 
+  function createCustomizeStyleName(customizeStyleNameFunc) {
+    return customizeStyleNameFunc ? customizeStyleNameFunc : styleName => styleName;
+  }
+
   return function wrapWithStyledComponent(WrappedComponent) {
     const componentDisplayName = getComponentDisplayName(WrappedComponent);
+    const customizeStyleName = createCustomizeStyleName(WrappedComponent.customizeStyleName);
 
     if (!_.isPlainObject(componentStyle)) {
       throwConnectStyleError(
@@ -131,10 +136,13 @@ export default function connectStyle(componentStyleName, componentStyle = {}) {
 
       resolveStyle(context, props) {
         const { parentStyle } = context;
-        const { style, styleName } = props;
+        const { style, styleName: styleNameProp } = props;
 
         const theme = getTheme(context);
         const themeStyle = theme.createComponentStyle(componentStyleName, componentStyle);
+
+        const styleName = customizeStyleName(styleNameProp, props);
+
         return resolveComponentStyle(
           componentStyleName,
           styleName,
