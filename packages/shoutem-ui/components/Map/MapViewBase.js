@@ -46,7 +46,7 @@ export default class MapViewBase extends Component {
     this.onMarkerPress = this.onMarkerPress.bind(this);
     this.state = {
       markerCoordinates: null,
-      selectedMarker: null,
+      selectedMarker: props.selectedMarker || null,
       region: null,
       initialRegion: null,
       isReady: false,
@@ -141,6 +141,7 @@ MapViewBase.propTypes = {
   ...MapView.propTypes,
   markerImage: Image.propTypes.source,
   selectedMarkerImage: Image.propTypes.source,
+  selectedMarker: MapView.propTypes.region,
   style: PropTypes.object,
   initialRegion: MapView.propTypes.region,
   markers: MapView.propTypes.annotations,

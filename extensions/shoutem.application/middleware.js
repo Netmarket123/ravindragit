@@ -1,10 +1,9 @@
 import * as _ from 'lodash';
-import {
-  navigateTo,
+import * as navigation from '@shoutem/core/navigation';
+const {
   NAVIGATION_ACTION_PERFORMED,
-  NAVIGATE_TO,
-} from '@shoutem/core/navigation';
-
+  NAVIGATE,
+} = navigation;
 import { EXECUTE_SHORTCUT } from './actions';
 
 /**
@@ -22,6 +21,13 @@ function createScreenSettings(shortcut) {
   };
 }
 
+function getChildShortcuts(store, parentShortcut) {
+  const childrenDescriptors = _.get(parentShortcut, 'relationships.children.data', []);
+  const shortcuts = _.get(store.getState(), ['shoutem.application', 'shortcuts']);
+
+  return childrenDescriptors.map(child => shortcuts[child.id]);
+}
+
 let activeLayouts = [];
 
 function createExecuteShortcutMiddleware(actions) {
@@ -36,7 +42,7 @@ function createExecuteShortcutMiddleware(actions) {
       if (actionName) {
         const shortcutAction = actions[actionName];
         const settings = createScreenSettings(action.shortcut);
-        const children = _.get(action.shortcut, 'relationships.children.data');
+        const children = getChildShortcuts(store, action.shortcut);
 
         if (typeof shortcutAction === 'function') {
           return next(shortcutAction(settings, children, store.getState()));
@@ -53,7 +59,7 @@ function createExecuteShortcutMiddleware(actions) {
 
 // eslint-disable-next-line no-unused-vars
 const selectScreenLayout = store => next => action => {
-  if (action.type === NAVIGATE_TO) {
+  if (action.type === NAVIGATE) {
     const screenLayout = _.find(activeLayouts, { canonicalType: action.route.screen });
     if (screenLayout) {
       const newAction = _.merge(action, {
@@ -78,13 +84,19 @@ const navigateToShortcutScreen = store => next => action => {
   if (action.type === EXECUTE_SHORTCUT) {
     const screenName = _.get(action, 'shortcut.attributes.screen');
     const settings = createScreenSettings(action.shortcut);
-    const children = _.get(action.shortcut, 'relationships.children.data');
+    const children = getChildShortcuts(store, action.shortcut);
+    const navigateAction = navigation[action.navigationAction];
 
     activeLayouts = _.get(action, 'shortcut.attributes.screens');
 
     if (screenName) {
+      if (!navigateAction) {
+        throw Error('Shortcut you are trying to execute doesn\'t have proper navigation action.' +
+          ' Please, check your extension.json or call of executeShortcut action creator.');
+      }
+
       const openScreenAction = () =>
-        navigateTo({
+        navigateAction({
           screen: screenName,
           props: {
             children,

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const AppBuild = require('./app-build');
+// eslint-disable-next-line import/no-unresolved
 const config = require('../config.json');
 const commandLineArgs = require('command-line-args');
 

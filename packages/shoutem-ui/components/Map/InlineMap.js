@@ -63,6 +63,7 @@ function InlineMap({
   pitchEnabled,
   initialRegion,
   markerImage,
+  selectedMarker,
 }) {
   const mapProps = {
     initialRegion,
@@ -71,6 +72,7 @@ function InlineMap({
     rotateEnabled,
     pitchEnabled,
     markerImage,
+    selectedMarker,
   };
 
   return (
