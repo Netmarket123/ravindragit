@@ -36,10 +36,11 @@ function getTheme(context) {
  * @param componentStyleName The component name that will be used
  * to target this component in style rules.
  * @param componentStyle The default component style.
+ * @param mapPropsToStyleNames Pure function to customize styleNames depending on props.
  * @returns {StyledComponent} The new component that will handle
  * the styling of the wrapped component.
  */
-export default function connectStyle(componentStyleName, componentStyle = {}) {
+export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames) => {
   function getComponentDisplayName(WrappedComponent) {
     return WrappedComponent.displayName || WrappedComponent.name || 'Component';
   }
@@ -54,13 +55,8 @@ export default function connectStyle(componentStyleName, componentStyle = {}) {
     return isClassComponent(WrappedComponent);
   }
 
-  function createCustomizeStyleName(customizeStyleNameFunc) {
-    return customizeStyleNameFunc ? customizeStyleNameFunc : styleName => styleName;
-  }
-
   return function wrapWithStyledComponent(WrappedComponent) {
     const componentDisplayName = getComponentDisplayName(WrappedComponent);
-    const customizeStyleName = createCustomizeStyleName(WrappedComponent.customizeStyleName);
 
     if (!_.isPlainObject(componentStyle)) {
       throwConnectStyleError(
@@ -134,14 +130,29 @@ export default function connectStyle(componentStyleName, componentStyle = {}) {
           (nextContext.parentStyle !== this.context.parentStyle);
       }
 
+      resolveStyleName() {
+        const { styleName } = this.props;
+
+        if (!mapPropsToStyleNames) {
+          return styleName;
+        }
+
+        const styleNames = styleName ? styleName.split(' ') : [];
+
+        // We want style names "Set" (unique values)
+        const customStyleNames = _.uniq(mapPropsToStyleNames(styleNames, this.props) || []);
+
+        return customStyleNames.join(' ');
+      }
+
       resolveStyle(context, props) {
         const { parentStyle } = context;
-        const { style, styleName: styleNameProp } = props;
+        const { style } = props;
 
         const theme = getTheme(context);
         const themeStyle = theme.createComponentStyle(componentStyleName, componentStyle);
 
-        const styleName = customizeStyleName(styleNameProp, props);
+        const styleName = this.resolveStyleName();
 
         return resolveComponentStyle(
           componentStyleName,
