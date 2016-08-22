@@ -1,4 +1,4 @@
-import React, { PropTypes, Component } from 'react';
+import React, { PropTypes } from 'react';
 import hoistStatics from 'hoist-non-react-statics';
 import * as _ from 'lodash';
 
@@ -43,16 +43,6 @@ function getTheme(context) {
 export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames) => {
   function getComponentDisplayName(WrappedComponent) {
     return WrappedComponent.displayName || WrappedComponent.name || 'Component';
-  }
-
-  function isClassComponent(WrappedComponent) {
-    return WrappedComponent.prototype instanceof Component;
-  }
-
-  function isComponentReferenceable(WrappedComponent) {
-    // stateless function components can't be referenced
-    // only Component instance can
-    return isClassComponent(WrappedComponent);
   }
 
   return function wrapWithStyledComponent(WrappedComponent) {
@@ -102,9 +92,6 @@ export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames) =
           style: resolvedStyle.componentStyle,
           childrenStyle: resolvedStyle.childrenStyle,
         };
-        if (isComponentReferenceable(WrappedComponent)) {
-          this.state.ref = 'wrappedInstance';
-        }
       }
 
       getChildContext() {
@@ -164,24 +151,10 @@ export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames) =
       }
 
       render() {
-        // If the component is a class component, it can be initialised with JSX
-        if (isClassComponent(WrappedComponent)) {
-          return <WrappedComponent {...this.props} style={this.state.style} />;
-        }
-
-        // TODO(Braco) - check if this different Component creation for func and class is needed
-        // for React > 0.15. In React > 0.15, func components should be able to render `null`
-
-        // otherwise initialize function component as function for case it returns null
-        // https://github.com/facebook/react/issues/4599
-        // eslint-disable-next-line new-cap
-        return WrappedComponent({
-          ...this.props,
-          style: this.state.style,
-        });
+        return <WrappedComponent {...this.props} style={this.state.style} />;
       }
     }
 
     return hoistStatics(StyledComponent, WrappedComponent);
   };
-}
+};
