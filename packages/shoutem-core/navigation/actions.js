@@ -16,6 +16,10 @@ import _ from 'lodash';
  * 7. The navigation reducer records the new navigation stack of the navigator
  */
 
+// Because of chrome inspection bug we are exporting function as constants
+// Bug is we can not set breakpoint in files which export function directly
+/* eslint-disable func-names */
+
 export const NAVIGATE = 'shoutem.core.navigation.NAVIGATE';
 export const ADD_NAVIGATOR = 'shoutem.core.navigation.ADD_NAVIGATOR';
 export const POP_NAVIGATOR = 'shoutem.core.navigation.POP_NAVIGATOR';

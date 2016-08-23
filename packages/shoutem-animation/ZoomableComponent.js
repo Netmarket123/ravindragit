@@ -62,6 +62,14 @@ export default function makeZoomable(ComponentToBeDecorated) {
    * for width, height and absolute position.
    */
   class ZoomDecorator extends Component {
+    static propTypes = {
+      componentWidth: PropTypes.number.isRequired,
+      componentHeight: PropTypes.number.isRequired,
+      style: PropTypes.object,
+      onPress: PropTypes.func,
+      onZoom: PropTypes.func,
+    }
+
     constructor(props) {
       super(props);
       this._onLayout = this._onLayout.bind(this);
@@ -102,17 +110,22 @@ export default function makeZoomable(ComponentToBeDecorated) {
             this.processPinch(touch1, touch2);
             if (this.props.onZoom) this.props.onZoom();
           } else if (touches.length === 1 && !this.state.isZooming && !this.isMoveSmall(gesture)) {
-            // Process touch only if touch (move) is very small so that we can ignore it, and consider that small move it isn't panning.
-            // small touch will be processed by calling props.onPress() in onPanResponderRelease()
+            // Process touch only if touch (move) is very small so that we can ignore it,
+            // and consider that small move it isn't panning.
+            // small touch will be processed by calling props.onPress()
+            // in onPanResponderRelease()
             this.processTouch(touch1.pageX, touch1.pageY);
           }
         },
 
         onPanResponderTerminationRequest: () => false,
-        // Due to changes in RN>0.26, onPanResponderTerminationRequest should be set false, as with `true`,
+        // Due to changes in RN>0.26, onPanResponderTerminationRequest should be
+        // set false, as with `true`,
         // Modal takes over PanResponder handlers and PanResponder then doesn't work :(
         onPanResponderRelease: () => {
-          if (!this.state.isMoving && !this.state.isZooming && this.props.onPress) this.props.onPress();
+          if (!this.state.isMoving && !this.state.isZooming && this.props.onPress) {
+            this.props.onPress();
+          }
           this.setState({
             isZooming: false,
             isMoving: false,
@@ -124,7 +137,7 @@ export default function makeZoomable(ComponentToBeDecorated) {
     }
 
     isMoveSmall(gesture) {
-      return Math.abs(gesture.dx) < 2 && Math.abs(gesture.dy) < 2 ? true : false;
+      return Math.abs(gesture.dx) < 2 && Math.abs(gesture.dy) < 2;
     }
 
     processPinch(touch1, touch2) {
@@ -241,13 +254,6 @@ export default function makeZoomable(ComponentToBeDecorated) {
       );
     }
   }
-
-  ZoomDecorator.propTypes = {
-    componentWidth: PropTypes.number.isRequired,
-    componentHeight: PropTypes.number.isRequired,
-    style: PropTypes.object,
-    onPress: PropTypes.func,
-  };
 
   return ZoomDecorator;
 }
