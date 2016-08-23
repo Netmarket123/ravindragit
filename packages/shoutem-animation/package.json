@@ -1,0 +1,23 @@
+{
+  "name": "@shoutem/animation",
+  "version": "0.0.4",
+  "description": "Shoutem Animation Library",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://bitbucket.org/fiveminutes/shoutem-animation.git"
+  },
+  "keywords": [
+    "React",
+    "Native",
+    "Animation"
+  ],
+  "homepage": "https://bitbucket.org/fiveminutes/shoutem-animation#readme",
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  }
+}

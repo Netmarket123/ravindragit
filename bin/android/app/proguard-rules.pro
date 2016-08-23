@@ -65,3 +65,6 @@
 # stetho
 
 -dontwarn com.facebook.stetho.**
+
+# shoutem gif support
+-keep class com.facebook.imagepipeline.animated.factory.AnimatedFactoryImpl { public AnimatedFactoryImpl(com.facebook.imagepipeline.bitmaps.PlatformBitmapFactory, com.facebook.imagepipeline.core.ExecutorSupplier); }

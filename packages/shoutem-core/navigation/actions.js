@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 /**
  * This file contains the reducer and action creators for
  * all ScreenNavigators in the application. Each navigator
@@ -14,7 +16,13 @@
  * 7. The navigation reducer records the new navigation stack of the navigator
  */
 
-export const NAVIGATE_TO = 'shoutem.core.navigation.NAVIGATE_TO';
+// Because of chrome inspection bug we are exporting function as constants
+// Bug is we can not set breakpoint in files which export function directly
+/* eslint-disable func-names */
+
+export const NAVIGATE = 'shoutem.core.navigation.NAVIGATE';
+export const ADD_NAVIGATOR = 'shoutem.core.navigation.ADD_NAVIGATOR';
+export const POP_NAVIGATOR = 'shoutem.core.navigation.POP_NAVIGATOR';
 export const NAVIGATE_BACK = 'shoutem.core.navigation.NAVIGATE_BACK';
 
 export const NAVIGATION_ACTION_PERFORMED = 'shoutem.core.navigation.NAVIGATION_ACTION_PERFORMED';
@@ -23,7 +31,7 @@ export const ROOT_NAVIGATOR_NAME = 'root';
 
 function navigatorReducer(state = {}, action) {
   switch (action.type) {
-    case NAVIGATE_TO:
+    case NAVIGATE:
     case NAVIGATE_BACK:
       // We only save all valid actions in the
       // state here, the ScreenNavigator component
@@ -47,9 +55,44 @@ function navigatorReducer(state = {}, action) {
   }
 }
 
+/**
+ * Pop navigator and it children.
+ * (all navigators in stack located right (after))
+ * @param state
+ * @param navigator
+ * @returns {*}
+ */
+function popNavigatorActionHandle(state, navigator) {
+  const navigatorIndex = state.indexOf(navigator);
+  if (navigatorIndex < 0) {
+    // Can not pop unexisting navigator!
+    return state;
+  }
+  return _.take(state, navigatorIndex);
+}
+
+/**
+ * Active navigator is used as default navigator
+ * for navigateTo action if navigator not explicitly defined in call.
+ * @param state
+ * @param action
+ * @returns {*}
+ */
+function navigatorsStackReducer(state = [], action) {
+  switch (action.type) {
+    case ADD_NAVIGATOR:
+      return [...state, action.navigator];
+    case POP_NAVIGATOR:
+      return popNavigatorActionHandle(state, action.navigator);
+    default:
+      return state;
+  }
+}
+
 export default function (state = {}, action) {
-  const navigatorName = action.navigator;
-  if (!navigatorName) {
+  const navigatorsStack = navigatorsStackReducer(state.navigatorsStack, action);
+  const currentNavigator = action.navigator || _.last(navigatorsStack);
+  if (!currentNavigator) {
     // We can only handle navigation actions that
     // target a specific navigator.
     return state;
@@ -57,34 +100,76 @@ export default function (state = {}, action) {
 
   return {
     ...state,
-    [navigatorName]: navigatorReducer(state[navigatorName], action),
+    navigatorsStack,
+    [currentNavigator]: navigatorReducer(state[currentNavigator], action),
   };
 }
 
 /**
- * Navigates to the specified route using the specified navigator.
- * @param route The route to navigate to
- * @param navigator The navigator to use, this is an optional
- *  parameter, the root navigator will be used if it is undefined.
- * @returns {*} The action.
+ * @param navigator {string}
+ * @returns {{type: string, navigator: string}}
  */
-// eslint-disable-next-line func-names
-export const navigateTo = function (route, navigator = ROOT_NAVIGATOR_NAME) {
+export const addNavigator = function (navigator) {
   return {
-    type: NAVIGATE_TO,
-    route,
+    type: ADD_NAVIGATOR,
     navigator,
   };
 };
 
 /**
+ * @param navigator {string}
+ * @returns {{type: string, navigator: string}}
+ */
+export const popNavigator = function (navigator) {
+  return {
+    type: POP_NAVIGATOR,
+    navigator,
+  };
+};
+
+/**
+ * Navigates to the specified route using the specified navigator.
+ * @param route The route to navigate to
+ * @param navigator The navigator to use, this is an optional
+ *  parameter, the activeNavigator will be used if it is undefined.
+ * @returns {*} The action.
+ */
+const navigate = function (route, navigator, navigatorMethod = 'push') {
+  return {
+    type: NAVIGATE,
+    route,
+    navigator,
+    navigatorMethod,
+  };
+};
+
+/**
+ * Navigate to another screen with push navigation action.
+ * @param route
+ * @param navigator
+ * @returns {{type, route, navigator, navigatorMethod}}
+ */
+export const navigateTo = function (route, navigator) {
+  return navigate(route, navigator, 'push');
+};
+
+export const jumpTo = function (route, navigator) {
+  return navigate(route, navigator, 'jumpTo');
+};
+
+export const replaceWith = function (route, navigator) {
+  return navigate(route, navigator, 'replacePrevious');
+};
+
+
+/**
  * Navigates one step back on the specified navigator.
  * @param navigator The navigator to use, this is an optional
- *  parameter, the root navigator will be used if it is undefined.
+ *  parameter, the activeNavigator will be used if it is undefined.
  * @returns {*} The action.
  */
 // eslint-disable-next-line func-names
-export const navigateBack = function (navigator = ROOT_NAVIGATOR_NAME) {
+export const navigateBack = function (navigator) {
   return {
     type: NAVIGATE_BACK,
     navigator,
@@ -108,4 +193,37 @@ export const navigationActionPerformed = function (navigationAction, navigationS
     navigationAction,
     navigationStack,
   };
+};
+
+const getNavigationProperty = function (state, prop) {
+  return state['shoutem.core'].navigation[prop];
+};
+
+/**
+ * Return top (default) navigator name from application state
+ * @param state - root state
+ */
+export const getTopNavigator = function (state) {
+  return _.last(getNavigationProperty(state, 'navigatorsStack'));
+};
+
+/**
+ * Navigator is active if it is in navigators stack.
+ *
+ * @param state
+ * @param navigator
+ * @returns {boolean}
+ */
+export const isNavigatorActive = function (state, navigator) {
+  return _.indexOf(getNavigationProperty(state, 'navigatorsStack'), navigator) >= 0;
+};
+
+/**
+ * Return specified navigator from application state
+ * @param state
+ * @param navigator
+ * @returns {*}
+ */
+export const getNavigator = function (state, navigator) {
+  return getNavigationProperty(state, navigator);
 };

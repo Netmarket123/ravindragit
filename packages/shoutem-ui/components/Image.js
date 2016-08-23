@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Image as RNImage,
+  Animated as RNAnimated,
   Platform,
 } from 'react-native';
 
@@ -18,6 +19,9 @@ function Image(props) {
       // Image views are not rendered on Android if there is no image to display,
       // so we fallback to a transparent image to be compatible with iOS
       source: defaultSource || require('../assets/images/transparent.png'),
+      // Fixes a bug with local image resizing on Android:
+      // https://github.com/facebook/react-native/issues/4598#issuecomment-162328501
+      style: { ...props.style, width: null },
     };
   }
 
@@ -32,7 +36,24 @@ Image.propTypes = {
   ...RNImage.propTypes,
 };
 
+function AnimatedImage(props) {
+  return (
+    <RNAnimated.Image {...props}>
+      {props.children}
+    </RNAnimated.Image>
+  );
+}
+
+AnimatedImage.propTypes = {
+  ...RNImage.propTypes,
+};
+
+const Animated = {
+  Image: connectStyle('shoutem.ui.Animated.Image', {})(AnimatedImage),
+};
+
 const StyledImage = connectStyle('shoutem.ui.Image', {})(Image);
 export {
   StyledImage as Image,
+  Animated,
 };
