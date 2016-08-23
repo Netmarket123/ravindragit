@@ -87,10 +87,12 @@ export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames) =
 
       constructor(props, context) {
         super(props, context);
-        const resolvedStyle = this.resolveStyle(context, props);
+        const styleNames = this.resolveStyleNames(props);
+        const resolvedStyle = this.resolveStyle(context, props, styleNames);
         this.state = {
           style: resolvedStyle.componentStyle,
           childrenStyle: resolvedStyle.childrenStyle,
+          styleNames,
         };
       }
 
@@ -101,24 +103,34 @@ export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames) =
       }
 
       componentWillReceiveProps(nextProps, nextContext) {
-        if (this.shouldRebuildStyle(nextProps, nextContext)) {
-          const resolvedStyle = this.resolveStyle(nextContext, nextProps);
+        const styleNames = this.resolveStyleNames(nextProps);
+        if (this.shouldRebuildStyle(nextProps, nextContext, styleNames)) {
+          const resolvedStyle = this.resolveStyle(nextContext, nextProps, styleNames);
           this.setState({
             style: resolvedStyle.componentStyle,
             childrenStyle: resolvedStyle.childrenStyle,
+            styleNames,
           });
         }
       }
 
-      shouldRebuildStyle(nextProps, nextContext) {
+      isStyleNameChanged(nextProps, styleNames) {
+        return mapPropsToStyleNames && this.props !== nextProps &&
+          // Even though props did change here,
+          // it doesn't necessary means changed props are those which affect styleName
+          !_.isEqual(this.state.styleNames, styleNames);
+      }
+
+      shouldRebuildStyle(nextProps, nextContext, styleNames) {
         return (nextProps.style !== this.props.style) ||
           (nextProps.styleName !== this.props.styleName) ||
           (nextContext.theme !== this.context.theme) ||
-          (nextContext.parentStyle !== this.context.parentStyle);
+          (nextContext.parentStyle !== this.context.parentStyle) ||
+          (this.isStyleNameChanged(nextProps, styleNames));
       }
 
-      resolveStyleNames() {
-        const { styleName } = this.props;
+      resolveStyleNames(props) {
+        const { styleName } = props;
         const styleNames = styleName ? styleName.split(/\s/g) : [];
 
         if (!mapPropsToStyleNames) {
@@ -127,17 +139,15 @@ export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames) =
 
         // We want style names "Set" (unique values) but as array
         // because resolveComponentStyle uses map on styleNames
-        return _.uniq(mapPropsToStyleNames(styleNames, this.props));
+        return _.uniq(mapPropsToStyleNames(styleNames, props));
       }
 
-      resolveStyle(context, props) {
+      resolveStyle(context, props, styleNames) {
         const { parentStyle } = context;
         const { style } = props;
 
         const theme = getTheme(context);
         const themeStyle = theme.createComponentStyle(componentStyleName, componentStyle);
-
-        const styleNames = this.resolveStyleNames();
 
         return resolveComponentStyle(
           componentStyleName,
