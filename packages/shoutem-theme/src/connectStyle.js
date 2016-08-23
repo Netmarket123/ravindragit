@@ -119,16 +119,15 @@ export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames) =
 
       resolveStyleNames() {
         const { styleName } = this.props;
+        const styleNames = styleName ? styleName.split(/\s/g) : [];
 
         if (!mapPropsToStyleNames) {
-          return styleName;
+          return styleNames;
         }
-
-        const styleNames = styleName ? styleName.split(/\s/g) : [];
 
         // We want style names "Set" (unique values) but as array
         // because resolveComponentStyle uses map on styleNames
-        return _.uniq(mapPropsToStyleNames(styleNames, this.props) || []);
+        return _.uniq(mapPropsToStyleNames(styleNames, this.props));
       }
 
       resolveStyle(context, props) {
