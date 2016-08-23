@@ -80,13 +80,11 @@ function splitStyle(style) {
  */
 export function resolveComponentStyle(
   componentName,
-  styleName = '',
+  styleNames = [],
   themeStyle = {},
   parentStyle = {},
   elementStyle = {}
 ) {
-  const styleNames = styleName.split(/\s+/g);
-
   // Phase 1: merge the styles in the correct order to resolve the variant styles,
   // the component style will be merged as well in this step, but the component
   // style merge results are ignored after this step. We need to perform this

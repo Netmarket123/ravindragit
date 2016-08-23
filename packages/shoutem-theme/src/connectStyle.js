@@ -117,7 +117,7 @@ export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames) =
           (nextContext.parentStyle !== this.context.parentStyle);
       }
 
-      resolveStyleName() {
+      resolveStyleNames() {
         const { styleName } = this.props;
 
         if (!mapPropsToStyleNames) {
@@ -126,10 +126,9 @@ export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames) =
 
         const styleNames = styleName ? styleName.split(' ') : [];
 
-        // We want style names "Set" (unique values)
-        const customStyleNames = _.uniq(mapPropsToStyleNames(styleNames, this.props) || []);
-
-        return customStyleNames.join(' ');
+        // We want style names "Set" (unique values) but as array
+        // because resolveComponentStyle uses map on styleNames
+        return _.uniq(mapPropsToStyleNames(styleNames, this.props) || []);
       }
 
       resolveStyle(context, props) {
@@ -139,11 +138,11 @@ export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames) =
         const theme = getTheme(context);
         const themeStyle = theme.createComponentStyle(componentStyleName, componentStyle);
 
-        const styleName = this.resolveStyleName();
+        const styleNames = this.resolveStyleNames();
 
         return resolveComponentStyle(
           componentStyleName,
-          styleName,
+          styleNames,
           themeStyle,
           parentStyle,
           style
