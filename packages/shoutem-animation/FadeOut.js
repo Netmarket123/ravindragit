@@ -28,7 +28,7 @@ import { DriverShape } from './DriverShape';
  */
 export class FadeOut extends Component {
   render() {
-    const { driver, children, inputRange = [0,1] } = this.props;
+    const { driver, children, inputRange = [0, 1] } = this.props;
 
     return (
       <Animated.View style={{
