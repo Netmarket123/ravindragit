@@ -73,20 +73,21 @@ export class Parallax extends Component {
 
     return (
       <View>
-        <Animated.View style={{
-          transform: [
-            {
-              translateY: driver.value.interpolate({
-                inputRange: [-100, 100],
-                outputRange: [-scrollFactor * 100, scrollFactor * 100],
-                ...extrapolation,
-              }),
-            },
-            {
-              scale: 1.1,
-            },
-          ],
-        }}
+        <Animated.View
+          style={{
+            transform: [
+              {
+                translateY: driver.value.interpolate({
+                  inputRange: [-100, 100],
+                  outputRange: [-scrollFactor * 100, scrollFactor * 100],
+                  ...extrapolation,
+                }),
+              },
+              {
+                scale: 1.1,
+              },
+            ],
+          }}
         >
           {children}
         </Animated.View>

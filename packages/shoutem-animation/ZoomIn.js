@@ -52,17 +52,18 @@ export class ZoomIn extends Component {
     const { driver, children, inputRange = [0, 1], maxFactor = 1.5 } = this.props;
 
     return (
-      <Animated.View style={{
-        transform: [
-          {
-            scale: driver.value.interpolate({
-              inputRange,
-              outputRange: [1, maxFactor],
-              extrapolate: 'clamp',
-            }),
-          },
-        ],
-      }}
+      <Animated.View
+        style={{
+          transform: [
+            {
+              scale: driver.value.interpolate({
+                inputRange,
+                outputRange: [1, maxFactor],
+                extrapolate: 'clamp',
+              }),
+            },
+          ],
+        }}
       >
         {children}
       </Animated.View>
