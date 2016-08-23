@@ -874,23 +874,6 @@ export default () => ({
     },
   },
 
-  'shoutem.ui.GridView': {
-    header: {
-      container: {},
-      search: {},
-    },
-    listContent: {},
-    list: {},
-    gridRow: {
-      container: {
-        flexDirection: 'row',
-      },
-      gridItemCell: {
-        flex: 1,
-      },
-    },
-  },
-
   'shoutem.ui.GridRow': {
     '*': {
       flex: 1,

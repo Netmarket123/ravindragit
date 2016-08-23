@@ -7,7 +7,6 @@ export { DropDownMenu } from './components/DropDownMenu';
 export { Overlay } from './components/Overlay';
 
 export { ListView } from './components/ListView';
-export { GridView } from './components/GridView';
 export { GridRow } from './components/GridRow';
 
 export { TouchableOpacity } from './components/TouchableOpacity';
