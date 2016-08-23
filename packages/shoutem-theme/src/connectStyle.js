@@ -124,7 +124,7 @@ export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames) =
           return styleName;
         }
 
-        const styleNames = styleName ? styleName.split(' ') : [];
+        const styleNames = styleName ? styleName.split(/\s/g) : [];
 
         // We want style names "Set" (unique values) but as array
         // because resolveComponentStyle uses map on styleNames
