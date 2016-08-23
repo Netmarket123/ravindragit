@@ -157,6 +157,16 @@ export const jumpTo = function (route, navigator) {
   return navigate(route, navigator, 'jumpTo');
 };
 
+/**
+ * Pop to the first scene (route) in the stack, unmounting every other scene (routes).
+ * https://facebook.github.io/react-native/docs/navigator.html#poptotop
+ * @param navigator
+ * @returns {{type, route, navigator, navigatorMethod}}
+ */
+export const popToTop = function (navigator) {
+  return navigate(undefined, navigator, 'popToTop');
+};
+
 export const replaceWith = function (route, navigator) {
   return navigate(route, navigator, 'replacePrevious');
 };
