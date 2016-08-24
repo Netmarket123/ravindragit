@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const propsToNormalize = ['margin', 'padding', 'borderWith'];
+const propsToNormalize = ['margin', 'padding', 'border'];
 const suffixHandles = {
   '': function () {
     return {
@@ -26,38 +26,39 @@ const suffixHandles = {
   'Left': (val, prop) => ({ [`${prop}Left`]: val }),
 };
 
-function topRightLeftBottomNormalizer(style, normalizerMethod) {
-  return _.reduce(style, (normalizedStyle, val, key) => {
-    let normalized = false;
-
-    if (_.isPlainObject(val)) {
-      normalizedStyle[key] = normalizerMethod(val);
-    } else {
-      _.forEach(propsToNormalize, (prop) => {
-        if (new RegExp(prop).test(key)) {
-          normalized = true;
-          normalizedStyle = {
-            ...normalizedStyle,
-            ...suffixHandles[key.replace(prop, '')](val, prop),
-          };
-          return false;
-        }
-      });
-
-      if (!normalized) {
-        normalizedStyle[key] = val;
-      }
-    }
-
-    return normalizedStyle;
-  }, {});
+function propHasSimpleHandle(propName, propHandle) {
+  return new RegExp(propHandle).test(propName);
 }
 
 export default function styleNormalizer(style) {
-  return _.mergeWith({}, style, (objValue, srcValue) => {
-    if (_.isPlainObject(srcValue)) {
-      return topRightLeftBottomNormalizer(srcValue, styleNormalizer);
-    }
-    return srcValue;
-  });
+  if (_.isPlainObject(style)) {
+    return _.reduce(style, (normalizedStyle, val, propName) => {
+      /* eslint-disable no-param-reassign */
+      let normalized = false;
+
+      if (_.isPlainObject(val)) {
+        normalizedStyle[propName] = styleNormalizer(val);
+      } else {
+        // eslint-disable-next-line consistent-return
+        _.forEach(propsToNormalize, (propHandle) => {
+          if (propHasSimpleHandle(propName, propHandle)) {
+            normalized = true;
+            normalizedStyle = {
+              ...normalizedStyle,
+              ...suffixHandles[propName.replace(propHandle, '')](val, propHandle),
+            };
+            return false;
+          }
+        });
+
+        if (!normalized) {
+          normalizedStyle[propName] = val;
+        }
+        /* eslint-enable no-param-reassign */
+      }
+
+      return normalizedStyle;
+    }, {});
+  }
+  return style;
 }
