@@ -114,7 +114,7 @@ export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames) =
         }
       }
 
-      isStyleNameChanged(nextProps, styleNames) {
+      hasStyleNameChanged(nextProps, styleNames) {
         return mapPropsToStyleNames && this.props !== nextProps &&
           // Even though props did change here,
           // it doesn't necessary means changed props are those which affect styleName
@@ -126,7 +126,7 @@ export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames) =
           (nextProps.styleName !== this.props.styleName) ||
           (nextContext.theme !== this.context.theme) ||
           (nextContext.parentStyle !== this.context.parentStyle) ||
-          (this.isStyleNameChanged(nextProps, styleNames));
+          (this.hasStyleNameChanged(nextProps, styleNames));
       }
 
       resolveStyleNames(props) {
@@ -137,8 +137,7 @@ export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames) =
           return styleNames;
         }
 
-        // We want style names "Set" (unique values) but as array
-        // because resolveComponentStyle uses map on styleNames
+        // We only want to keep the unique style names
         return _.uniq(mapPropsToStyleNames(styleNames, props));
       }
 
