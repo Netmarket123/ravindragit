@@ -2,10 +2,8 @@ import React, {
   Component,
 } from 'react';
 import {
-  ListView,
   Modal,
-  Animated,
-  Easing,
+  ListView,
 } from 'react-native';
 
 import { Button } from './Button';
@@ -139,7 +137,7 @@ class DropDownMenu extends Component {
     const { options, style } = this.props;
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     const button = selectedOption ? (
-      <Button onPress={this.collapse} styleName="clear selectedOption">
+      <Button onPress={this.collapse} styleName="clear" style={style.selectedOption}>
         <Text>{selectedOption[titleProperty]}</Text>
         <Icon name="drop-down" />
       </Button>
@@ -155,7 +153,7 @@ class DropDownMenu extends Component {
         >
           <ZoomOut driver={this.timingDriver} maxFactor={1.1} style={{ flex: 1 }}>
             <FadeIn driver={this.timingDriver} style={{ flex: 1 }}>
-              <View style={style.modal}>
+              <View style={style.modal} styleName="">
                 <ListView
                   dataSource={ds.cloneWithRows(options.filter((option) => option[titleProperty]))}
                   renderRow={this.renderRow}

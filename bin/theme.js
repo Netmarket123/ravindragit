@@ -915,6 +915,14 @@ export default () => ({
         height: 40,
         justifyContent: 'center',
         backgroundColor: Colors.LIGHT_GRAY,
+        flex: 1,
+      },
+    },
+    selectedOption: {
+      'shoutem.ui.Text': {
+        fontFamily: 'Rubik-Regular',
+        fontSize: 15,
+        marginRight: 0,
       },
     },
     modal: {
