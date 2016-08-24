@@ -3,47 +3,55 @@
  */
 
 import React from 'react';
-import {
-  Dimensions,
-} from 'react-native';
-
 import { ImagePreview } from '../../ImagePreview';
+import adjustElementSize from './AdjustElementSize';
 
 type ReactComponentType = typeof React.Component;
 
 import type {
   NodeType,
+  AttribsType,
 } from './types';
 
-const windowWidth = Dimensions.get('window').width;
+function ImagePreviewElement({
+  style,
+  attributes,
+  displayWidth,
+  displayHeight,
+} : {
+  style: any,
+  attributes: AttribsType,
+  displayWidth: number,
+  displayHeight: number
+}) {
+  return (
+    <ImagePreview
+      style={style}
+      source={{
+        uri: attributes.src,
+        // Image is not rendered correctly,
+        // if we use the original image sizes here
+        width: displayWidth,
+        height: displayHeight,
+      }}
+      width={displayWidth}
+      height={displayHeight}
+      key={0}
+    />);
+}
+
 const ImageTagTransformer = {
   canTransform(node: NodeType): boolean {
     return (node.name === 'img' && !!node.attribs && !!node.attribs.src);
   },
 
   transform(_: any, node: NodeType, style: any): Array<ReactComponentType> {
-    const attribsWidth = parseInt(node.attribs.width, 10);
-    const attribsHeight = parseInt(node.attribs.height, 10);
-    const imageWidth = (windowWidth < attribsWidth) ? windowWidth : attribsWidth;
-    const imageScale = imageWidth / attribsWidth;
-    const { img } = style;
-    const { marginLeft, marginRight } = img;
-    const elementToWindowBorderDistance = marginLeft + marginRight;
-    const previewWidth = imageWidth - elementToWindowBorderDistance;
-    const previewHeight = (attribsHeight - elementToWindowBorderDistance) * imageScale;
+    const AdjustedImagePreviewElement = adjustElementSize(ImagePreviewElement);
 
     return [
-      <ImagePreview
+      <AdjustedImagePreviewElement
+        attributes={node.attribs}
         style={style.img}
-        source={{
-          uri: node.attribs.src,
-          // Image is not rendered correctly,
-          // if we use the original image sizes here
-          width: previewWidth,
-          height: previewHeight,
-        }}
-        width={previewWidth}
-        height={previewHeight}
         key={0}
       />,
     ];
