@@ -87,8 +87,12 @@ class RichMedia extends Component {
 
   render() {
     return (
-      <View style={this.props.style.container}>
-        {this.state.content}
+      <View style={
+        {flex: 0} // Prevent RichMedia from overlapping with other components
+      }>
+        <View style={this.props.style.container}>
+          {this.state.content}
+        </View>
       </View>
     );
   }
