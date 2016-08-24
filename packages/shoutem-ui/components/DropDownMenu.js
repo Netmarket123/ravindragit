@@ -3,8 +3,6 @@ import React, {
 } from 'react';
 import {
   TouchableOpacity,
-  Text,
-  View,
   ListView,
   Modal,
   Animated,
@@ -13,6 +11,8 @@ import {
 
 import { Button } from './Button';
 import { Icon } from './Icon';
+import { Text } from './Text';
+import { View } from './View';
 
 import { connectStyle } from '@shoutem/theme';
 
@@ -31,6 +31,15 @@ function createModalAnimatedStyle(dropDownAnimation) {
 }
 
 class DropDownMenu extends Component {
+  static propTypes = {
+    onOptionSelected: React.PropTypes.func,
+    options: React.PropTypes.array,
+    selectedOption: React.PropTypes.any,
+    titleProperty: React.PropTypes.string,
+    valueProperty: React.PropTypes.any,
+    style: React.PropTypes.object,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -39,17 +48,17 @@ class DropDownMenu extends Component {
     };
     this.collapse = this.collapse.bind(this);
     this.close = this.close.bind(this);
-    this.emitOnItemSelectedEvent = this.emitOnItemSelectedEvent.bind(this);
+    this.emitOnOptionSelectedEvent = this.emitOnOptionSelectedEvent.bind(this);
     this.renderRow = this.renderRow.bind(this);
   }
 
   componentWillMount() {
-    this.autoSelect(this.props.items, this.props.selectedItem);
+    this.autoSelect(this.props.items, this.props.selectedOption);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.state.selectedItem && nextProps.items.length > 0) {
-      this.autoSelect(nextProps.items, nextProps.selectedItem);
+    if (!this.state.selectedOption && nextProps.items.length > 0) {
+      this.autoSelect(nextProps.items, nextProps.selectedOption);
     }
   }
 
@@ -60,23 +69,23 @@ class DropDownMenu extends Component {
 
   getValue() {
     const {
-      selectedItem,
-      bindings,
+      selectedOption,
+      valueProperty,
     } = this.state;
 
-    return selectedItem[bindings.value];
+    return selectedOption[valueProperty];
   }
 
-  getSelectedItem() {
-    return this.state.selectedItem;
+  getSelectedOption() {
+    return this.state.selectedOption;
   }
 
   /**
    * Selects first item as default if non is selected
    */
-  autoSelect(items, selectedItem) {
-    if (!selectedItem && !this.state.selectedItem && items.length > 0) {
-      this.setState({ selectedItem: items[0] }, this.emitOnItemSelectedEvent);
+  autoSelect(options, selectedOption) {
+    if (!selectedOption && !this.state.selectedOption && options.length > 0) {
+      this.setState({ selectedOption: options[0] }, this.emitOnOptionSelectedEvent);
     }
   }
 
@@ -103,24 +112,25 @@ class DropDownMenu extends Component {
     ).start(() => this.setState({ collapsed: false }));
   }
 
-  emitOnItemSelectedEvent() {
-    if (this.props.onItemSelected) {
-      this.props.onItemSelected(this.state.selectedItem);
+  emitOnOptionSelectedEvent() {
+    if (this.props.onOptionSelected) {
+      this.props.onOptionSelected(this.state.selectedOption);
     }
   }
 
-  renderRow(item) {
+  renderRow(option) {
     const {
       style,
+      titleProperty,
     } = this.props;
     const onPress = () => {
       this.close();
-      this.setState({ selectedItem: item }, this.emitOnItemSelectedEvent);
+      this.setState({ selectedOption: option }, this.emitOnOptionSelectedEvent);
     };
     return (
       <TouchableOpacity onPress={onPress} style={style.modalItem}>
         <Text style={style.modalItemText}>
-          {item[this.state.bindings.text].toUpperCase()}
+          {option[titleProperty].toUpperCase()}
         </Text>
       </TouchableOpacity>
     );
@@ -129,20 +139,19 @@ class DropDownMenu extends Component {
   render() {
     const {
       collapsed,
-      selectedItem,
-      bindings,
+      selectedOption,
+      titleProperty,
       dropDownAnimation,
     } = this.state;
-    const { items, style } = this.props;
+    const { options, style } = this.props;
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-    const button = selectedItem ? (
-      <Button onPress={this.collapse} styleName="clear">
-        <Text>{selectedItem[bindings.text]}</Text>
-        <Icon name="drop-down" style={style.modalCloseButton.buttonIcon} />
+    const button = selectedOption ? (
+      <Button onPress={this.collapse} styleName="clear selectedOption">
+        <Text>{selectedOption[titleProperty]}</Text>
+        <Icon name="drop-down" />
       </Button>
     ) : null;
     const modalAnimatedStyle = createModalAnimatedStyle(dropDownAnimation);
-    const textBidingKey = this.state.bindings.text;
     return (
       <View style={style.container} renderToHardwareTextureAndroid>
         {button}
@@ -159,12 +168,12 @@ class DropDownMenu extends Component {
           >
             <View style={style.modalItems}>
               <ListView
-                dataSource={ds.cloneWithRows(items.filter((item) => item[textBidingKey]))}
+                dataSource={ds.cloneWithRows(options.filter((option) => option[titleProperty]))}
                 renderRow={this.renderRow}
               />
             </View>
-            <Button style={style.modalCloseButton.button} onPress={this.close} styleName="clear">
-              <Icon style={style.modalCloseButton.buttonIcon} name="close" />
+            <Button onPress={this.close} styleName="clear close">
+              <Icon name="close" />
             </Button>
           </Animated.View>
         </Modal>
@@ -172,13 +181,6 @@ class DropDownMenu extends Component {
     );
   }
 }
-
-DropDownMenu.propTypes = {
-  onItemSelected: React.PropTypes.func,
-  items: React.PropTypes.array,
-  selectedItem: React.PropTypes.any,
-  style: React.PropTypes.object,
-};
 
 const StyledDropDownMenu = connectStyle('shoutem.ui.DropDownMenu', {})(DropDownMenu);
 
