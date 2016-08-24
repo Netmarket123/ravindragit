@@ -1,13 +1,21 @@
+/**
+ * @flow
+ */
+
 import React from 'react';
 import {
   Dimensions,
 } from 'react-native';
 
-export default function adjustElementSize(WrappedComponent) {
+import type {
+  AttribsType,
+} from './types';
+
+export default function adjustElementSize(WrappedComponent: any): any {
   const windowWidth = Dimensions.get('window').width;
   const FALLBACK_ATTACHMENT_HEIGHT = 250;
 
-  return function (props) {
+  return function ResizedComponent(props: {attributes: AttribsType, style: any}) {
     const {
       attributes,
       style,

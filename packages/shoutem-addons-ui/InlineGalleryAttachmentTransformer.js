@@ -1,3 +1,7 @@
+/**
+ * @flow
+ */
+
 import React from 'react';
 
 import {
@@ -8,8 +12,6 @@ import type {
   NodeType,
 } from './types';
 
-import { logLifecycle } from '@shoutem/profiler';
-
 import adjustElementSize from './AdjustElementSize';
 
 function InlineGalleryAttachment({
@@ -17,11 +19,14 @@ function InlineGalleryAttachment({
   sources,
   displayWidth,
   displayHeight,
+} : {
+  style: any,
+  sources: ImageGallery.propTypes.sources,
+  displayWidth: number,
+  displayHeight: number
 }) {
-  const ProfiledImageGallery = logLifecycle('RM Inline SE-ATTACH Video')(ImageGallery);
-
   return (
-    <ProfiledImageGallery
+    <ImageGallery
       style={style.video}
       sources={sources}
       width={displayWidth}
@@ -32,11 +37,16 @@ function InlineGalleryAttachment({
 export default {
   canTransform(node: NodeType): boolean {
     return (node.name === 'se-attachment' && !!node.attribs
-            && node.attribs.type === 'gallery');
+            && node.attribs.type === 'gallery' && !!node.children);
   },
 
   transform(_: any, node: NodeType, style: any) : any {
     const AdjustedInlineGalleryAttachment = adjustElementSize(InlineGalleryAttachment);
+
+    if (!node.children) {
+      return null;
+    }
+
     const imageSources = node.children
               .filter(child => child.name === 'se-attachment' && child.attribs.type === 'image')
               .map(child => child.attribs.src)

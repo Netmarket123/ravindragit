@@ -1,3 +1,7 @@
+/**
+ * @flow
+ */
+
 import React from 'react';
 
 import {
@@ -6,6 +10,7 @@ import {
 
 import type {
   NodeType,
+  AttribsType,
 } from './types';
 
 import { logLifecycle } from '@shoutem/profiler';
@@ -18,12 +23,15 @@ function InlineVideoAttachment({
   style,
   displayWidth,
   displayHeight,
+} : {
+  style: any,
+  attributes: AttribsType,
+  displayWidth: number,
+  displayHeight: number
 }) {
-  const ProfiledVideo = logLifecycle('RM Inline SE-ATTACH Video')(Video);
-
   return (
-    <ProfiledVideo
-      style={style.video}
+    <Video
+      style={style}
       source={attributes.src}
       width={displayWidth}
       height={displayHeight}
@@ -33,7 +41,7 @@ function InlineVideoAttachment({
 export default {
   canTransform(node: NodeType): boolean {
     return (node.name === 'se-attachment' && !!node.attribs
-            && node.attribs.type === 'video' && node.attribs.src);
+            && node.attribs.type === 'video' && !!node.attribs.src);
   },
 
   transform(_: any, node: NodeType, style: any) : any {

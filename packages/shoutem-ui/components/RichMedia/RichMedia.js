@@ -13,6 +13,10 @@ const propTypes = {
   onError: PropTypes.func,
   attachments: PropTypes.object,
   style: PropTypes.object,
+  elementTransformers: PropTypes.arrayOf(PropTypes.shape({
+    canTransform: PropTypes.func,
+    transform: PropTypes.func,
+  })),
 };
 
 function getMediaElementMargin(mediaElementStyle) {
@@ -60,7 +64,7 @@ class RichMedia extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.body !== nextProps.body) {
-      this.startHtmlRender(nextProps.body, nextProps.attachments, elementTransformers);
+      this.startHtmlRender(nextProps.body, nextProps.attachments, nextProps.elementTransformers);
     }
   }
 
@@ -87,9 +91,11 @@ class RichMedia extends Component {
 
   render() {
     return (
-      <View style={
-        {flex: 0} // Prevent RichMedia from overlapping with other components
-      }>
+      <View
+        style={
+          { flex: 0 } // Prevent RichMedia from overlapping with other components
+        }
+      >
         <View style={this.props.style.container}>
           {this.state.content}
         </View>

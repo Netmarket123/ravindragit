@@ -1,3 +1,7 @@
+/**
+ * @flow
+ */
+
 import React from 'react';
 
 import {
@@ -6,6 +10,7 @@ import {
 
 import type {
   NodeType,
+  AttribsType,
 } from './types';
 
 import { logLifecycle } from '@shoutem/profiler';
@@ -18,11 +23,14 @@ function InlineImagePreviewAttachment({
   attributes,
   displayWidth,
   displayHeight,
+} : {
+  style: any,
+  attributes: AttribsType,
+  displayWidth: number,
+  displayHeight: number
 }) {
-  const ProfiledImagePreview = logLifecycle('RM Inline SE-ATTACH Image')(ImagePreview);
-
   return (
-    <ProfiledImagePreview
+    <ImagePreview
       style={style}
       source={attributes.src}
       width={displayWidth}
@@ -33,7 +41,7 @@ function InlineImagePreviewAttachment({
 export default {
   canTransform(node: NodeType): boolean {
     return (node.name === 'se-attachment' && !!node.attribs
-            && node.attribs.type === 'image' && node.attribs.src);
+            && node.attribs.type === 'image' && !!node.attribs.src);
   },
 
   transform(_: any, node: NodeType, style: any) : any {
