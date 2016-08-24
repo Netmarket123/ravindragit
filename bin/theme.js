@@ -84,6 +84,10 @@ export default () => ({
     '.collapsible': {
       flex: -1,
     },
+
+    '.stretch': {
+      alignSelf: 'stretch',
+    },
   },
 
   overlayParent: {
@@ -410,11 +414,15 @@ export default () => ({
       },
 
       flex: 1,
-      alignSelf: 'stretch',
     },
 
     '*.top': {
       alignSelf: 'flex-start',
+    },
+
+    '.small': {
+      height: 65,
+      paddingVertical: 0,
     },
 
     flex: 1,
