@@ -2,7 +2,6 @@ import React, {
   Component,
 } from 'react';
 import {
-  TouchableOpacity,
   ListView,
   Modal,
   Animated,
@@ -13,30 +12,25 @@ import { Button } from './Button';
 import { Icon } from './Icon';
 import { Text } from './Text';
 import { View } from './View';
+import { TouchableOpacity } from './TouchableOpacity';
 
 import { connectStyle } from '@shoutem/theme';
 
-function createModalAnimatedStyle(dropDownAnimation) {
-  return {
-    opacity: dropDownAnimation,
-    transform: [
-      {
-        scale: dropDownAnimation.interpolate({
-          inputRange: [0, 1],
-          outputRange: [1.1, 1],
-        }),
-      },
-    ],
-  };
-}
+import {
+  ScrollDriver,
+  TimingDriver,
+  FadeIn,
+  FadeOut,
+  ZoomOut,
+} from '@shoutem/animation';
 
 class DropDownMenu extends Component {
   static propTypes = {
     onOptionSelected: React.PropTypes.func,
     options: React.PropTypes.array,
     selectedOption: React.PropTypes.any,
-    titleProperty: React.PropTypes.string,
-    valueProperty: React.PropTypes.any,
+    titleProperty: React.PropTypes.string.isRequired,
+    valueProperty: React.PropTypes.any.isRequired,
     style: React.PropTypes.object,
   }
 
@@ -44,27 +38,35 @@ class DropDownMenu extends Component {
     super(props);
     this.state = {
       ...props,
-      dropDownAnimation: new Animated.Value(0),
+      height: 82,
     };
     this.collapse = this.collapse.bind(this);
     this.close = this.close.bind(this);
     this.emitOnOptionSelectedEvent = this.emitOnOptionSelectedEvent.bind(this);
     this.renderRow = this.renderRow.bind(this);
+    this.onOptionLayout = this.onOptionLayout.bind(this);
   }
 
   componentWillMount() {
-    this.autoSelect(this.props.items, this.props.selectedOption);
+    this.autoSelect(this.props.options, this.props.selectedOption);
+    this.scrollDriver = new ScrollDriver();
+    this.timingDriver = new TimingDriver();
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.state.selectedOption && nextProps.items.length > 0) {
-      this.autoSelect(nextProps.items, nextProps.selectedOption);
+    if (!this.state.selectedOption && nextProps.options.length > 0) {
+      this.autoSelect(nextProps.options, nextProps.selectedOption);
     }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return (nextProps.items !== this.props.items) ||
+    return (nextProps.options !== this.props.options) ||
       (nextState !== this.state);
+  }
+
+  onOptionLayout(event) {
+    const { height } = event.nativeEvent.layout;
+    this.setState({ height });
   }
 
   getValue() {
@@ -91,25 +93,12 @@ class DropDownMenu extends Component {
 
   collapse() {
     this.setState({ collapsed: true });
-    Animated.timing(
-      this.state.dropDownAnimation,
-      {
-        toValue: 1,
-        easing: Easing.cubic,
-        duration: 250,
-      }
-    ).start();
+    this.scrollDriver = new ScrollDriver();
+    this.timingDriver.setValue(1);
   }
 
   close() {
-    Animated.timing(
-      this.state.dropDownAnimation,
-      {
-        toValue: 0,
-        easing: Easing.cubic,
-        duration: 250,
-      }
-    ).start(() => this.setState({ collapsed: false }));
+    this.timingDriver.setValue(0, () => this.setState({ collapsed: false }));
   }
 
   emitOnOptionSelectedEvent() {
@@ -118,20 +107,25 @@ class DropDownMenu extends Component {
     }
   }
 
-  renderRow(option) {
+  renderRow(option, sectionId, rowId) {
     const {
       style,
       titleProperty,
     } = this.props;
+    const startAt =  rowId * this.state.height;
     const onPress = () => {
       this.close();
       this.setState({ selectedOption: option }, this.emitOnOptionSelectedEvent);
     };
     return (
-      <TouchableOpacity onPress={onPress} style={style.modalItem}>
-        <Text style={style.modalItemText}>
-          {option[titleProperty].toUpperCase()}
-        </Text>
+      <TouchableOpacity onPress={onPress} style={style.modalItem} onLayout={this.onOptionLayout}>
+        <FadeOut inputRange={[startAt, startAt + this.state.height]} driver={this.scrollDriver}>
+          <FadeIn inputRange={[startAt - 8 * this.state.height, startAt - 7 * this.state.height]} driver={this.scrollDriver}>
+            <Text>
+              {option[titleProperty].toUpperCase()}
+            </Text>
+          </FadeIn>
+        </FadeOut>
       </TouchableOpacity>
     );
   }
@@ -141,7 +135,6 @@ class DropDownMenu extends Component {
       collapsed,
       selectedOption,
       titleProperty,
-      dropDownAnimation,
     } = this.state;
     const { options, style } = this.props;
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
@@ -151,7 +144,7 @@ class DropDownMenu extends Component {
         <Icon name="drop-down" />
       </Button>
     ) : null;
-    const modalAnimatedStyle = createModalAnimatedStyle(dropDownAnimation);
+
     return (
       <View style={style.container} renderToHardwareTextureAndroid>
         {button}
@@ -160,22 +153,21 @@ class DropDownMenu extends Component {
           onRequestClose={this.close}
           transparent
         >
-          <Animated.View
-            style={[
-              style.modalContainer,
-              modalAnimatedStyle,
-            ]}
-          >
-            <View style={style.modalItems}>
-              <ListView
-                dataSource={ds.cloneWithRows(options.filter((option) => option[titleProperty]))}
-                renderRow={this.renderRow}
-              />
-            </View>
-            <Button onPress={this.close} styleName="clear close">
-              <Icon name="close" />
-            </Button>
-          </Animated.View>
+          <ZoomOut driver={this.timingDriver} maxFactor={1.1} style={{ flex: 1 }}>
+            <FadeIn driver={this.timingDriver} style={{ flex: 1 }}>
+              <View style={style.modal}>
+                <ListView
+                  dataSource={ds.cloneWithRows(options.filter((option) => option[titleProperty]))}
+                  renderRow={this.renderRow}
+                  {...this.scrollDriver.scrollViewProps}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                />
+                <Button onPress={this.close} styleName="clear close">
+                  <Icon name="close" />
+                </Button>
+              </View>
+            </FadeIn>
+          </ZoomOut>
         </Modal>
       </View>
     );
