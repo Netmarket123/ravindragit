@@ -22,7 +22,12 @@ const Colors = {
   BORDER: '#cccccc',
   DIVIDER_LINE: '#eeeeee',
   DIVIDER_BORDER: 'rgba(51, 51, 51, 0.1)',
-  NAVIGATION_TINT_COLOR: '#333333',
+  NAVIGATION_TINT: '#333333',
+
+  TEXT: '#666666',
+  TITLE: '#222222',
+  DESCRIPTION: '#333333',
+  CAPTION: '#555555',
 };
 
 const SMALL_GUTTER = 5;
@@ -108,13 +113,6 @@ export default () => ({
     fontFamily: 'Menlo',
   },
 
-  vCenterText: {
-    // Compensate for lineHeight, because
-    // textAlignVertical is not supported on iOS
-    marginTop: -4,
-    marginBottom: 4,
-  },
-
   'shoutem.ui.Text': {
     [INCLUDE]: ['commonVariants', 'defaultFont', 'guttersMargin'],
 
@@ -126,10 +124,6 @@ export default () => ({
       textAlign: 'center',
     },
 
-    '.v-center': {
-      [INCLUDE]: ['vCenterText'],
-    },
-
     '.bright': {
       color: Colors.LIGHT,
     },
@@ -138,20 +132,26 @@ export default () => ({
       [INCLUDE]: ['boldTextStyle'],
     },
 
+    '.multiline': {
+      '.v-center': {
+        // Compensate for lineHeight, because
+        // textAlignVertical is not supported on iOS
+        marginTop: -4,
+        marginBottom: 4,
+      },
+
+      lineHeight: 26,
+    },
+
     backgroundColor: Colors.CLEAR,
-    color: '#666666',
+    color: Colors.TEXT,
     fontSize: 15,
-    lineHeight: 26,
   },
 
   'shoutem.ui.Heading': {
     [INCLUDE]: ['shoutem.ui.Text'],
 
-    '.v-center': {
-      marginTop: 0,
-    },
-
-    color: '#222222',
+    color: Colors.TITLE,
     fontSize: 25,
     lineHeight: 30,
     letterSpacing: 1,
@@ -160,16 +160,7 @@ export default () => ({
   'shoutem.ui.Title': {
     [INCLUDE]: ['shoutem.ui.Text'],
 
-    '.v-center': {
-      marginTop: 0,
-    },
-
-    '.navigationBarTitle': {
-      fontSize: 15,
-      lineHeight: 18,
-    },
-
-    color: '#222222',
+    color: Colors.TITLE,
     fontSize: 20,
     lineHeight: 25,
     letterSpacing: 1,
@@ -178,22 +169,14 @@ export default () => ({
   'shoutem.ui.Subtitle': {
     [INCLUDE]: ['shoutem.ui.Text'],
 
-    '.v-center': {
-      marginTop: 0,
-    },
-
-    color: '#222222',
+    color: Colors.TITLE,
     lineHeight: 18,
   },
 
   'shoutem.ui.Description': {
     [INCLUDE]: ['shoutem.ui.Text'],
 
-    '.v-center': {
-      marginTop: -1,
-    },
-
-    color: '#333333',
+    color: Colors.DESCRIPTION,
     fontSize: 13,
     lineHeight: 18,
     letterSpacing: 0.5,
@@ -202,11 +185,7 @@ export default () => ({
   'shoutem.ui.Caption': {
     [INCLUDE]: ['shoutem.ui.Text'],
 
-    '.v-center': {
-      marginTop: 0,
-    },
-
-    color: '#555555',
+    color: Colors.CAPTION,
     fontSize: 12,
     lineHeight: 16,
     letterSpacing: 0.5,
@@ -384,16 +363,7 @@ export default () => ({
   },
 
   'shoutem.ui.Row': {
-    ...createSharedStyle(textComponents, {
-      flex: 1,
-    }, {
-      'shoutem.ui.Text': {
-        // This is to compensate for the line height,
-        // otherwise the text is not aligned correctly
-        // with the rest of the views.
-        [INCLUDE]: ['vCenterText'],
-      },
-    }),
+    ...createSharedStyle(textComponents, { flex: 1 }),
 
     'shoutem.ui.Image': {
       marginRight: MEDIUM_GUTTER,
@@ -433,10 +403,6 @@ export default () => ({
         '*': {
           // Add a small gutter below each view
           marginBottom: SMALL_GUTTER,
-        },
-
-        'shoutem.ui.Text': {
-          [INCLUDE]: ['vCenterText'],
         },
 
         // Compensate for the last view
@@ -1139,7 +1105,7 @@ export default () => ({
         flex: 0,
         resizeMode: 'contain',
         marginTop: 8,
-        tintColor: Colors.NAVIGATION_TINT_COLOR,
+        tintColor: Colors.NAVIGATION_TINT,
       },
       'shoutem.ui.Text': {
         color: '#b1b1b1',
@@ -1185,7 +1151,7 @@ export default () => ({
           flex: 0,
           resizeMode: 'contain',
           marginRight: LARGE_GUTTER,
-          tintColor: Colors.NAVIGATION_TINT_COLOR,
+          tintColor: Colors.NAVIGATION_TINT,
         },
         'shoutem.ui.Text': {
           color: '#222',

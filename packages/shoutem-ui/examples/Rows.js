@@ -71,7 +71,7 @@ export function Rows() {
               <Subtitle styleName="">Dustin Malone</Subtitle>
               <Caption>20 minutes ago</Caption>
             </View>
-            <Text>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap. Hashtag typewriter banh mi, squid keffiyeh High.</Text>
+            <Text styleName="multiline">Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap. Hashtag typewriter banh mi, squid keffiyeh High.</Text>
           </View>
         </Row>
       </Stage>
