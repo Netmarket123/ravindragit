@@ -11,6 +11,7 @@ import { Tiles } from './Tiles';
 import { Spinners } from './Spinners';
 import { Buttons } from './Buttons';
 import { Images } from './Images';
+import { Headers } from './Headers';
 
 export function Examples() {
   return (
@@ -20,6 +21,7 @@ export function Examples() {
       <Cards />
       <Rows />
       <Tiles />
+      <Headers />
       <Spinners />
       <Buttons />
       <Images />

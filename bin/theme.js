@@ -90,7 +90,7 @@ export default () => ({
     },
   },
 
-  overlayParent: {
+  fillParent: {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -279,6 +279,25 @@ export default () => ({
   'shoutem.ui.Image': {
     [INCLUDE]: ['commonVariants', 'imageSizes'],
 
+    'shoutem.ui.Tile': {
+      [INCLUDE]: ['textCentricTile', 'fillParent'],
+      'shoutem.ui.View': {
+        '.actions': {
+          'shoutem.ui.Button': {
+            'shoutem.ui.Icon': {
+              color: Colors.LIGHT,
+            },
+          },
+        },
+      },
+
+      ...createSharedStyle(textComponents, {
+        color: Colors.LIGHT,
+      }),
+
+      backgroundColor: Colors.OVERLAY,
+    },
+
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
@@ -434,8 +453,34 @@ export default () => ({
     paddingVertical: MEDIUM_GUTTER,
   },
 
+  textCentricTile: {
+    'shoutem.ui.View': {
+      '.actions': {
+        position: 'absolute',
+        top: MEDIUM_GUTTER,
+        right: MEDIUM_GUTTER,
+      },
+    },
+
+    '*': {
+      marginBottom: SMALL_GUTTER,
+    },
+
+    ...createSharedStyle(textComponents, {
+      textAlign: 'center',
+    }),
+
+    flex: 1,
+    alignSelf: 'stretch',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 25,
+    paddingTop: EXTRA_LARGE_GUTTER,
+    paddingBottom: EXTRA_LARGE_GUTTER - SMALL_GUTTER,
+  },
   'shoutem.ui.Tile': {
-    [INCLUDE]: ['commonVariants'],
+    [INCLUDE]: ['commonVariants', 'guttersPadding'],
 
     'shoutem.ui.View': {
       '.content': {
@@ -450,8 +495,8 @@ export default () => ({
       },
     },
 
-    '.light': {
-      backgroundColor: Colors.BACKGROUND,
+    '.clear': {
+      backgroundColor: Colors.CLEAR,
     },
 
     '.small': {
@@ -472,10 +517,14 @@ export default () => ({
       width: 145,
     },
 
+    '.text-centric': {
+      [INCLUDE]: ['textCentricTile'],
+    },
+
     flex: -1,
     flexDirection: 'column',
     alignItems: 'flex-start',
-    backgroundColor: Colors.CLEAR,
+    backgroundColor: Colors.BACKGROUND,
   },
 
   'shoutem.ui.Card': {
@@ -504,21 +553,7 @@ export default () => ({
   },
 
   'shoutem.ui.Overlay': {
-    [INCLUDE]: ['overlayParent', 'guttersPadding'],
-
-    '.collapsed': {
-      '*': {
-        marginBottom: 0,
-      },
-
-      position: 'relative',
-      borderRadius: 2,
-      borderWidth: 0,
-      paddingTop: 2 * SMALL_GUTTER,
-      paddingBottom: 2 * SMALL_GUTTER,
-      paddingHorizontal: MEDIUM_GUTTER,
-      backgroundColor: Colors.OVERLAY_DARK,
-    },
+    [INCLUDE]: ['guttersPadding'],
 
     '.solid-light': {
       ...createSharedStyle(textComponents, {
@@ -529,22 +564,9 @@ export default () => ({
       backgroundColor: Colors.BACKGROUND,
     },
 
-    'shoutem.ui.View': {
-      '.actions': {
-        'shoutem.ui.Button': {
-          'shoutem.ui.Icon': {
-            color: Colors.LIGHT,
-          },
-        },
-
-        position: 'absolute',
-        top: MEDIUM_GUTTER,
-        right: MEDIUM_GUTTER,
-      },
-    },
-
-    '*': {
-      marginBottom: SMALL_GUTTER,
+    '.solid-dark': {
+      borderRadius: 0,
+      backgroundColor: Colors.DARKER,
     },
 
     ...createSharedStyle(textComponents, {
@@ -552,12 +574,16 @@ export default () => ({
       textAlign: 'center',
     }),
 
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 25,
-    paddingTop: SMALL_GUTTER,
-    backgroundColor: Colors.OVERLAY,
+    '.fill-parent': {
+      [INCLUDE]: ['fillParent'],
+    },
+
+    borderRadius: 2,
+    borderWidth: 0,
+    paddingTop: 2 * SMALL_GUTTER,
+    paddingBottom: 2 * SMALL_GUTTER,
+    paddingHorizontal: MEDIUM_GUTTER,
+    backgroundColor: Colors.OVERLAY_DARK,
   },
 
   //
@@ -1082,7 +1108,7 @@ export default () => ({
           marginVertical: 0,
         },
 
-        [INCLUDE]: ['overlayParent'],
+        [INCLUDE]: ['fillParent'],
       },
     },
 
