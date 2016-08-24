@@ -10,7 +10,10 @@ export const BOTTOM_RIGHT = 'BottomRight';
 export const TOP_LEFT = 'TopLeft';
 export const BOTTOM_LEFT = 'BottomLeft';
 
-// Shorthands normalizers (transformers)
+// Shorthands normalizers creators.
+// This creators provide standard normalizer used in most cases.
+// When style property has any of this shorthands, use this creators
+// to create shorthand normalizer.
 
 function allNormalizerCreator(prop, shorthand, type = '') {
   return (val) => ({

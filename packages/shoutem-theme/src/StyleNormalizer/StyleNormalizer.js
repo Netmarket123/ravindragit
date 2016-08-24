@@ -1,8 +1,8 @@
 import _ from 'lodash';
-import StyleNormalizerCreators from './StyleNormalizerCreators';
+import ShorthandsNormalizerCreators from './ShorthandsNormalizerCreators';
 
 /**
- * Style Normalizer uses StyleNormalizerCreators to creates different normalizers
+ * Style Normalizer uses ShorthandsNormalizerCreators to creates different normalizers
  * specific to properties.
  */
 export default class {
@@ -14,7 +14,7 @@ export default class {
   getPropNormalizerCreator(propDesc, shorthand) {
     // Check if property description has custom normalizer creator for shorthand
     // If not, use predefined from normalizersCreators map
-    return _.get(propDesc, `normalizers.${shorthand}`, StyleNormalizerCreators[shorthand]);
+    return _.get(propDesc, `normalizers.${shorthand}`, ShorthandsNormalizerCreators[shorthand]);
   }
 
   /**
