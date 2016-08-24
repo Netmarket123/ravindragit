@@ -195,6 +195,9 @@ export default () => ({
         flexDirection: 'row',
         alignItems: 'flex-end',
         justifyContent: 'center',
+        position: 'absolute',
+        top: MEDIUM_GUTTER,
+        right: MEDIUM_GUTTER,
       },
     },
   },
@@ -592,7 +595,7 @@ export default () => ({
   },
 
   'shoutem.ui.Button': {
-    [INCLUDE]: ['commonVariants'],
+    [INCLUDE]: ['commonVariants', 'guttersMargin'],
 
     'shoutem.ui.Text': {
       '.regular': {
