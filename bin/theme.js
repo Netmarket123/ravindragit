@@ -593,14 +593,15 @@ export default () => ({
   'shoutem.ui.Button': {
     [INCLUDE]: ['commonVariants'],
 
-    '.blackbtn':{
-        backgroundColor: 'black',
-        'shoutem.ui.Text': {
-      fontFamily: 'Rubik-Medium',
-      fontSize: 12,
-      color: 'white',
-      margin: 12,
-    },},
+  '.black':{
+      backgroundColor: 'black',
+      'shoutem.ui.Text': {
+        fontFamily: 'Rubik-Medium',
+        fontSize: 12,
+        color: 'white',
+        margin: 12,
+      },
+    },
 
     'shoutem.ui.Text': {
       '.regular': {
