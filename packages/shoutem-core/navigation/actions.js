@@ -16,6 +16,10 @@ import _ from 'lodash';
  * 7. The navigation reducer records the new navigation stack of the navigator
  */
 
+// Because of chrome inspection bug we are exporting function as constants
+// Bug is we can not set breakpoint in files which export function directly
+/* eslint-disable func-names */
+
 export const NAVIGATE = 'shoutem.core.navigation.NAVIGATE';
 export const ADD_NAVIGATOR = 'shoutem.core.navigation.ADD_NAVIGATOR';
 export const POP_NAVIGATOR = 'shoutem.core.navigation.POP_NAVIGATOR';
@@ -151,6 +155,16 @@ export const navigateTo = function (route, navigator) {
 
 export const jumpTo = function (route, navigator) {
   return navigate(route, navigator, 'jumpTo');
+};
+
+/**
+ * Pop to the first scene (route) in the stack, unmounting every other scene (routes).
+ * https://facebook.github.io/react-native/docs/navigator.html#poptotop
+ * @param navigator
+ * @returns {{type, route, navigator, navigatorMethod}}
+ */
+export const popToTop = function (navigator) {
+  return navigate(undefined, navigator, 'popToTop');
 };
 
 export const replaceWith = function (route, navigator) {

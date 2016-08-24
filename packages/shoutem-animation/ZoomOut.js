@@ -49,20 +49,21 @@ export class ZoomOut extends Component {
   }
 
   render() {
-    const { driver, children, inputRange = [0,1], maxFactor = 1.5 } = this.props;
+    const { driver, children, inputRange = [0, 1], maxFactor = 1.5 } = this.props;
 
     return (
-      <Animated.View style={{
-        transform: [
-          {
-            scale: driver.value.interpolate({
-              inputRange,
-              outputRange: [maxFactor, 1],
-              extrapolateRight: 'clamp',
-            }),
-          },
-        ],
-      }}
+      <Animated.View
+        style={{
+          transform: [
+            {
+              scale: driver.value.interpolate({
+                inputRange,
+                outputRange: [maxFactor, 1],
+                extrapolateRight: 'clamp',
+              }),
+            },
+          ],
+        }}
       >
         {children}
       </Animated.View>
