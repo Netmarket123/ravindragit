@@ -53,14 +53,14 @@ export default class HypermediaComposer {
   renderElementNode: any;
   style: any;
 
-  constructor(mediaTransformers?: Array<TagTransformerType>, style: any) {
-    const additionalMediaTransformers = mediaTransformers || [];
+  constructor(customTransformers?: Array<TagTransformerType> = [], style: any) {
     const anchorTagTransformer = new AnchorTagTransformer(this.containsMediaElement.bind(this));
-
     defaultHtmlTagTransformers.push(anchorTagTransformer);
 
-    this.mediaTransformers = defaultMediaTagTransformers.concat(additionalMediaTransformers);
-    this.tagTransformers = this.mediaTransformers.concat(defaultHtmlTagTransformers);
+    // custom transformers take precedence over all other transformers and are
+    // assumed to be media elements
+    this.mediaTransformers = [...customTransformers, ...defaultMediaTagTransformers];
+    this.tagTransformers = [...this.mediaTransformers, ...defaultHtmlTagTransformers];
     this.renderElementNode = this.renderElementNode.bind(this);
     this.style = style;
   }

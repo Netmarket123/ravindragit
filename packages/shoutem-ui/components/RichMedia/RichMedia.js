@@ -71,7 +71,7 @@ class RichMedia extends Component {
   startHtmlRender(body, attachments, elementTransformers) {
     if (body) {
       const customStyle = getStyleWithUpdatedMediaElementMargins(this.props.style);
-      const hypermediaComposer = new HypermediaComposer(elementTransformers || [], customStyle);
+      const hypermediaComposer = new HypermediaComposer(elementTransformers, customStyle);
 
       hypermediaComposer.compose(body, (err, content) => {
         if (err) {
