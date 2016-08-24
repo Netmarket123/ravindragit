@@ -6,7 +6,7 @@ import {
   BOTTOM_RIGHT,
   TOP_RIGHT,
   TOP_LEFT,
-} from './StyleNormalizerCreators';
+} from './ShorthandsNormalizerCreators';
 
 /**
  * Properties descriptions for normalization.
@@ -31,11 +31,14 @@ export default [
     prop: 'padding',
     shorthands: [HORIZONTAL, VERTICAL, ALL],
   },
-  {
-    prop: 'border',
-    type: 'Color',
-    shorthands: [ALL],
-  },
+  // Image style can only handle borderColor, where
+  // View style can have border{side}color
+  // Disabled for now
+  // {
+  //   prop: 'border',
+  //   type: 'Color',
+  //   shorthands: [ALL],
+  // },
   {
     prop: 'border',
     type: 'Width',
