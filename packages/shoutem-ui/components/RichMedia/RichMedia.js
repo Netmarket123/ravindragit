@@ -7,7 +7,6 @@ import * as _ from 'lodash';
 
 import { connectStyle } from '@shoutem/theme';
 import HypermediaComposer from './lib/HypermediaComposer';
-import AttachmentTagTransformer from './lib/AttachmentTagTransformer';
 
 const propTypes = {
   body: PropTypes.string,
@@ -55,13 +54,13 @@ class RichMedia extends Component {
   };
 
   componentDidMount() {
-    const { body, attachments } = this.props;
-    this.startHtmlRender(body, attachments);
+    const { body, attachments, elementTransformers } = this.props;
+    this.startHtmlRender(body, attachments, elementTransformers);
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.body !== nextProps.body) {
-      this.startHtmlRender(nextProps.body, nextProps.attachments);
+      this.startHtmlRender(nextProps.body, nextProps.attachments, elementTransformers);
     }
   }
 
@@ -69,11 +68,10 @@ class RichMedia extends Component {
     return this.props.body !== nextProps.body || this.state.content !== nextState.content;
   }
 
-  startHtmlRender(body, attachments) {
+  startHtmlRender(body, attachments, elementTransformers) {
     if (body) {
       const customStyle = getStyleWithUpdatedMediaElementMargins(this.props.style);
-      const attachmentTagTransformer = new AttachmentTagTransformer(attachments);
-      const hypermediaComposer = new HypermediaComposer([attachmentTagTransformer], customStyle);
+      const hypermediaComposer = new HypermediaComposer(elementTransformers || [], customStyle);
 
       hypermediaComposer.compose(body, (err, content) => {
         if (err) {
