@@ -550,12 +550,10 @@ export default () => ({
         color: Colors.DARKER,
       }),
 
-      borderRadius: 0,
       backgroundColor: Colors.BACKGROUND,
     },
 
     '.solid-dark': {
-      borderRadius: 0,
       backgroundColor: Colors.DARKER,
     },
 
@@ -568,8 +566,6 @@ export default () => ({
       [INCLUDE]: ['fillParent'],
     },
 
-    borderRadius: 2,
-    borderWidth: 0,
     paddingTop: 2 * SMALL_GUTTER,
     paddingBottom: 2 * SMALL_GUTTER,
     paddingHorizontal: MEDIUM_GUTTER,
@@ -998,13 +994,6 @@ export default () => ({
       alignItems: 'flex-end',
       flex: 1,
     },
-  },
-
-  'shoutem.ui.Spinner': {
-    android: {
-      height: 20,
-    },
-    ios: {},
   },
 
   sectionHeaderDivider: {
