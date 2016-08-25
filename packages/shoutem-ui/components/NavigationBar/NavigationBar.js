@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-  Image,
   StatusBar,
   Animated,
   Platform,
@@ -11,7 +10,7 @@ import _ from 'lodash';
 
 import color from 'tinycolor2';
 
-// import { View } from './View';
+import { LinearGradient } from '../LinearGradient';
 
 import { connectStyle } from '@shoutem/theme';
 
@@ -58,6 +57,18 @@ function setStatusBarStyle(backgroundColor) {
 @composeChildren
 // eslint-disable-next-line react/prefer-stateless-function
 class NavigationBar extends Component {
+  static propTypes = {
+    leftComponent: React.PropTypes.node,
+    centerComponent: React.PropTypes.node,
+    rightComponent: React.PropTypes.node,
+    style: React.PropTypes.object,
+    id: React.PropTypes.string,
+  }
+
+  static defaultProps = {
+    id: 'default',
+  }
+
   render() {
     const {
       leftComponent,
@@ -72,6 +83,9 @@ class NavigationBar extends Component {
     // Key must be set to render new screen NavigationBar
     return (
       <Animated.View style={style.container} key={id}>
+        <LinearGradient
+          colors={['rgba(0,0,0,0.33)', 'rgba(0,0,0,0)']}
+        />
         <StatusBar translucent />
         <View style={style.componentsContainer}>
           <View style={style.leftComponent}>{leftComponent}</View>
@@ -82,17 +96,6 @@ class NavigationBar extends Component {
     );
   }
 }
-
-NavigationBar.propTypes = {
-  backgroundImage: Image.propTypes.source,
-  leftComponent: React.PropTypes.object,
-  centerComponent: React.PropTypes.object,
-  rightComponent: React.PropTypes.object,
-  style: React.PropTypes.object,
-  hasHistory: React.PropTypes.bool,
-  navigateBack: React.PropTypes.func,
-  id: React.PropTypes.string,
-};
 
 const StyledNavigationBar = connectStyle('shoutem.ui.NavigationBar', {})(NavigationBar);
 

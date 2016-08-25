@@ -22,6 +22,8 @@ export { ImageGallery } from './components/ImageGallery';
 export { RichMedia } from './components/RichMedia';
 export { MapView, InlineMap } from './components/Map/';
 
+export { LinearGradient } from './components/LinearGradient';
+
 export {
   Heading,
   Title,

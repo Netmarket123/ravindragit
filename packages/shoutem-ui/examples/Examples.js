@@ -12,7 +12,7 @@ import { Spinners } from './Spinners';
 import { Buttons } from './Buttons';
 import { Images } from './Images';
 import { Headers } from './Headers';
-import { NavigationBars } from './NavigationBar';
+import { NavigationBars } from './NavigationBars';
 
 export function Examples() {
   return (

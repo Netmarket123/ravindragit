@@ -95,11 +95,6 @@ const composeChildren = NavigationBarComponent => class extends Component {
 
   render() {
     const newProps = {};
-    const { id = 'default', style } = this.props;
-
-    if (!id) {
-      return null;
-    }
 
     _.forEach(this.props, (value, key) => {
       if (_.isFunction(composers[key])) {

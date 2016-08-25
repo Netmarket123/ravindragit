@@ -953,6 +953,9 @@ export default () => ({
       'shoutem.ui.Title': {
         color: 'white',
       },
+      'shoutem.ui.Text': {
+        color: 'white',
+      },
       'shoutem.ui.Icon': {
         color: 'white',
       },
@@ -960,6 +963,42 @@ export default () => ({
         backgroundColor: 'transparent',
         borderColor: 'transparent',
         'shoutem.ui.Icon': {
+          color: 'white',
+        },
+        'shoutem.ui.Text': {
+          color: 'white',
+        },
+      },
+      container: {
+        backgroundColor: 'transparent',
+        borderBottomColor: 'transparent',
+      },
+    },
+    '.fade': {
+      'shoutem.ui.LinearGradient': {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+      },
+      // TODO(Ivan): remove this when [INCLUDE]: ['styleName'] is available
+      'shoutem.ui.Title': {
+        color: 'white',
+      },
+      'shoutem.ui.Text': {
+        color: 'white',
+      },
+      'shoutem.ui.Icon': {
+        color: 'white',
+      },
+      'shoutem.ui.Button': {
+        backgroundColor: 'transparent',
+        borderColor: 'transparent',
+        'shoutem.ui.Icon': {
+          color: 'white',
+        },
+        'shoutem.ui.Text': {
           color: 'white',
         },
       },
@@ -978,6 +1017,31 @@ export default () => ({
     },
     'shoutem.ui.Text': {
       color: 'black',
+      fontSize: 15,
+    },
+    'shoutem.ui.Button': {
+      '.disabled': {
+        'shoutem.ui.Text': {
+          opacity: 0.7,
+        },
+        'shoutem.ui.Icon': {
+          opacity: 0.7,
+        },
+      },
+      backgroundColor: 'transparent',
+      borderColor: 'transparent',
+      marginVertical: -12,
+      paddingLeft: 0,
+      paddingRight: 0,
+      'shoutem.ui.Text': {
+        [INCLUDE]: ['defaultFont'],
+        fontSize: 15,
+        marginRight: 0,
+      },
+      'shoutem.ui.Icon': {
+        marginVertical: 12,
+        marginRight: 0,
+      },
     },
     container: {
       height: 70,
@@ -986,7 +1050,7 @@ export default () => ({
       right: 0,
       position: 'absolute',
       backgroundColor: 'white',
-      borderBottomColor: 'rgb(242, 242, 242)',
+      borderBottomColor: 'rgba(20,20,20,0.2)',
       borderBottomWidth: 1,
       padding: 15,
     },
