@@ -12,11 +12,13 @@ import { Spinners } from './Spinners';
 import { Buttons } from './Buttons';
 import { Images } from './Images';
 import { Headers } from './Headers';
+import { NavigationBars } from './NavigationBar';
 
 export function Examples() {
   return (
     <ScrollView>
       <Typography />
+      <NavigationBars />
       <Dividers />
       <Cards />
       <Rows />

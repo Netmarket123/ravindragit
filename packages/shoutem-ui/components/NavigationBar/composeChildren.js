@@ -95,7 +95,7 @@ const composeChildren = NavigationBarComponent => class extends Component {
 
   render() {
     const newProps = {};
-    const { id, style } = this.props;
+    const { id = 'default', style } = this.props;
 
     if (!id) {
       return null;
