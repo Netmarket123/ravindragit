@@ -14,6 +14,7 @@ const Colors = {
   LIGHT_GRAY: '#f2f2f2',
   LIGHT: '#ffffff',
   BACKGROUND: '#ffffff',
+  SCREEN_BACKGROUND: '#f2f2f2',
   SHADOW: '#000000',
   CLEAR: 'rgba(0, 0, 0, 0)',
   OVERLAY: 'rgba(0, 0, 0, 0.2)',
@@ -289,38 +290,7 @@ export default () => ({
     alignItems: 'center',
     justifyContent: 'center',
     resizeMode: 'cover',
-  },
-
-  'shoutem.ui.ImagePreview': {
-    container: {
-      flex: 1,
-      backgroundColor: 'transparent',
-    },
-    fullScreenContainer: {
-      flex: 1,
-      backgroundColor: 'black',
-    },
-    image: {
-      flex: 1,
-    },
-    thumbnail: {},
-    header: {
-      position: 'absolute',
-      top: STATUS_BAR_OFFSET,
-      left: 0,
-      backgroundColor: 'transparent',
-    },
-    closeIcon: {
-      color: 'white',
-      marginLeft: 15,
-      marginTop: -STATUS_BAR_OFFSET + 20,
-    },
-  },
-
-  'shoutem.ui.ImageGallery': {
-    imagePreview: {
-      image: {},
-    },
+    backgroundColor: Colors.BACKGROUND,
   },
 
   //
@@ -785,12 +755,14 @@ export default () => ({
       [INCLUDE]: ['shoutem.ui.Text'],
     },
     container: {
+      backgroundColor: Colors.BACKGROUND,
       margin: MEDIUM_GUTTER,
     },
   },
 
   'shoutem.ui.Video': {
     container: {
+      backgroundColor: Colors.BACKGROUND,
       flex: 1,
     },
   },
@@ -864,6 +836,7 @@ export default () => ({
     justifyContent: 'space-between',
     paddingRight: SMALL_GUTTER,
     paddingTop: SMALL_GUTTER,
+    backgroundColor: Colors.BACKGROUND,
   },
 
   'shoutem.ui.DropDownMenu': {
@@ -1020,6 +993,38 @@ export default () => ({
     paddingTop: 25,
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+
+  'shoutem.ui.ImagePreview': {
+    container: {
+      flex: 1,
+      backgroundColor: 'transparent',
+    },
+    fullScreenContainer: {
+      flex: 1,
+      backgroundColor: 'black',
+    },
+    image: {
+      flex: 1,
+    },
+    thumbnail: {},
+    header: {
+      position: 'absolute',
+      top: STATUS_BAR_OFFSET,
+      left: 0,
+      backgroundColor: 'transparent',
+    },
+    closeIcon: {
+      color: 'white',
+      marginLeft: 15,
+      marginTop: -STATUS_BAR_OFFSET + 20,
+    },
+  },
+
+  'shoutem.ui.ImageGallery': {
+    imagePreview: {
+      image: {},
+    },
   },
 
   'shoutem.ui.MapView': {
