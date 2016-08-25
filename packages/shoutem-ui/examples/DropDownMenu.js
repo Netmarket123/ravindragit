@@ -128,6 +128,38 @@ export function DropDownMenus() {
           valueProperty={"id"}
         />
       </Stage>
+      <Stage title="Dropdown (horizontal)">
+        <DropDownMenu
+          styleName="horizontal"
+          options={[
+            {
+              name: 'Lifestyle',
+              id: '7',
+            },
+            {
+              name: 'Lifestyle',
+              id: '7',
+            },
+            {
+              name: 'Food',
+              id: '8',
+            },
+            {
+              name: 'Food',
+              id: '8',
+            },
+            {
+              name: 'Nature',
+              id: '9',
+            },
+
+          ]}
+          titleProperty={"name"}
+          valueProperty={"id"}
+        />
+      </Stage>
+
     </View>
+
   );
 }

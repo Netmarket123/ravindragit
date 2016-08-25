@@ -24,11 +24,30 @@ import {
 
 class DropDownMenu extends Component {
   static propTypes = {
+    /**
+     * callback that is called when dropdown option is selected
+     */
     onOptionSelected: React.PropTypes.func,
+    /**
+     * collection of objects which will be shown as options in DropDownMenu
+     */
     options: React.PropTypes.array,
+    /**
+     * initially selected option
+     */
     selectedOption: React.PropTypes.any,
+    /**
+     * key name that represents option's string value
+     */
     titleProperty: React.PropTypes.string.isRequired,
-    valueProperty: React.PropTypes.any.isRequired,
+    /**
+     * key name that represents option's value
+     */
+    valueProperty: React.PropTypes.string.isRequired,
+    /**
+     * number of options shown without scroll
+     */
+    visibleOptions: React.PropTypes.number,
     style: React.PropTypes.object,
   }
 
@@ -36,13 +55,14 @@ class DropDownMenu extends Component {
     super(props);
     this.state = {
       ...props,
-      height: 82,
+      optionHeight: 82,
     };
     this.collapse = this.collapse.bind(this);
     this.close = this.close.bind(this);
     this.emitOnOptionSelectedEvent = this.emitOnOptionSelectedEvent.bind(this);
     this.renderRow = this.renderRow.bind(this);
     this.onOptionLayout = this.onOptionLayout.bind(this);
+    this.defaultVisibleOptions = 8;
   }
 
   componentWillMount() {
@@ -64,7 +84,7 @@ class DropDownMenu extends Component {
 
   onOptionLayout(event) {
     const { height } = event.nativeEvent.layout;
-    this.setState({ height });
+    this.setState({ optionHeight: height });
   }
 
   getValue() {
@@ -109,16 +129,28 @@ class DropDownMenu extends Component {
     const {
       style,
       titleProperty,
+      visibleOptions = this.defaultVisibleOptions,
     } = this.props;
-    const startAt =  rowId * this.state.height;
+    const { optionHeight } = this.state;
+    const optionPosition = rowId * optionHeight;
+    // start to fade in option when option is scrolled in
+    const fadeInStart = optionPosition - (visibleOptions - 0.5) * optionHeight;
+    const fadeInEnd = optionPosition - (visibleOptions - 1.5) * optionHeight;
     const onPress = () => {
       this.close();
       this.setState({ selectedOption: option }, this.emitOnOptionSelectedEvent);
     };
     return (
       <TouchableOpacity onPress={onPress} style={style.modalItem} onLayout={this.onOptionLayout}>
-        <FadeOut inputRange={[startAt, startAt + this.state.height]} driver={this.scrollDriver}>
-          <FadeIn inputRange={[startAt - 8 * this.state.height, startAt - 7 * this.state.height]} driver={this.scrollDriver}>
+        <FadeOut
+          inputRange={[optionPosition, optionPosition + optionHeight / 2]}
+          driver={this.scrollDriver}
+        >
+          {/* there should be visible only initial visibleOptions options */}
+          <FadeIn
+            inputRange={[fadeInStart, fadeInEnd]}
+            driver={this.scrollDriver}
+          >
             <Text>
               {option[titleProperty].toUpperCase()}
             </Text>
@@ -133,8 +165,11 @@ class DropDownMenu extends Component {
       collapsed,
       selectedOption,
       titleProperty,
+      optionHeight,
     } = this.state;
-    const { options, style } = this.props;
+    const { options, style, visibleOptions = this.defaultVisibleOptions } = this.props;
+    const listViewHeight = options.length > visibleOptions ?
+      visibleOptions * optionHeight : options.length * optionHeight;
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     const button = selectedOption ? (
       <Button onPress={this.collapse} styleName="clear" style={style.selectedOption}>
@@ -144,7 +179,7 @@ class DropDownMenu extends Component {
     ) : null;
 
     return (
-      <View style={style.container} renderToHardwareTextureAndroid>
+      <View renderToHardwareTextureAndroid>
         {button}
         <Modal
           visible={collapsed || false}
@@ -153,12 +188,12 @@ class DropDownMenu extends Component {
         >
           <ZoomOut driver={this.timingDriver} maxFactor={1.1} style={{ flex: 1 }}>
             <FadeIn driver={this.timingDriver} style={{ flex: 1 }}>
-              <View style={style.modal} styleName="">
+              <View style={style.modal} styleName="vertical">
                 <ListView
                   dataSource={ds.cloneWithRows(options.filter((option) => option[titleProperty]))}
                   renderRow={this.renderRow}
                   {...this.scrollDriver.scrollViewProps}
-                  contentContainerStyle={{ alignItems: 'center' }}
+                  style={{ flex: 0, height: listViewHeight }}
                 />
                 <Button onPress={this.close} styleName="clear close">
                   <Icon name="close" />

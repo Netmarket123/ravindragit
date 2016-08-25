@@ -911,11 +911,12 @@ export default () => ({
 
   'shoutem.ui.DropDownMenu': {
     '.horizontal': {
-      container: {
+      selectedOption: {
+        flex: 1,
         height: 40,
         justifyContent: 'center',
         backgroundColor: Colors.LIGHT_GRAY,
-        flex: 1,
+        width: window.width,
       },
     },
     selectedOption: {

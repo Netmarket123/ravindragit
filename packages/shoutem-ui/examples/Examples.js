@@ -17,8 +17,8 @@ export function Examples() {
   return (
     <ScrollView>
       <Typography />
-      <Dividers />
       <DropDownMenus />
+      <Dividers />
       <Cards />
       <Rows />
       <Tiles />
