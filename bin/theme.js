@@ -228,8 +228,6 @@ export default () => ({
     // NOTE: Image resizing doesn't work correctly if both
     // dimensions are not explicitly defined, so we can't
     // use flex: 1, or alignSelf: 'stretch' here...
-
-    // TODO (zeljko): See if we can avoid this size
     '.featured': {
       width: (365 / 375) * window.width,
       height: (345 / 375) * window.width,
@@ -260,7 +258,6 @@ export default () => ({
       height: (238 / 375) * window.width,
     },
 
-    // TODO (zeljko): Used only in one place (up next), maybe hardcode it?
     '.large-ultra-wide': {
       width: window.width,
       height: (130 / 375) * window.width,
@@ -530,7 +527,6 @@ export default () => ({
       padding: 10,
     },
 
-    // TODO (zeljko): Can we avoid fixed width here?
     width: (180 / 375) * window.width,
     flexDirection: 'column',
     justifyContent: 'center',
@@ -579,7 +575,6 @@ export default () => ({
     activeOpacity: 0.8,
   },
 
-  // TODO (zeljko): Support inclusion of style names, so we don't have to define these
   tightButton: {
     'shoutem.ui.Icon': {
       marginRight: 0,
