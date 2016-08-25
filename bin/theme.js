@@ -20,6 +20,7 @@ const Colors = {
   OVERLAY_DARK: 'rgba(0, 0, 0, 0.4)',
   BUTTON_UNDERLAY: '#cccccc',
   BORDER: '#cccccc',
+  SPINNER: '#cccccc',
   DIVIDER_LINE: '#eeeeee',
   DIVIDER_BORDER: 'rgba(51, 51, 51, 0.1)',
   NAVIGATION_TINT: '#333333',
@@ -856,19 +857,12 @@ export default () => ({
       backgroundColor: Colors.LIGHT,
       borderTopWidth: 0,
     },
-
-    header: {
-      container: {},
-    },
-    list: {},
     listContent: {
       paddingBottom: SMALL_GUTTER,
     },
-    tintColor: {
-      // uses only background color
-      backgroundColor: '#ccc',
+    refreshControl: {
+      tintColor: Colors.SPINNER,
     },
-    newDataSpinner: {},
     loadMoreSpinner: {
       paddingVertical: 25,
     },

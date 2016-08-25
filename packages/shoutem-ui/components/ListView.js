@@ -268,25 +268,37 @@ class ListView extends React.Component {
   renderRefreshControl() {
     const { style } = this.props;
     const { status } = this.state;
+    const refreshControlStyle = {
+      ...style.refreshControl,
+    };
+    delete refreshControlStyle.tintColor;
 
     return (
       <RefreshControl
         onRefresh={this.onRefresh}
         refreshing={status === Status.REFRESHING}
-        tintColor={style.tintColor.backgroundColor}
+        tintColor={style.refreshControl.tintColor}
+        style={refreshControlStyle}
       />
     );
   }
 
   render() {
-    // TODO(Braco) - handle no results view
-    // TODO(Braco) - handle no more results view
-    // TODO(Braco) - handle error view
     return <RNListView {...this.getPropsToPass()} />;
   }
 }
 
-const StyledListView = connectStyle('shoutem.ui.ListView', {})(ListView);
+const StyledListView = connectStyle('shoutem.ui.ListView', {
+  listContent: {
+    paddingBottom: 5,
+  },
+  refreshControl: {
+    tintColor: '#ccc',
+  },
+  loadMoreSpinner: {
+    paddingVertical: 25,
+  },
+})(ListView);
 
 export {
   StyledListView as ListView,
