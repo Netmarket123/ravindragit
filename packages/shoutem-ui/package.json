@@ -31,5 +31,10 @@
   "scripts": {
     "test": "mocha -R spec --require react-native-mock/mock.js --compilers js:babel-core/register $(find . -name '*.spec.js' ! -ipath '*node_modules*')",
     "debug": "mocha --debug-brk -R spec --require react-native-mock/mock.js --compilers js:babel-core/register $(find . -name '*.spec.js' ! -ipath '*node_modules*')"
+  },
+  "rnpm": {
+    "assets": [
+      "fonts"
+     ]
   }
 }
