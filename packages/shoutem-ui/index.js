@@ -1,3 +1,8 @@
+import { setDefaultTheme } from './init';
+
+setDefaultTheme();
+
+// Components
 export { View } from './components/View';
 export { Screen } from './components/Screen';
 

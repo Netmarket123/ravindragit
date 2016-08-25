@@ -25,7 +25,7 @@ function throwConnectStyleError(errorMessage, componentDisplayName) {
 function getTheme(context) {
   // Fallback to an empty theme if the component isn't
   // rendered in a StyleProvider.
-  return context.theme || new Theme({});
+  return context.theme || new Theme(Theme.getDefaultTheme());
 }
 
 /**

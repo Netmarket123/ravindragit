@@ -6,6 +6,8 @@ import mergeComponentAndThemeStyles from './mergeComponentAndThemeStyles';
 const THEME_STYLE = '@@shoutem.theme/themeStyle';
 const THEME_STYLE_CACHE = '@@shoutem.theme/themeCachedStyle';
 
+let defaultTheme = {};
+
 /**
  * The theme defines the application style, and provides methods to
  * resolve the style for a specific component.
@@ -34,6 +36,14 @@ export default class Theme {
   constructor(themeStyle) {
     this[THEME_STYLE] = resolveIncludes(themeStyle);
     this[THEME_STYLE_CACHE] = {};
+  }
+
+  static setDefaultTheme(theme) {
+    defaultTheme = theme;
+  }
+
+  static getDefaultTheme() {
+    return defaultTheme;
   }
 
   /**
