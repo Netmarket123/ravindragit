@@ -27,7 +27,6 @@ const Colors = {
 
   TEXT: '#666666',
   TITLE: '#222222',
-  DESCRIPTION: '#333333',
   CAPTION: '#555555',
 };
 
@@ -44,7 +43,6 @@ const textComponents = [
   'shoutem.ui.Heading',
   'shoutem.ui.Title',
   'shoutem.ui.Subtitle',
-  'shoutem.ui.Description',
   'shoutem.ui.Text',
   'shoutem.ui.Caption'
 ];
@@ -176,15 +174,6 @@ export default () => ({
 
     color: Colors.TITLE,
     lineHeight: 18,
-  },
-
-  'shoutem.ui.Description': {
-    [INCLUDE]: ['shoutem.ui.Text'],
-
-    color: Colors.DESCRIPTION,
-    fontSize: 13,
-    lineHeight: 18,
-    letterSpacing: 0.5,
   },
 
   'shoutem.ui.Caption': {
