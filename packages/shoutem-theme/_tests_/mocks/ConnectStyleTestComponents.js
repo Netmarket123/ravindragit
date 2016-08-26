@@ -28,13 +28,15 @@ const style = {
 
 const options = { withRef: true };
 
+const componentName = 'test.component.TestComponent';
 
 const ConnectedClassComponent =
-  connectStyle('TestComponent', style, undefined, options)(ConnectStyleTestClassComponent);
+  connectStyle(componentName, style, undefined, options)(ConnectStyleTestClassComponent);
 const ConnectedStatelessComponent =
-  connectStyle('TestComponent', style, undefined, options)(ConnectStyleTestStatelessComponent);
+  connectStyle(componentName, style, undefined, options)(ConnectStyleTestStatelessComponent);
 
 export {
   ConnectedClassComponent,
   ConnectedStatelessComponent,
+  componentName,
 };
