@@ -1,15 +1,10 @@
-/*
-    ALL_SIDES & ALL_CORNERS are created with new String('') so we can have distinction.
-    Both variables has same value but they have different normalizers.
-    As they are used as shorthands, it is important they are '' (empty string),
-    because they represent those shorthands (i.e. margin + '').
- */
-// eslint-disable-next-line
-export const ALL_SIDES = new String('');
-// eslint-disable-next-line
-export const ALL_CORNERS = new String('');
-export const HORIZONTAL = 'Horizontal';
-export const VERTICAL = 'Vertical';
+const createShorthand = (name, type) => ({ name, type: type || name });
+
+export const SIDES = createShorthand('Sides', '');
+export const CORNERS = createShorthand('Corners', '');
+export const HORIZONTAL = createShorthand('Horizontal');
+export const VERTICAL = createShorthand('Vertical');
+
 export const LEFT = 'Left';
 export const RIGHT = 'Right';
 export const TOP = 'Top';
@@ -57,18 +52,15 @@ function verticalSidesNormalizerCreator(prop) {
 }
 
 const normalizerCreatorMap = {
-  [HORIZONTAL]: horizontalSidesNormalizerCreator,
-  [VERTICAL]: verticalSidesNormalizerCreator,
+  [SIDES.name]: allSidesNormalizerCreator,
+  [CORNERS.name]: allCornersNormalizerCreator,
+  [HORIZONTAL.name]: horizontalSidesNormalizerCreator,
+  [VERTICAL.name]: verticalSidesNormalizerCreator,
 };
 
 class ShorthandsNormalizerFactory {
   getNormalizerCreator(shorthand) {
-    if (ALL_SIDES === shorthand) {
-      return allSidesNormalizerCreator;
-    } else if (ALL_CORNERS === shorthand) {
-      return allCornersNormalizerCreator;
-    }
-    return normalizerCreatorMap[shorthand];
+    return normalizerCreatorMap[shorthand.name];
   }
 
   create(prop, shorthand, suffix) {

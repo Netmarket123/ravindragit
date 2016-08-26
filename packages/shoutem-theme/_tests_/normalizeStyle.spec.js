@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import ShorthandsNormalizerFactory, {
-  ALL_CORNERS,
-  ALL_SIDES,
+  CORNERS,
+  SIDES,
   HORIZONTAL,
   VERTICAL,
 } from '../src/StyleNormalizer/ShorthandsNormalizerFactory';
@@ -12,7 +12,7 @@ import ShorthandsNormalizerFactory, {
 const TEST_VAL = 5;
 describe('normalizeStyle', () => {
   it('normalize all sides', () => {
-    const normalizePropVal = ShorthandsNormalizerFactory.create('padding', ALL_SIDES);
+    const normalizePropVal = ShorthandsNormalizerFactory.create('padding', SIDES);
     const expectedStyle = {
       paddingTop: TEST_VAL,
       paddingLeft: TEST_VAL,
@@ -29,7 +29,7 @@ describe('normalizeStyle', () => {
     );
   });
   it('normalize all sides with suffix', () => {
-    const normalizePropVal = ShorthandsNormalizerFactory.create('padding', ALL_SIDES, 'Suffix');
+    const normalizePropVal = ShorthandsNormalizerFactory.create('padding', SIDES, 'Suffix');
     const expectedStyle = {
       paddingTopSuffix: TEST_VAL,
       paddingLeftSuffix: TEST_VAL,
@@ -46,7 +46,7 @@ describe('normalizeStyle', () => {
     );
   });
   it('normalize all corners', () => {
-    const normalizePropVal = ShorthandsNormalizerFactory.create('border', ALL_CORNERS);
+    const normalizePropVal = ShorthandsNormalizerFactory.create('border', CORNERS);
     const expectedStyle = {
       borderBottomLeft: TEST_VAL,
       borderBottomRight: TEST_VAL,
@@ -63,7 +63,7 @@ describe('normalizeStyle', () => {
     );
   });
   it('normalize all corners with suffix', () => {
-    const normalizePropVal = ShorthandsNormalizerFactory.create('border', ALL_CORNERS, 'Radius');
+    const normalizePropVal = ShorthandsNormalizerFactory.create('border', CORNERS, 'Radius');
     const expectedStyle = {
       borderBottomLeftRadius: TEST_VAL,
       borderBottomRightRadius: TEST_VAL,

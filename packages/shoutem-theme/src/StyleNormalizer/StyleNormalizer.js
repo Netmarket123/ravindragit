@@ -1,6 +1,6 @@
 import ShorthandsNormalizerFactory, {
-  ALL_SIDES,
-  ALL_CORNERS,
+  SIDES,
+  CORNERS,
   HORIZONTAL,
   VERTICAL,
 } from './ShorthandsNormalizerFactory';
@@ -9,18 +9,18 @@ import ShorthandsNormalizerFactory, {
  * Style Normalizer uses ShorthandsNormalizerCreators to creates different normalizers
  * specific to properties.
  */
-export default class {
+export default class StyleNormalizer {
   constructor() {
     this.normalizers = {};
-    this.createPropsNormalizers('margin', [HORIZONTAL, VERTICAL, ALL_SIDES]);
-    this.createPropsNormalizers('padding', [HORIZONTAL, VERTICAL, ALL_SIDES]);
-    this.createPropsNormalizers('border', [ALL_SIDES], 'Width');
-    this.createPropsNormalizers('border', [ALL_CORNERS], 'Radius');
+    this.createNormalizers('margin', [HORIZONTAL, VERTICAL, SIDES]);
+    this.createNormalizers('padding', [HORIZONTAL, VERTICAL, SIDES]);
+    this.createNormalizers('border', [SIDES], 'Width');
+    this.createNormalizers('border', [CORNERS], 'Radius');
   }
 
-  createPropsNormalizers(prop, shorthands, suffix = '') {
+  createNormalizers(prop, shorthands, suffix = '') {
     shorthands.forEach(shorthand => {
-      const propName = prop + shorthand + suffix;
+      const propName = prop + shorthand.name + suffix;
       this.normalizers[propName] = ShorthandsNormalizerFactory.create(prop, shorthand, suffix);
     });
   }
