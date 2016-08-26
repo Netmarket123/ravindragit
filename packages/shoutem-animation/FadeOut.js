@@ -27,36 +27,38 @@ import { DriverShape } from './DriverShape';
  * and fully transparent at scroll 150
  */
 export class FadeOut extends Component {
+  static propTypes = {
+    /**
+     * An instance of animation driver, usually ScrollDriver
+     */
+    driver: DriverShape.isRequired,
+    /**
+     * Components to which an effect will be applied
+     */
+    children: React.PropTypes.node,
+    /**
+     * pair of [start, end] values from animation driver, how
+     * children would fade out
+     */
+    inputRange: React.PropTypes.array,
+    style: React.PropTypes.object,
+  }
+
   render() {
-    const { driver, children, inputRange = [0,1] } = this.props;
+    const { driver, children, inputRange = [0, 1], style } = this.props;
 
     return (
-      <Animated.View style={{
-        opacity: driver.value.interpolate({
-          inputRange,
-          outputRange: [1, 0],
-          extrapolate: 'clamp',
-        }),
-      }}
+      <Animated.View
+        style={[style, {
+          opacity: driver.value.interpolate({
+            inputRange,
+            outputRange: [1, 0],
+            extrapolate: 'clamp',
+          }),
+        }]}
       >
         {children}
       </Animated.View>
     );
   }
 }
-
-FadeOut.propTypes = {
-  /**
-   * An instance of animation driver, usually ScrollDriver
-   */
-  driver: DriverShape.isRequired,
-  /**
-   * Components to which an effect will be applied
-   */
-  children: React.PropTypes.node,
-  /**
-   * pair of [start, end] values from animation driver, how
-   * children would fade out
-   */
-  inputRange: React.PropTypes.array,
-};

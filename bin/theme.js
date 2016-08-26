@@ -567,6 +567,7 @@ export default () => ({
     borderRadius: 0,
   },
   actionButton: {
+    marginTop: 9,
     'shoutem.ui.Text': {
       [INCLUDE]: ['defaultFont'],
       fontSize: 15,
@@ -854,47 +855,43 @@ export default () => ({
 
   'shoutem.ui.DropDownMenu': {
     '.horizontal': {
-      container: {
+      selectedOption: {
         height: 40,
         justifyContent: 'center',
         backgroundColor: Colors.LIGHT_GRAY,
+        width: window.width,
       },
     },
-    modalContainer: {
+    selectedOption: {
+      [INCLUDE]: ['actionButton', 'tightButton', 'clearButton'],
+    },
+    modal: {
+      'shoutem.ui.Button.close': {
+        'shoutem.ui.Icon': {
+          color: 'black',
+          fontSize: 24,
+        },
+        position: 'absolute',
+        bottom: 25,
+        left: 0,
+        right: 0,
+      },
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      padding: 20,
+      paddingVertical: 20,
       backgroundColor: 'rgba(242, 242, 242, 0.97)',
     },
-    modalItems: {
-      alignItems: 'center',
-    },
     modalItem: {
-      paddingVertical: 23,
-      flex: 1,
-    },
-    modalItemText: {
-      fontFamily: 'Rubik-Regular',
-      textAlign: 'center',
-      flex: 1,
-      fontSize: 16,
-      width: 200,
-      paddingHorizontal: 20,
-      alignSelf: 'center',
-    },
-
-    modalCloseButton: {
-      button: {
-        position: 'absolute',
-        bottom: 65,
-        left: 18,
-        right: 0,
+      'shoutem.ui.Text': {
+        textAlign: 'center',
+        flex: 1,
+        width: window.width,
+        paddingHorizontal: 20,
+        paddingVertical: 23,
+        alignSelf: 'stretch',
       },
-      buttonIcon: {
-        color: 'black',
-        fontSize: 24,
-      },
+      flex: 1,
     },
   },
 
@@ -950,7 +947,6 @@ export default () => ({
     },
     'shoutem.ui.Button': {
       [INCLUDE]: ['clearButton', 'tightButton', 'actionButton'],
-      marginTop: 9,
       'shoutem.ui.Icon': {
         marginVertical: 9,
       },

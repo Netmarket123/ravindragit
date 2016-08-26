@@ -46,23 +46,25 @@ export class ZoomOut extends Component {
      * from which factor children would zoom out
      */
     maxFactor: React.PropTypes.number,
+    style: React.PropTypes.object,
   }
 
   render() {
-    const { driver, children, inputRange = [0,1], maxFactor = 1.5 } = this.props;
+    const { driver, children, inputRange = [0, 1], maxFactor = 1.5, style } = this.props;
 
     return (
-      <Animated.View style={{
-        transform: [
-          {
-            scale: driver.value.interpolate({
-              inputRange,
-              outputRange: [maxFactor, 1],
-              extrapolateRight: 'clamp',
-            }),
-          },
-        ],
-      }}
+      <Animated.View
+        style={[style, {
+          transform: [
+            {
+              scale: driver.value.interpolate({
+                inputRange,
+                outputRange: [maxFactor, 1],
+                extrapolateRight: 'clamp',
+              }),
+            },
+          ],
+        }]}
       >
         {children}
       </Animated.View>

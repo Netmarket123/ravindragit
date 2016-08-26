@@ -11,6 +11,7 @@ import { Tiles } from './Tiles';
 import { Spinners } from './Spinners';
 import { Buttons } from './Buttons';
 import { Images } from './Images';
+import { DropDownMenus } from './DropDownMenu';
 import { TextInputs } from './TextInputs';
 import { Headers } from './Headers';
 import { NavigationBars } from './NavigationBars';
@@ -21,6 +22,7 @@ export function Examples() {
       <TextInputs />
       <Typography />
       <NavigationBars />
+      <DropDownMenus />
       <Dividers />
       <Cards />
       <Rows />

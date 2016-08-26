@@ -61,7 +61,7 @@ export class HeroHeader extends Component {
           <Parallax
             driver={driver}
             scrollSpeed={0.5}
-            insideScroll={true}
+            insideScroll
             extrapolation={{ extrapolateLeft: 'clamp' }}
           >
             {children}

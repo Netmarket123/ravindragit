@@ -29,7 +29,6 @@ function NavBarStageContainer(props) {
   );
 }
 
-
 export function NavigationBars() {
   return (
     <View styleName="vertical collapsed">
@@ -96,28 +95,26 @@ export function NavigationBars() {
       </Stage>
       <Stage title="Navbar + Picker">
         <NavBarStageContainer>
-          {/*
            <NavigationBar
-           leftComponent={<Icon name="sidebar" />}
-           centerComponent={<Title>TITLE</Title>}
-           rightComponent={<DropDownMenu
-           options={[
-           { name: 'All', value: 1 },
-           { name: 'Sport', value: 1 },
-           { name: 'World', value: 1 },
-           { name: 'Lifestyle', value: 1 },
-           { name: 'Food', value: 1 },
-           { name: 'Music', value: 1 },
-           { name: 'Movies', value: 1 },
-           { name: 'Tech', value: 1 },
-           { name: 'Fun', value: 1 },
-           { name: 'Fashion', value: 1 },
-           ]}
-           titleProperty="name"
-           valueProperty="value"
-           />}
+             leftComponent={<Icon name="sidebar" />}
+             centerComponent={<Title>TITLE</Title>}
+             rightComponent={<DropDownMenu
+               options={[
+               { name: 'All', value: 1 },
+               { name: 'Sport', value: 1 },
+               { name: 'World', value: 1 },
+               { name: 'Lifestyle', value: 1 },
+               { name: 'Food', value: 1 },
+               { name: 'Music', value: 1 },
+               { name: 'Movies', value: 1 },
+               { name: 'Tech', value: 1 },
+               { name: 'Fun', value: 1 },
+               { name: 'Fashion', value: 1 },
+               ]}
+               titleProperty="name"
+               valueProperty="value"
+             />}
            />
-           */}
         </NavBarStageContainer>
       </Stage>
       <Stage title="Navbar + Action">
