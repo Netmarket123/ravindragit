@@ -918,13 +918,7 @@ export default () => ({
         width: window.width,
       },
     },
-    selectedOption: {
-      'shoutem.ui.Text': {
-        fontFamily: 'Rubik-Regular',
-        fontSize: 15,
-        marginRight: 0,
-      },
-    },
+    selectedOption: {},
     modal: {
       'shoutem.ui.Button.close': {
         'shoutem.ui.Icon': {
