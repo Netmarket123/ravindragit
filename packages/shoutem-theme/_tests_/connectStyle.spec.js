@@ -54,17 +54,6 @@ describe('connectStyle', () => {
 
     assert.isNotOk(instance, 'instance exists on stateless component');
   });
-  it('doesn\'t create ref for stateless component', () => {
-    const demo = mount(
-      <StyleProviderTestAppComponent>
-        <ConnectedStatelessComponent />
-      </StyleProviderTestAppComponent>
-    );
-    const instance = demo.find(ConnectedStatelessComponent)
-      .nodes[0].refs.wrappedInstance;
-
-    assert.isNotOk(instance, 'instance exists on stateless component');
-  });
   describe('virtual', () => {
     it('passes parent style to child component as parent style', () => {
       const context = {
