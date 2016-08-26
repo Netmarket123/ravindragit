@@ -39,18 +39,21 @@ export default class Theme {
   }
 
   /**
-   * Sets the given style as a default theme styling.
+   * Sets the given style as a default theme style.
    */
   static setDefaultThemeStyle(style) {
     defaultTheme = new Theme(style);
   }
 
   /**
-   * Returns the single instance of theme object which contains
-   * either empty style or default theme style.
+   * Returns the default theme that will be used as fallback
+   * if the StyleProvider is not configured in the app.
    */
-  static getDefaultThemeStyle() {
-    if (!defaultTheme) defaultTheme = new Theme({});
+  static getDefaultTheme() {
+    if (!defaultTheme) {
+      defaultTheme = new Theme({});
+    }
+
     return defaultTheme;
   }
 
