@@ -23,6 +23,7 @@ const Colors = {
   DIVIDER_LINE: '#eeeeee',
   DIVIDER_BORDER: 'rgba(51, 51, 51, 0.1)',
   NAVIGATION_TINT: '#333333',
+  NAVIGATION_BAR_BORDER: 'rgba(20, 20, 20, 0.2)',
 
   TEXT: '#666666',
   TITLE: '#222222',
@@ -45,7 +46,7 @@ const textComponents = [
   'shoutem.ui.Subtitle',
   'shoutem.ui.Description',
   'shoutem.ui.Text',
-  'shoutem.ui.Caption'
+  'shoutem.ui.Caption',
 ];
 
 export default () => ({
@@ -612,6 +613,17 @@ export default () => ({
     borderWidth: 0,
     borderRadius: 0,
   },
+  lightButton: {
+    'shoutem.ui.Text': {
+      [INCLUDE]: ['defaultFont'],
+      fontSize: 15,
+    },
+  },
+  'shoutem.ui.Button': {
+    '.light': {
+      [INCLUDE]: ['lightButton'],
+    },
+  },
   'shoutem.ui.Button': {
     [INCLUDE]: ['commonVariants', 'guttersMargin'],
 
@@ -948,31 +960,28 @@ export default () => ({
   //
   // Other
   //
-  'shoutem.ui.NavigationBar': {
-    '.clear': {
-      'shoutem.ui.Title': {
-        color: 'white',
+  clearNavigationBar: {
+    ...createSharedStyle([...textComponents, 'shoutem.ui.Icon'], {
+      color: Colors.LIGHT,
+    }),
+    'shoutem.ui.Button': {
+      backgroundColor: 'transparent',
+      borderColor: 'transparent',
+      'shoutem.ui.Icon': {
+        color: Colors.LIGHT,
       },
       'shoutem.ui.Text': {
-        color: 'white',
+        color: Colors.LIGHT,
       },
-      'shoutem.ui.Icon': {
-        color: 'white',
-      },
-      'shoutem.ui.Button': {
-        backgroundColor: 'transparent',
-        borderColor: 'transparent',
-        'shoutem.ui.Icon': {
-          color: 'white',
-        },
-        'shoutem.ui.Text': {
-          color: 'white',
-        },
-      },
-      container: {
-        backgroundColor: 'transparent',
-        borderBottomColor: 'transparent',
-      },
+    },
+    container: {
+      backgroundColor: 'transparent',
+      borderBottomColor: 'transparent',
+    },
+  },
+  'shoutem.ui.NavigationBar': {
+    '.clear': {
+      [INCLUDE]: ['clearNavigationBar'],
     },
     '.fade': {
       'shoutem.ui.LinearGradient': {
@@ -981,30 +990,7 @@ export default () => ({
         left: 0,
         bottom: 0,
         right: 0,
-      },
-      // TODO(Ivan): remove this when [INCLUDE]: ['styleName'] is available
-      'shoutem.ui.Title': {
-        color: 'white',
-      },
-      'shoutem.ui.Text': {
-        color: 'white',
-      },
-      'shoutem.ui.Icon': {
-        color: 'white',
-      },
-      'shoutem.ui.Button': {
-        backgroundColor: 'transparent',
-        borderColor: 'transparent',
-        'shoutem.ui.Icon': {
-          color: 'white',
-        },
-        'shoutem.ui.Text': {
-          color: 'white',
-        },
-      },
-      container: {
-        backgroundColor: 'transparent',
-        borderBottomColor: 'transparent',
+        colors: ['rgba(0,0,0,0.33)', 'rgba(0,0,0,0)'],
       },
     },
     'shoutem.ui.Title': {
@@ -1020,27 +1006,10 @@ export default () => ({
       fontSize: 15,
     },
     'shoutem.ui.Button': {
-      '.disabled': {
-        'shoutem.ui.Text': {
-          opacity: 0.7,
-        },
-        'shoutem.ui.Icon': {
-          opacity: 0.7,
-        },
-      },
-      backgroundColor: 'transparent',
-      borderColor: 'transparent',
-      marginVertical: -12,
-      paddingLeft: 0,
-      paddingRight: 0,
-      'shoutem.ui.Text': {
-        [INCLUDE]: ['defaultFont'],
-        fontSize: 15,
-        marginRight: 0,
-      },
+      [INCLUDE]: ['clearButton', 'tightButton', 'lightButton'],
+      marginTop: 9,
       'shoutem.ui.Icon': {
-        marginVertical: 12,
-        marginRight: 0,
+        marginVertical: 9,
       },
     },
     container: {
@@ -1050,7 +1019,7 @@ export default () => ({
       right: 0,
       position: 'absolute',
       backgroundColor: 'white',
-      borderBottomColor: 'rgba(20,20,20,0.2)',
+      borderBottomColor: Colors.NAVIGATION_BAR_BORDER,
       borderBottomWidth: 1,
       padding: 15,
     },

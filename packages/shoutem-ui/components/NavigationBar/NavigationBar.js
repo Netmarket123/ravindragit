@@ -83,9 +83,7 @@ class NavigationBar extends Component {
     // Key must be set to render new screen NavigationBar
     return (
       <Animated.View style={style.container} key={id}>
-        <LinearGradient
-          colors={['rgba(0,0,0,0.33)', 'rgba(0,0,0,0)']}
-        />
+        <LinearGradient />
         <StatusBar translucent />
         <View style={style.componentsContainer}>
           <View style={style.leftComponent}>{leftComponent}</View>

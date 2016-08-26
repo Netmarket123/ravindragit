@@ -1,4 +1,5 @@
 import React from 'react';
+import { Dimensions } from 'react-native';
 
 import { View } from '../components/View';
 import { Stage } from './Stage';
@@ -13,41 +14,46 @@ import {
   DropDownMenu,
 } from '../index';
 
+const window = Dimensions.get('window');
+
+function NavBarStageContainer(props) {
+  return (
+    <View
+      {...props}
+      style={{
+        width: window.width,
+        height: 70,
+        ...props.style,
+      }}
+    />
+  );
+}
+
+
 export function NavigationBars() {
   return (
     <View styleName="vertical collapsed">
       <Heading styleName="sm-gutter">02 - Navigation bars</Heading>
       <Stage title="Navbar / Solid">
-        <View
-          style={{
-            width: 375,
-            height: 70,
-          }}
-        >
+        <NavBarStageContainer>
           <NavigationBar
             centerComponent={<Title>TITLE</Title>}
           />
-        </View>
+        </NavBarStageContainer>
       </Stage>
       <Stage title="Navbar / Clear (Solid color)">
-        <View
-          style={{
-            backgroundColor: '#1a70d5',
-            width: 375,
-            height: 70,
-          }}
-        >
+        <NavBarStageContainer style={{ backgroundColor: '#1a70d5', }}>
           <NavigationBar
             styleName="clear"
             centerComponent={<Title>TITLE</Title>}
           />
-        </View>
+        </NavBarStageContainer>
       </Stage>
       <Stage title="Navbar / Clear (Image)">
         <Image
           source={require('../assets/examples/road.png')}
           style={{
-            width: 375,
+            width: window.width,
             height: 70,
           }}
         >
@@ -58,54 +64,38 @@ export function NavigationBars() {
         </Image>
       </Stage>
       <Stage title="Navbar/ Fade (Gradient overlay + Solid color)">
-        <View
-          style={{
-            backgroundColor: '#1a70d5',
-            width: 375,
-            height: 70,
-          }}
-        >
+        <NavBarStageContainer style={{ backgroundColor: '#1a70d5', }}>
           <NavigationBar
-            styleName="fade"
+            styleName="fade clear"
             centerComponent={<Title>TITLE</Title>}
           />
-        </View>
+        </NavBarStageContainer>
       </Stage>
       <Stage title="Navbar/ Fade (Gradient overlay + Image)">
         <Image
           source={require('../assets/examples/road.png')}
           style={{
-            width: 375,
+            width: window.width,
             height: 70,
           }}
         >
           <NavigationBar
-            styleName="fade"
+            styleName="fade clear"
             centerComponent={<Title>TITLE</Title>}
           />
         </Image>
       </Stage>
       <Heading styleName="sm-gutter">02.1 - Navigation bar variations</Heading>
       <Stage title="Navbar + Drawer nav">
-        <View
-          style={{
-            width: 375,
-            height: 70,
-          }}
-        >
+        <NavBarStageContainer>
           <NavigationBar
             leftComponent={<Icon name="sidebar" />}
             centerComponent={<Title>TITLE</Title>}
           />
-        </View>
+        </NavBarStageContainer>
       </Stage>
       <Stage title="Navbar + Picker">
-        <View
-          style={{
-            width: 375,
-            height: 70,
-          }}
-        >
+        <NavBarStageContainer>
           {/*
            <NavigationBar
            leftComponent={<Icon name="sidebar" />}
@@ -128,15 +118,10 @@ export function NavigationBars() {
            />}
            />
            */}
-        </View>
+        </NavBarStageContainer>
       </Stage>
       <Stage title="Navbar + Action">
-        <View
-          style={{
-            width: 375,
-            height: 70,
-          }}
-        >
+        <NavBarStageContainer>
           <NavigationBar
             leftComponent={<Icon name="sidebar" />}
             centerComponent={<Title>TITLE</Title>}
@@ -146,15 +131,10 @@ export function NavigationBars() {
             </Button>
           )}
           />
-        </View>
+        </NavBarStageContainer>
       </Stage>
       <Stage title="Navbar + Icon">
-        <View
-          style={{
-            width: 375,
-            height: 70,
-          }}
-        >
+        <NavBarStageContainer>
           <NavigationBar
             leftComponent={<Icon name="sidebar" />}
             centerComponent={<Title>TITLE</Title>}
@@ -164,15 +144,10 @@ export function NavigationBars() {
               </Button>
             )}
           />
-        </View>
+        </NavBarStageContainer>
       </Stage>
       <Stage title="Navbar (Sublevel) + Icon">
-        <View
-          style={{
-            width: 375,
-            height: 70,
-          }}
-        >
+        <NavBarStageContainer>
           <NavigationBar
             hasHistory
             navigateBack={() => {}}
@@ -183,15 +158,10 @@ export function NavigationBars() {
               title: 'Super cool UI Toolkit',
             }}
           />
-        </View>
+        </NavBarStageContainer>
       </Stage>
       <Stage title="Navbar (Sublevel) + Action (no border)">
-        <View
-          style={{
-            width: 375,
-            height: 70,
-          }}
-        >
+        <NavBarStageContainer>
           <NavigationBar
             hasHistory
             navigateBack={() => {}}
@@ -202,15 +172,10 @@ export function NavigationBars() {
               title: 'Super cool UI Toolkit',
             }}
           />
-        </View>
+        </NavBarStageContainer>
       </Stage>
       <Stage title="Navbar (Sublevel) + Action">
-        <View
-          style={{
-            width: 375,
-            height: 70,
-          }}
-        >
+        <NavBarStageContainer>
           <NavigationBar
             hasHistory
             navigateBack={() => {}}
@@ -221,15 +186,10 @@ export function NavigationBars() {
               </Button>
             )}
           />
-        </View>
+        </NavBarStageContainer>
       </Stage>
       <Stage title="Navbar (Modal) + Icon">
-        <View
-          style={{
-            width: 375,
-            height: 70,
-          }}
-        >
+        <NavBarStageContainer>
           <NavigationBar
             leftComponent={(
               <Button>
@@ -243,15 +203,10 @@ export function NavigationBars() {
               title: 'Super cool UI Toolkit',
             }}
           />
-        </View>
+        </NavBarStageContainer>
       </Stage>
       <Stage title="Navbar (Modal) + Action">
-        <View
-          style={{
-            width: 375,
-            height: 70,
-          }}
-        >
+        <NavBarStageContainer>
           <NavigationBar
             leftComponent={(
               <Button>
@@ -265,15 +220,10 @@ export function NavigationBars() {
               </Button>
             )}
           />
-        </View>
+        </NavBarStageContainer>
       </Stage>
       <Stage title="Navbar (Modal) + Action 2">
-        <View
-          style={{
-            width: 375,
-            height: 70,
-          }}
-        >
+        <NavBarStageContainer>
           <NavigationBar
             leftComponent={(
               <Button>
@@ -287,15 +237,10 @@ export function NavigationBars() {
               </Button>
             )}
           />
-        </View>
+        </NavBarStageContainer>
       </Stage>
       <Stage title="Navbar (Modal) + Action 2_disabled">
-        <View
-          style={{
-            width: 375,
-            height: 70,
-          }}
-        >
+        <NavBarStageContainer>
           <NavigationBar
             leftComponent={(
               <Button>
@@ -304,21 +249,15 @@ export function NavigationBars() {
             )}
             title="TITLE"
             rightComponent={(
-              <Button styleName="disabled">
+              <Button styleName="muted">
                 <Text>Done</Text>
               </Button>
             )}
           />
-        </View>
+        </NavBarStageContainer>
       </Stage>
       <Stage title="Navbar / On primary color / back + share">
-        <View
-          style={{
-            width: 375,
-            height: 70,
-            backgroundColor: '#1a70d5',
-          }}
-        >
+        <NavBarStageContainer style={{ backgroundColor: '#1a70d5', }}>
           <NavigationBar
             styleName="clear"
             hasHistory
@@ -330,7 +269,7 @@ export function NavigationBars() {
               title: 'Super cool UI Toolkit',
             }}
           />
-        </View>
+        </NavBarStageContainer>
       </Stage>
     </View>
   );
