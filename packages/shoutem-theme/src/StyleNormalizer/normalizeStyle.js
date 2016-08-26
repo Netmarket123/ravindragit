@@ -4,7 +4,7 @@ import StyleNormalizer from './StyleNormalizer';
 const styleNormalizer = new StyleNormalizer();
 
 /**
- * Normalize described properties shorthands.
+ * Normalize style properties shorthands.
  *
  * @param style
  * @returns {*}
