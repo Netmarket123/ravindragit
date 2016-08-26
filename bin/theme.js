@@ -613,15 +613,15 @@ export default () => ({
     borderWidth: 0,
     borderRadius: 0,
   },
-  lightButton: {
+  actionButton: {
     'shoutem.ui.Text': {
       [INCLUDE]: ['defaultFont'],
       fontSize: 15,
     },
   },
   'shoutem.ui.Button': {
-    '.light': {
-      [INCLUDE]: ['lightButton'],
+    '.action': {
+      [INCLUDE]: ['actionButton'],
     },
   },
   'shoutem.ui.Button': {
@@ -965,8 +965,7 @@ export default () => ({
       color: Colors.LIGHT,
     }),
     'shoutem.ui.Button': {
-      backgroundColor: 'transparent',
-      borderColor: 'transparent',
+      [INCLUDE]: ['clearButton'],
       'shoutem.ui.Icon': {
         color: Colors.LIGHT,
       },
@@ -985,12 +984,8 @@ export default () => ({
     },
     '.fade': {
       'shoutem.ui.LinearGradient': {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
-        colors: ['rgba(0,0,0,0.33)', 'rgba(0,0,0,0)'],
+        [INCLUDE]: ['fillParent'],
+        colors: [Colors.OVERLAY_DARK, Colors.CLEAR],
       },
     },
     'shoutem.ui.Title': {
@@ -1006,18 +1001,15 @@ export default () => ({
       fontSize: 15,
     },
     'shoutem.ui.Button': {
-      [INCLUDE]: ['clearButton', 'tightButton', 'lightButton'],
+      [INCLUDE]: ['clearButton', 'tightButton', 'actionButton'],
       marginTop: 9,
       'shoutem.ui.Icon': {
         marginVertical: 9,
       },
     },
     container: {
+      [INCLUDE]: ['fillParent'],
       height: 70,
-      top: 0,
-      left: 0,
-      right: 0,
-      position: 'absolute',
       backgroundColor: 'white',
       borderBottomColor: Colors.NAVIGATION_BAR_BORDER,
       borderBottomWidth: 1,
@@ -1106,6 +1098,10 @@ export default () => ({
 
     '.medium-tall': {
       height: 160,
+    },
+
+    'shoutem.ui.LinearGradient': {
+      colors: [],
     },
 
     'shoutem.ui.View': {

@@ -8,8 +8,8 @@ function LinearGradient(props) {
   const style = {
     ...props.style,
   };
-
   delete style.colors;
+
   return (
     <RNLinearGradient
       {...props}
