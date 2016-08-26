@@ -627,13 +627,11 @@ export default () => ({
         fontSize: 16,
       },
 
-      'shoutem.ui.Text': {
-        marginVertical: 20,
-      },
-
+      flex: 1,
       alignSelf: 'stretch',
       borderRadius: 0,
       borderWidth: 0,
+      height: 55,
     },
 
     '.border': {
