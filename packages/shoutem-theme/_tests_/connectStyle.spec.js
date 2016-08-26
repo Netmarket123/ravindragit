@@ -65,4 +65,20 @@ describe('connectStyle', () => {
 
     assert.isNotOk(instance, 'instance exists on stateless component');
   });
+  describe('virtual', () => {
+    it('passes parent style to child component as parent style', () => {
+      const context = {
+        parentStyle: {
+          test: 1,
+        },
+      };
+      const demo = mount(<ConnectedClassComponent virtual />, { context });
+      const instanceContext = demo.instance().getChildContext();
+
+      assert.strictEqual(
+        instanceContext.parentStyle,
+        context.parentStyle,
+        'doesn\'t pass correct style');
+    });
+  });
 });
