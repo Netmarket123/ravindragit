@@ -9,6 +9,7 @@ import StyleProviderTestAppComponent,
 import {
   ConnectedClassComponent,
   ConnectedStatelessComponent,
+  componentName,
 } from './mocks/ConnectStyleTestComponents';
 
 describe('connectStyle', () => {
@@ -55,19 +56,53 @@ describe('connectStyle', () => {
     assert.isNotOk(instance, 'instance exists on stateless component');
   });
   describe('virtual', () => {
-    it('passes parent style to child component as parent style', () => {
+    it('pass parent style to child component as parent style', () => {
       const context = {
         parentStyle: {
+          'some.child.component': {
+            flex: 1,
+          },
           test: 1,
         },
       };
-      const demo = mount(<ConnectedClassComponent virtual />, { context });
+      const demo = mount(<ConnectedClassComponent virtual/>, { context });
       const instanceContext = demo.instance().getChildContext();
 
       assert.strictEqual(
         instanceContext.parentStyle,
         context.parentStyle,
         'doesn\'t pass correct style');
+    });
+    it('doesn\'t passes parent style to child component as parent style', () => {
+      const context = {
+        parentStyle: {
+          [componentName]: {
+            'some.child.component': {
+              flex: 1,
+            },
+            'some.child.component1': {
+              flex: 2,
+            },
+            flex: 1,
+          },
+        },
+      };
+      const demo = mount(<ConnectedClassComponent />, { context });
+      const instanceContext = demo.instance().getChildContext();
+
+      const expectedParentStyle = {
+        'some.child.component': {
+          flex: 1,
+        },
+        'some.child.component1': {
+          flex: 2,
+        },
+      };
+      assert.deepEqual(
+        instanceContext.parentStyle,
+        expectedParentStyle,
+        'pass correct style'
+      );
     });
   });
 });
