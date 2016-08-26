@@ -406,18 +406,18 @@ describe('resolveIncludes', () => {
           test: 1,
         },
       };
-      delete undefinedInclude[INCLUDE];
-      delete falseInclude[INCLUDE];
+      delete undefinedInclude.testInclude[INCLUDE];
+      delete falseInclude.testInclude[INCLUDE];
 
       assert.deepEqual(
         resolveIncludes(undefinedInclude),
         undefinedInclude,
-        'include not resolved properly'
+        'undefined include not resolved properly'
       );
       assert.deepEqual(
         resolveIncludes(falseInclude),
         falseInclude,
-        'include not resolved properly'
+        'false include not resolved properly'
       );
     });
   });
