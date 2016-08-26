@@ -14,24 +14,20 @@ const Colors = {
   LIGHT_GRAY: '#f2f2f2',
   LIGHT: '#ffffff',
   BACKGROUND: '#ffffff',
-  SCREEN_BACKGROUND: '#f2f2f2',
   SHADOW: '#000000',
   CLEAR: 'rgba(0, 0, 0, 0)',
   OVERLAY: 'rgba(0, 0, 0, 0.2)',
   OVERLAY_DARK: 'rgba(0, 0, 0, 0.4)',
   BUTTON_UNDERLAY: '#cccccc',
   BORDER: '#cccccc',
-  SPINNER: '#cccccc',
   DIVIDER_LINE: '#eeeeee',
   DIVIDER_BORDER: 'rgba(51, 51, 51, 0.1)',
   NAVIGATION_TINT: '#333333',
-  NAVIGATION_BAR_BORDER: 'rgba(20, 20, 20, 0.2)',
 
   TEXT: '#666666',
   TITLE: '#222222',
+  DESCRIPTION: '#333333',
   CAPTION: '#555555',
-
-  INPUT_PLACEHOLDER: '#a7a7a7',
 };
 
 const SMALL_GUTTER = 5;
@@ -47,8 +43,9 @@ const textComponents = [
   'shoutem.ui.Heading',
   'shoutem.ui.Title',
   'shoutem.ui.Subtitle',
+  'shoutem.ui.Description',
   'shoutem.ui.Text',
-  'shoutem.ui.Caption',
+  'shoutem.ui.Caption'
 ];
 
 export default () => ({
@@ -180,6 +177,15 @@ export default () => ({
     lineHeight: 18,
   },
 
+  'shoutem.ui.Description': {
+    [INCLUDE]: ['shoutem.ui.Text'],
+
+    color: Colors.DESCRIPTION,
+    fontSize: 13,
+    lineHeight: 18,
+    letterSpacing: 0.5,
+  },
+
   'shoutem.ui.Caption': {
     [INCLUDE]: ['shoutem.ui.Text'],
 
@@ -232,6 +238,8 @@ export default () => ({
     // NOTE: Image resizing doesn't work correctly if both
     // dimensions are not explicitly defined, so we can't
     // use flex: 1, or alignSelf: 'stretch' here...
+
+    // TODO (zeljko): See if we can avoid this size
     '.featured': {
       width: (365 / 375) * window.width,
       height: (345 / 375) * window.width,
@@ -262,6 +270,7 @@ export default () => ({
       height: (238 / 375) * window.width,
     },
 
+    // TODO (zeljko): Used only in one place (up next), maybe hardcode it?
     '.large-ultra-wide': {
       width: window.width,
       height: (130 / 375) * window.width,
@@ -293,7 +302,38 @@ export default () => ({
     alignItems: 'center',
     justifyContent: 'center',
     resizeMode: 'cover',
-    backgroundColor: Colors.BACKGROUND,
+  },
+
+  'shoutem.ui.ImagePreview': {
+    container: {
+      flex: 1,
+      backgroundColor: 'transparent',
+    },
+    fullScreenContainer: {
+      flex: 1,
+      backgroundColor: 'black',
+    },
+    image: {
+      flex: 1,
+    },
+    thumbnail: {},
+    header: {
+      position: 'absolute',
+      top: STATUS_BAR_OFFSET,
+      left: 0,
+      backgroundColor: 'transparent',
+    },
+    closeIcon: {
+      color: 'white',
+      marginLeft: 15,
+      marginTop: -STATUS_BAR_OFFSET + 20,
+    },
+  },
+
+  'shoutem.ui.ImageGallery': {
+    imagePreview: {
+      image: {},
+    },
   },
 
   //
@@ -341,7 +381,7 @@ export default () => ({
       marginTop: -NAVIGATION_BAR_HEIGHT,
     },
 
-    backgroundColor: Colors.SCREEN_BACKGROUND,
+    backgroundColor: Colors.BACKGROUND,
     flex: 1,
   },
 
@@ -500,6 +540,7 @@ export default () => ({
       padding: 10,
     },
 
+    // TODO (zeljko): Can we avoid fixed width here?
     width: (180 / 375) * window.width,
     flexDirection: 'column',
     justifyContent: 'center',
@@ -519,10 +560,12 @@ export default () => ({
         color: Colors.DARKER,
       }),
 
+      borderRadius: 0,
       backgroundColor: Colors.BACKGROUND,
     },
 
     '.solid-dark': {
+      borderRadius: 0,
       backgroundColor: Colors.DARKER,
     },
 
@@ -535,6 +578,8 @@ export default () => ({
       [INCLUDE]: ['fillParent'],
     },
 
+    borderRadius: 2,
+    borderWidth: 0,
     paddingTop: 2 * SMALL_GUTTER,
     paddingBottom: 2 * SMALL_GUTTER,
     paddingHorizontal: MEDIUM_GUTTER,
@@ -548,6 +593,7 @@ export default () => ({
     activeOpacity: 0.8,
   },
 
+  // TODO (zeljko): Support inclusion of style names, so we don't have to define these
   tightButton: {
     'shoutem.ui.Icon': {
       marginRight: 0,
@@ -565,18 +611,6 @@ export default () => ({
     backgroundColor: Colors.CLEAR,
     borderWidth: 0,
     borderRadius: 0,
-  },
-  actionButton: {
-    marginTop: 9,
-    'shoutem.ui.Text': {
-      [INCLUDE]: ['defaultFont'],
-      fontSize: 15,
-    },
-  },
-  'shoutem.ui.Button': {
-    '.action': {
-      [INCLUDE]: ['actionButton'],
-    },
   },
   'shoutem.ui.Button': {
     [INCLUDE]: ['commonVariants', 'guttersMargin'],
@@ -631,6 +665,7 @@ export default () => ({
         marginVertical: 20,
       },
 
+      flex: 1,
       alignSelf: 'stretch',
       borderRadius: 0,
       borderWidth: 0,
@@ -769,14 +804,12 @@ export default () => ({
       [INCLUDE]: ['shoutem.ui.Text'],
     },
     container: {
-      backgroundColor: Colors.BACKGROUND,
       margin: MEDIUM_GUTTER,
     },
   },
 
   'shoutem.ui.Video': {
     container: {
-      backgroundColor: Colors.BACKGROUND,
       flex: 1,
     },
   },
@@ -823,12 +856,19 @@ export default () => ({
       backgroundColor: Colors.LIGHT,
       borderTopWidth: 0,
     },
+
+    header: {
+      container: {},
+    },
+    list: {},
     listContent: {
       paddingBottom: SMALL_GUTTER,
     },
-    refreshControl: {
-      tintColor: Colors.SPINNER,
+    tintColor: {
+      // uses only background color
+      backgroundColor: '#ccc',
     },
+    newDataSpinner: {},
     loadMoreSpinner: {
       paddingVertical: 25,
     },
@@ -850,48 +890,51 @@ export default () => ({
     justifyContent: 'space-between',
     paddingRight: SMALL_GUTTER,
     paddingTop: SMALL_GUTTER,
-    backgroundColor: Colors.BACKGROUND,
   },
 
   'shoutem.ui.DropDownMenu': {
     '.horizontal': {
-      selectedOption: {
+      container: {
         height: 40,
         justifyContent: 'center',
         backgroundColor: Colors.LIGHT_GRAY,
-        width: window.width,
       },
     },
-    selectedOption: {
-      [INCLUDE]: ['actionButton', 'tightButton', 'clearButton'],
-    },
-    modal: {
-      'shoutem.ui.Button.close': {
-        'shoutem.ui.Icon': {
-          color: 'black',
-          fontSize: 24,
-        },
-        position: 'absolute',
-        bottom: 25,
-        left: 0,
-        right: 0,
-      },
+    modalContainer: {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      paddingVertical: 20,
+      padding: 20,
       backgroundColor: 'rgba(242, 242, 242, 0.97)',
     },
+    modalItems: {
+      alignItems: 'center',
+    },
     modalItem: {
-      'shoutem.ui.Text': {
-        textAlign: 'center',
-        flex: 1,
-        width: window.width,
-        paddingHorizontal: 20,
-        paddingVertical: 23,
-        alignSelf: 'stretch',
-      },
+      paddingVertical: 23,
       flex: 1,
+    },
+    modalItemText: {
+      fontFamily: 'Rubik-Regular',
+      textAlign: 'center',
+      flex: 1,
+      fontSize: 16,
+      width: 200,
+      paddingHorizontal: 20,
+      alignSelf: 'center',
+    },
+
+    modalCloseButton: {
+      button: {
+        position: 'absolute',
+        bottom: 65,
+        left: 18,
+        right: 0,
+      },
+      buttonIcon: {
+        color: 'black',
+        fontSize: 24,
+      },
     },
   },
 
@@ -905,32 +948,24 @@ export default () => ({
   //
   // Other
   //
-  clearNavigationBar: {
-    ...createSharedStyle([...textComponents, 'shoutem.ui.Icon'], {
-      color: Colors.LIGHT,
-    }),
-    'shoutem.ui.Button': {
-      [INCLUDE]: ['clearButton'],
-      'shoutem.ui.Icon': {
-        color: Colors.LIGHT,
-      },
-      'shoutem.ui.Text': {
-        color: Colors.LIGHT,
-      },
-    },
-    container: {
-      backgroundColor: 'transparent',
-      borderBottomColor: 'transparent',
-    },
-  },
   'shoutem.ui.NavigationBar': {
     '.clear': {
-      [INCLUDE]: ['clearNavigationBar'],
-    },
-    '.fade': {
-      'shoutem.ui.LinearGradient': {
-        [INCLUDE]: ['fillParent'],
-        colors: [Colors.OVERLAY_DARK, Colors.CLEAR],
+      'shoutem.ui.Title': {
+        color: 'white',
+      },
+      'shoutem.ui.Icon': {
+        color: 'white',
+      },
+      'shoutem.ui.Button': {
+        backgroundColor: 'transparent',
+        borderColor: 'transparent',
+        'shoutem.ui.Icon': {
+          color: 'white',
+        },
+      },
+      container: {
+        backgroundColor: 'transparent',
+        borderBottomColor: 'transparent',
       },
     },
     'shoutem.ui.Title': {
@@ -943,19 +978,15 @@ export default () => ({
     },
     'shoutem.ui.Text': {
       color: 'black',
-      fontSize: 15,
-    },
-    'shoutem.ui.Button': {
-      [INCLUDE]: ['clearButton', 'tightButton', 'actionButton'],
-      'shoutem.ui.Icon': {
-        marginVertical: 9,
-      },
     },
     container: {
-      [INCLUDE]: ['fillParent'],
       height: 70,
+      top: 0,
+      left: 0,
+      right: 0,
+      position: 'absolute',
       backgroundColor: 'white',
-      borderBottomColor: Colors.NAVIGATION_BAR_BORDER,
+      borderBottomColor: 'rgb(242, 242, 242)',
       borderBottomWidth: 1,
       padding: 15,
     },
@@ -984,6 +1015,13 @@ export default () => ({
       alignItems: 'flex-end',
       flex: 1,
     },
+  },
+
+  'shoutem.ui.Spinner': {
+    android: {
+      height: 20,
+    },
+    ios: {},
   },
 
   sectionHeaderDivider: {
@@ -1017,38 +1055,6 @@ export default () => ({
     justifyContent: 'space-between',
   },
 
-  'shoutem.ui.ImagePreview': {
-    container: {
-      flex: 1,
-      backgroundColor: 'transparent',
-    },
-    fullScreenContainer: {
-      flex: 1,
-      backgroundColor: 'black',
-    },
-    image: {
-      flex: 1,
-    },
-    thumbnail: {},
-    header: {
-      position: 'absolute',
-      top: STATUS_BAR_OFFSET,
-      left: 0,
-      backgroundColor: 'transparent',
-    },
-    closeIcon: {
-      color: 'white',
-      marginLeft: 15,
-      marginTop: -STATUS_BAR_OFFSET + 20,
-    },
-  },
-
-  'shoutem.ui.ImageGallery': {
-    imagePreview: {
-      image: {},
-    },
-  },
-
   'shoutem.ui.MapView': {
     flex: 1,
   },
@@ -1067,10 +1073,6 @@ export default () => ({
 
     '.medium-tall': {
       height: 160,
-    },
-
-    'shoutem.ui.LinearGradient': {
-      colors: [],
     },
 
     'shoutem.ui.View': {
@@ -1211,21 +1213,5 @@ export default () => ({
       marginBottom: MEDIUM_GUTTER,
       padding: 0,
     },
-  },
-
-  //
-  // TextInputs
-  //
-  'shoutem.ui.TextInput': {
-    [INCLUDE]: ['commonVariants', 'guttersMargin'],
-    selectionColor: Colors.TEXT,
-    placeholderTextColor: Colors.INPUT_PLACEHOLDER,
-    backgroundColor: Colors.LIGHT,
-    height: 55,
-    paddingHorizontal: MEDIUM_GUTTER,
-    paddingVertical: 18,
-    fontSize: 15,
-    fontFamily: 'Rubik',
-    color: Colors.TEXT,
   },
 });

@@ -176,7 +176,7 @@ class DropDownMenu extends Component {
       visibleOptions * optionHeight : options.length * optionHeight;
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     const button = selectedOption ? (
-      <Button onPress={this.collapse} styleName="clear" style={style.selectedOption}>
+      <Button onPress={this.collapse} style={style.selectedOption}>
         <Text>{selectedOption[titleProperty]}</Text>
         <Icon name="drop-down" />
       </Button>

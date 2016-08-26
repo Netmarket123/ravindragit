@@ -21,7 +21,7 @@ export function Tiles() {
       <Heading styleName="sm-gutter">09 - Tiles</Heading>
 
       <Stage title="Tile">
-        <Tile styleName="small">
+        <Tile styleName="small clear">
           <Image
             styleName="medium-square"
             source={require('../assets/examples/road.png')}
@@ -34,7 +34,7 @@ export function Tiles() {
       </Stage>
 
       <Stage title="Tile + Icon">
-        <Tile styleName="small">
+        <Tile styleName="small clear">
           <Image
             styleName="medium-square"
             source={require('../assets/examples/road.png')}
@@ -53,10 +53,10 @@ export function Tiles() {
           styleName="featured"
           source={require('../assets/examples/road.png')}
         >
-          <Overlay>
+          <Tile>
             <Title styleName="md-gutter-bottom">MIKE PATTON TEAMING WITH JOHN KAADA FOR COLLAB ALBUM BACTERIA CULT</Title>
             <Caption>Sophia Jackson        21 hours ago</Caption>
-          </Overlay>
+          </Tile>
         </Image>
       </Stage>
 
@@ -65,13 +65,13 @@ export function Tiles() {
           styleName="featured"
           source={require('../assets/examples/road.png')}
         >
-          <Overlay>
-            <Overlay styleName="collapsed"><Heading>-20%</Heading></Overlay>
+          <Tile>
+            <Overlay><Heading>-20%</Heading></Overlay>
             <Title styleName="md-gutter-top">COOL BLACK AND WHITE STYLISH WATCHES</Title>
             <Subtitle styleName="line-through sm-gutter-top">$280.00</Subtitle>
             <Heading>$250.00</Heading>
             <Button styleName="md-gutter-top"><Icon name="cart" /><Text>ADD TO BASKET</Text></Button>
-          </Overlay>
+          </Tile>
         </Image>
       </Stage>
 
@@ -80,17 +80,17 @@ export function Tiles() {
           styleName="featured"
           source={require('../assets/examples/road.png')}
         >
-          <Overlay>
+          <Tile>
             <Title>MIKE PATTON TEAMING WITH JOHN KAADA</Title>
             <Subtitle styleName="line-through sm-gutter-top">150.00</Subtitle>
             <Heading>99.99</Heading>
             <Button styleName="md-gutter-top"><Text>CLAIM COUPON</Text></Button>
-          </Overlay>
+          </Tile>
         </Image>
       </Stage>
 
       <Stage title="Large list item">
-        <Tile styleName="light">
+        <Tile>
           <Image
             styleName="large-banner"
             source={require('../assets/examples/road.png')}
@@ -106,7 +106,7 @@ export function Tiles() {
       </Stage>
 
       <Stage title="Large list item + Icon + Timestamp">
-        <Tile styleName="light">
+        <Tile>
           <Image
             styleName="large-banner"
             source={require('../assets/examples/road.png')}
@@ -128,10 +128,12 @@ export function Tiles() {
           styleName="large-banner"
           source={require('../assets/examples/road.png')}
         >
-          <Overlay>
+          <Tile>
             <Title styleName="md-gutter-bottom">SMOKED SALMON, CLASSIC CONDIMENTS, BRIOCHE</Title>
-            <Overlay styleName="collapsed solid-light"><Subtitle>$18.30</Subtitle></Overlay>
-          </Overlay>
+            <Overlay styleName="solid-light">
+              <Subtitle styleName="sm-gutter-horizontal">$18.30</Subtitle>
+            </Overlay>
+          </Tile>
         </Image>
       </Stage>
 
@@ -140,13 +142,13 @@ export function Tiles() {
           styleName="large-banner"
           source={require('../assets/examples/road.png')}
         >
-          <Overlay>
+          <Tile>
             <View styleName="actions">
               <Button styleName="tight clear"><Icon name="add-to-favorites" /></Button>
             </View>
             <Title>HOW TO MAINTAIN YOUR MENTAL HEALTH IN 2016</Title>
             <Caption>6557 Americo Hills Apt. 118</Caption>
-          </Overlay>
+          </Tile>
         </Image>
       </Stage>
 
@@ -155,10 +157,12 @@ export function Tiles() {
           styleName="large-square"
           source={require('../assets/examples/road.png')}
         >
-          <Overlay>
+          <Tile>
             <Title styleName="md-gutter-bottom">SMOKED SALMON, CLASSIC CONDIMENTS, BRIOCHE</Title>
-            <Overlay styleName="collapsed solid-light"><Subtitle>$18.30</Subtitle></Overlay>
-          </Overlay>
+            <Overlay styleName="solid-light">
+              <Subtitle styleName="sm-gutter-horizontal">$18.30</Subtitle>
+            </Overlay>
+          </Tile>
         </Image>
       </Stage>
 
@@ -167,12 +171,12 @@ export function Tiles() {
           styleName="large-square"
           source={require('../assets/examples/road.png')}
         >
-          <Overlay>
+          <Tile>
             <Title>MIKE PATTON TEAMING WITH JOHN KAADA</Title>
             <Subtitle styleName="line-through sm-gutter-top">150.00</Subtitle>
             <Heading>99.99</Heading>
             <Button styleName="md-gutter-top"><Text>CLAIM COUPON</Text></Button>
-          </Overlay>
+          </Tile>
         </Image>
       </Stage>
 
@@ -181,13 +185,13 @@ export function Tiles() {
           styleName="large-square"
           source={require('../assets/examples/road.png')}
         >
-          <Overlay>
-            <Overlay styleName="collapsed"><Heading>-20%</Heading></Overlay>
+          <Tile>
+            <Overlay><Heading>-20%</Heading></Overlay>
             <Title styleName="md-gutter-top">COOL BLACK AND WHITE STYLISH WATCHES</Title>
             <Subtitle styleName="line-through sm-gutter-top">$280.00</Subtitle>
             <Heading>$250.00</Heading>
             <Button styleName="md-gutter-top"><Icon name="cart" /><Text>ADD TO BASKET</Text></Button>
-          </Overlay>
+          </Tile>
         </Image>
       </Stage>
 
@@ -196,10 +200,12 @@ export function Tiles() {
           styleName="large-portrait"
           source={require('../assets/examples/road.png')}
         >
-          <Overlay>
+          <Tile>
             <Title styleName="md-gutter-bottom">SMOKED SALMON, CLASSIC CONDIMENTS, BRIOCHE</Title>
-            <Overlay styleName="collapsed solid-light"><Subtitle>$18.30</Subtitle></Overlay>
-          </Overlay>
+            <Overlay styleName="solid-light">
+              <Subtitle styleName="sm-gutter-horizontal">$18.30</Subtitle>
+            </Overlay>
+          </Tile>
         </Image>
       </Stage>
 
@@ -208,12 +214,12 @@ export function Tiles() {
           styleName="large-portrait"
           source={require('../assets/examples/road.png')}
         >
-          <Overlay>
+          <Tile>
             <Title>MIKE PATTON TEAMING WITH JOHN KAADA</Title>
             <Subtitle styleName="line-through sm-gutter-top">150.00</Subtitle>
             <Heading>99.99</Heading>
             <Button styleName="md-gutter-top"><Text>CLAIM COUPON</Text></Button>
-          </Overlay>
+          </Tile>
         </Image>
       </Stage>
 
@@ -222,13 +228,13 @@ export function Tiles() {
           styleName="large-portrait"
           source={require('../assets/examples/road.png')}
         >
-          <Overlay>
-            <Overlay styleName="collapsed"><Heading>-20%</Heading></Overlay>
+          <Tile>
+            <Overlay><Heading>-20%</Heading></Overlay>
             <Title styleName="md-gutter-top">COOL BLACK AND WHITE STYLISH WATCHES</Title>
             <Subtitle styleName="line-through sm-gutter-top">$280.00</Subtitle>
             <Heading>$250.00</Heading>
             <Button styleName="md-gutter-top"><Icon name="cart" /><Text>ADD TO BASKET</Text></Button>
-          </Overlay>
+          </Tile>
         </Image>
       </Stage>
     </View>
