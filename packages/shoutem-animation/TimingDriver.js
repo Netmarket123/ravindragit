@@ -12,9 +12,11 @@ import {
  *   easing: Easing.inOut // Easing.cubic is passed by default
  *   delay: 200 // 0 by default
  * });
- * animation = new Animation({
- *  driver
- * });
+ * return (
+ *   <FadeIn driver={driver}>
+ *     <Text>I'm fading in</Text>
+ *   </FadeIn>
+ * );
  * ...
  * Check
  * http://facebook.github.io/react-native/releases/0.30/docs/animations.html#core-api
@@ -27,14 +29,14 @@ export class TimingDriver {
       duration: 250,
     }, options);
     this.value = new Animated.Value(0);
-    this.setValue = this.setValue.bind(this);
+    this.runTimer = this.runTimer.bind(this);
   }
 
-  setValue(value, onFinish) {
+  runTimer(endValue, onFinish) {
     Animated.timing(
       this.value,
       {
-        toValue: value,
+        toValue: endValue,
         ...this.animationOptions,
       }
     ).start(onFinish);

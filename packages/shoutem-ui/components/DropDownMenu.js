@@ -25,44 +25,48 @@ import {
 class DropDownMenu extends Component {
   static propTypes = {
     /**
-     * callback that is called when dropdown option is selected
+     * Callback that is called when dropdown option is selected
      */
     onOptionSelected: React.PropTypes.func,
     /**
-     * collection of objects which will be shown as options in DropDownMenu
+     * Collection of objects which will be shown as options in DropDownMenu
      */
     options: React.PropTypes.array,
     /**
-     * initially selected option
+     * Initially selected option
      */
     selectedOption: React.PropTypes.any,
     /**
-     * key name that represents option's string value
+     * Key name that represents option's string value,
+     * and it will be displayed to the user in the UI
      */
     titleProperty: React.PropTypes.string.isRequired,
     /**
-     * key name that represents option's value
+     * Key name that represents option's value
      */
     valueProperty: React.PropTypes.string.isRequired,
     /**
-     * number of options shown without scroll
+     * Number of options shown without scroll
      */
     visibleOptions: React.PropTypes.number,
     style: React.PropTypes.object,
+  }
+
+  static defaultProps = {
+    visibleOptions: 8,
   }
 
   constructor(props) {
     super(props);
     this.state = {
       ...props,
-      optionHeight: 82,
+      optionHeight: 0,
     };
     this.collapse = this.collapse.bind(this);
     this.close = this.close.bind(this);
     this.emitOnOptionSelectedEvent = this.emitOnOptionSelectedEvent.bind(this);
     this.renderRow = this.renderRow.bind(this);
     this.onOptionLayout = this.onOptionLayout.bind(this);
-    this.defaultVisibleOptions = 8;
   }
 
   componentWillMount() {
@@ -112,11 +116,11 @@ class DropDownMenu extends Component {
   collapse() {
     this.setState({ collapsed: true });
     this.scrollDriver = new ScrollDriver();
-    this.timingDriver.setValue(1);
+    this.timingDriver.runTimer(1);
   }
 
   close() {
-    this.timingDriver.setValue(0, () => this.setState({ collapsed: false }));
+    this.timingDriver.runTimer(0, () => this.setState({ collapsed: false }));
   }
 
   emitOnOptionSelectedEvent() {
@@ -129,7 +133,7 @@ class DropDownMenu extends Component {
     const {
       style,
       titleProperty,
-      visibleOptions = this.defaultVisibleOptions,
+      visibleOptions,
     } = this.props;
     const { optionHeight } = this.state;
     const optionPosition = rowId * optionHeight;

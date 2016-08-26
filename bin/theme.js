@@ -912,7 +912,6 @@ export default () => ({
   'shoutem.ui.DropDownMenu': {
     '.horizontal': {
       selectedOption: {
-        flex: 1,
         height: 40,
         justifyContent: 'center',
         backgroundColor: Colors.LIGHT_GRAY,
@@ -945,14 +944,12 @@ export default () => ({
     },
     modalItem: {
       'shoutem.ui.Text': {
-        fontFamily: 'Rubik-Regular',
         textAlign: 'center',
         flex: 1,
-        fontSize: 16,
         width: window.width,
         paddingHorizontal: 20,
         paddingVertical: 23,
-        alignSelf: 'center',
+        alignSelf: 'stretch',
       },
       flex: 1,
     },
