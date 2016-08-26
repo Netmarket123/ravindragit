@@ -40,6 +40,7 @@ function getTheme(context) {
  * @param options
  *  The additional connectStyle options
  *  options.virtual The default value of the virtual prop
+ *  options.withRef Create component ref with directive; if true, ref name is wrappedInstance
  * @returns {StyledComponent} The new component that will handle
  * the styling of the wrapped component.
  */
@@ -104,6 +105,10 @@ export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames, o
         this.state = {
           style: resolvedStyle.componentStyle,
           childrenStyle: resolvedStyle.childrenStyle,
+        // Directives are additional WrappedComponent props
+        // Usually they are set trough alternative ways,
+        // such as theme style, or trough options
+          directives: this.resolveDirectives(),
           styleNames,
         };
       }
@@ -126,6 +131,14 @@ export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames, o
             styleNames,
           });
         }
+      }
+
+      resolveDirectives() {
+        const directives = {};
+        if (options.withRef) {
+          directives.ref = 'wrappedInstance';
+        }
+        return directives;
       }
 
       hasStyleNameChanged(nextProps, styleNames) {
@@ -172,7 +185,8 @@ export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames, o
       }
 
       render() {
-        return <WrappedComponent {...this.props} style={this.state.style} />;
+        const { directives, style } = this.state;
+        return <WrappedComponent {...this.props} {...directives} style={style} />;
       }
     }
 
