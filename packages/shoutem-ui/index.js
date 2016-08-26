@@ -18,6 +18,8 @@ export { TouchableOpacity } from './components/TouchableOpacity';
 export { Button } from './components/Button';
 export { Icon } from './components/Icon';
 
+export { TextInput } from './components/TextInput';
+
 export { Spinner } from './components/Spinner';
 
 export { Video } from './components/Video';
