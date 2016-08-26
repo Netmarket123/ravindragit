@@ -1,34 +1,27 @@
-import _ from 'lodash';
-import ShorthandsNormalizerCreators from './ShorthandsNormalizerCreators';
+import ShorthandsNormalizerFactory, {
+  ALL_SIDES,
+  ALL_CORNERS,
+  HORIZONTAL,
+  VERTICAL,
+} from './ShorthandsNormalizerFactory';
 
 /**
  * Style Normalizer uses ShorthandsNormalizerCreators to creates different normalizers
  * specific to properties.
  */
 export default class {
-  constructor(describedProps) {
+  constructor() {
     this.normalizers = {};
-    this.initializePropsNormalizers(describedProps);
+    this.createPropsNormalizers('margin', [HORIZONTAL, VERTICAL, ALL_SIDES]);
+    this.createPropsNormalizers('padding', [HORIZONTAL, VERTICAL, ALL_SIDES]);
+    this.createPropsNormalizers('border', [ALL_SIDES], 'Width');
+    this.createPropsNormalizers('border', [ALL_CORNERS], 'Radius');
   }
 
-  getPropNormalizerCreator(propDesc, shorthand) {
-    // Check if property description has custom normalizer creator for shorthand
-    // If not, use predefined from normalizersCreators map
-    return _.get(propDesc, `normalizers.${shorthand}`, ShorthandsNormalizerCreators[shorthand]);
-  }
-
-  /**
-   * Set object normalizers for defined property shorthands.
-   * @param describedProps
-   */
-  initializePropsNormalizers(describedProps) {
-    describedProps.forEach(propDesc => {
-      const type = propDesc.type || '';
-      const prop = propDesc.prop;
-      propDesc.shorthands.forEach(shorthand => {
-        const normalizerCreator = this.getPropNormalizerCreator(propDesc, shorthand);
-        this.normalizers[prop + shorthand + type] = normalizerCreator(prop, shorthand, type);
-      });
+  createPropsNormalizers(prop, shorthands, suffix = '') {
+    shorthands.forEach(shorthand => {
+      const propName = prop + shorthand + suffix;
+      this.normalizers[propName] = ShorthandsNormalizerFactory.create(prop, shorthand, suffix);
     });
   }
 

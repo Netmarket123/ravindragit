@@ -1,8 +1,7 @@
 import _ from 'lodash';
-import propsDescriptions from './propsDescriptions';
 import StyleNormalizer from './StyleNormalizer';
 
-const styleNormalizer = new StyleNormalizer(propsDescriptions);
+const styleNormalizer = new StyleNormalizer();
 
 /**
  * Normalize described properties shorthands.
