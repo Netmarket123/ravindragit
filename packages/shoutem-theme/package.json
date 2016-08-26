@@ -12,15 +12,14 @@
   },
   "devDependencies": {
     "babel": "^6.3.26",
-    "babel-preset-react-native": "^1.7.0",
+    "babel-preset-react-native": "^1.9.0",
     "chai": "^3.4.1",
     "deep-freeze": "0.0.1",
     "enzyme": "^2.0.0-rc1",
     "mocha": "^2.3.4",
-    "react": "^0.14.7",
-    "react-addons-test-utils": "^0.14.7",
-    "react-dom": "^0.14.7",
-    "react-native-mock": "^0.0.6"
+    "react-addons-test-utils": "^15.3.1",
+    "react-dom": "^15.3.1",
+    "react-native-mock": "^0.2.5"
   },
   "scripts": {
     "test": "mocha -R spec --require test-utils/setup.js --require react-native-mock/mock.js --compilers js:babel-core/register $(find . -name '*.spec.js' ! -ipath '*node_modules*')"
