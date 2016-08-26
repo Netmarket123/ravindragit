@@ -65,7 +65,7 @@ describe('connectStyle', () => {
           test: 1,
         },
       };
-      const demo = mount(<ConnectedClassComponent virtual/>, { context });
+      const demo = mount(<ConnectedClassComponent virtual />, { context });
       const instanceContext = demo.instance().getChildContext();
 
       assert.strictEqual(
@@ -73,7 +73,7 @@ describe('connectStyle', () => {
         context.parentStyle,
         'doesn\'t pass correct style');
     });
-    it('doesn\'t passes parent style to child component as parent style', () => {
+    it('doesn\'t pass parent style to child component as parent style', () => {
       const context = {
         parentStyle: {
           [componentName]: {
