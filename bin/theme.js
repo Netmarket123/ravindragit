@@ -337,11 +337,8 @@ export default () => ({
     '.full-screen': {
       marginTop: -NAVIGATION_BAR_HEIGHT,
     },
-    '.lightGreyBackground': {
-      backgroundColor: Colors.LIGHT_GRAY,
-    },
 
-    backgroundColor: Colors.BACKGROUND,
+    backgroundColor: Colors.SCREEN_BACKGROUND,
     flex: 1,
   },
 
@@ -1188,6 +1185,7 @@ export default () => ({
       padding: 0,
     },
   },
+
   //
   // TextInputs
   //

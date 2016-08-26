@@ -15,9 +15,7 @@ function TextInput(props) {
       style={style}
       placeholderTextColor={props.style.placeholderTextColor}
       selectionColor={props.style.selectionColor}
-    >
-      {props.children}
-    </RNTextInput>
+    />
   );
 }
 
