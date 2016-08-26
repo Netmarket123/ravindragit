@@ -44,17 +44,17 @@ export class FadeIn extends Component {
   }
 
   render() {
-    const { driver, children, inputRange = [0, 1] } = this.props;
+    const { driver, children, inputRange = [0, 1], style } = this.props;
 
     return (
       <Animated.View
-        style={{
+        style={[style, {
           opacity: driver.value.interpolate({
             inputRange,
             outputRange: [0, 1],
             extrapolate: 'clamp',
           }),
-        }}
+        }]}
       >
         {children}
       </Animated.View>

@@ -1,21 +1,21 @@
 import React from 'react';
-import { View } from './View';
+import { View as RNView } from 'react-native';
 
 import { connectStyle } from '@shoutem/theme';
 
 function Divider(props) {
   return (
-    <View {...props}>
+    <RNView {...props}>
       {props.children}
-    </View>
+    </RNView>
   );
 }
 
 Divider.propTypes = {
-  ...View.propTypes,
+  ...RNView.propTypes,
 };
 
-const StyledDivider = connectStyle('shoutem.ui.Divider', {})(Divider);
+const StyledDivider = connectStyle('shoutem.ui.Divider')(Divider);
 
 export {
   StyledDivider as Divider,

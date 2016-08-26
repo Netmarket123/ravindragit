@@ -2,126 +2,164 @@ import React, {
   Component,
 } from 'react';
 import {
-  TouchableOpacity,
-  Text,
-  View,
-  ListView,
   Modal,
-  Animated,
-  Easing,
+  ListView,
 } from 'react-native';
 
 import { Button } from './Button';
 import { Icon } from './Icon';
+import { Text } from './Text';
+import { View } from './View';
+import { TouchableOpacity } from './TouchableOpacity';
 
 import { connectStyle } from '@shoutem/theme';
 
-function createModalAnimatedStyle(dropDownAnimation) {
-  return {
-    opacity: dropDownAnimation,
-    transform: [
-      {
-        scale: dropDownAnimation.interpolate({
-          inputRange: [0, 1],
-          outputRange: [1.1, 1],
-        }),
-      },
-    ],
-  };
-}
+import {
+  ScrollDriver,
+  TimingDriver,
+  FadeIn,
+  FadeOut,
+  ZoomOut,
+} from '@shoutem/animation';
 
 class DropDownMenu extends Component {
+  static propTypes = {
+    /**
+     * Callback that is called when dropdown option is selected
+     */
+    onOptionSelected: React.PropTypes.func,
+    /**
+     * Collection of objects which will be shown as options in DropDownMenu
+     */
+    options: React.PropTypes.array,
+    /**
+     * Initially selected option
+     */
+    selectedOption: React.PropTypes.any,
+    /**
+     * Key name that represents option's string value,
+     * and it will be displayed to the user in the UI
+     */
+    titleProperty: React.PropTypes.string.isRequired,
+    /**
+     * Key name that represents option's value
+     */
+    valueProperty: React.PropTypes.string.isRequired,
+    /**
+     * Number of options shown without scroll
+     */
+    visibleOptions: React.PropTypes.number,
+    style: React.PropTypes.object,
+  }
+
+  static defaultProps = {
+    visibleOptions: 8,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       ...props,
-      dropDownAnimation: new Animated.Value(0),
+      optionHeight: 0,
     };
     this.collapse = this.collapse.bind(this);
     this.close = this.close.bind(this);
-    this.emitOnItemSelectedEvent = this.emitOnItemSelectedEvent.bind(this);
+    this.emitOnOptionSelectedEvent = this.emitOnOptionSelectedEvent.bind(this);
     this.renderRow = this.renderRow.bind(this);
+    this.onOptionLayout = this.onOptionLayout.bind(this);
   }
 
   componentWillMount() {
-    this.autoSelect(this.props.items, this.props.selectedItem);
+    this.autoSelect(this.props.options, this.props.selectedOption);
+    this.scrollDriver = new ScrollDriver();
+    this.timingDriver = new TimingDriver();
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.state.selectedItem && nextProps.items.length > 0) {
-      this.autoSelect(nextProps.items, nextProps.selectedItem);
+    if (!this.state.selectedOption && nextProps.options.length > 0) {
+      this.autoSelect(nextProps.options, nextProps.selectedOption);
     }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return (nextProps.items !== this.props.items) ||
+    return (nextProps.options !== this.props.options) ||
       (nextState !== this.state);
+  }
+
+  onOptionLayout(event) {
+    const { height } = event.nativeEvent.layout;
+    this.setState({ optionHeight: height });
   }
 
   getValue() {
     const {
-      selectedItem,
-      bindings,
+      selectedOption,
+      valueProperty,
     } = this.state;
 
-    return selectedItem[bindings.value];
+    return selectedOption[valueProperty];
   }
 
-  getSelectedItem() {
-    return this.state.selectedItem;
+  getSelectedOption() {
+    return this.state.selectedOption;
   }
 
   /**
    * Selects first item as default if non is selected
    */
-  autoSelect(items, selectedItem) {
-    if (!selectedItem && !this.state.selectedItem && items.length > 0) {
-      this.setState({ selectedItem: items[0] }, this.emitOnItemSelectedEvent);
+  autoSelect(options, selectedOption) {
+    if (!selectedOption && !this.state.selectedOption && options.length > 0) {
+      this.setState({ selectedOption: options[0] }, this.emitOnOptionSelectedEvent);
     }
   }
 
   collapse() {
     this.setState({ collapsed: true });
-    Animated.timing(
-      this.state.dropDownAnimation,
-      {
-        toValue: 1,
-        easing: Easing.cubic,
-        duration: 250,
-      }
-    ).start();
+    this.scrollDriver = new ScrollDriver();
+    this.timingDriver.runTimer(1);
   }
 
   close() {
-    Animated.timing(
-      this.state.dropDownAnimation,
-      {
-        toValue: 0,
-        easing: Easing.cubic,
-        duration: 250,
-      }
-    ).start(() => this.setState({ collapsed: false }));
+    this.timingDriver.runTimer(0, () => this.setState({ collapsed: false }));
   }
 
-  emitOnItemSelectedEvent() {
-    if (this.props.onItemSelected) {
-      this.props.onItemSelected(this.state.selectedItem);
+  emitOnOptionSelectedEvent() {
+    if (this.props.onOptionSelected) {
+      this.props.onOptionSelected(this.state.selectedOption);
     }
   }
 
-  renderRow(item) {
+  renderRow(option, sectionId, rowId) {
     const {
       style,
+      titleProperty,
+      visibleOptions,
     } = this.props;
+    const { optionHeight } = this.state;
+    const optionPosition = rowId * optionHeight;
+    // start to fade in option when option is scrolled in
+    const fadeInStart = optionPosition - (visibleOptions - 0.5) * optionHeight;
+    const fadeInEnd = optionPosition - (visibleOptions - 1.5) * optionHeight;
     const onPress = () => {
       this.close();
-      this.setState({ selectedItem: item }, this.emitOnItemSelectedEvent);
+      this.setState({ selectedOption: option }, this.emitOnOptionSelectedEvent);
     };
     return (
-      <TouchableOpacity onPress={onPress} style={style.modalItem}>
-        <Text style={style.modalItemText}>
-          {item[this.state.bindings.text].toUpperCase()}
-        </Text>
+      <TouchableOpacity onPress={onPress} style={style.modalItem} onLayout={this.onOptionLayout}>
+        <FadeOut
+          inputRange={[optionPosition, optionPosition + optionHeight / 2]}
+          driver={this.scrollDriver}
+        >
+          {/* there should be visible only initial visibleOptions options */}
+          <FadeIn
+            inputRange={[fadeInStart, fadeInEnd]}
+            driver={this.scrollDriver}
+          >
+            <Text>
+              {option[titleProperty].toUpperCase()}
+            </Text>
+          </FadeIn>
+        </FadeOut>
       </TouchableOpacity>
     );
   }
@@ -129,56 +167,49 @@ class DropDownMenu extends Component {
   render() {
     const {
       collapsed,
-      selectedItem,
-      bindings,
-      dropDownAnimation,
+      selectedOption,
+      titleProperty,
+      optionHeight,
     } = this.state;
-    const { items, style } = this.props;
+    const { options, style, visibleOptions = this.defaultVisibleOptions } = this.props;
+    const listViewHeight = options.length > visibleOptions ?
+      visibleOptions * optionHeight : options.length * optionHeight;
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-    const button = selectedItem ? (
-      <Button onPress={this.collapse} styleName="clear">
-        <Text>{selectedItem[bindings.text]}</Text>
-        <Icon name="drop-down" style={style.modalCloseButton.buttonIcon} />
+    const button = selectedOption ? (
+      <Button onPress={this.collapse} style={style.selectedOption}>
+        <Text>{selectedOption[titleProperty]}</Text>
+        <Icon name="drop-down" />
       </Button>
     ) : null;
-    const modalAnimatedStyle = createModalAnimatedStyle(dropDownAnimation);
-    const textBidingKey = this.state.bindings.text;
+
     return (
-      <View style={style.container} renderToHardwareTextureAndroid>
+      <View renderToHardwareTextureAndroid>
         {button}
         <Modal
           visible={collapsed || false}
           onRequestClose={this.close}
           transparent
         >
-          <Animated.View
-            style={[
-              style.modalContainer,
-              modalAnimatedStyle,
-            ]}
-          >
-            <View style={style.modalItems}>
-              <ListView
-                dataSource={ds.cloneWithRows(items.filter((item) => item[textBidingKey]))}
-                renderRow={this.renderRow}
-              />
-            </View>
-            <Button style={style.modalCloseButton.button} onPress={this.close} styleName="clear">
-              <Icon style={style.modalCloseButton.buttonIcon} name="close" />
-            </Button>
-          </Animated.View>
+          <ZoomOut driver={this.timingDriver} maxFactor={1.1} style={{ flex: 1 }}>
+            <FadeIn driver={this.timingDriver} style={{ flex: 1 }}>
+              <View style={style.modal} styleName="vertical">
+                <ListView
+                  dataSource={ds.cloneWithRows(options.filter((option) => option[titleProperty]))}
+                  renderRow={this.renderRow}
+                  {...this.scrollDriver.scrollViewProps}
+                  style={{ flex: 0, height: listViewHeight }}
+                />
+                <Button onPress={this.close} styleName="clear close">
+                  <Icon name="close" />
+                </Button>
+              </View>
+            </FadeIn>
+          </ZoomOut>
         </Modal>
       </View>
     );
   }
 }
-
-DropDownMenu.propTypes = {
-  onItemSelected: React.PropTypes.func,
-  items: React.PropTypes.array,
-  selectedItem: React.PropTypes.any,
-  style: React.PropTypes.object,
-};
 
 const StyledDropDownMenu = connectStyle('shoutem.ui.DropDownMenu', {})(DropDownMenu);
 
