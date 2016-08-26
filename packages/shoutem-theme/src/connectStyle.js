@@ -104,9 +104,9 @@ export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames, o
         this.state = {
           style: resolvedStyle.componentStyle,
           childrenStyle: resolvedStyle.childrenStyle,
-        // AddedProps are additional WrappedComponent props
-        // Usually they are set trough alternative ways,
-        // such as theme style, or trough options
+          // AddedProps are additional WrappedComponent props
+          // Usually they are set trough alternative ways,
+          // such as theme style, or trough options
           addedProps: this.resolveAddedProps(),
           styleNames,
         };
