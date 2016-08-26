@@ -25,6 +25,7 @@ const Colors = {
   DIVIDER_LINE: '#eeeeee',
   DIVIDER_BORDER: 'rgba(51, 51, 51, 0.1)',
   NAVIGATION_TINT: '#333333',
+  NAVIGATION_BAR_BORDER: 'rgba(20, 20, 20, 0.2)',
 
   TEXT: '#666666',
   TITLE: '#222222',
@@ -565,6 +566,17 @@ export default () => ({
     borderWidth: 0,
     borderRadius: 0,
   },
+  actionButton: {
+    'shoutem.ui.Text': {
+      [INCLUDE]: ['defaultFont'],
+      fontSize: 15,
+    },
+  },
+  'shoutem.ui.Button': {
+    '.action': {
+      [INCLUDE]: ['actionButton'],
+    },
+  },
   'shoutem.ui.Button': {
     [INCLUDE]: ['commonVariants', 'guttersMargin'],
 
@@ -896,24 +908,32 @@ export default () => ({
   //
   // Other
   //
+  clearNavigationBar: {
+    ...createSharedStyle([...textComponents, 'shoutem.ui.Icon'], {
+      color: Colors.LIGHT,
+    }),
+    'shoutem.ui.Button': {
+      [INCLUDE]: ['clearButton'],
+      'shoutem.ui.Icon': {
+        color: Colors.LIGHT,
+      },
+      'shoutem.ui.Text': {
+        color: Colors.LIGHT,
+      },
+    },
+    container: {
+      backgroundColor: 'transparent',
+      borderBottomColor: 'transparent',
+    },
+  },
   'shoutem.ui.NavigationBar': {
     '.clear': {
-      'shoutem.ui.Title': {
-        color: 'white',
-      },
-      'shoutem.ui.Icon': {
-        color: 'white',
-      },
-      'shoutem.ui.Button': {
-        backgroundColor: 'transparent',
-        borderColor: 'transparent',
-        'shoutem.ui.Icon': {
-          color: 'white',
-        },
-      },
-      container: {
-        backgroundColor: 'transparent',
-        borderBottomColor: 'transparent',
+      [INCLUDE]: ['clearNavigationBar'],
+    },
+    '.fade': {
+      'shoutem.ui.LinearGradient': {
+        [INCLUDE]: ['fillParent'],
+        colors: [Colors.OVERLAY_DARK, Colors.CLEAR],
       },
     },
     'shoutem.ui.Title': {
@@ -926,15 +946,20 @@ export default () => ({
     },
     'shoutem.ui.Text': {
       color: 'black',
+      fontSize: 15,
+    },
+    'shoutem.ui.Button': {
+      [INCLUDE]: ['clearButton', 'tightButton', 'actionButton'],
+      marginTop: 9,
+      'shoutem.ui.Icon': {
+        marginVertical: 9,
+      },
     },
     container: {
+      [INCLUDE]: ['fillParent'],
       height: 70,
-      top: 0,
-      left: 0,
-      right: 0,
-      position: 'absolute',
       backgroundColor: 'white',
-      borderBottomColor: 'rgb(242, 242, 242)',
+      borderBottomColor: Colors.NAVIGATION_BAR_BORDER,
       borderBottomWidth: 1,
       padding: 15,
     },
@@ -1046,6 +1071,10 @@ export default () => ({
 
     '.medium-tall': {
       height: 160,
+    },
+
+    'shoutem.ui.LinearGradient': {
+      colors: [],
     },
 
     'shoutem.ui.View': {

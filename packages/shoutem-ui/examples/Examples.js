@@ -13,12 +13,14 @@ import { Buttons } from './Buttons';
 import { Images } from './Images';
 import { TextInputs } from './TextInputs';
 import { Headers } from './Headers';
+import { NavigationBars } from './NavigationBars';
 
 export function Examples() {
   return (
     <ScrollView>
       <TextInputs />
       <Typography />
+      <NavigationBars />
       <Dividers />
       <Cards />
       <Rows />
