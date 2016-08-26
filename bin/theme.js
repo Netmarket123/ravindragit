@@ -29,6 +29,8 @@ const Colors = {
   TEXT: '#666666',
   TITLE: '#222222',
   CAPTION: '#555555',
+
+  INPUT_PLACEHOLDER: '#a7a7a7',
 };
 
 const SMALL_GUTTER = 5;
@@ -45,7 +47,7 @@ const textComponents = [
   'shoutem.ui.Title',
   'shoutem.ui.Subtitle',
   'shoutem.ui.Text',
-  'shoutem.ui.Caption'
+  'shoutem.ui.Caption',
 ];
 
 export default () => ({
@@ -1191,14 +1193,14 @@ export default () => ({
   //
   'shoutem.ui.TextInput': {
     [INCLUDE]: ['commonVariants', 'guttersMargin'],
-    selectionColor: '#666666',
-    placeholderTextColor: '#a7a7a7',
+    selectionColor: Colors.TEXT,
+    placeholderTextColor: Colors.INPUT_PLACEHOLDER,
     backgroundColor: Colors.LIGHT,
     height: 55,
     paddingHorizontal: MEDIUM_GUTTER,
     paddingVertical: 18,
     fontSize: 15,
     fontFamily: 'Rubik',
-    color: '#666666',
+    color: Colors.TEXT,
   },
 });
