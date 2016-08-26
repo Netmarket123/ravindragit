@@ -37,10 +37,13 @@ function getTheme(context) {
  * to target this component in style rules.
  * @param componentStyle The default component style.
  * @param mapPropsToStyleNames Pure function to customize styleNames depending on props.
+ * @param options The additional connectStyle options
+ * @param options.virtual The default value of the virtual prop
+ * @param options.withRef Create component ref with addedProps; if true, ref name is wrappedInstance
  * @returns {StyledComponent} The new component that will handle
  * the styling of the wrapped component.
  */
-export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames) => {
+export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames, options = {}) => {
   function getComponentDisplayName(WrappedComponent) {
     return WrappedComponent.displayName || WrappedComponent.name || 'Component';
   }
@@ -80,6 +83,15 @@ export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames) =
         // The style variant names to apply to this component,
         // multiple variants may be separated with a space character
         styleName: PropTypes.string,
+        // Virtual elements will propagate the parent
+        // style to their children, i.e., the children
+        // will behave as they are placed directly below
+        // the parent of a virtual element.
+        virtual: PropTypes.bool,
+      };
+
+      static defaultProps = {
+        virtual: options.virtual,
       };
 
       static displayName = `Styled(${componentDisplayName})`;
@@ -92,13 +104,19 @@ export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames) =
         this.state = {
           style: resolvedStyle.componentStyle,
           childrenStyle: resolvedStyle.childrenStyle,
+          // AddedProps are additional WrappedComponent props
+          // Usually they are set trough alternative ways,
+          // such as theme style, or trough options
+          addedProps: this.resolveAddedProps(),
           styleNames,
         };
       }
 
       getChildContext() {
         return {
-          parentStyle: this.state.childrenStyle,
+          parentStyle: this.props.virtual ?
+            this.context.parentStyle :
+            this.state.childrenStyle,
         };
       }
 
@@ -112,6 +130,14 @@ export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames) =
             styleNames,
           });
         }
+      }
+
+      resolveAddedProps() {
+        const addedProps = {};
+        if (options.withRef) {
+          addedProps.ref = 'wrappedInstance';
+        }
+        return addedProps;
       }
 
       hasStyleNameChanged(nextProps, styleNames) {
@@ -158,7 +184,8 @@ export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames) =
       }
 
       render() {
-        return <WrappedComponent {...this.props} style={this.state.style} />;
+        const { addedProps, style } = this.state;
+        return <WrappedComponent {...this.props} {...addedProps} style={style} />;
       }
     }
 

@@ -10,6 +10,10 @@ export default class StyleProvider extends React.Component {
     style: React.PropTypes.object,
   };
 
+  static defaultProps = {
+    style: {},
+  };
+
   static childContextTypes = {
     theme: ThemeShape.isRequired,
   };
