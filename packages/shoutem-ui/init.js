@@ -1,11 +1,11 @@
-import getTheme from './theme';
 import { Theme } from '@shoutem/theme';
+import getThemeStyle from './theme';
 
-function setDefaultTheme() {
-  const theme = getTheme();
-  Theme.setDefaultTheme(theme);
+function setDefaultThemeStyle() {
+  const theme = getThemeStyle();
+  Theme.setDefaultThemeStyle(theme);
 }
 
 export {
-  setDefaultTheme,
+  setDefaultThemeStyle,
 };

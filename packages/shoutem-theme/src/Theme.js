@@ -6,7 +6,7 @@ import mergeComponentAndThemeStyles from './mergeComponentAndThemeStyles';
 const THEME_STYLE = '@@shoutem.theme/themeStyle';
 const THEME_STYLE_CACHE = '@@shoutem.theme/themeCachedStyle';
 
-let defaultTheme = {};
+let defaultTheme;
 
 /**
  * The theme defines the application style, and provides methods to
@@ -38,11 +38,19 @@ export default class Theme {
     this[THEME_STYLE_CACHE] = {};
   }
 
-  static setDefaultTheme(theme) {
-    defaultTheme = theme;
+  /**
+   * Sets the given style as a default theme styling.
+   */
+  static setDefaultThemeStyle(style) {
+    defaultTheme = new Theme(style);
   }
 
-  static getDefaultTheme() {
+  /**
+   * Returns the single instance of theme object which contains
+   * either empty style or default theme style.
+   */
+  static getDefaultThemeStyle() {
+    if (!defaultTheme) defaultTheme = new Theme({});
     return defaultTheme;
   }
 

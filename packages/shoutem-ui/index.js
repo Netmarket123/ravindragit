@@ -1,6 +1,6 @@
-import { setDefaultTheme } from './init';
+import { setDefaultThemeStyle } from './init';
 
-setDefaultTheme();
+setDefaultThemeStyle();
 
 // Components
 export { View } from './components/View';
