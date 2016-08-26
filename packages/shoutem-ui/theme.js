@@ -14,20 +14,19 @@ const Colors = {
   LIGHT_GRAY: '#f2f2f2',
   LIGHT: '#ffffff',
   BACKGROUND: '#ffffff',
-  SCREEN_BACKGROUND: '#f2f2f2',
   SHADOW: '#000000',
   CLEAR: 'rgba(0, 0, 0, 0)',
   OVERLAY: 'rgba(0, 0, 0, 0.2)',
   OVERLAY_DARK: 'rgba(0, 0, 0, 0.4)',
   BUTTON_UNDERLAY: '#cccccc',
   BORDER: '#cccccc',
-  SPINNER: '#cccccc',
   DIVIDER_LINE: '#eeeeee',
   DIVIDER_BORDER: 'rgba(51, 51, 51, 0.1)',
   NAVIGATION_TINT: '#333333',
 
   TEXT: '#666666',
   TITLE: '#222222',
+  DESCRIPTION: '#333333',
   CAPTION: '#555555',
 };
 
@@ -44,6 +43,7 @@ const textComponents = [
   'shoutem.ui.Heading',
   'shoutem.ui.Title',
   'shoutem.ui.Subtitle',
+  'shoutem.ui.Description',
   'shoutem.ui.Text',
   'shoutem.ui.Caption'
 ];
@@ -177,6 +177,15 @@ export default () => ({
     lineHeight: 18,
   },
 
+  'shoutem.ui.Description': {
+    [INCLUDE]: ['shoutem.ui.Text'],
+
+    color: Colors.DESCRIPTION,
+    fontSize: 13,
+    lineHeight: 18,
+    letterSpacing: 0.5,
+  },
+
   'shoutem.ui.Caption': {
     [INCLUDE]: ['shoutem.ui.Text'],
 
@@ -229,6 +238,8 @@ export default () => ({
     // NOTE: Image resizing doesn't work correctly if both
     // dimensions are not explicitly defined, so we can't
     // use flex: 1, or alignSelf: 'stretch' here...
+
+    // TODO (zeljko): See if we can avoid this size
     '.featured': {
       width: (365 / 375) * window.width,
       height: (345 / 375) * window.width,
@@ -259,6 +270,7 @@ export default () => ({
       height: (238 / 375) * window.width,
     },
 
+    // TODO (zeljko): Used only in one place (up next), maybe hardcode it?
     '.large-ultra-wide': {
       width: window.width,
       height: (130 / 375) * window.width,
@@ -290,7 +302,38 @@ export default () => ({
     alignItems: 'center',
     justifyContent: 'center',
     resizeMode: 'cover',
-    backgroundColor: Colors.BACKGROUND,
+  },
+
+  'shoutem.ui.ImagePreview': {
+    container: {
+      flex: 1,
+      backgroundColor: 'transparent',
+    },
+    fullScreenContainer: {
+      flex: 1,
+      backgroundColor: 'black',
+    },
+    image: {
+      flex: 1,
+    },
+    thumbnail: {},
+    header: {
+      position: 'absolute',
+      top: STATUS_BAR_OFFSET,
+      left: 0,
+      backgroundColor: 'transparent',
+    },
+    closeIcon: {
+      color: 'white',
+      marginLeft: 15,
+      marginTop: -STATUS_BAR_OFFSET + 20,
+    },
+  },
+
+  'shoutem.ui.ImageGallery': {
+    imagePreview: {
+      image: {},
+    },
   },
 
   //
@@ -336,9 +379,6 @@ export default () => ({
   'shoutem.ui.Screen': {
     '.full-screen': {
       marginTop: -NAVIGATION_BAR_HEIGHT,
-    },
-    '.lightGreyBackground': {
-      backgroundColor: Colors.LIGHT_GRAY,
     },
 
     backgroundColor: Colors.BACKGROUND,
@@ -500,6 +540,7 @@ export default () => ({
       padding: 10,
     },
 
+    // TODO (zeljko): Can we avoid fixed width here?
     width: (180 / 375) * window.width,
     flexDirection: 'column',
     justifyContent: 'center',
@@ -519,10 +560,12 @@ export default () => ({
         color: Colors.DARKER,
       }),
 
+      borderRadius: 0,
       backgroundColor: Colors.BACKGROUND,
     },
 
     '.solid-dark': {
+      borderRadius: 0,
       backgroundColor: Colors.DARKER,
     },
 
@@ -535,6 +578,8 @@ export default () => ({
       [INCLUDE]: ['fillParent'],
     },
 
+    borderRadius: 2,
+    borderWidth: 0,
     paddingTop: 2 * SMALL_GUTTER,
     paddingBottom: 2 * SMALL_GUTTER,
     paddingHorizontal: MEDIUM_GUTTER,
@@ -548,6 +593,7 @@ export default () => ({
     activeOpacity: 0.8,
   },
 
+  // TODO (zeljko): Support inclusion of style names, so we don't have to define these
   tightButton: {
     'shoutem.ui.Icon': {
       marginRight: 0,
@@ -619,6 +665,7 @@ export default () => ({
         marginVertical: 20,
       },
 
+      flex: 1,
       alignSelf: 'stretch',
       borderRadius: 0,
       borderWidth: 0,
@@ -757,14 +804,12 @@ export default () => ({
       [INCLUDE]: ['shoutem.ui.Text'],
     },
     container: {
-      backgroundColor: Colors.BACKGROUND,
       margin: MEDIUM_GUTTER,
     },
   },
 
   'shoutem.ui.Video': {
     container: {
-      backgroundColor: Colors.BACKGROUND,
       flex: 1,
     },
   },
@@ -811,12 +856,19 @@ export default () => ({
       backgroundColor: Colors.LIGHT,
       borderTopWidth: 0,
     },
+
+    header: {
+      container: {},
+    },
+    list: {},
     listContent: {
       paddingBottom: SMALL_GUTTER,
     },
-    refreshControl: {
-      tintColor: Colors.SPINNER,
+    tintColor: {
+      // uses only background color
+      backgroundColor: '#ccc',
     },
+    newDataSpinner: {},
     loadMoreSpinner: {
       paddingVertical: 25,
     },
@@ -838,7 +890,6 @@ export default () => ({
     justifyContent: 'space-between',
     paddingRight: SMALL_GUTTER,
     paddingTop: SMALL_GUTTER,
-    backgroundColor: Colors.BACKGROUND,
   },
 
   'shoutem.ui.DropDownMenu': {
@@ -966,6 +1017,13 @@ export default () => ({
     },
   },
 
+  'shoutem.ui.Spinner': {
+    android: {
+      height: 20,
+    },
+    ios: {},
+  },
+
   sectionHeaderDivider: {
     'shoutem.ui.Caption': {
       marginTop: -1,
@@ -995,38 +1053,6 @@ export default () => ({
     paddingTop: 25,
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-
-  'shoutem.ui.ImagePreview': {
-    container: {
-      flex: 1,
-      backgroundColor: 'transparent',
-    },
-    fullScreenContainer: {
-      flex: 1,
-      backgroundColor: 'black',
-    },
-    image: {
-      flex: 1,
-    },
-    thumbnail: {},
-    header: {
-      position: 'absolute',
-      top: STATUS_BAR_OFFSET,
-      left: 0,
-      backgroundColor: 'transparent',
-    },
-    closeIcon: {
-      color: 'white',
-      marginLeft: 15,
-      marginTop: -STATUS_BAR_OFFSET + 20,
-    },
-  },
-
-  'shoutem.ui.ImageGallery': {
-    imagePreview: {
-      image: {},
-    },
   },
 
   'shoutem.ui.MapView': {
@@ -1187,20 +1213,5 @@ export default () => ({
       marginBottom: MEDIUM_GUTTER,
       padding: 0,
     },
-  },
-  //
-  // TextInputs
-  //
-  'shoutem.ui.TextInput': {
-    [INCLUDE]: ['commonVariants', 'guttersMargin'],
-    selectionColor: '#666666',
-    placeholderTextColor: '#a7a7a7',
-    backgroundColor: Colors.LIGHT,
-    height: 55,
-    paddingHorizontal: MEDIUM_GUTTER,
-    paddingVertical: 18,
-    fontSize: 15,
-    fontFamily: 'Rubik',
-    color: '#666666',
   },
 });

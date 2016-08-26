@@ -25,7 +25,7 @@ export function Rows() {
       </Stage>
 
       <Stage title="Small list item + Avatar thumbnail">
-        <Row>
+        <Row styleName="small">
           <Image
             styleName="small-avatar"
             source={require('../assets/examples/road.png')}
@@ -35,14 +35,14 @@ export function Rows() {
       </Stage>
 
       <Stage title="Small list item + Icon">
-        <Row>
+        <Row styleName="small">
           <Icon name="add-to-favorites" />
           <Text>Add to favorites</Text>
         </Row>
       </Stage>
 
       <Stage title="Small list item + Icon + Right Arrow">
-        <Row>
+        <Row styleName="small">
           <Icon name="web" />
           <Text>About</Text>
           <Icon styleName="disclosure" name="right-arrow" />
@@ -50,7 +50,7 @@ export function Rows() {
       </Stage>
 
       <Stage title="Small list item + Icon + Description">
-        <Row>
+        <Row styleName="small">
           <Icon name="laptop" />
           <View styleName="vertical">
             <Subtitle>Bridges Rock Gym</Subtitle>
@@ -71,7 +71,7 @@ export function Rows() {
               <Subtitle styleName="">Dustin Malone</Subtitle>
               <Caption>20 minutes ago</Caption>
             </View>
-            <Text>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap. Hashtag typewriter banh mi, squid keffiyeh High.</Text>
+            <Text styleName="multiline">Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap. Hashtag typewriter banh mi, squid keffiyeh High.</Text>
           </View>
         </Row>
       </Stage>
@@ -92,7 +92,7 @@ export function Rows() {
             styleName="small rounded-corners"
             source={require('../assets/examples/road.png')}
           />
-          <View styleName="vertical space-between">
+          <View styleName="vertical stretch space-between">
             <Subtitle>Fact Check: Wisconsin Music, Film & Photography Debate</Subtitle>
             <Caption>20 hours ago</Caption>
           </View>
@@ -105,7 +105,7 @@ export function Rows() {
             styleName="small rounded-corners"
             source={require('../assets/examples/road.png')}
           />
-          <View styleName="vertical space-between">
+          <View styleName="vertical stretch space-between">
             <Subtitle>Wilco Cover David Bowie&#39;s "Space Oddity"</Subtitle>
             <Caption>June 21  ·  20:00</Caption>
           </View>
@@ -119,7 +119,7 @@ export function Rows() {
             styleName="small rounded-corners"
             source={require('../assets/examples/road.png')}
           />
-          <View styleName="vertical space-between">
+          <View styleName="vertical stretch space-between">
             <Subtitle>Family Safari Vacation To The Home Of The Gods</Subtitle>
             <View styleName="horizontal">
               <Subtitle styleName="md-gutter-right">$120.00</Subtitle>
@@ -137,7 +137,7 @@ export function Rows() {
             styleName="small rounded-corners"
             source={require('../assets/examples/road.png')}
           />
-          <View styleName="vertical space-between">
+          <View styleName="vertical stretch space-between">
             <Subtitle>Fact Check: Wisconsin Music, Film & Photography Debate</Subtitle>
             <Caption>20 hours ago</Caption>
           </View>
@@ -150,7 +150,7 @@ export function Rows() {
             styleName="medium rounded-corners"
             source={require('../assets/examples/road.png')}
           />
-          <View styleName="vertical space-between">
+          <View styleName="vertical stretch space-between">
             <Subtitle>Take A Romantic Break In A Boutique Hotel</Subtitle>
             <View styleName="horizontal space-between">
               <Caption>3 days ago</Caption>
