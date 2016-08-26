@@ -32,14 +32,6 @@ export function Typography() {
         <Text>Mobile App Creator</Text>
       </Stage>
 
-      <Stage title="Text strong">
-        <Text styleName="bold">Mobile App Creator</Text>
-      </Stage>
-
-      <Stage title="Description">
-        <Description>Mobile App Creator</Description>
-      </Stage>
-
       <Stage title="Caption">
         <Caption>Mobile App Creator</Caption>
       </Stage>
