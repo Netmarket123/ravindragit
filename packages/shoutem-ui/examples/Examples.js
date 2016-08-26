@@ -11,10 +11,12 @@ import { Tiles } from './Tiles';
 import { Spinners } from './Spinners';
 import { Buttons } from './Buttons';
 import { Images } from './Images';
+import { TextInputs } from './TextInputs';
 
 export function Examples() {
   return (
     <ScrollView>
+      <TextInputs />
       <Typography />
       <Dividers />
       <Cards />

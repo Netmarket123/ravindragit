@@ -378,6 +378,9 @@ export default () => ({
     '.full-screen': {
       marginTop: -NAVIGATION_BAR_HEIGHT,
     },
+    '.lightGreyBackground': {
+      backgroundColor: Colors.LIGHT_GRAY,
+    },
 
     backgroundColor: Colors.BACKGROUND,
     flex: 1,
@@ -665,7 +668,6 @@ export default () => ({
         marginVertical: 20,
       },
 
-      flex: 1,
       alignSelf: 'stretch',
       borderRadius: 0,
       borderWidth: 0,
@@ -1230,5 +1232,20 @@ export default () => ({
       marginBottom: MEDIUM_GUTTER,
       padding: 0,
     },
+  },
+  //
+  // TextInputs
+  //
+  'shoutem.ui.TextInput': {
+    [INCLUDE]: ['commonVariants', 'guttersMargin'],
+    selectionColor: '#666666',
+    placeholderTextColor: '#a7a7a7',
+    backgroundColor: Colors.LIGHT,
+    height: 55,
+    paddingHorizontal: MEDIUM_GUTTER,
+    paddingVertical: 18,
+    fontSize: 15,
+    fontFamily: 'Rubik',
+    color: '#666666',
   },
 });
