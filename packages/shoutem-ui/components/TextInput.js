@@ -9,6 +9,8 @@ function TextInput(props) {
   };
   delete style.placeholderTextColor;
   delete style.selectionColor;
+
+  console.log(JSON.stringify(style));
   return (
     <RNTextInput
       {...props}
@@ -21,6 +23,7 @@ function TextInput(props) {
 
 TextInput.propTypes = {
   ...RNTextInput.propTypes,
+  style: React.PropTypes.object,
 };
 
 const StyledTextInput = connectStyle('shoutem.ui.TextInput')(TextInput);

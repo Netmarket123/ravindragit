@@ -14,7 +14,7 @@ function LinearGradient(props) {
     <RNLinearGradient
       {...props}
       style={style}
-      colors={props.style.colors || []}
+      colors={props.style.colors}
     >
       {props.children}
     </RNLinearGradient>
@@ -23,9 +23,15 @@ function LinearGradient(props) {
 
 LinearGradient.propTypes = {
   ...RNLinearGradient.propTypes,
+  style: React.PropTypes.object,
+  colors: React.PropTypes.array,
 };
 
-const StyledLinearGradient = connectStyle('shoutem.ui.LinearGradient')(LinearGradient);
+const defaultStyle = {
+  colors: [],
+};
+
+const StyledLinearGradient = connectStyle('shoutem.ui.LinearGradient', defaultStyle)(LinearGradient);
 
 export {
   StyledLinearGradient as LinearGradient,
