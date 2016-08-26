@@ -933,6 +933,11 @@ export default () => ({
         colors: [Colors.OVERLAY_DARK, Colors.CLEAR],
       },
     },
+    '.no-border': {
+      container: {
+        borderBottomWidth: 0,
+      },
+    },
     'shoutem.ui.Title': {
       fontSize: 15,
       lineHeight: 18,

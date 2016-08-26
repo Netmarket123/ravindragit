@@ -160,6 +160,7 @@ export function NavigationBars() {
       <Stage title="Navbar (Sublevel) + Action (no border)">
         <NavBarStageContainer>
           <NavigationBar
+            styleName="no-border"
             hasHistory
             navigateBack={() => {}}
             title="TITLE"
