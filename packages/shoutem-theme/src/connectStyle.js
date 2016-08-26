@@ -1,4 +1,4 @@
-import React, { PropTypes, Component } from 'react';
+import React, { PropTypes } from 'react';
 import hoistStatics from 'hoist-non-react-statics';
 import * as _ from 'lodash';
 
@@ -36,22 +36,13 @@ function getTheme(context) {
  * @param componentStyleName The component name that will be used
  * to target this component in style rules.
  * @param componentStyle The default component style.
+ * @param mapPropsToStyleNames Pure function to customize styleNames depending on props.
  * @returns {StyledComponent} The new component that will handle
  * the styling of the wrapped component.
  */
-export default function connectStyle(componentStyleName, componentStyle = {}) {
+export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames) => {
   function getComponentDisplayName(WrappedComponent) {
     return WrappedComponent.displayName || WrappedComponent.name || 'Component';
-  }
-
-  function isClassComponent(WrappedComponent) {
-    return WrappedComponent.prototype instanceof Component;
-  }
-
-  function isComponentReferenceable(WrappedComponent) {
-    // stateless function components can't be referenced
-    // only Component instance can
-    return isClassComponent(WrappedComponent);
   }
 
   return function wrapWithStyledComponent(WrappedComponent) {
@@ -96,14 +87,13 @@ export default function connectStyle(componentStyleName, componentStyle = {}) {
 
       constructor(props, context) {
         super(props, context);
-        const resolvedStyle = this.resolveStyle(context, props);
+        const styleNames = this.resolveStyleNames(props);
+        const resolvedStyle = this.resolveStyle(context, props, styleNames);
         this.state = {
           style: resolvedStyle.componentStyle,
           childrenStyle: resolvedStyle.childrenStyle,
+          styleNames,
         };
-        if (isComponentReferenceable(WrappedComponent)) {
-          this.state.ref = 'wrappedInstance';
-        }
       }
 
       getChildContext() {
@@ -113,31 +103,54 @@ export default function connectStyle(componentStyleName, componentStyle = {}) {
       }
 
       componentWillReceiveProps(nextProps, nextContext) {
-        if (this.shouldRebuildStyle(nextProps, nextContext)) {
-          const resolvedStyle = this.resolveStyle(nextContext, nextProps);
+        const styleNames = this.resolveStyleNames(nextProps);
+        if (this.shouldRebuildStyle(nextProps, nextContext, styleNames)) {
+          const resolvedStyle = this.resolveStyle(nextContext, nextProps, styleNames);
           this.setState({
             style: resolvedStyle.componentStyle,
             childrenStyle: resolvedStyle.childrenStyle,
+            styleNames,
           });
         }
       }
 
-      shouldRebuildStyle(nextProps, nextContext) {
+      hasStyleNameChanged(nextProps, styleNames) {
+        return mapPropsToStyleNames && this.props !== nextProps &&
+          // Even though props did change here,
+          // it doesn't necessary means changed props are those which affect styleName
+          !_.isEqual(this.state.styleNames, styleNames);
+      }
+
+      shouldRebuildStyle(nextProps, nextContext, styleNames) {
         return (nextProps.style !== this.props.style) ||
           (nextProps.styleName !== this.props.styleName) ||
           (nextContext.theme !== this.context.theme) ||
-          (nextContext.parentStyle !== this.context.parentStyle);
+          (nextContext.parentStyle !== this.context.parentStyle) ||
+          (this.hasStyleNameChanged(nextProps, styleNames));
       }
 
-      resolveStyle(context, props) {
+      resolveStyleNames(props) {
+        const { styleName } = props;
+        const styleNames = styleName ? styleName.split(/\s/g) : [];
+
+        if (!mapPropsToStyleNames) {
+          return styleNames;
+        }
+
+        // We only want to keep the unique style names
+        return _.uniq(mapPropsToStyleNames(styleNames, props));
+      }
+
+      resolveStyle(context, props, styleNames) {
         const { parentStyle } = context;
-        const { style, styleName } = props;
+        const { style } = props;
 
         const theme = getTheme(context);
         const themeStyle = theme.createComponentStyle(componentStyleName, componentStyle);
+
         return resolveComponentStyle(
           componentStyleName,
-          styleName,
+          styleNames,
           themeStyle,
           parentStyle,
           style
@@ -145,24 +158,10 @@ export default function connectStyle(componentStyleName, componentStyle = {}) {
       }
 
       render() {
-        // If the component is a class component, it can be initialised with JSX
-        if (isClassComponent(WrappedComponent)) {
-          return <WrappedComponent {...this.props} style={this.state.style} />;
-        }
-
-        // TODO(Braco) - check if this different Component creation for func and class is needed
-        // for React > 0.15. In React > 0.15, func components should be able to render `null`
-
-        // otherwise initialize function component as function for case it returns null
-        // https://github.com/facebook/react/issues/4599
-        // eslint-disable-next-line new-cap
-        return WrappedComponent({
-          ...this.props,
-          style: this.state.style,
-        });
+        return <WrappedComponent {...this.props} style={this.state.style} />;
       }
     }
 
     return hoistStatics(StyledComponent, WrappedComponent);
   };
-}
+};
