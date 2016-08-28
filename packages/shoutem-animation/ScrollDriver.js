@@ -16,10 +16,16 @@ export class ScrollDriver {
   constructor() {
     this.value = new Animated.Value(0);
     this.onScroll = this.onScroll.bind(this);
+    this.onScrollViewLayout = this.onScrollViewLayout.bind(this);
     this.scrollViewProps = {
       onScroll: this.onScroll(),
       scrollEventThrottle: 1,
+      onLayout: this.onScrollViewLayout,
     };
+  }
+
+  onScrollViewLayout(event) {
+    this.layout = event.nativeEvent.layout;
   }
 
   onScroll() {

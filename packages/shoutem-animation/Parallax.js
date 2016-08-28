@@ -1,5 +1,7 @@
-import React, { Component } from 'react';
-import { Animated, View } from 'react-native';
+import React, { Component, } from 'react';
+import NativeMethodsMixin from 'react/lib/NativeMethodsMixin';
+import { Animated, View, Dimensions } from 'react-native';
+
 import { DriverShape } from './DriverShape';
 /*
  * Parallax Component adds parallax effect to its children components.
@@ -53,53 +55,82 @@ export class Parallax extends Component {
      * Is Parallax placed in or outside the ScrollView
      */
     insideScroll: React.PropTypes.bool,
+    /**
+     * Is parallax used as header
+     */
+    header: React.PropTypes.bool,
+
     style: React.PropTypes.object,
+  }
+
+  static defaultProps = {
+    insideScroll: true,
+    header: false,
+  }
+
+  constructor(props) {
+    super(props);
+    this.translation = new Animated.Value(0);
+    this.calculateTranslation = this.calculateTranslation.bind(this);
+    this.measure = this.measure.bind(this);
+    this.state = {
+      y: 0,
+    };
+  }
+
+  measure() {
+    NativeMethodsMixin.measure.call(this, (x, y, width, height, pageX, pageY) => {
+      this.setState({ x: pageX, y: pageY });
+      console.log(`measure: ${pageY}`);
+    });
+  }
+
+  componentDidMount() {
+    requestAnimationFrame(this.measure);
+  }
+
+  calculateTranslation(scrollOffset) {
+    const { y } = this.state;
+    const { driver } = this.props;
+    const scrollHeight = driver.layout.height;
+    this.translation.setValue(scrollOffset.value - (y - scrollHeight / 2));
   }
 
   componentWillMount() {
     const { driver } = this.props;
-    this.scrollSpeed = new Animated.Value(0);
-    let oldScrollOffset = 0;
-
-    driver.value.addListener((scrollOffset) => {
-      this.scrollSpeed.setValue(scrollOffset.value - oldScrollOffset);
-      oldScrollOffset = scrollOffset.value;
-    });
+    driver.value.addListener(this.calculateTranslation);
   }
 
   render() {
     const {
       scrollSpeed,
-      driver,
       children,
       extrapolation,
-      insideScroll = true,
+      insideScroll,
       style,
+      driver,
+      header,
     } = this.props;
     const scrollVector = insideScroll ? -1 : 1;
     const scrollFactor = scrollVector * (scrollSpeed - 1);
+    const animatedValue = header ? driver.value : this.translation;
 
     return (
-      <View>
-        <Animated.View
-          style={[style, {
-            transform: [
-              {
-                translateY: driver.value.interpolate({
-                  inputRange: [-100, 100],
-                  outputRange: [-scrollFactor * 100, scrollFactor * 100],
-                  ...extrapolation,
-                }),
-              },
-              {
-                scale: 1.1,
-              },
-            ],
-          }]}
-        >
-          {children}
-        </Animated.View>
-      </View>
+      <Animated.View
+        style={[style, {
+          transform: [
+            {
+              translateY: animatedValue.interpolate({
+                inputRange: [-100, 100],
+                outputRange: [-scrollFactor * 100, scrollFactor * 100],
+                ...extrapolation,
+              }),
+            },
+          ],
+        }]}
+      >
+        {children}
+      </Animated.View>
     );
   }
 }
