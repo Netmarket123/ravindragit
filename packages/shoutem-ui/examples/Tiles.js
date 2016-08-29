@@ -48,7 +48,7 @@ export function Tiles() {
         </Tile>
       </Stage>
 
-      <Stage title="Featured tile">
+      <Stage title="Large (featured) tile">
         <Image
           styleName="featured"
           source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-4.png' }}
@@ -60,7 +60,7 @@ export function Tiles() {
         </Image>
       </Stage>
 
-      <Stage title="Featured tile + Button + Sale tag">
+      <Stage title="Large (featured) tile + Button + Sale tag">
         <Image
           styleName="featured"
           source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-11.png' }}
@@ -75,7 +75,7 @@ export function Tiles() {
         </Image>
       </Stage>
 
-      <Stage title="Large tile + Button">
+      <Stage title="Large (featured) tile + Button">
         <Image
           styleName="featured"
           source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-9.png' }}
