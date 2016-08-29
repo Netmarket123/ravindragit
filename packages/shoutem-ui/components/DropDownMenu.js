@@ -201,6 +201,7 @@ class DropDownMenu extends Component {
 
     const button = this.renderDropDownButton();
     const listViewStyle = this.resolveListViewStyle();
+    const dataSource = this.ds.cloneWithRows(options.filter((option) => option[titleProperty]));
 
     return (
       <View renderToHardwareTextureAndroid>
@@ -214,7 +215,7 @@ class DropDownMenu extends Component {
             <FadeIn driver={this.timingDriver} style={{ flex: 1 }}>
               <View style={style.modal} styleName="vertical">
                 <ListView
-                  dataSource={this.ds.cloneWithRows(options.filter((option) => option[titleProperty]))}
+                  dataSource={dataSource}
                   renderRow={this.renderRow}
                   style={listViewStyle}
                   {...this.scrollDriver.scrollViewProps}
