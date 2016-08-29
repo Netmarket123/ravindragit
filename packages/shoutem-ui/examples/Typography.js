@@ -14,8 +14,6 @@ import {
 export function Typography() {
   return (
     <View styleName="vertical collapsed">
-      <Heading styleName="sm-gutter">01 - Typography</Heading>
-
       <Stage title="Heading">
         <Heading>Mobile App Creator</Heading>
       </Stage>

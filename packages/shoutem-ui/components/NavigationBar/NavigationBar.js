@@ -10,8 +10,6 @@ import _ from 'lodash';
 
 import color from 'tinycolor2';
 
-import { LinearGradient } from '../LinearGradient';
-
 import { connectStyle } from '@shoutem/theme';
 
 import composeChildren from './composeChildren';
@@ -83,7 +81,6 @@ class NavigationBar extends Component {
     // Key must be set to render new screen NavigationBar
     return (
       <Animated.View style={style.container} key={id}>
-        <LinearGradient />
         <StatusBar translucent />
         <View style={style.componentsContainer}>
           <View style={style.leftComponent}>{leftComponent}</View>

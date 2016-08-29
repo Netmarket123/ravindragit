@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Stage } from './Stage';
 import {
-  Heading,
   View,
   Card,
   Image,
@@ -15,13 +14,11 @@ import {
 export function Cards() {
   return (
     <View styleName="vertical collapsed">
-      <Heading styleName="sm-gutter">07 - Cards</Heading>
-
       <Stage title="Card">
         <Card>
           <Image
             styleName="medium-wide"
-            source={require('../assets/examples/road.png')}
+            source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-10.png' }}
           />
           <View styleName="content">
             <Subtitle>Choosing The Right Boutique Hotel For You</Subtitle>
@@ -34,7 +31,7 @@ export function Cards() {
         <Card>
           <Image
             styleName="medium-wide"
-            source={require('../assets/examples/road.png')}
+            source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-12.png' }}
           />
           <View styleName="content">
             <Subtitle>Choosing The Right Boutique Hotel For You</Subtitle>
@@ -50,7 +47,7 @@ export function Cards() {
         <Card>
           <Image
             styleName="medium-wide"
-            source={require('../assets/examples/road.png')}
+            source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-11.png' }}
           />
           <View styleName="content">
             <Subtitle>Choosing The Right Boutique Hotel For You</Subtitle>
