@@ -341,6 +341,10 @@ export default () => ({
       marginTop: -NAVIGATION_BAR_HEIGHT,
     },
 
+    '.paper': {
+      backgroundColor: Colors.LIGHT,
+    },
+
     backgroundColor: Colors.SCREEN_BACKGROUND,
     flex: 1,
   },
