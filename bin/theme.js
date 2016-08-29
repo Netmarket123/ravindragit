@@ -862,6 +862,9 @@ export default () => ({
         justifyContent: 'center',
         backgroundColor: Colors.LIGHT_GRAY,
         width: window.width,
+        marginTop: 0,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderColor: Colors.NAVIGATION_BAR_BORDER,
       },
     },
     selectedOption: {

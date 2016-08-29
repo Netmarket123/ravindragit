@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Stage } from './Stage';
 import {
-  Heading,
   View,
   TextInput,
 } from '../index';
@@ -10,8 +9,6 @@ import {
 export function FormComponents() {
   return (
     <View styleName="vertical collapsed">
-      <Heading styleName="sm-gutter">18 - Form components</Heading>
-
       <Stage title="TextInput / Full width">
         <TextInput
           placeholder="Username or Email"

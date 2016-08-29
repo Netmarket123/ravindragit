@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Heading } from '../components/Text';
 import { View } from '../components/View';
 import { Stage } from './Stage';
 import { Image } from '../components/Image';
@@ -8,8 +7,6 @@ import { Image } from '../components/Image';
 export function Images() {
   return (
     <View styleName="vertical collapsed">
-      <Heading styleName="sm-gutter">16 - Image dimensions</Heading>
-
       <Stage title={"List image thumbnail (65x65)\n(small)"}>
         <Image
           styleName="small"

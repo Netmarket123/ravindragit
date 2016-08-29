@@ -18,8 +18,6 @@ import {
 export function Tiles() {
   return (
     <View styleName="vertical collapsed">
-      <Heading styleName="sm-gutter">09 - Tiles</Heading>
-
       <Stage title="Tile">
         <Tile styleName="small clear">
           <Image

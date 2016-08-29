@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Stage } from './Stage';
 import {
-  Heading,
   View,
   Row,
   Text,
@@ -16,8 +15,6 @@ import {
 export function Rows() {
   return (
     <View styleName="vertical collapsed">
-      <Heading styleName="sm-gutter">08 - Rows</Heading>
-
       <Stage title="Small list item">
         <Row>
           <Text numberOfLines={1}>Portland ugh fashion axe Helvetica, YOLO Echo Park Austin gastropub roof party.</Text>

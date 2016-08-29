@@ -1,7 +1,7 @@
-import React from 'react';
-import {
-  ScrollView,
-} from 'react-native';
+import React, { Component } from 'react';
+import { ScrollView } from 'react-native';
+
+import { Screen, DropDownMenu, Divider } from '../index';
 
 import { Typography } from './Typography';
 import { Dividers } from './Dividers';
@@ -16,21 +16,46 @@ import { FormComponents } from './FormComponents';
 import { Headers } from './Headers';
 import { NavigationBars } from './NavigationBars';
 
-export function Examples() {
-  return (
-    <ScrollView>
-      <Typography />
-      <NavigationBars />
-      <DropDownMenus />
-      <Dividers />
-      <Cards />
-      <Rows />
-      <Tiles />
-      <Headers />
-      <Spinners />
-      <Buttons />
-      <Images />
-      <FormComponents />
-    </ScrollView>
-  );
+const examples = [
+  { title: 'Typography', component: Typography },
+  { title: 'Navigation Bars', component: NavigationBars },
+  { title: 'Dropdown Menus', component: DropDownMenus },
+  { title: 'Dividers', component: Dividers },
+  { title: 'Cards', component: Cards },
+  { title: 'Rows', component: Rows },
+  { title: 'Tiles', component: Tiles },
+  { title: 'Headers', component: Headers },
+  { title: 'Spinners', component: Spinners },
+  { title: 'Buttons', component: Buttons },
+  { title: 'Images', component: Images },
+  { title: 'Form Components', component: FormComponents },
+];
+
+export class Examples extends Component {
+  constructor() {
+    super();
+    this.state = {
+      selectedExample: examples[0],
+    };
+  }
+
+  render() {
+    const { selectedExample } = this.state;
+    const SelectedComponent = selectedExample.component;
+    return (
+      <Screen>
+        <DropDownMenu
+          styleName="horizontal"
+          options={examples}
+          onOptionSelected={(example) => this.setState({ selectedExample: example })}
+          titleProperty="title"
+          valueProperty="component"
+        />
+
+        <ScrollView key={selectedExample.title}>
+          <SelectedComponent />
+        </ScrollView>
+      </Screen>
+    );
+  }
 }

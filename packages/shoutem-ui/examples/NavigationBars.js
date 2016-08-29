@@ -32,7 +32,6 @@ function NavBarStageContainer(props) {
 export function NavigationBars() {
   return (
     <View styleName="vertical collapsed">
-      <Heading styleName="sm-gutter">02 - Navigation bars</Heading>
       <Stage title="Navbar / Solid">
         <NavBarStageContainer>
           <NavigationBar
@@ -84,7 +83,7 @@ export function NavigationBars() {
           />
         </Image>
       </Stage>
-      <Heading styleName="sm-gutter">02.1 - Navigation bar variations</Heading>
+      <Heading styleName="sm-gutter">Navigation bar variations</Heading>
       <Stage title="Navbar + Drawer">
         <NavBarStageContainer>
           <NavigationBar

@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Stage } from './Stage';
 import {
-  Heading,
   View,
   Card,
   Image,
@@ -15,8 +14,6 @@ import {
 export function Cards() {
   return (
     <View styleName="vertical collapsed">
-      <Heading styleName="sm-gutter">07 - Cards</Heading>
-
       <Stage title="Card">
         <Card>
           <Image
