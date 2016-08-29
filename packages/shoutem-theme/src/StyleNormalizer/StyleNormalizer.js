@@ -20,7 +20,7 @@ export default class StyleNormalizer {
 
   createNormalizers(prop, shorthands, suffix = '') {
     shorthands.forEach(shorthand => {
-      const propName = prop + shorthand.name + suffix;
+      const propName = prop + shorthand.type + suffix;
       this.normalizers[propName] =
         ShorthandsNormalizerFactory.createNormalizer(prop, shorthand, suffix);
     });
