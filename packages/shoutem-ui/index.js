@@ -11,6 +11,7 @@ export { NavigationBarAnimations } from './components/NavigationBar/NavigationBa
 export { DropDownMenu } from './components/DropDownMenu';
 export { Overlay } from './components/Overlay';
 
+export { ScrollView } from './components/ScrollView';
 export { ListView } from './components/ListView';
 export { GridRow } from './components/GridRow';
 

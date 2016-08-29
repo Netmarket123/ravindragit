@@ -1,33 +1,26 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
     View,
 } from 'react-native';
 
 import { connectStyle } from '@shoutem/theme';
-import { connectAnimations } from '@shoutem/animation';
+import { connectAnimation } from '@shoutem/animation';
 
-function Tile(props) {
-  return (
-    <View {...props}>
-      {props.children}
-    </View>
-  );
+class Tile extends Component {
+  render() {
+    return (
+      <View {...this.props}>
+        {this.props.children}
+      </View>
+    );
+  }
 }
 
 Tile.propTypes = {
   ...View.propTypes,
 };
 
-const AnimatedTile = connectAnimations(Tile, {
-  heroAnimation(driver, context) {
-    return {
-      opacity: driver.value.interpolate({
-        inputRange: [0, 100],
-        outputRange: [1, 0],
-      }),
-    };
-  },
-});
+const AnimatedTile = connectAnimation(Tile, {});
 const StyledTile = connectStyle('shoutem.ui.Tile', {})(AnimatedTile);
 
 export {

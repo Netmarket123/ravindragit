@@ -17,7 +17,7 @@ function removeAnimationsFromStyle(style) {
     return newStyle;
   }, {});
 }
-function resolveAnimatedStyle(props, driver, animations, layout) {
+const resolveAnimatedStyle = (props, driver, animations, layout = {}) => {
   const {
     style,
     animation,
@@ -34,7 +34,7 @@ function resolveAnimatedStyle(props, driver, animations, layout) {
   const animatedStyle = animationResolver(driver, { layout, animationOptions });
 
   return [removeAnimationsFromStyle(style), animatedStyle];
-}
+};
 
 /**
  * Higher order component that creates animated component which could be animated by
@@ -58,7 +58,7 @@ function resolveAnimatedStyle(props, driver, animations, layout) {
  * @param WrappedComponent component you want to be Animated
  * @param animations collection of available animations
  */
-export function connectAnimation(WrappedComponent, animations = {}) {
+export const connectAnimation = (WrappedComponent, animations = {}) => {
   const AnimatedWrappedComponent = Animated.createAnimatedComponent(WrappedComponent);
 
   class AnimatedComponent extends Component {
@@ -70,6 +70,10 @@ export function connectAnimation(WrappedComponent, animations = {}) {
       animation: React.PropTypes.func,
     }
 
+    static defaultProps = {
+      animationOptions: {},
+    }
+
     static contextTypes = {
       animationDriver: DriverShape,
     }
@@ -77,20 +81,21 @@ export function connectAnimation(WrappedComponent, animations = {}) {
     constructor(props, context) {
       super(props, context);
       this.onLayout = this.onLayout.bind(this);
+      this.resolveStyle = this.resolveStyle.bind(this);
       this.state = {
-        layout: {},
+        layout: {
+          height: 0,
+          width: 0,
+          x: 0,
+          y: 0,
+        },
       };
-    }
-
-    componentWillReceiveProps(newProps, newContext) {
-      const driver = newProps.driver || newContext.driver;
-      this.resolvedStyle(newProps, driver);
     }
 
     onLayout(event) {
       const { layout } = event.nativeEvent;
-      const driver = this.props.driver || this.context.driver;
-      this.setStyle({ layout }, () => this.resolveStyle(this.props, driver));
+      const driver = this.props.driver || this.context.animationDriver;
+      this.setState({ layout }, () => this.resolveStyle(this.props, driver));
     }
 
     resolveStyle(props, driver) {
@@ -103,7 +108,9 @@ export function connectAnimation(WrappedComponent, animations = {}) {
           onLayout={this.onLayout}
           {...this.props}
           style={this.resolvedStyle}
-        />
+        >
+          {this.props.children}
+        </AnimatedWrappedComponent>
       );
     }
   }
