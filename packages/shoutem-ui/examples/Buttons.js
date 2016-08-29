@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Stage } from './Stage';
 import {
-  Heading,
   View,
   Button,
   Icon,
@@ -12,8 +11,6 @@ import {
 export function Buttons() {
   return (
     <View styleName="vertical collapsed">
-      <Heading styleName="sm-gutter">15 - Buttons</Heading>
-
       <Stage title="Button / Text only / Light">
         <Button>
           <Text>CHECK IN HERE</Text>

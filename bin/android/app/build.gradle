@@ -162,7 +162,6 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-linear-gradient')
     compile project(':react-native-maps')
     compile project(':react-native-calendar-manager')
     compile project(':react-native-share')

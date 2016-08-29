@@ -925,12 +925,7 @@ export default () => ({
     '.clear': {
       [INCLUDE]: ['clearNavigationBar'],
     },
-    '.fade': {
-      'shoutem.ui.LinearGradient': {
-        [INCLUDE]: ['fillParent'],
-        colors: [Colors.OVERLAY_DARK, Colors.CLEAR],
-      },
-    },
+
     '.no-border': {
       container: {
         borderBottomWidth: 0,
@@ -1070,10 +1065,6 @@ export default () => ({
 
     '.medium-tall': {
       height: 160,
-    },
-
-    'shoutem.ui.LinearGradient': {
-      colors: [],
     },
 
     'shoutem.ui.View': {
