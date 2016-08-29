@@ -59,7 +59,10 @@ function createExecuteShortcutMiddleware(actions) {
 
 // eslint-disable-next-line no-unused-vars
 const selectScreenLayout = store => next => action => {
-  if (action.type === NAVIGATE) {
+  // Sometimes navigate actions doesn't have route.
+  // This is case when we are navigate to some route in stack
+  // i.e. popToTop navigates to 1st route in stack (route is taken from stack)
+  if (action.type === NAVIGATE && action.route) {
     const screenLayout = _.find(activeLayouts, { canonicalType: action.route.screen });
     if (screenLayout) {
       const newAction = _.merge(action, {

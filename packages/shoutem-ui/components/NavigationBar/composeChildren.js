@@ -15,6 +15,10 @@ const composers = {
     ),
   }),
   share: (value, props) => {
+    if (!value.link) {
+      return;
+    }
+
     const onShare = () =>
       Share.open({
         title: value.title || props.title,
@@ -95,11 +99,7 @@ const composeChildren = NavigationBarComponent => class extends Component {
 
   render() {
     const newProps = {};
-    const { id, style } = this.props;
-
-    if (!id) {
-      return null;
-    }
+    const { style } = this.props;
 
     _.forEach(this.props, (value, key) => {
       if (_.isFunction(composers[key])) {

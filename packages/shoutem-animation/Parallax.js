@@ -53,6 +53,7 @@ export class Parallax extends Component {
      * Is Parallax placed in or outside the ScrollView
      */
     insideScroll: React.PropTypes.bool,
+    style: React.PropTypes.object,
   }
 
   componentWillMount() {
@@ -67,26 +68,34 @@ export class Parallax extends Component {
   }
 
   render() {
-    const { scrollSpeed, driver, children, extrapolation, insideScroll = true } = this.props;
+    const {
+      scrollSpeed,
+      driver,
+      children,
+      extrapolation,
+      insideScroll = true,
+      style,
+    } = this.props;
     const scrollVector = insideScroll ? -1 : 1;
     const scrollFactor = scrollVector * (scrollSpeed - 1);
 
     return (
       <View>
-        <Animated.View style={{
-          transform: [
-            {
-              translateY: driver.value.interpolate({
-                inputRange: [-100, 100],
-                outputRange: [-scrollFactor * 100, scrollFactor * 100],
-                ...extrapolation,
-              }),
-            },
-            {
-              scale: 1.1,
-            },
-          ],
-        }}
+        <Animated.View
+          style={[style, {
+            transform: [
+              {
+                translateY: driver.value.interpolate({
+                  inputRange: [-100, 100],
+                  outputRange: [-scrollFactor * 100, scrollFactor * 100],
+                  ...extrapolation,
+                }),
+              },
+              {
+                scale: 1.1,
+              },
+            ],
+          }]}
         >
           {children}
         </Animated.View>

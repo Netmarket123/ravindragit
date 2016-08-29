@@ -23,9 +23,9 @@ function throwConnectStyleError(errorMessage, componentDisplayName) {
  * @returns {Theme} The Theme object.
  */
 function getTheme(context) {
-  // Fallback to an empty theme if the component isn't
+  // Fallback to a default theme if the component isn't
   // rendered in a StyleProvider.
-  return context.theme || new Theme({});
+  return context.theme || Theme.getDefaultTheme();
 }
 
 /**
@@ -36,10 +36,12 @@ function getTheme(context) {
  * @param componentStyleName The component name that will be used
  * to target this component in style rules.
  * @param componentStyle The default component style.
+ * @param options The additional connectStyle options
+ * @param options.virtual The default value of the virtual prop
  * @returns {StyledComponent} The new component that will handle
  * the styling of the wrapped component.
  */
-export default function connectStyle(componentStyleName, componentStyle = {}) {
+export default function connectStyle(componentStyleName, componentStyle = {}, options) {
   function getComponentDisplayName(WrappedComponent) {
     return WrappedComponent.displayName || WrappedComponent.name || 'Component';
   }
@@ -89,6 +91,15 @@ export default function connectStyle(componentStyleName, componentStyle = {}) {
         // The style variant names to apply to this component,
         // multiple variants may be separated with a space character
         styleName: PropTypes.string,
+        // Virtual elements will propagate the parent
+        // style to their children, i.e., the children
+        // will behave as they are placed directly below
+        // the parent of a virtual element.
+        virtual: PropTypes.bool,
+      };
+
+      static defaultProps = {
+        virtual: options && options.virtual || false,
       };
 
       static displayName = `Styled(${componentDisplayName})`;
@@ -107,8 +118,11 @@ export default function connectStyle(componentStyleName, componentStyle = {}) {
       }
 
       getChildContext() {
+        const { virtual } = this.props;
         return {
-          parentStyle: this.state.childrenStyle,
+          parentStyle: virtual ?
+            this.context.parentStyle :
+            this.state.childrenStyle,
         };
       }
 

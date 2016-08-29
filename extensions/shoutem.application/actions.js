@@ -1,6 +1,10 @@
 import * as _ from 'lodash';
 import { OBJECT_FETCHED } from '@shoutem/redux-io';
 
+// Because of chrome inspection bug we are exporting function as constants
+// Bug is we can not set breakpoint in files which export function directly
+/* eslint-disable func-names */
+
 export const EXECUTE_SHORTCUT = 'shoutem.application.EXECUTE_SHORTCUT';
 
 export const configurationReducer = function (state = {}, action) {

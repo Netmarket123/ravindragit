@@ -1,21 +1,21 @@
 import React from 'react';
-import { View } from './View';
+import { View as RNView } from 'react-native';
 
 import { connectStyle } from '@shoutem/theme';
 
 function Overlay(props) {
   return (
-    <View {...props}>
+    <RNView {...props}>
       {props.children}
-    </View>
+    </RNView>
   );
 }
 
 Overlay.propTypes = {
-  ...View.propTypes,
+  ...RNView.propTypes,
 };
 
-const StyledTag = connectStyle('shoutem.ui.Overlay', {})(Overlay);
+const StyledTag = connectStyle('shoutem.ui.Overlay')(Overlay);
 
 export {
   StyledTag as Overlay,
