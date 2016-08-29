@@ -120,6 +120,17 @@ export default () => ({
     fontFamily: 'Menlo',
   },
 
+  multilineStyle: {
+    '.v-center': {
+        // Compensate for lineHeight, because
+        // textAlignVertical is not supported on iOS
+      marginTop: -4,
+      marginBottom: 4,
+    },
+
+    lineHeight: 26,
+  },
+
   'shoutem.ui.Text': {
     [INCLUDE]: ['commonVariants', 'defaultFont', 'guttersMargin'],
 
@@ -140,14 +151,7 @@ export default () => ({
     },
 
     '.multiline': {
-      '.v-center': {
-        // Compensate for lineHeight, because
-        // textAlignVertical is not supported on iOS
-        marginTop: -4,
-        marginBottom: 4,
-      },
-
-      lineHeight: 26,
+      [INCLUDE]: ['multilineStyle'],
     },
 
     backgroundColor: Colors.CLEAR,
@@ -761,14 +765,14 @@ export default () => ({
       },
     },
     p: {
-      [INCLUDE]: ['shoutem.ui.Text'],
+      [INCLUDE]: ['shoutem.ui.Text', 'multilineStyle'],
     },
     div: {
-      [INCLUDE]: ['shoutem.ui.Text'],
+      [INCLUDE]: ['shoutem.ui.Text', 'multilineStyle'],
     },
     container: {
       backgroundColor: Colors.BACKGROUND,
-      margin: MEDIUM_GUTTER,
+      padding: MEDIUM_GUTTER,
     },
   },
 
