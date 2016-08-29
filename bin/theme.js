@@ -860,6 +860,11 @@ export default () => ({
         width: window.width,
       },
     },
+    listView: {
+      list: {
+        flex: 0,
+      },
+    },
     selectedOption: {
       [INCLUDE]: ['actionButton', 'tightButton', 'clearButton'],
     },
