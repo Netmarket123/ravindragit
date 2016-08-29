@@ -7,9 +7,6 @@ import {
   VERTICAL,
 } from '../src/StyleNormalizer/ShorthandsNormalizerFactory';
 
-// We can not guarantee order when shorthands are mixed
-// with single values or other shorthands
-
 describe('StyleNormalizer', () => {
   describe('shorthand normalizers creation', () => {
     it('creates proper sides normalizers', () => {
