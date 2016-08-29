@@ -5,10 +5,13 @@ import {
   RefreshControl,
   StatusBar,
   Platform,
+  ScrollView,
 } from 'react-native';
 import { connectStyle } from '@shoutem/theme';
 import { Spinner } from './Spinner';
 import _ from 'lodash';
+
+const scrollViewProps = _.keys(ScrollView.propTypes);
 
 const Status = {
   LOADING: 'loading',
@@ -132,7 +135,7 @@ class ListView extends React.Component {
    */
   getPropsToPass() {
     const props = this.props;
-    const mappedProps = props.scrollDriver ? { ...props.scrollDriver.scrollViewProps } : {};
+    const mappedProps = _.omit(_.pick(props, scrollViewProps), ['style']);
 
     // configuration
     // default load more threshold

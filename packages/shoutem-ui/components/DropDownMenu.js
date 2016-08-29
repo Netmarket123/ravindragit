@@ -218,6 +218,7 @@ class DropDownMenu extends Component {
                   data={options.filter((option) => option[titleProperty])}
                   renderRow={this.renderRow}
                   style={listViewStyle}
+                  {...this.scrollDriver.scrollViewProps}
                 />
                 <Button onPress={this.close} styleName="clear close">
                   <Icon name="close" />
