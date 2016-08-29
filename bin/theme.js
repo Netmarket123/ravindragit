@@ -518,8 +518,8 @@ export default () => ({
   'shoutem.ui.Overlay': {
     [INCLUDE]: ['guttersPadding'],
 
-    '.solid-light': {
-      ...createSharedStyle(textComponents, {
+    '.solid-bright': {
+      ...createSharedStyle([...textComponents, 'shoutem.ui.Icon'], {
         color: Colors.DARKER,
       }),
 
@@ -530,15 +530,30 @@ export default () => ({
       backgroundColor: Colors.DARKER,
     },
 
-    ...createSharedStyle(textComponents, {
-      color: Colors.LIGHT,
-      textAlign: 'center',
-    }),
+    '.rounded-small': {
+      width: 38,
+      height: 38,
+      borderRadius: 19,
+      paddingTop: 0,
+      paddingBottom: 0,
+      paddingHorizontal: 0,
+    },
 
     '.fill-parent': {
       [INCLUDE]: ['fillParent'],
     },
 
+    ...createSharedStyle(textComponents, {
+      color: Colors.LIGHT,
+      textAlign: 'center',
+    }),
+
+    'shoutem.ui.Icon': {
+      color: Colors.LIGHT,
+    },
+
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingTop: 2 * SMALL_GUTTER,
     paddingBottom: 2 * SMALL_GUTTER,
     paddingHorizontal: MEDIUM_GUTTER,
@@ -597,6 +612,7 @@ export default () => ({
       'shoutem.ui.Icon': {
         color: Colors.LIGHT,
       },
+
       'shoutem.ui.Text': {
         color: Colors.LIGHT,
       },
@@ -783,29 +799,13 @@ export default () => ({
     },
   },
 
-  roundedOverlay: {
-    backgroundColor: Colors.LIGHT,
-    color: Colors.DARKER,
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    borderWidth: 0,
-    // Rounded corners don't work on Text if
-    // element is opaque for some reason
-    opacity: 0.99,
-    padding: 12,
-  },
   'shoutem.ui.Icon': {
-    '.rounded-overlay-small': {
-      [INCLUDE]: ['roundedOverlay'],
-      width: 34,
-      height: 34,
-      borderRadius: 17,
-      padding: 4,
+    '.bright': {
+      color: Colors.LIGHT,
     },
 
-    '.rounded-overlay': {
-      [INCLUDE]: ['roundedOverlay'],
+    '.dark': {
+      color: Colors.DARKER,
     },
 
     backgroundColor: Colors.CLEAR,

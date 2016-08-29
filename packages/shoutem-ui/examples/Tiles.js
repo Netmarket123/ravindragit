@@ -39,7 +39,9 @@ export function Tiles() {
             styleName="medium-square"
             source={require('../assets/examples/road.png')}
           >
-            <Icon name="play" styleName="rounded-overlay-small" />
+            <Overlay styleName="rounded-small">
+              <Icon name="play" />
+            </Overlay>
           </Image>
           <View styleName="content">
             <Subtitle numberOfLines={2}>When The Morning Dawns - DJ Silver Sample Album</Subtitle>
@@ -111,7 +113,9 @@ export function Tiles() {
             styleName="large-banner"
             source={require('../assets/examples/road.png')}
           >
-            <Icon name="play" styleName="rounded-overlay" />
+            <Overlay styleName="rounded-small">
+              <Icon name="play" />
+            </Overlay>
           </Image>
           <View styleName="content">
             <Title>MAUI BY AIR THE BEST WAY AROUND THE ISLAND</Title>
@@ -130,7 +134,7 @@ export function Tiles() {
         >
           <Tile>
             <Title styleName="md-gutter-bottom">SMOKED SALMON, CLASSIC CONDIMENTS, BRIOCHE</Title>
-            <Overlay styleName="solid-light">
+            <Overlay styleName="solid-bright">
               <Subtitle styleName="sm-gutter-horizontal">$18.30</Subtitle>
             </Overlay>
           </Tile>
@@ -159,7 +163,7 @@ export function Tiles() {
         >
           <Tile>
             <Title styleName="md-gutter-bottom">SMOKED SALMON, CLASSIC CONDIMENTS, BRIOCHE</Title>
-            <Overlay styleName="solid-light">
+            <Overlay styleName="solid-bright">
               <Subtitle styleName="sm-gutter-horizontal">$18.30</Subtitle>
             </Overlay>
           </Tile>
@@ -202,7 +206,7 @@ export function Tiles() {
         >
           <Tile>
             <Title styleName="md-gutter-bottom">SMOKED SALMON, CLASSIC CONDIMENTS, BRIOCHE</Title>
-            <Overlay styleName="solid-light">
+            <Overlay styleName="solid-bright">
               <Subtitle styleName="sm-gutter-horizontal">$18.30</Subtitle>
             </Overlay>
           </Tile>
