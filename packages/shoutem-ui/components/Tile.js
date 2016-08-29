@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 
 import { connectStyle } from '@shoutem/theme';
+import { connectAnimations } from '@shoutem/animation';
 
 function Tile(props) {
   return (
@@ -17,7 +18,17 @@ Tile.propTypes = {
   ...View.propTypes,
 };
 
-const StyledTile = connectStyle('shoutem.ui.Tile', {})(Tile);
+const AnimatedTile = connectAnimations(Tile, {
+  heroAnimation(driver, context) {
+    return {
+      opacity: driver.value.interpolate({
+        inputRange: [0, 100],
+        outputRange: [1, 0],
+      }),
+    };
+  },
+});
+const StyledTile = connectStyle('shoutem.ui.Tile', {})(AnimatedTile);
 
 export {
   StyledTile as Tile,

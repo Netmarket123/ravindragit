@@ -8,3 +8,4 @@ export { ZoomIn } from './ZoomIn';
 export { ZoomOut } from './ZoomOut';
 export { HeroHeader } from './HeroHeader';
 export { DriverShape } from './DriverShape';
+export { connectAnimation } from './connectAnimation';
