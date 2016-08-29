@@ -73,6 +73,7 @@ class ListView extends React.Component {
     renderHeader: React.PropTypes.func,
     renderFooter: React.PropTypes.func,
     renderSectionHeader: React.PropTypes.func,
+    scrollDriver: React.PropTypes.object,
     // TODO(Braco) - add render separator
   };
 
@@ -131,7 +132,7 @@ class ListView extends React.Component {
    */
   getPropsToPass() {
     const props = this.props;
-    const mappedProps = {};
+    const mappedProps = props.scrollDriver ? { ...props.scrollDriver.scrollViewProps } : {};
 
     // configuration
     // default load more threshold
