@@ -1,13 +1,12 @@
 import React, {
   Component,
 } from 'react';
-import { Modal } from 'react-native';
+import { Modal, ListView } from 'react-native';
 
 import { Button } from './Button';
 import { Icon } from './Icon';
 import { Text } from './Text';
 import { View } from './View';
-import { ListView } from './ListView';
 import { TouchableOpacity } from './TouchableOpacity';
 
 import { connectStyle } from '@shoutem/theme';
@@ -67,6 +66,7 @@ class DropDownMenu extends Component {
     this.emitOnOptionSelectedEvent = this.emitOnOptionSelectedEvent.bind(this);
     this.renderRow = this.renderRow.bind(this);
     this.onOptionLayout = this.onOptionLayout.bind(this);
+    this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
   }
 
   componentWillMount() {
@@ -130,15 +130,14 @@ class DropDownMenu extends Component {
   }
 
   resolveListViewStyle() {
-    const { style } = this.props;
     const listViewHeight = this.calculateListViewHeight();
 
-    return { ...style.listView, height: listViewHeight };
+    return { flex: 0, height: listViewHeight };
   }
 
   calculateListViewHeight() {
     const { optionHeight } = this.state;
-    const { options, visibleOptions = this.defaultVisibleOptions } = this.props;
+    const { options, visibleOptions } = this.props;
     const optionsSize = _.size(options);
 
     return optionsSize > visibleOptions ?
@@ -215,7 +214,7 @@ class DropDownMenu extends Component {
             <FadeIn driver={this.timingDriver} style={{ flex: 1 }}>
               <View style={style.modal} styleName="vertical">
                 <ListView
-                  data={options.filter((option) => option[titleProperty])}
+                  dataSource={this.ds.cloneWithRows(options.filter((option) => option[titleProperty]))}
                   renderRow={this.renderRow}
                   style={listViewStyle}
                   {...this.scrollDriver.scrollViewProps}
