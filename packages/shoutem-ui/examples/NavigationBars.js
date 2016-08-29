@@ -50,7 +50,7 @@ export function NavigationBars() {
       </Stage>
       <Stage title="Navbar / Clear (Image)">
         <Image
-          source={require('../assets/examples/road.png')}
+          source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-3.png' }}
           style={{
             width: window.width,
             height: 70,
@@ -72,7 +72,7 @@ export function NavigationBars() {
       </Stage>
       <Stage title="Navbar/ Fade (Gradient overlay + Image)">
         <Image
-          source={require('../assets/examples/road.png')}
+          source={{uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-3.png' }}
           style={{
             width: window.width,
             height: 70,
@@ -85,7 +85,7 @@ export function NavigationBars() {
         </Image>
       </Stage>
       <Heading styleName="sm-gutter">02.1 - Navigation bar variations</Heading>
-      <Stage title="Navbar + Drawer nav">
+      <Stage title="Navbar + Drawer">
         <NavBarStageContainer>
           <NavigationBar
             leftComponent={<Icon name="sidebar" />}
@@ -147,7 +147,6 @@ export function NavigationBars() {
         <NavBarStageContainer>
           <NavigationBar
             hasHistory
-            navigateBack={() => {}}
             title="TITLE"
             share={{
               link: 'http://shoutem.github.io',
@@ -162,7 +161,6 @@ export function NavigationBars() {
           <NavigationBar
             styleName="no-border"
             hasHistory
-            navigateBack={() => {}}
             title="TITLE"
             share={{
               link: 'http://shoutem.github.io',
@@ -176,7 +174,6 @@ export function NavigationBars() {
         <NavBarStageContainer>
           <NavigationBar
             hasHistory
-            navigateBack={() => {}}
             title="TITLE"
             rightComponent={(
               <Button styleName="clear">
@@ -237,7 +234,7 @@ export function NavigationBars() {
           />
         </NavBarStageContainer>
       </Stage>
-      <Stage title="Navbar (Modal) + Action 2_disabled">
+      <Stage title="Navbar (Modal) + Action 2 (disabled)">
         <NavBarStageContainer>
           <NavigationBar
             leftComponent={(
@@ -259,7 +256,6 @@ export function NavigationBars() {
           <NavigationBar
             styleName="clear"
             hasHistory
-            navigateBack={() => {}}
             title="TITLE"
             share={{
               link: 'http://shoutem.github.io',

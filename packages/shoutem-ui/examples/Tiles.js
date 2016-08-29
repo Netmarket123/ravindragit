@@ -24,7 +24,7 @@ export function Tiles() {
         <Tile styleName="small clear">
           <Image
             styleName="medium-square"
-            source={require('../assets/examples/road.png')}
+            source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-12.png' }}
           />
           <View styleName="content">
             <Subtitle numberOfLines={2}>When The Morning Dawns - DJ Silver Sample Album</Subtitle>
@@ -37,7 +37,7 @@ export function Tiles() {
         <Tile styleName="small clear">
           <Image
             styleName="medium-square"
-            source={require('../assets/examples/road.png')}
+            source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-2.png' }}
           >
             <Overlay styleName="rounded-small">
               <Icon name="play" />
@@ -50,10 +50,10 @@ export function Tiles() {
         </Tile>
       </Stage>
 
-      <Stage title="Featured tile">
+      <Stage title="Large (featured) tile">
         <Image
           styleName="featured"
-          source={require('../assets/examples/road.png')}
+          source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-4.png' }}
         >
           <Tile>
             <Title styleName="md-gutter-bottom">MIKE PATTON TEAMING WITH JOHN KAADA FOR COLLAB ALBUM BACTERIA CULT</Title>
@@ -62,10 +62,10 @@ export function Tiles() {
         </Image>
       </Stage>
 
-      <Stage title="Featured tile + Button + Sale tag">
+      <Stage title="Large (featured) tile + Button + Sale tag">
         <Image
           styleName="featured"
-          source={require('../assets/examples/road.png')}
+          source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-11.png' }}
         >
           <Tile>
             <Overlay><Heading>-20%</Heading></Overlay>
@@ -77,10 +77,10 @@ export function Tiles() {
         </Image>
       </Stage>
 
-      <Stage title="Large tile + Button">
+      <Stage title="Large (featured) tile + Button">
         <Image
           styleName="featured"
-          source={require('../assets/examples/road.png')}
+          source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-9.png' }}
         >
           <Tile>
             <Title>MIKE PATTON TEAMING WITH JOHN KAADA</Title>
@@ -95,7 +95,7 @@ export function Tiles() {
         <Tile>
           <Image
             styleName="large-banner"
-            source={require('../assets/examples/road.png')}
+            source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-5.png' }}
           />
           <View styleName="content">
             <Title>MAUI BY AIR THE BEST WAY AROUND THE ISLAND</Title>
@@ -111,7 +111,7 @@ export function Tiles() {
         <Tile>
           <Image
             styleName="large-banner"
-            source={require('../assets/examples/road.png')}
+            source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-7.png' }}
           >
             <Overlay styleName="rounded-small">
               <Icon name="play" />
@@ -130,7 +130,7 @@ export function Tiles() {
       <Stage title="Large list item + Price tag">
         <Image
           styleName="large-banner"
-          source={require('../assets/examples/road.png')}
+          source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-3.png' }}
         >
           <Tile>
             <Title styleName="md-gutter-bottom">SMOKED SALMON, CLASSIC CONDIMENTS, BRIOCHE</Title>
@@ -144,7 +144,7 @@ export function Tiles() {
       <Stage title="Large list item + Action icon">
         <Image
           styleName="large-banner"
-          source={require('../assets/examples/road.png')}
+          source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-3.png' }}
         >
           <Tile>
             <View styleName="actions">
@@ -159,7 +159,7 @@ export function Tiles() {
       <Stage title="Detail square + Price tag">
         <Image
           styleName="large-square"
-          source={require('../assets/examples/road.png')}
+          source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-3.png' }}
         >
           <Tile>
             <Title styleName="md-gutter-bottom">SMOKED SALMON, CLASSIC CONDIMENTS, BRIOCHE</Title>
@@ -173,7 +173,7 @@ export function Tiles() {
       <Stage title="Detail square + Button">
         <Image
           styleName="large-square"
-          source={require('../assets/examples/road.png')}
+          source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-9.png' }}
         >
           <Tile>
             <Title>MIKE PATTON TEAMING WITH JOHN KAADA</Title>
@@ -187,7 +187,7 @@ export function Tiles() {
       <Stage title="Detail square + Button + Sale tag">
         <Image
           styleName="large-square"
-          source={require('../assets/examples/road.png')}
+          source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-11.png' }}
         >
           <Tile>
             <Overlay><Heading>-20%</Heading></Overlay>
@@ -202,7 +202,7 @@ export function Tiles() {
       <Stage title="Detail large + Price tag">
         <Image
           styleName="large-portrait"
-          source={require('../assets/examples/road.png')}
+          source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-3.png' }}
         >
           <Tile>
             <Title styleName="md-gutter-bottom">SMOKED SALMON, CLASSIC CONDIMENTS, BRIOCHE</Title>
@@ -216,7 +216,7 @@ export function Tiles() {
       <Stage title="Detail large + Button">
         <Image
           styleName="large-portrait"
-          source={require('../assets/examples/road.png')}
+          source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-9.png' }}
         >
           <Tile>
             <Title>MIKE PATTON TEAMING WITH JOHN KAADA</Title>
@@ -230,7 +230,7 @@ export function Tiles() {
       <Stage title="Detail large + Button + Sale tag">
         <Image
           styleName="large-portrait"
-          source={require('../assets/examples/road.png')}
+          source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-11.png' }}
         >
           <Tile>
             <Overlay><Heading>-20%</Heading></Overlay>

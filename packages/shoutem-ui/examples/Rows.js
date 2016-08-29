@@ -28,7 +28,7 @@ export function Rows() {
         <Row styleName="small">
           <Image
             styleName="small-avatar"
-            source={require('../assets/examples/road.png')}
+            source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-9.png' }}
           />
           <Text>Add comment</Text>
         </Row>
@@ -64,7 +64,7 @@ export function Rows() {
         <Row>
           <Image
             styleName="small-avatar top"
-            source={require('../assets/examples/road.png')}
+            source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-11.png' }}
           />
           <View styleName="vertical">
             <View styleName="horizontal space-between">
@@ -80,7 +80,7 @@ export function Rows() {
         <Row>
           <Image
             styleName="small rounded-corners"
-            source={require('../assets/examples/road.png')}
+            source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-10.png' }}
           />
           <Subtitle styleName="top">Portland ugh fashion axe Helvetica, YOLO Echo Park Austin gastropub roof party.</Subtitle>
         </Row>
@@ -90,7 +90,7 @@ export function Rows() {
         <Row>
           <Image
             styleName="small rounded-corners"
-            source={require('../assets/examples/road.png')}
+            source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-6.png' }}
           />
           <View styleName="vertical stretch space-between">
             <Subtitle>Fact Check: Wisconsin Music, Film & Photography Debate</Subtitle>
@@ -103,7 +103,7 @@ export function Rows() {
         <Row>
           <Image
             styleName="small rounded-corners"
-            source={require('../assets/examples/road.png')}
+            source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-3.png' }}
           />
           <View styleName="vertical stretch space-between">
             <Subtitle>Wilco Cover David Bowie&#39;s "Space Oddity"</Subtitle>
@@ -117,7 +117,7 @@ export function Rows() {
         <Row>
           <Image
             styleName="small rounded-corners"
-            source={require('../assets/examples/road.png')}
+            source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-11.png' }}
           />
           <View styleName="vertical stretch space-between">
             <Subtitle>Family Safari Vacation To The Home Of The Gods</Subtitle>
@@ -135,7 +135,7 @@ export function Rows() {
           <View styleName="notification-dot" />
           <Image
             styleName="small rounded-corners"
-            source={require('../assets/examples/road.png')}
+            source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-2.png' }}
           />
           <View styleName="vertical stretch space-between">
             <Subtitle>Fact Check: Wisconsin Music, Film & Photography Debate</Subtitle>
@@ -148,7 +148,7 @@ export function Rows() {
         <Row>
           <Image
             styleName="medium rounded-corners"
-            source={require('../assets/examples/road.png')}
+            source={{ uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-1.png' }}
           />
           <View styleName="vertical stretch space-between">
             <Subtitle>Take A Romantic Break In A Boutique Hotel</Subtitle>
