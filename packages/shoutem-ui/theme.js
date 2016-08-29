@@ -574,12 +574,11 @@ export default () => ({
     },
   },
   'shoutem.ui.Button': {
+    [INCLUDE]: ['commonVariants', 'guttersMargin'],
+
     '.action': {
       [INCLUDE]: ['actionButton'],
     },
-  },
-  'shoutem.ui.Button': {
-    [INCLUDE]: ['commonVariants', 'guttersMargin'],
 
     '.tight': {
       [INCLUDE]: ['tightButton'],
