@@ -86,6 +86,7 @@ class ListView extends React.Component {
     this.renderFooter = this.renderFooter.bind(this);
     this.autoHideHeader = this.autoHideHeader.bind(this);
     this.onRefresh = this.onRefresh.bind(this);
+    this.renderRefreshControl = this.renderRefreshControl.bind(this);
     this.listView = null;
 
 
@@ -97,7 +98,7 @@ class ListView extends React.Component {
 
 
     this.state = {
-      status: Status.LOADING,
+      status: props.loading ? Status.LOADING : Status.IDLE,
       dataSource: this.listDataSource.clone(props.data),
     };
   }
@@ -145,7 +146,7 @@ class ListView extends React.Component {
     mappedProps.enableEmptySections = true;
 
     // style
-    mappedProps.customStyles = props.style.list;
+    mappedProps.style = props.style.list;
 
     mappedProps.contentContainerStyle = props.style.listContent;
 
