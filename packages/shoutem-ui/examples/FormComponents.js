@@ -7,10 +7,10 @@ import {
   TextInput,
 } from '../index';
 
-export function TextInputs() {
+export function FormComponents() {
   return (
     <View styleName="vertical collapsed">
-      <Heading styleName="sm-gutter">00 - TextInputs</Heading>
+      <Heading styleName="sm-gutter">18 - Form components</Heading>
 
       <Stage title="TextInput / Full width">
         <TextInput

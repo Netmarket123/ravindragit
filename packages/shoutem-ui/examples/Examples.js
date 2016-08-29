@@ -12,14 +12,13 @@ import { Spinners } from './Spinners';
 import { Buttons } from './Buttons';
 import { Images } from './Images';
 import { DropDownMenus } from './DropDownMenu';
-import { TextInputs } from './TextInputs';
+import { FormComponents } from './FormComponents';
 import { Headers } from './Headers';
 import { NavigationBars } from './NavigationBars';
 
 export function Examples() {
   return (
     <ScrollView>
-      <TextInputs />
       <Typography />
       <NavigationBars />
       <DropDownMenus />
@@ -31,6 +30,7 @@ export function Examples() {
       <Spinners />
       <Buttons />
       <Images />
+      <FormComponents />
     </ScrollView>
   );
 }
