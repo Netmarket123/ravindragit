@@ -131,14 +131,14 @@ export default () => ({
       },
     },
     p: {
-      [INCLUDE]: ['shoutem.ui.Text'],
+      [INCLUDE]: ['shoutem.ui.Text', 'multilineTextStyle'],
     },
     div: {
-      [INCLUDE]: ['shoutem.ui.Text'],
+      [INCLUDE]: ['shoutem.ui.Text', 'multilineTextStyle'],
     },
     container: {
       backgroundColor: Colors.BACKGROUND,
-      margin: MEDIUM_GUTTER,
+      padding: MEDIUM_GUTTER,
     },
   },
 
