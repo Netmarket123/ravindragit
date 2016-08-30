@@ -8,14 +8,7 @@ import { DriverShape } from './DriverShape';
 const ANIMATION_SUFFIX = 'Animation';
 
 function removeAnimationsFromStyle(style) {
-  return _.reduce(style, (newStyle, styleProp) => {
-    if (!_.isFunction(style[styleProp]) && _.endsWith(styleProp, ANIMATION_SUFFIX)) {
-      // eslint-disable-next-line
-      newStyle[styleProp] = style[styleProp];
-    }
-
-    return newStyle;
-  }, {});
+  return _.omitBy(style, (value, styleProp) => _.isFunction(value) && _.endsWith(styleProp, ANIMATION_SUFFIX));
 }
 const resolveAnimatedStyle = (props, driver, animations, layout = {}) => {
   const {
@@ -24,6 +17,10 @@ const resolveAnimatedStyle = (props, driver, animations, layout = {}) => {
     animationName,
     animationOptions,
   } = props;
+
+  if (!animationName) {
+    return undefined;
+  }
 
   const animationResolver = animation || animations[`${animationName}${ANIMATION_SUFFIX}`] ||
     style[`${animationName}${ANIMATION_SUFFIX}`];

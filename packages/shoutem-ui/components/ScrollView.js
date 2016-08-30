@@ -14,7 +14,7 @@ export class ScrollView extends Component {
 
   constructor(props, context) {
     super(props, context);
-    this.animationDriver = new ScrollDriver();
+    this.animationDriver = props.driver || new ScrollDriver();
   }
   getChildContext() {
     return {

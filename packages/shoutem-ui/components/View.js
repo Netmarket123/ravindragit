@@ -1,27 +1,26 @@
-import React from 'react';
-import { View as RNView, Animated as RNAnimated } from 'react-native';
+import React, { Component } from 'react';
+import { View as RNView } from 'react-native';
 
 import { connectStyle } from '@shoutem/theme';
+import { connectAnimation } from '@shoutem/animation';
 
-function View(props) {
-  return (
-    <RNView {...props}>
-      {props.children}
-    </RNView>
-  );
+class View extends Component {
+  render() {
+    return (
+      <RNView {...this.props}>
+        {this.props.children}
+      </RNView>
+    );
+  }
 }
 
 View.propTypes = {
   ...RNView.propTypes,
 };
 
-const StyledView = connectStyle('shoutem.ui.View')(View);
-
-const Animated = {
-  View: RNAnimated.createAnimatedComponent(StyledView),
-};
+const AnimatedView = connectAnimation(View);
+const StyledView = connectStyle('shoutem.ui.View')(AnimatedView);
 
 export {
   StyledView as View,
-  Animated,
 };
