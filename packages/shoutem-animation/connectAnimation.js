@@ -30,7 +30,7 @@ const resolveAnimatedStyle = (props, driver, animations, layout = {}) => {
   }
   const animatedStyle = animationResolver(driver, { layout, animationOptions });
 
-  return [removeAnimationsFromStyle(style), animatedStyle];
+  return _.assign(removeAnimationsFromStyle(style), animatedStyle);
 };
 
 /**
@@ -105,9 +105,7 @@ export const connectAnimation = (WrappedComponent, animations = {}) => {
           onLayout={this.onLayout}
           {...this.props}
           style={this.resolvedStyle}
-        >
-          {this.props.children}
-        </AnimatedWrappedComponent>
+        />
       );
     }
   }
