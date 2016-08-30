@@ -33,6 +33,35 @@ describe('connectStyle', () => {
       'style different then variable value (as defined at theme)'
     );
   });
+  it('provides normalized style ', () => {
+    const denormalizedStyle = { denormalized: { padding: 5 } };
+    const demo = mount(
+      <StyleProviderTestAppComponent>
+        <ConnectedClassComponent style={denormalizedStyle} />
+      </StyleProviderTestAppComponent>
+    );
+
+    const passedStyle = demo.find(ConnectedClassComponent)
+      .nodes[0].refs.wrappedInstance.props.style;
+
+    const normalizedStyle = {
+      paddingTop: 5,
+      paddingBottom: 5,
+      paddingLeft: 5,
+      paddingRight: 5,
+    };
+
+    assert.deepEqual(
+      passedStyle.denormalized,
+      normalizedStyle,
+      'style different then defined at theme'
+    );
+    assert.equal(
+      passedStyle.testStyle.variableProperty,
+      TEST_VARIABLE,
+      'style different then variable value (as defined at theme)'
+    );
+  });
   it('creates ref for react Component component', () => {
     const demo = mount(
       <StyleProviderTestAppComponent>
@@ -65,7 +94,7 @@ describe('connectStyle', () => {
           test: 1,
         },
       };
-      const demo = mount(<ConnectedClassComponent virtual />, { context });
+      const demo = mount(<ConnectedClassComponent virtual/>, { context });
       const instanceContext = demo.instance().getChildContext();
 
       assert.strictEqual(

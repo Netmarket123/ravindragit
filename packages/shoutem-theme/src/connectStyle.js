@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import hoistStatics from 'hoist-non-react-statics';
 import * as _ from 'lodash';
+import normalizeStyle from './StyleNormalizer/normalizeStyle';
 
 import Theme, { ThemeShape } from './Theme';
 import { resolveComponentStyle } from './resolveComponentStyle';
@@ -169,7 +170,7 @@ export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames, o
 
       resolveStyle(context, props, styleNames) {
         const { parentStyle } = context;
-        const { style } = props;
+        const style = normalizeStyle(props.style);
 
         const theme = getTheme(context);
         const themeStyle = theme.createComponentStyle(componentStyleName, componentStyle);
