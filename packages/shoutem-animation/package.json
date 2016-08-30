@@ -10,6 +10,9 @@
     "type": "git",
     "url": "git+https://bitbucket.org/fiveminutes/shoutem-animation.git"
   },
+  "dependencies": {
+    "lodash": "^4.15.0"
+  },
   "keywords": [
     "React",
     "Native",

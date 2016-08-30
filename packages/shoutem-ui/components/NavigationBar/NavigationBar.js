@@ -53,7 +53,6 @@ function setStatusBarStyle(backgroundColor) {
   }
 }
 
-@composeChildren
 // eslint-disable-next-line react/prefer-stateless-function
 class NavigationBar extends Component {
   static propTypes = {
@@ -93,7 +92,7 @@ class NavigationBar extends Component {
   }
 }
 
-const AnimatedNavigationBar = connectAnimation(NavigationBar);
+const AnimatedNavigationBar = connectAnimation(composeChildren(NavigationBar));
 const StyledNavigationBar = connectStyle('shoutem.ui.NavigationBar', {})(AnimatedNavigationBar);
 
 export {
