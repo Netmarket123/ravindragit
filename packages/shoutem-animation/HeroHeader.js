@@ -62,6 +62,7 @@ export class HeroHeader extends Component {
             driver={driver}
             scrollSpeed={0.5}
             insideScroll
+            header
             extrapolation={{ extrapolateLeft: 'clamp' }}
           >
             {children}

@@ -15,6 +15,7 @@ import { Animated } from 'react-native';
 export class ScrollDriver {
   constructor() {
     this.value = new Animated.Value(0);
+    this.onScrollViewLayout = this.onScrollViewLayout.bind(this);
     this.scrollViewProps = {
       onScroll: Animated.event(
         [{
@@ -26,6 +27,11 @@ export class ScrollDriver {
         }]
       ),
       scrollEventThrottle: 1,
+      onLayout: this.onScrollViewLayout,
     };
+  }
+
+  onScrollViewLayout(event) {
+    this.layout = event.nativeEvent.layout;
   }
 }
