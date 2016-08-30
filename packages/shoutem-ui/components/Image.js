@@ -32,15 +32,13 @@ class Image extends Component {
     }
 
     return (
-      <RNImage {...resolvedProps}>
-        {props.children}
-      </RNImage>
+      <RNImage {...resolvedProps} />
     );
   }
 }
 
 const AnimatedImage = connectAnimation(Image);
-const StyledImage = connectStyle('shoutem.ui.Image', {})(AnimatedImage);
+const StyledImage = connectStyle('shoutem.ui.Image')(AnimatedImage);
 export {
   StyledImage as Image,
 };
