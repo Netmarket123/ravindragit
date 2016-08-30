@@ -537,9 +537,6 @@ export default () => ({
       width: 38,
       height: 38,
       borderRadius: 19,
-      // paddingTop: 0,
-      // paddingBottom: 0,
-      // paddingHorizontal: 0,
       padding: 0,
     },
 

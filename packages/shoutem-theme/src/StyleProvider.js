@@ -22,7 +22,7 @@ export default class StyleProvider extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      theme: this.createThemeWithNormalizedStyleFromProps(props),
+      theme: this.createTheme(props),
     };
   }
 
@@ -35,13 +35,13 @@ export default class StyleProvider extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.style !== this.props.style) {
       this.setState({
-        theme: this.createThemeWithNormalizedStyleFromProps(nextProps),
+        theme: this.createTheme(nextProps),
       });
     }
   }
 
-  createThemeWithNormalizedStyleFromProps(props) {
-    return new Theme(normalizeStyle(props.style));
+  createTheme(props) {
+    return new Theme(props.style);
   }
 
   render() {

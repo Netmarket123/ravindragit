@@ -1,12 +1,15 @@
 import { PropTypes } from 'react';
 import resolveIncludes from './resolveIncludes';
 import mergeComponentAndThemeStyles from './mergeComponentAndThemeStyles';
+import normalizeStyle from './StyleNormalizer/normalizeStyle';
 
 // Privates, ideally those should be symbols
 const THEME_STYLE = '@@shoutem.theme/themeStyle';
 const THEME_STYLE_CACHE = '@@shoutem.theme/themeCachedStyle';
 
 let defaultTheme;
+
+const resolveStyle = (style, baseStyle) => normalizeStyle(resolveIncludes(style, baseStyle));
 
 /**
  * The theme defines the application style, and provides methods to
@@ -34,7 +37,7 @@ let defaultTheme;
  */
 export default class Theme {
   constructor(themeStyle) {
-    this[THEME_STYLE] = resolveIncludes(themeStyle);
+    this[THEME_STYLE] = resolveStyle(themeStyle);
     this[THEME_STYLE_CACHE] = {};
   }
 
@@ -73,7 +76,7 @@ export default class Theme {
       return this[THEME_STYLE_CACHE][componentName];
     }
 
-    const componentIncludedStyle = resolveIncludes(defaultStyle, this[THEME_STYLE]);
+    const componentIncludedStyle = resolveStyle(defaultStyle, this[THEME_STYLE]);
 
     /**
      * This is static component style (static per componentName). This style can only
