@@ -1,6 +1,6 @@
 {
   "name": "@shoutem/animation",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Shoutem Animation Library",
   "main": "index.js",
   "scripts": {
