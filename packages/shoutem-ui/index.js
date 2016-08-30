@@ -43,6 +43,5 @@ export { Divider } from './components/Divider';
 export { Card } from './components/Card';
 export { Row } from './components/Row';
 export { Tile } from './components/Tile';
-export { Animated } from './components/Animated';
 
 export { Examples } from './examples';

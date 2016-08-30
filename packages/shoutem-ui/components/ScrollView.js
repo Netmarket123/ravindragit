@@ -3,6 +3,8 @@ import { ScrollView as RNScrollView } from 'react-native';
 
 import { ScrollDriver, DriverShape } from '@shoutem/animation';
 
+import { connectStyle } from '@shoutem/theme';
+
 export class ScrollView extends Component {
   static propTypes = {
     ...RNScrollView.propTypes,
@@ -16,18 +18,36 @@ export class ScrollView extends Component {
     super(props, context);
     this.animationDriver = props.driver || new ScrollDriver();
   }
+
   getChildContext() {
     return {
       animationDriver: this.animationDriver,
     };
   }
 
+  componentWillReceiveProps(newProps, newContext) {
+    if (newProps.driver && this.animationDriver !== newProps.driver) {
+      this.animationDriver = newProps.driver;
+    } else if (newContext.animationDriver && this.animationDriver !== newContext.animationDriver) {
+      this.animationDriver = newContext.animationDriver;
+    }
+  }
+
   render() {
     const { props, animationDriver } = this;
+    const contentContainerStyle = {
+      ...props.style.contentContainerStyle,
+    };
+    delete props.style.contentContainerStyle;
+
     return (
-      <RNScrollView {...props} {...animationDriver.scrollViewProps}>
-        {props.children}
-      </RNScrollView>
+      <RNScrollView
+        {...props}
+        contentContainerStyle={contentContainerStyle}
+        {...animationDriver.scrollViewProps}
+      />
     );
   }
 }
+
+const StyledScrollView = connectStyle('shoutem.ui.ScrollView', ScrollView);

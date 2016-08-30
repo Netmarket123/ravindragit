@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 import { View } from './View';
 import { connectStyle } from '@shoutem/theme';
+import { connectAnimation } from '@shoutem/animation';
 
 /**
  * Renders empty placeholder views to fill any empty space
@@ -69,7 +70,8 @@ GridRow.groupByRows = (data, columns, getColumnSpan = _.constant(1)) => {
   return groupedData.rows;
 };
 
-const StyledGridRow = connectStyle('shoutem.ui.GridRow', {})(GridRow);
+const AnimatedGridRow = connectAnimation(GridRow);
+const StyledGridRow = connectStyle('shoutem.ui.GridRow')(AnimatedGridRow);
 
 export {
   StyledGridRow as GridRow,

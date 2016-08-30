@@ -7,9 +7,7 @@ import { connectAnimation } from '@shoutem/animation';
 class View extends Component {
   render() {
     return (
-      <RNView {...this.props}>
-        {this.props.children}
-      </RNView>
+      <RNView {...this.props} />
     );
   }
 }

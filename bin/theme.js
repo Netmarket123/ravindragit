@@ -302,6 +302,7 @@ export default () => ({
             translateY: driver.value.interpolate({
               inputRange: [-100, 100],
               outputRange: [-50, 50],
+              extrapolateLeft: 'clamp',
             }),
           },
         ],

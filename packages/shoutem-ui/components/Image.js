@@ -40,7 +40,6 @@ class Image extends Component {
 }
 
 const AnimatedImage = connectAnimation(Image);
-
 const StyledImage = connectStyle('shoutem.ui.Image', {})(AnimatedImage);
 export {
   StyledImage as Image,

@@ -8,9 +8,15 @@ import { DriverShape } from './DriverShape';
 const ANIMATION_SUFFIX = 'Animation';
 
 function removeAnimationsFromStyle(style) {
-  return _.omitBy(style, (value, styleProp) => _.isFunction(value) && _.endsWith(styleProp, ANIMATION_SUFFIX));
+  return _.omitBy(style, (value, key) => _.isFunction(value) && _.endsWith(key, ANIMATION_SUFFIX));
 }
-const resolveAnimatedStyle = (props, driver, animations, layout = {}) => {
+const resolveAnimatedStyle = ({
+  props,
+  driver,
+  animations,
+  layout = {},
+  componentName = 'Component',
+}) => {
   const {
     style,
     animation,
@@ -19,16 +25,20 @@ const resolveAnimatedStyle = (props, driver, animations, layout = {}) => {
   } = props;
 
   if (!animationName) {
-    return undefined;
+    return removeAnimationsFromStyle(style);
   }
 
-  const animationResolver = animation || animations[`${animationName}${ANIMATION_SUFFIX}`] ||
+  const createAnimatedStyle =
+    animation ||
+    animations[`${animationName}${ANIMATION_SUFFIX}`] ||
     style[`${animationName}${ANIMATION_SUFFIX}`];
-  if (!_.isFunction(animationResolver)) {
-    throw new Error(`Animation with name: ${animationName}, you tried to assign to component
-    doesn't exist. Check components style or component declaration, to find an exact error`);
+
+  if (!_.isFunction(createAnimatedStyle)) {
+    throw new Error(`Animation with name: ${animationName}, you tried to assign to ` +
+    `${componentName} doesn't exist. Check ${componentName}'s style or its declaration, ` +
+    'to find an exact error');
   }
-  const animatedStyle = animationResolver(driver, { layout, animationOptions });
+  const animatedStyle = createAnimatedStyle(driver, { layout, animationOptions });
 
   return _.assign(removeAnimationsFromStyle(style), animatedStyle);
 };
@@ -60,10 +70,34 @@ export const connectAnimation = (WrappedComponent, animations = {}) => {
 
   class AnimatedComponent extends Component {
     static propTypes = {
+      /**
+       * Animation Driver an instance of driver that will be used to create animated style
+       */
       driver: DriverShape,
+      /**
+       * Component style (could contain animation functions)
+       */
       style: React.PropTypes.object,
+      /**
+       * Animation name it should match `${animationName}Animation` function passed in
+       * animations collection or component's style.
+       * e.g. if animationName is fadeOut there should exist function fadeOutAnimation
+       * in animations or style
+       */
       animationName: React.PropTypes.string,
+      /**
+       * Options that would be passed to animation through context
+       */
       animationOptions: React.PropTypes.object,
+      /**
+       * Explicit animation function declaration with signature:
+       * function (driver, context) {
+       *  return {
+       *    ...animated style
+       *  };
+       * }
+       * and it should return style object
+       */
       animation: React.PropTypes.func,
     }
 
@@ -86,6 +120,7 @@ export const connectAnimation = (WrappedComponent, animations = {}) => {
           x: 0,
           y: 0,
         },
+        resolvedStyle: removeAnimationsFromStyle(props.style),
       };
     }
 
@@ -96,15 +131,24 @@ export const connectAnimation = (WrappedComponent, animations = {}) => {
     }
 
     resolveStyle(props, driver) {
-      this.resolvedStyle = resolveAnimatedStyle(props, driver, animations, this.state.layout);
+      this.setState({
+        resolvedStyle: resolveAnimatedStyle({
+          props,
+          driver,
+          animations,
+          layout: this.state.layout,
+          componentName: WrappedComponent.displayName || WrappedComponent.name,
+        }),
+      });
     }
 
     render() {
+      const { resolvedStyle } = this.state;
       return (
         <AnimatedWrappedComponent
           onLayout={this.onLayout}
           {...this.props}
-          style={this.resolvedStyle}
+          style={resolvedStyle}
         />
       );
     }

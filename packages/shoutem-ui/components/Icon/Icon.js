@@ -3,18 +3,15 @@
  * Usage: <Icon name="icon-name" size={20} color="#4F8EF7" />
  */
 
-import { Animated as RNAnimated } from 'react-native';
 import { connectStyle } from '@shoutem/theme';
+import { connectAnimation } from '@shoutem/animation';
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
 import icoMoonConfig from './config.json';
 
 const IconComponent = createIconSetFromIcoMoon(icoMoonConfig);
-export const Icon = connectStyle('shoutem.ui.Icon', {})(IconComponent);
-
-const Animated = {
-  Icon: RNAnimated.createAnimatedComponent(Icon),
-};
+const AnimatedIcon = connectAnimation(IconComponent);
+const Icon = connectStyle('shoutem.ui.Icon')(AnimatedIcon);
 
 export {
-  Animated,
+  Icon,
 };
