@@ -381,6 +381,14 @@ export default () => ({
       flexDirection: 'column',
     },
 
+    '.fill-parent': {
+      [INCLUDE]: ['fillParent'],
+    },
+
+    '.overlay': {
+      backgroundColor: Colors.OVERLAY,
+    },
+
     '.wrap': {
       flexWrap: 'wrap',
     },
