@@ -130,7 +130,7 @@ class ListView extends React.Component {
   }
 
   /**
-   * Used to map props we are passing to GiftedListView from our ListView.
+   * Used to map props we are passing to React Native ListView.
    * Setting default values.
    * @returns {{}}
    */
