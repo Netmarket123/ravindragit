@@ -1,6 +1,7 @@
 {
   "name": "@shoutem/ui",
   "version": "0.0.27",
+  "description": "Styleable set of components for React Native applications",
   "dependencies": {
     "buffer": "^4.5.1",
     "events": "1.1.0",
@@ -38,5 +39,44 @@
     "assets": [
       "fonts"
      ]
-  }
+  },
+  "homepage": "http://shoutem.github.io/docs/ui-toolkit/introduction",
+  "bugs": {
+    "url": "https://github.com/shoutem/ui/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:shoutem/ui.git"
+  },
+  "license": "BSD-3-Clause",
+  "maintainers": [
+    {
+      "email": "bruna.andjelic@gmail.com",
+      "name": "bAndelic"
+    },
+    {
+      "email": "belma.dzi@gmail.com",
+      "name": "morrigan"
+    },
+    {
+      "email": "luka.bracanovic@shoutem.com",
+      "name": "MrBr"
+    },
+    {
+      "email": "ivan@shoutem.com",
+      "name": "SoHotSoup"
+    },
+    {
+      "email": "tomislav.tenodi@shoutem.com",
+      "name": "tenodi"
+    },
+    {
+      "email": "vladimir@shoutem.com",
+      "name": "Vunovati"
+    },
+    {
+      "email": "zeljko@shoutem.com",
+      "name": "zrumenjak"
+    }
+  ],
 }
