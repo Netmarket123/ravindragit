@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Heading } from '../components/Text';
 import { View } from '../components/View';
 import { Stage } from './Stage';
 import { DropDownMenu } from '../components/DropDownMenu';
@@ -8,8 +7,6 @@ import { DropDownMenu } from '../components/DropDownMenu';
 export function DropDownMenus() {
   return (
     <View styleName="vertical collapsed">
-      <Heading styleName="sm-gutter">03 - Dropdown menu</Heading>
-
       <Stage title="Dropdown">
         <DropDownMenu
           options={[

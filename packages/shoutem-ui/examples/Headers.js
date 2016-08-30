@@ -17,8 +17,6 @@ import {
 export function Headers() {
   return (
     <View styleName="vertical collapsed">
-      <Heading styleName="sm-gutter">10 - Headers</Heading>
-
       <Stage title="Header / Article">
         <Tile styleName="text-centric">
           <Title styleName="sm-gutter-bottom">MIKE PATTON TEAMING WITH JOHN KAADA FOR COLLAB ALBUM BACTERIA CULT</Title>

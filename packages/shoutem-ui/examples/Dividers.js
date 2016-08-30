@@ -3,7 +3,6 @@ import React from 'react';
 import { View } from '../components/View';
 import { Stage } from './Stage';
 import {
-  Heading,
   Caption,
   Divider,
 } from '../index';
@@ -11,8 +10,6 @@ import {
 export function Dividers() {
   return (
     <View styleName="vertical collapsed">
-      <Heading styleName="sm-gutter">06 - Dividers</Heading>
-
       <Stage title="Divider">
         <Divider />
       </Stage>
