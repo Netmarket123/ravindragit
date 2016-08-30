@@ -10,7 +10,7 @@ import {
   Image,
   Button,
   Icon,
-} from '../index';
+} from '../../index';
 
 export function Rows() {
   return (

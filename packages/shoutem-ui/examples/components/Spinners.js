@@ -4,7 +4,7 @@ import { Stage } from './Stage';
 import {
   View,
   Spinner,
-} from '../index';
+} from '../../index';
 
 export function Spinners() {
   return (

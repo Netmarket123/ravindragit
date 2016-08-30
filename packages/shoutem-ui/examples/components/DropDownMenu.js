@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { View } from '../components/View';
+import { View } from '../../components/View';
 import { Stage } from './Stage';
-import { DropDownMenu } from '../components/DropDownMenu';
+import { DropDownMenu } from '../../components/DropDownMenu';
 
 export function DropDownMenus() {
   return (

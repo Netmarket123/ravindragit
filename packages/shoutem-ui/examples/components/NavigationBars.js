@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dimensions } from 'react-native';
 
-import { View } from '../components/View';
+import { View } from '../../components/View';
 import { Stage } from './Stage';
 import {
   Heading,
@@ -12,7 +12,7 @@ import {
   Button,
   Icon,
   DropDownMenu,
-} from '../index';
+} from '../../index';
 
 const window = Dimensions.get('window');
 

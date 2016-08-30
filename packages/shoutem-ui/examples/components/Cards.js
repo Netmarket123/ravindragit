@@ -9,7 +9,7 @@ import {
   Caption,
   Icon,
   Button,
-} from '../index';
+} from '../../index';
 
 export function Cards() {
   return (

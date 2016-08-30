@@ -6,7 +6,7 @@ import {
   Button,
   Icon,
   Text,
-} from '../index';
+} from '../../index';
 
 export function Buttons() {
   return (

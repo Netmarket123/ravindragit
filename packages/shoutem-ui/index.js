@@ -48,4 +48,4 @@ export { Card } from './components/Card';
 export { Row } from './components/Row';
 export { Tile } from './components/Tile';
 
-export { Examples } from './examples';
+export { Examples } from './examples/components';
