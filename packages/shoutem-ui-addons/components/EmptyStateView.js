@@ -8,7 +8,6 @@ import {
   Caption,
   Subtitle,
   Button,
-  Icon,
   View,
 } from '@shoutem/ui';
 
@@ -41,7 +40,7 @@ class EmptyStateView extends Component {
   }
 
   render() {
-    const { icon, message, onRetry } = this.props;
+    const { message, onRetry } = this.props;
 
     return (
       <RNView {...this.props}>
@@ -61,7 +60,6 @@ EmptyStateView.propTypes = {
   ...EmptyStateView.propTypes,
   onRetry: React.PropTypes.func,
   message: React.PropTypes.string,
-  icon: React.PropTypes.string,
 };
 
 const StyledView = connectStyle('shoutem.ui.EmptyStateView', {})(EmptyStateView);
