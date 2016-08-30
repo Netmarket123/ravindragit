@@ -1,22 +1,11 @@
-import React from 'react';
-import { View as RNView } from 'react-native';
+import { View } from 'react-native';
 
 import { connectStyle } from '@shoutem/theme';
+import { connectAnimation } from '@shoutem/animation';
 
-function Screen(props) {
-  return (
-    <RNView {...props}>
-      {props.children}
-    </RNView>
-  );
-}
-
-Screen.propTypes = {
-  ...RNView.propTypes,
-};
-
-const StyledScreen = connectStyle('shoutem.ui.Screen', {})(Screen);
+const AnimatedScreen = connectAnimation(View);
+const Screen = connectStyle('shoutem.ui.Screen')(AnimatedScreen);
 
 export {
-  StyledScreen as Screen,
+  Screen,
 };
