@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { View } from '../components/View';
+import { View } from '../../components/View';
 import { Stage } from './Stage';
 import {
   Caption,
   Divider,
-} from '../index';
+} from '../../index';
 
 export function Dividers() {
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { View } from '../components/View';
+import { View } from '../../components/View';
 import { Stage } from './Stage';
 import {
   Text,
@@ -9,7 +9,7 @@ import {
   Subtitle,
   Description,
   Caption,
-} from '../components/Text';
+} from '../../components/Text';
 
 export function Typography() {
   return (

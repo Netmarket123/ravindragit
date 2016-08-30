@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { View } from '../components/View';
+import { View } from '../../components/View';
 import { Stage } from './Stage';
-import { Image } from '../components/Image';
+import { Image } from '../../components/Image';
 
 export function Images() {
   return (

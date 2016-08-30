@@ -12,7 +12,7 @@ import {
   Icon,
   Overlay,
   Button,
-} from '../index';
+} from '../../index';
 
 export function Headers() {
   return (

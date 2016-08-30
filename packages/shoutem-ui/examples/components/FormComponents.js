@@ -4,7 +4,7 @@ import { Stage } from './Stage';
 import {
   View,
   TextInput,
-} from '../index';
+} from '../../index';
 
 export function FormComponents() {
   return (
