@@ -20,14 +20,23 @@ export default class StyleNormalizer {
 
   createNormalizers(prop, shorthands, suffix = '') {
     shorthands.forEach(shorthand => {
-      const propName = prop + shorthand.name + suffix;
+      const propName = prop + shorthand.type + suffix;
+
+      if (this.normalizerExists(propName)) {
+        throw Error(`Normalizer for '${propName}' shorthand already exists`);
+      }
+
       this.normalizers[propName] =
         ShorthandsNormalizerFactory.createNormalizer(prop, shorthand, suffix);
     });
   }
 
+  normalizerExists(normalizerName) {
+    return !!this.normalizers[normalizerName];
+  }
+
   canNormalize(prop) {
-    return !!this.normalizers[prop];
+    return this.normalizerExists(prop);
   }
 
   normalize(prop, val) {
