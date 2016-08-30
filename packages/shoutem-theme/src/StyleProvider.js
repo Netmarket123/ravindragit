@@ -1,5 +1,6 @@
 import React, { Children, PropTypes } from 'react';
 import Theme, { ThemeShape } from './Theme';
+import normalizeStyle from './StyleNormalizer/normalizeStyle';
 
 /**
  *  Provides a theme to child components trough context.
@@ -10,6 +11,10 @@ export default class StyleProvider extends React.Component {
     style: React.PropTypes.object,
   };
 
+  static defaultProps = {
+    style: {},
+  };
+
   static childContextTypes = {
     theme: ThemeShape.isRequired,
   };
@@ -17,7 +22,7 @@ export default class StyleProvider extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      theme: new Theme(props.style),
+      theme: this.createThemeWithNormalizedStyleFromProps(props),
     };
   }
 
@@ -30,9 +35,13 @@ export default class StyleProvider extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.style !== this.props.style) {
       this.setState({
-        theme: new Theme(nextProps.style),
+        theme: this.createThemeWithNormalizedStyleFromProps(nextProps),
       });
     }
+  }
+
+  createThemeWithNormalizedStyleFromProps(props) {
+    return new Theme(normalizeStyle(props.style));
   }
 
   render() {

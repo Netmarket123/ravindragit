@@ -1,4 +1,4 @@
-import React, { PropTypes, Component } from 'react';
+import React, { PropTypes } from 'react';
 import hoistStatics from 'hoist-non-react-statics';
 import * as _ from 'lodash';
 
@@ -36,24 +36,16 @@ function getTheme(context) {
  * @param componentStyleName The component name that will be used
  * to target this component in style rules.
  * @param componentStyle The default component style.
+ * @param mapPropsToStyleNames Pure function to customize styleNames depending on props.
  * @param options The additional connectStyle options
  * @param options.virtual The default value of the virtual prop
+ * @param options.withRef Create component ref with addedProps; if true, ref name is wrappedInstance
  * @returns {StyledComponent} The new component that will handle
  * the styling of the wrapped component.
  */
-export default function connectStyle(componentStyleName, componentStyle = {}, options) {
+export default (componentStyleName, componentStyle = {}, mapPropsToStyleNames, options = {}) => {
   function getComponentDisplayName(WrappedComponent) {
     return WrappedComponent.displayName || WrappedComponent.name || 'Component';
-  }
-
-  function isClassComponent(WrappedComponent) {
-    return WrappedComponent.prototype instanceof Component;
-  }
-
-  function isComponentReferenceable(WrappedComponent) {
-    // stateless function components can't be referenced
-    // only Component instance can
-    return isClassComponent(WrappedComponent);
   }
 
   return function wrapWithStyledComponent(WrappedComponent) {
@@ -99,7 +91,7 @@ export default function connectStyle(componentStyleName, componentStyle = {}, op
       };
 
       static defaultProps = {
-        virtual: options && options.virtual || false,
+        virtual: options.virtual,
       };
 
       static displayName = `Styled(${componentDisplayName})`;
@@ -107,51 +99,84 @@ export default function connectStyle(componentStyleName, componentStyle = {}, op
 
       constructor(props, context) {
         super(props, context);
-        const resolvedStyle = this.resolveStyle(context, props);
+        const styleNames = this.resolveStyleNames(props);
+        const resolvedStyle = this.resolveStyle(context, props, styleNames);
         this.state = {
           style: resolvedStyle.componentStyle,
           childrenStyle: resolvedStyle.childrenStyle,
+          // AddedProps are additional WrappedComponent props
+          // Usually they are set trough alternative ways,
+          // such as theme style, or trough options
+          addedProps: this.resolveAddedProps(),
+          styleNames,
         };
-        if (isComponentReferenceable(WrappedComponent)) {
-          this.state.ref = 'wrappedInstance';
-        }
       }
 
       getChildContext() {
-        const { virtual } = this.props;
         return {
-          parentStyle: virtual ?
+          parentStyle: this.props.virtual ?
             this.context.parentStyle :
             this.state.childrenStyle,
         };
       }
 
       componentWillReceiveProps(nextProps, nextContext) {
-        if (this.shouldRebuildStyle(nextProps, nextContext)) {
-          const resolvedStyle = this.resolveStyle(nextContext, nextProps);
+        const styleNames = this.resolveStyleNames(nextProps);
+        if (this.shouldRebuildStyle(nextProps, nextContext, styleNames)) {
+          const resolvedStyle = this.resolveStyle(nextContext, nextProps, styleNames);
           this.setState({
             style: resolvedStyle.componentStyle,
             childrenStyle: resolvedStyle.childrenStyle,
+            styleNames,
           });
         }
       }
 
-      shouldRebuildStyle(nextProps, nextContext) {
+      resolveAddedProps() {
+        const addedProps = {};
+        if (options.withRef) {
+          addedProps.ref = 'wrappedInstance';
+        }
+        return addedProps;
+      }
+
+      hasStyleNameChanged(nextProps, styleNames) {
+        return mapPropsToStyleNames && this.props !== nextProps &&
+          // Even though props did change here,
+          // it doesn't necessary means changed props are those which affect styleName
+          !_.isEqual(this.state.styleNames, styleNames);
+      }
+
+      shouldRebuildStyle(nextProps, nextContext, styleNames) {
         return (nextProps.style !== this.props.style) ||
           (nextProps.styleName !== this.props.styleName) ||
           (nextContext.theme !== this.context.theme) ||
-          (nextContext.parentStyle !== this.context.parentStyle);
+          (nextContext.parentStyle !== this.context.parentStyle) ||
+          (this.hasStyleNameChanged(nextProps, styleNames));
       }
 
-      resolveStyle(context, props) {
+      resolveStyleNames(props) {
+        const { styleName } = props;
+        const styleNames = styleName ? styleName.split(/\s/g) : [];
+
+        if (!mapPropsToStyleNames) {
+          return styleNames;
+        }
+
+        // We only want to keep the unique style names
+        return _.uniq(mapPropsToStyleNames(styleNames, props));
+      }
+
+      resolveStyle(context, props, styleNames) {
         const { parentStyle } = context;
-        const { style, styleName } = props;
+        const { style } = props;
 
         const theme = getTheme(context);
         const themeStyle = theme.createComponentStyle(componentStyleName, componentStyle);
+
         return resolveComponentStyle(
           componentStyleName,
-          styleName,
+          styleNames,
           themeStyle,
           parentStyle,
           style
@@ -159,24 +184,11 @@ export default function connectStyle(componentStyleName, componentStyle = {}, op
       }
 
       render() {
-        // If the component is a class component, it can be initialised with JSX
-        if (isClassComponent(WrappedComponent)) {
-          return <WrappedComponent {...this.props} style={this.state.style} />;
-        }
-
-        // TODO(Braco) - check if this different Component creation for func and class is needed
-        // for React > 0.15. In React > 0.15, func components should be able to render `null`
-
-        // otherwise initialize function component as function for case it returns null
-        // https://github.com/facebook/react/issues/4599
-        // eslint-disable-next-line new-cap
-        return WrappedComponent({
-          ...this.props,
-          style: this.state.style,
-        });
+        const { addedProps, style } = this.state;
+        return <WrappedComponent {...this.props} {...addedProps} style={style} />;
       }
     }
 
     return hoistStatics(StyledComponent, WrappedComponent);
   };
-}
+};
