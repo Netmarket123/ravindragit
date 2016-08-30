@@ -144,7 +144,7 @@ class DropDownMenu extends Component {
     visibleOptions * optionHeight : optionsSize * optionHeight;
   }
 
-  renderDropDownButton() {
+  renderSelectedOption() {
     const { style, titleProperty } = this.props;
     const { selectedOption } = this.state;
 
@@ -199,7 +199,7 @@ class DropDownMenu extends Component {
       return null;
     }
 
-    const button = this.renderDropDownButton();
+    const button = this.renderSelectedOption();
     const listViewStyle = this.resolveListViewStyle();
     const dataSource = this.ds.cloneWithRows(options.filter((option) => option[titleProperty]));
 
