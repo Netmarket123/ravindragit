@@ -358,35 +358,27 @@ export default () => ({
   // Empty State (error page)
   //
   'shoutem.ui.EmptyStateView': {
-    'shoutem.ui.Button': {
-      'shoutem.ui.Caption': {
-        [INCLUDE]: ['boldTextStyle'],
-      },
-      position: 'absolute',
-      bottom: 0,
-      width: window.width,
-      height: 55,
-    },
-
-    'shoutem.ui.Subtitle': {
-      marginTop: 15,
-      width: 120,
-      textAlign: 'center',
-    },
-
     'shoutem.ui.View': {
-      '.icon-placeholder': {
-        height: 62,
-        width: 62,
-        backgroundColor: 'rgba(3, 3, 3, 0.1)',
-        borderRadius: 31,
-        justifyContent: 'center',
+      'shoutem.ui.Button': {
+        position: 'absolute',
+        bottom: 0,
+        width: window.width,
+      },
+
+      'shoutem.ui.Subtitle': {
+        marginTop: MEDIUM_GUTTER,
+        width: 120,
+      },
+
+      'shoutem.ui.View': {
+        '.icon-placeholder': {
+          height: 62,
+          width: 62,
+          backgroundColor: 'rgba(3, 3, 3, 0.1)',
+          borderRadius: 31,
+          justifyContent: 'center',
+        },
       },
     },
-
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#F0F0F0',
-    flex: 1,
   },
 });

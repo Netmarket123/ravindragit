@@ -2,13 +2,10 @@ import React, {
   Component,
 } from 'react';
 import {
-  View as RNView,
-} from 'react-native';
-import {
-  Caption,
   Subtitle,
   Button,
   View,
+  Text,
 } from '@shoutem/ui';
 
 import { connectStyle } from '@shoutem/theme';
@@ -33,8 +30,8 @@ class EmptyStateView extends Component {
     // Show retry button at the bottom only if
     // there is a onRetry action passed.
     return (
-      <Button onPress={this.onRetry}>
-        <Caption>{retryButtonTitle}</Caption>
+      <Button styleName="full-width" onPress={this.onRetry}>
+        <Text>{retryButtonTitle}</Text>
       </Button>
     );
   }
@@ -43,15 +40,18 @@ class EmptyStateView extends Component {
     const { message, onRetry } = this.props;
 
     return (
-      <RNView {...this.props}>
+      <View
+        {...this.props}
+        styleName="vertical flexible h-center v-center"
+      >
         <View styleName="icon-placeholder">
           {this.props.children}
         </View>
 
-        <Subtitle>{message}</Subtitle>
+        <Subtitle styleName="h-center">{message}</Subtitle>
 
         {onRetry ? this.renderRetryButton() : null}
-      </RNView>
+      </View>
     );
   }
 }
@@ -62,7 +62,7 @@ EmptyStateView.propTypes = {
   message: React.PropTypes.string,
 };
 
-const StyledView = connectStyle('shoutem.ui.EmptyStateView', {})(EmptyStateView);
+const StyledView = connectStyle('shoutem.ui.EmptyStateView')(EmptyStateView);
 
 export {
   StyledView as EmptyStateView,
