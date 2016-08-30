@@ -1,6 +1,10 @@
 import { setDefaultThemeStyle } from './init';
+import getTheme from './theme';
 
 setDefaultThemeStyle();
+
+// Theme
+export { getTheme };
 
 // Components
 export { View } from './components/View';
@@ -29,14 +33,11 @@ export { ImageGallery } from './components/ImageGallery';
 export { RichMedia } from './components/RichMedia';
 export { MapView, InlineMap } from './components/Map/';
 
-export { LinearGradient } from './components/LinearGradient';
-
 export {
   Heading,
   Title,
   Subtitle,
   Text,
-  Description,
   Caption,
 } from './components/Text';
 
