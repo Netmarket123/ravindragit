@@ -329,8 +329,24 @@ export default () => ({
         justifyContent: 'center',
       },
 
+      '.h-start': {
+        justifyContent: 'flex-start',
+      },
+
+      '.h-end': {
+        justifyContent: 'flex-end',
+      },
+
       '.v-center': {
         alignItems: 'center',
+      },
+
+      '.v-start': {
+        alignItems: 'flex-start',
+      },
+
+      '.v-end': {
+        alignItems: 'flex-end',
       },
 
       flexDirection: 'row',
@@ -342,8 +358,24 @@ export default () => ({
         alignItems: 'center',
       },
 
+      '.h-start': {
+        alignItems: 'flex-start',
+      },
+
+      '.h-end': {
+        alignItems: 'flex-end',
+      },
+
       '.v-center': {
         justifyContent: 'center',
+      },
+
+      '.v-start': {
+        justifyContent: 'flex-start',
+      },
+
+      '.v-end': {
+        justifyContent: 'flex-end',
       },
 
       flexDirection: 'column',
