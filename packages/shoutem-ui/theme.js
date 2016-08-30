@@ -118,6 +118,17 @@ export default () => ({
     fontFamily: 'Menlo',
   },
 
+  multilineTextStyle: {
+    '.v-center': {
+        // Compensate for lineHeight, because
+        // textAlignVertical is not supported on iOS
+      marginTop: -4,
+      marginBottom: 4,
+    },
+
+    lineHeight: 26,
+  },
+
   'shoutem.ui.Text': {
     [INCLUDE]: ['commonVariants', 'defaultFont', 'guttersMargin'],
 
@@ -138,14 +149,7 @@ export default () => ({
     },
 
     '.multiline': {
-      '.v-center': {
-        // Compensate for lineHeight, because
-        // textAlignVertical is not supported on iOS
-        marginTop: -4,
-        marginBottom: 4,
-      },
-
-      lineHeight: 26,
+      [INCLUDE]: ['multilineTextStyle'],
     },
 
     backgroundColor: Colors.CLEAR,
