@@ -3,10 +3,8 @@ import React, {
 } from 'react';
 
 import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { Provider, connect } from 'react-redux';
+import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-
-import * as _ from 'lodash';
 
 import { ScreenNavigator, ROOT_NAVIGATOR_NAME } from './navigation';
 import coreExtensions from './coreExtensions';
@@ -15,20 +13,7 @@ import { StyleProvider } from '@shoutem/theme';
 import { enableRio, apiStateMiddleware } from '@shoutem/redux-io';
 import { apiMiddleware } from 'redux-api-middleware';
 
-// connect is called several times, and we do not want to have different object reference
-// for fallback because it will resolve theme again (changing variables recalculates theme)
 const fallBackThemeVariables = {};
-const ConnectedStyleProvider = connect((state, ownProps) => {
-  const shoutemAppState = state['shoutem.application'];
-  const themeId = _.get(shoutemAppState, 'configuration.relationships.themes.data[0].id');
-  const themeVariables = themeId
-    ? _.get(shoutemAppState, `themes['${themeId}'].attributes.variables`)
-    : fallBackThemeVariables;
-
-  return {
-    style: ownProps.themeInit(themeVariables),
-  };
-})(StyleProvider);
 
 /**
  * Calls the lifecycle function with the given name on all
@@ -57,6 +42,13 @@ function callLifecycleFunction(app, extensions, functionName) {
  */
 function createApplication(appContext) {
   const App = class App extends Component {
+    constructor(props, context) {
+      super(props, context);
+      this.state = {
+        style: appContext.themeInit(fallBackThemeVariables),
+      };
+    }
+
     /**
      * Returns the redux store of the app.
      * @returns {*} The redux store.
@@ -115,9 +107,9 @@ function createApplication(appContext) {
       );
       return (
         <Provider store={appContext.store}>
-          <ConnectedStyleProvider themeInit={appContext.themeInit}>
+          <StyleProvider style={this.state.style}>
             {content}
-          </ConnectedStyleProvider>
+          </StyleProvider>
         </Provider>
       );
     }
