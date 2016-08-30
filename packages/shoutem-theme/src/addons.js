@@ -85,7 +85,7 @@ export function createSharedStyle(componentNames, sharedStyle = {}, customStyles
     // eslint-disable-next-line no-param-reassign
     result[componentName] = {
       ...sharedStyle,
-      ...customStyles[componentName]
+      ...customStyles[componentName],
     };
 
     return result;

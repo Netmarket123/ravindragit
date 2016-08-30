@@ -1,10 +1,7 @@
 import React, {
   Component,
 } from 'react';
-import {
-  Modal,
-  ListView,
-} from 'react-native';
+import { Modal, ListView } from 'react-native';
 
 import { Button } from './Button';
 import { Icon } from './Icon';
@@ -22,6 +19,8 @@ import {
   ZoomOut,
 } from '@shoutem/animation';
 
+import _ from 'lodash';
+
 class DropDownMenu extends Component {
   static propTypes = {
     /**
@@ -31,7 +30,7 @@ class DropDownMenu extends Component {
     /**
      * Collection of objects which will be shown as options in DropDownMenu
      */
-    options: React.PropTypes.array,
+    options: React.PropTypes.array.isRequired,
     /**
      * Initially selected option
      */
@@ -59,14 +58,15 @@ class DropDownMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ...props,
       optionHeight: 0,
+      selectedOption: props.selectedOption,
     };
     this.collapse = this.collapse.bind(this);
     this.close = this.close.bind(this);
     this.emitOnOptionSelectedEvent = this.emitOnOptionSelectedEvent.bind(this);
     this.renderRow = this.renderRow.bind(this);
     this.onOptionLayout = this.onOptionLayout.bind(this);
+    this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
   }
 
   componentWillMount() {
@@ -76,7 +76,7 @@ class DropDownMenu extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.state.selectedOption && nextProps.options.length > 0) {
+    if (!this.state.selectedOption && _.size(nextProps.options) > 0) {
       this.autoSelect(nextProps.options, nextProps.selectedOption);
     }
   }
@@ -107,8 +107,8 @@ class DropDownMenu extends Component {
   /**
    * Selects first item as default if non is selected
    */
-  autoSelect(options, selectedOption) {
-    if (!selectedOption && !this.state.selectedOption && options.length > 0) {
+  autoSelect(options = [], selectedOption) {
+    if (!selectedOption && !this.state.selectedOption && _.size(options) > 0) {
       this.setState({ selectedOption: options[0] }, this.emitOnOptionSelectedEvent);
     }
   }
@@ -127,6 +127,33 @@ class DropDownMenu extends Component {
     if (this.props.onOptionSelected) {
       this.props.onOptionSelected(this.state.selectedOption);
     }
+  }
+
+  resolveListViewStyle() {
+    const listViewHeight = this.calculateListViewHeight();
+
+    return { flex: 0, height: listViewHeight };
+  }
+
+  calculateListViewHeight() {
+    const { optionHeight } = this.state;
+    const { options, visibleOptions } = this.props;
+    const optionsSize = _.size(options);
+
+    return optionsSize > visibleOptions ?
+    visibleOptions * optionHeight : optionsSize * optionHeight;
+  }
+
+  renderSelectedOption() {
+    const { style, titleProperty } = this.props;
+    const { selectedOption } = this.state;
+
+    return selectedOption ? (
+      <Button onPress={this.collapse} style={style.selectedOption}>
+        <Text>{selectedOption[titleProperty]}</Text>
+        <Icon name="drop-down" />
+      </Button>
+    ) : null;
   }
 
   renderRow(option, sectionId, rowId) {
@@ -165,22 +192,16 @@ class DropDownMenu extends Component {
   }
 
   render() {
-    const {
-      collapsed,
-      selectedOption,
-      titleProperty,
-      optionHeight,
-    } = this.state;
-    const { options, style, visibleOptions = this.defaultVisibleOptions } = this.props;
-    const listViewHeight = options.length > visibleOptions ?
-      visibleOptions * optionHeight : options.length * optionHeight;
-    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-    const button = selectedOption ? (
-      <Button onPress={this.collapse} style={style.selectedOption}>
-        <Text>{selectedOption[titleProperty]}</Text>
-        <Icon name="drop-down" />
-      </Button>
-    ) : null;
+    const { collapsed } = this.state;
+    const { titleProperty, options, style } = this.props;
+
+    if (!options) {
+      return null;
+    }
+
+    const button = this.renderSelectedOption();
+    const listViewStyle = this.resolveListViewStyle();
+    const dataSource = this.ds.cloneWithRows(options.filter((option) => option[titleProperty]));
 
     return (
       <View renderToHardwareTextureAndroid>
@@ -194,10 +215,10 @@ class DropDownMenu extends Component {
             <FadeIn driver={this.timingDriver} style={{ flex: 1 }}>
               <View style={style.modal} styleName="vertical">
                 <ListView
-                  dataSource={ds.cloneWithRows(options.filter((option) => option[titleProperty]))}
+                  dataSource={dataSource}
                   renderRow={this.renderRow}
+                  style={listViewStyle}
                   {...this.scrollDriver.scrollViewProps}
-                  style={{ flex: 0, height: listViewHeight }}
                 />
                 <Button onPress={this.close} styleName="clear close">
                   <Icon name="close" />
