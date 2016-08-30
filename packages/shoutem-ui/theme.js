@@ -289,6 +289,26 @@ export default () => ({
       backgroundColor: Colors.OVERLAY,
     },
 
+    heroAnimation(driver, { layout, options }) {
+      return {
+        transform: [
+          {
+            scale: driver.value.interpolate({
+              inputRange: [-0.9 * layout.height, 0],
+              outputRange: [3, 1],
+              extrapolateRight: 'clamp',
+            }),
+          }, {
+            translateY: driver.value.interpolate({
+              inputRange: [-100, 100],
+              outputRange: [-50, 50],
+              extrapolateLeft: 'clamp',
+            }),
+          },
+        ],
+      };
+    },
+
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
@@ -479,6 +499,23 @@ export default () => ({
 
     '.text-centric': {
       [INCLUDE]: ['textCentricTile'],
+    },
+
+    heroAnimation(driver, { layout, options }) {
+      return {
+        opacity: driver.value.interpolate({
+          inputRange: [-0.2 * layout.height, 0, layout.height],
+          outputRange: [0, 1, 0],
+        }),
+        transform: [
+          {
+            translateY: driver.value.interpolate({
+              inputRange: [-100, 100],
+              outputRange: [20, -20],
+            }),
+          },
+        ],
+      };
     },
 
     flex: -1,
