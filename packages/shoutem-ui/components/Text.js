@@ -1,33 +1,27 @@
-import React from 'react';
-import { Text as RNText, Animated as RNAnimated } from 'react-native';
+import React, { Component } from 'react';
+import { Text as RNText } from 'react-native';
 
 import { connectStyle } from '@shoutem/theme';
+import { connectAnimation } from '@shoutem/animation';
 
-function Text(props) {
-  return (
-    <RNText {...props}>
-      {props.children}
-    </RNText>
-  );
+class Text extends Component {
+  render() {
+    return (
+      <RNText {...this.props} />
+    );
+  }
 }
 
 Text.propTypes = {
   ...RNText.propTypes,
 };
 
-const StyledText = connectStyle('shoutem.ui.Text')(Text);
-const Heading = connectStyle('shoutem.ui.Heading')(Text);
-const Title = connectStyle('shoutem.ui.Title')(Text);
-const Subtitle = connectStyle('shoutem.ui.Subtitle')(Text);
-const Caption = connectStyle('shoutem.ui.Caption')(Text);
-
-const Animated = {
-  Text: RNAnimated.createAnimatedComponent(StyledText),
-  Heading: RNAnimated.createAnimatedComponent(Heading),
-  Title: RNAnimated.createAnimatedComponent(Title),
-  Subtitle: RNAnimated.createAnimatedComponent(Subtitle),
-  Caption: RNAnimated.createAnimatedComponent(Caption),
-};
+const AnimatedText = connectAnimation(Text);
+const StyledText = connectStyle('shoutem.ui.Text')(AnimatedText);
+const Heading = connectStyle('shoutem.ui.Heading')(AnimatedText);
+const Title = connectStyle('shoutem.ui.Title')(AnimatedText);
+const Subtitle = connectStyle('shoutem.ui.Subtitle')(AnimatedText);
+const Caption = connectStyle('shoutem.ui.Caption')(AnimatedText);
 
 export {
   StyledText as Text,
@@ -35,5 +29,4 @@ export {
   Title,
   Subtitle,
   Caption,
-  Animated,
 };

@@ -5,10 +5,13 @@ import {
   RefreshControl,
   StatusBar,
   Platform,
+  ScrollView,
 } from 'react-native';
 import { connectStyle } from '@shoutem/theme';
 import { Spinner } from './Spinner';
 import _ from 'lodash';
+
+const scrollViewProps = _.keys(ScrollView.propTypes);
 
 const Status = {
   LOADING: 'loading',
@@ -73,6 +76,7 @@ class ListView extends React.Component {
     renderHeader: React.PropTypes.func,
     renderFooter: React.PropTypes.func,
     renderSectionHeader: React.PropTypes.func,
+    scrollDriver: React.PropTypes.object,
     // TODO(Braco) - add render separator
   };
 
@@ -82,6 +86,7 @@ class ListView extends React.Component {
     this.renderFooter = this.renderFooter.bind(this);
     this.autoHideHeader = this.autoHideHeader.bind(this);
     this.onRefresh = this.onRefresh.bind(this);
+    this.renderRefreshControl = this.renderRefreshControl.bind(this);
     this.listView = null;
 
 
@@ -93,7 +98,7 @@ class ListView extends React.Component {
 
 
     this.state = {
-      status: Status.LOADING,
+      status: props.loading ? Status.LOADING : Status.IDLE,
       dataSource: this.listDataSource.clone(props.data),
     };
   }
@@ -125,13 +130,13 @@ class ListView extends React.Component {
   }
 
   /**
-   * Used to map props we are passing to GiftedListView from our ListView.
+   * Used to map props we are passing to React Native ListView.
    * Setting default values.
    * @returns {{}}
    */
   getPropsToPass() {
     const props = this.props;
-    const mappedProps = {};
+    const mappedProps = _.omit(_.pick(props, scrollViewProps), ['style']);
 
     // configuration
     // default load more threshold
@@ -141,7 +146,7 @@ class ListView extends React.Component {
     mappedProps.enableEmptySections = true;
 
     // style
-    mappedProps.customStyles = props.style.list;
+    mappedProps.style = props.style.list;
 
     mappedProps.contentContainerStyle = props.style.listContent;
 

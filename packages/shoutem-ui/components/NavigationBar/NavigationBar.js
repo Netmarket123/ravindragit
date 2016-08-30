@@ -11,6 +11,7 @@ import _ from 'lodash';
 import color from 'tinycolor2';
 
 import { connectStyle } from '@shoutem/theme';
+import { connectAnimation } from '@shoutem/animation';
 
 import composeChildren from './composeChildren';
 
@@ -92,7 +93,8 @@ class NavigationBar extends Component {
   }
 }
 
-const StyledNavigationBar = connectStyle('shoutem.ui.NavigationBar', {})(NavigationBar);
+const AnimatedNavigationBar = connectAnimation(NavigationBar);
+const StyledNavigationBar = connectStyle('shoutem.ui.NavigationBar', {})(AnimatedNavigationBar);
 
 export {
   StyledNavigationBar as NavigationBar,
