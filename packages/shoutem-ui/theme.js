@@ -962,6 +962,10 @@ export default () => ({
   },
   'shoutem.ui.Divider': {
     '.line': {
+      '.small': {
+        width: 55,
+        alignSelf: 'center',
+      },
       paddingTop: 0,
       borderBottomWidth: StyleSheet.hairlineWidth,
       borderColor: Colors.DIVIDER_LINE,
