@@ -11,6 +11,13 @@ All the documentation is available on the [Developer portal](http://shoutem.gith
 
 ## Examples
 
+To see animation components in action, check the application in the `Examples` folder.
+
+```
+$ cd examples/ShoutemAnimation
+$ npm install
+$ react-native run-ios
+```
 
 ## Shoutem
 

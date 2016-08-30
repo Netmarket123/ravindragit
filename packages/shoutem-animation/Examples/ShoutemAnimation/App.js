@@ -12,9 +12,9 @@ import FadeInOut from './FadeInOut';
 import ZoomInOut from './ZoomInOut';
 
 const examples = {
-  'Parallax': Parallax,
-  'HeroHeader': HeroHeader,
-  'FadeInOut': FadeInOut,
+  Parallax,
+  HeroHeader,
+  FadeInOut,
   ZoomInOut,
 };
 

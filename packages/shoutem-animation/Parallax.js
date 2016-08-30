@@ -81,7 +81,6 @@ export class Parallax extends Component {
   measure() {
     NativeMethodsMixin.measure.call(this, (x, y, width, height, pageX, pageY) => {
       this.setState({ x: pageX, y: pageY });
-      console.log(`measure: ${pageY}`);
     });
   }
 

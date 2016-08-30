@@ -31,7 +31,7 @@ export default class ZoomInOutExample extends Component {
         <ZoomIn driver={driver} maxFactor={1.3}>
           <Tile>
             <View styleName="content">
-              <Title styleName="h-center">I'm zoom in</Title>
+              <Title styleName="h-center">I'm zooming in</Title>
               <Caption styleName="h-center">3 seconds</Caption>
             </View>
           </Tile>
