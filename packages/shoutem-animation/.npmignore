@@ -1,7 +1,8 @@
 node_modules
 .idea
+examples
 
-# Ignore test folders
+# Ignore test files
 *_tests_
 
 # Ignore local/config files
