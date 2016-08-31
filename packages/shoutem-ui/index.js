@@ -15,6 +15,7 @@ export { NavigationBarAnimations } from './components/NavigationBar/NavigationBa
 export { DropDownMenu } from './components/DropDownMenu';
 export { Overlay } from './components/Overlay';
 
+export { ScrollView } from './components/ScrollView';
 export { ListView } from './components/ListView';
 export { GridRow } from './components/GridRow';
 
@@ -46,6 +47,5 @@ export { Divider } from './components/Divider';
 export { Card } from './components/Card';
 export { Row } from './components/Row';
 export { Tile } from './components/Tile';
-export { Animated } from './components/Animated';
 
-export { Examples } from './examples';
+export { Examples } from './examples/components';

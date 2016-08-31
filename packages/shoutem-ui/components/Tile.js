@@ -1,24 +1,11 @@
-import React from 'react';
-import {
-    View,
-} from 'react-native';
+import { View } from 'react-native';
 
 import { connectStyle } from '@shoutem/theme';
+import { connectAnimation } from '@shoutem/animation';
 
-function Tile(props) {
-  return (
-    <View {...props}>
-      {props.children}
-    </View>
-  );
-}
-
-Tile.propTypes = {
-  ...View.propTypes,
-};
-
-const StyledTile = connectStyle('shoutem.ui.Tile', {})(Tile);
+const AnimatedTile = connectAnimation(View);
+const Tile = connectStyle('shoutem.ui.Tile')(AnimatedTile);
 
 export {
-  StyledTile as Tile,
+  Tile,
 };

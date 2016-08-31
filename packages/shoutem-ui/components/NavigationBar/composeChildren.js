@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
 import { Button } from '../Button';
-import { Animated } from '../Animated';
+import { Title } from '../Text';
+import { Icon } from '../Icon';
 
 import Share from 'react-native-share';
 import * as _ from 'lodash';
@@ -9,9 +10,9 @@ import * as _ from 'lodash';
 const composers = {
   title: (value, props) => ({
     centerComponent: (
-      <Animated.Title style={{ color: _.get(props, 'animation.style.color') }} numberOfLines={1}>
+      <Title animationName={props.animationName} numberOfLines={1}>
         {value || ''}
-      </Animated.Title>
+      </Title>
     ),
   }),
   share: (value, props) => {
@@ -31,7 +32,7 @@ const composers = {
     return {
       rightComponent: (
         <Button onPress={onShare}>
-          <Animated.Icon name="share" />
+          <Icon name="share" />
         </Button>
       ),
     };
@@ -53,30 +54,12 @@ const composers = {
         styleName="clear"
         onPress={navigateBackWithoutEventParameter}
       >
-        <Animated.Icon style={{ color: _.get(props, 'animation.style.color') }} name="back" />
+        <Icon name="back" />
       </Button>
     ) :
       null;
 
     return { leftComponent };
-  },
-  animation: (value, props) => {
-    const animation = value;
-    const { style } = props;
-    const backgroundColor = _.get(style, 'container.backgroundColor');
-    const textColor = _.get(style, 'textColor.color');
-
-    animation.setColors(backgroundColor, textColor);
-
-    const containerStyle = {
-      backgroundColor: animation.style.backgroundColor,
-      borderBottomColor: animation.style.borderBottomColor,
-    };
-    return {
-      style: {
-        container: { ...containerStyle },
-      },
-    };
   },
 };
 
@@ -106,10 +89,6 @@ const composeChildren = NavigationBarComponent => class extends Component {
         _.assign(newProps, composers[key](value, this.props));
       }
     });
-
-    if (newProps.style) {
-      newProps.style = _.merge(style, newProps.style);
-    }
 
     return <NavigationBarComponent {..._.assignWith(newProps, this.props, skipUndefined)} />;
   }

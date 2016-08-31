@@ -1,6 +1,6 @@
 {
   "name": "@shoutem/animation",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Shoutem Animation Library",
   "main": "index.js",
   "scripts": {
@@ -9,6 +9,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://bitbucket.org/fiveminutes/shoutem-animation.git"
+  },
+  "dependencies": {
+    "lodash": "^4.15.0"
   },
   "keywords": [
     "React",

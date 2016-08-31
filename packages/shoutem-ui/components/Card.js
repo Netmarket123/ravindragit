@@ -1,24 +1,11 @@
-import React from 'react';
-import {
-    View,
-} from 'react-native';
+import { View } from 'react-native';
 
 import { connectStyle } from '@shoutem/theme';
+import { connectAnimation } from '@shoutem/animation';
 
-function Card(props) {
-  return (
-    <View {...props}>
-      {props.children}
-    </View>
-  );
-}
-
-Card.propTypes = {
-  ...View.propTypes,
-};
-
-const StyledCard = connectStyle('shoutem.ui.Card', {})(Card);
+const AnimatedCard = connectAnimation(View);
+const Card = connectStyle('shoutem.ui.Card', {})(AnimatedCard);
 
 export {
-  StyledCard as Card,
+  Card,
 };

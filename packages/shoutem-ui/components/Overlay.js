@@ -1,22 +1,11 @@
-import React from 'react';
-import { View as RNView } from 'react-native';
+import { View } from 'react-native';
 
 import { connectStyle } from '@shoutem/theme';
+import { connectAnimation } from '@shoutem/animation';
 
-function Overlay(props) {
-  return (
-    <RNView {...props}>
-      {props.children}
-    </RNView>
-  );
-}
-
-Overlay.propTypes = {
-  ...RNView.propTypes,
-};
-
-const StyledTag = connectStyle('shoutem.ui.Overlay')(Overlay);
+const AnimatedOverlay = connectAnimation(View);
+const Overlay = connectStyle('shoutem.ui.Overlay')(AnimatedOverlay);
 
 export {
-  StyledTag as Overlay,
+  Overlay,
 };
