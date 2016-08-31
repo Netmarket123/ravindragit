@@ -7,16 +7,22 @@ import { DriverShape } from './DriverShape';
 
 const ANIMATION_SUFFIX = 'Animation';
 
+function isComponentAnimated(props) {
+  return props.animation || props.animationName;
+}
+
 function removeAnimationsFromStyle(style) {
   return _.omitBy(style, (value, key) => _.isFunction(value) && _.endsWith(key, ANIMATION_SUFFIX));
 }
-const resolveAnimatedStyle = ({
+
+
+function resolveAnimatedStyle({
   props,
   driver,
   animations,
   layout = {},
-  componentName = 'Component',
-}) => {
+  componentName = 'component',
+}) {
   const {
     style,
     animation,
@@ -24,7 +30,7 @@ const resolveAnimatedStyle = ({
     animationOptions,
   } = props;
 
-  if (!animationName) {
+  if (!isComponentAnimated(props)) {
     return removeAnimationsFromStyle(style);
   }
 
@@ -35,13 +41,19 @@ const resolveAnimatedStyle = ({
 
   if (!_.isFunction(createAnimatedStyle)) {
     throw new Error(`Animation with name: ${animationName}, you tried to assign to ` +
-    `${componentName} doesn't exist. Check ${componentName}'s style or its declaration, ` +
-    'to find an exact error');
+      `to the ${componentName} doesn't exist. Check ${componentName}'s style or its declaration, ` +
+      'to find an exact error');
   }
+
+  if (!driver) {
+    throw new Error(`You tried to animate ${componentName} with animation named ${animationName} ` +
+      `but you didn't pass driver to ${componentName}.`);
+  }
+
   const animatedStyle = createAnimatedStyle(driver, { layout, animationOptions });
 
   return _.assign(removeAnimationsFromStyle(style), animatedStyle);
-};
+}
 
 /**
  * Higher order component that creates animated component which could be animated by
@@ -65,7 +77,7 @@ const resolveAnimatedStyle = ({
  * @param WrappedComponent component you want to be Animated
  * @param animations collection of available animations
  */
-export const connectAnimation = (WrappedComponent, animations = {}) => {
+export function connectAnimation(WrappedComponent, animations = {}) {
   const AnimatedWrappedComponent = Animated.createAnimatedComponent(WrappedComponent);
 
   class AnimatedComponent extends Component {
@@ -124,10 +136,20 @@ export const connectAnimation = (WrappedComponent, animations = {}) => {
       };
     }
 
+    componentWillReceiveProps(nextProps, nextContext) {
+      this.resolveStyle(nextProps, this.getDriver(nextProps, nextContext));
+    }
+
     onLayout(event) {
       const { layout } = event.nativeEvent;
-      const driver = this.props.driver || this.context.animationDriver;
-      this.setState({ layout }, () => this.resolveStyle(this.props, driver));
+      const driver = this.getDriver();
+      if (!_.isEqual(layout, this.state.layout)) {
+        this.setState({ layout }, () => this.resolveStyle(this.props, driver));
+      }
+    }
+
+    getDriver(props = this.props, context = this.context) {
+      return props.driver || context.animationDriver;
     }
 
     resolveStyle(props, driver) {
@@ -144,8 +166,12 @@ export const connectAnimation = (WrappedComponent, animations = {}) => {
 
     render() {
       const { resolvedStyle } = this.state;
+      const ConnectedComponent = isComponentAnimated(this.props) ?
+        AnimatedWrappedComponent :
+        WrappedComponent;
+
       return (
-        <AnimatedWrappedComponent
+        <ConnectedComponent
           onLayout={this.onLayout}
           {...this.props}
           style={resolvedStyle}
@@ -155,4 +181,4 @@ export const connectAnimation = (WrappedComponent, animations = {}) => {
   }
 
   return hoistStatics(AnimatedComponent, WrappedComponent);
-}
+};
