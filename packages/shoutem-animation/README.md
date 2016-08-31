@@ -2,7 +2,7 @@
 # Animations
 <hr />
 
-When building an application, there is a need to create animations to enrich the user experience. Although React Native [provides a way](https://facebook.github.io/react-native/docs/animations.html) to implement arbitrary animations, it is not an easy task to do it, even for simple animations. That's where `@shoutem/animation` package comes in. Package contains **animation components** that should be wrapped around components that you want to get animated and **driver** that _drives_ the animation components.
+When building an application, there is a need to create animations to enrich the user experience. Although React Native [provides a way](https://facebook.github.io/react-native/docs/animations.html) to implement arbitrary animations, it is not an easy task to do it, even for simple animations. That's where `@shoutem/animation` package comes in. Package contains **animation components** that should be wrapped around components that you want to get animated and **driver** that _controls_ the animations.
 
 ## Install
 
@@ -26,7 +26,7 @@ npm install
 react-native run-ios
 ```
 
-But full feel the full power of this package with connectAnimation higher order component
+But feel the full power of this package with `connectAnimation` higher order component
 
 Create your component
 
@@ -48,26 +48,15 @@ const AnimatedComponent = connectAnimation(MyComponent, {
       opacity: driver.value.interpolate({
         inputRange: [0, layout.height],
         outputRange: [0, 1],
-      })
+      }),
     };
   },
-  heroAnimation(driver, { layout, options }) {
+  solidifyAnimation(driver, { layout, options }) {
     return {
-      transform: [
-        {
-          scale: driver.value.interpolate({
-            inputRange: [-0.9 * layout.height, 0],
-            outputRange: [3, 1],
-            extrapolateRight: 'clamp',
-          }),
-        }, {
-          translateY: driver.value.interpolate({
-            inputRange: [-100, 100],
-            outputRange: [-50, 50],
-            extrapolateLeft: 'clamp',
-          }),
-        },
-      ],
+      backgroundColor: driver.value.interpolate({
+        inputRange: [0, 100],
+        outputRange: ['rgba(255, 255, 255, 0)', 'rgba(0, 170, 223, 1)'],
+      }),
     };
   },
 });

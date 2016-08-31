@@ -7,7 +7,7 @@ import { DriverShape } from './DriverShape';
 
 const ANIMATION_SUFFIX = 'Animation';
 
-function isComponentAnimatable(props) {
+function isComponentAnimated(props) {
   return props.animation || props.animationName;
 }
 
@@ -21,7 +21,7 @@ function resolveAnimatedStyle({
   driver,
   animations,
   layout = {},
-  componentName = 'Component',
+  componentName = 'component',
 }) {
   const {
     style,
@@ -30,7 +30,7 @@ function resolveAnimatedStyle({
     animationOptions,
   } = props;
 
-  if (!isComponentAnimatable(props)) {
+  if (!isComponentAnimated(props)) {
     return removeAnimationsFromStyle(style);
   }
 
@@ -41,7 +41,7 @@ function resolveAnimatedStyle({
 
   if (!_.isFunction(createAnimatedStyle)) {
     throw new Error(`Animation with name: ${animationName}, you tried to assign to ` +
-      `${componentName} doesn't exist. Check ${componentName}'s style or its declaration, ` +
+      `to the ${componentName} doesn't exist. Check ${componentName}'s style or its declaration, ` +
       'to find an exact error');
   }
 
@@ -166,7 +166,7 @@ export function connectAnimation(WrappedComponent, animations = {}) {
 
     render() {
       const { resolvedStyle } = this.state;
-      const ConnectedComponent = isComponentAnimatable(this.props) ?
+      const ConnectedComponent = isComponentAnimated(this.props) ?
         AnimatedWrappedComponent :
         WrappedComponent;
 
