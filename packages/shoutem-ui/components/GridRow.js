@@ -18,16 +18,20 @@ function renderPlaceholderViews(count) {
   return _.times(count, (index) => (<View key={`placeholder-${index}`} />));
 }
 
-function GridRow(props) {
-  const { children, columns } = props;
-  const missingElementsCount = columns - Children.count(children);
+// Ref needed
+// eslint-disable-next-line react/prefer-stateless-function
+class GridRow extends React.Component {
+  render() {
+    const { children, columns } = this.props;
+    const missingElementsCount = columns - Children.count(children);
 
-  return (
-    <RNView {...props}>
-      {children}
-      {renderPlaceholderViews(missingElementsCount)}
-    </RNView>
-  );
+    return (
+      <RNView {...this.props}>
+        {children}
+        {renderPlaceholderViews(missingElementsCount)}
+      </RNView>
+    );
+  }
 }
 
 GridRow.propTypes = {
