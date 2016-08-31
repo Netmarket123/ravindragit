@@ -9,7 +9,6 @@
     "workingDirectories": [
       "../packages/shoutem-core",
       "../packages/shoutem-theme",
-      "../packages/shoutem-ui",
       "../extensions/shoutem.application",
       "../extensions/shoutem.code-push",
       "../extensions/shoutem.preview"
