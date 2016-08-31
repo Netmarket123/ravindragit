@@ -74,16 +74,10 @@ function skipUndefined(objValue, srcValue) {
   return _.isUndefined(srcValue) ? objValue : srcValue;
 }
 
+// eslint-disable-next-line react/prefer-stateless-function
 const composeChildren = NavigationBarComponent => class extends Component {
-  static propTypes = {
-    id: React.PropTypes.any,
-    style: React.PropTypes.object,
-  };
-
   render() {
     const newProps = {};
-    const { style } = this.props;
-
     _.forEach(this.props, (value, key) => {
       if (_.isFunction(composers[key])) {
         _.assign(newProps, composers[key](value, this.props));

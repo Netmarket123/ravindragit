@@ -124,10 +124,20 @@ export const connectAnimation = (WrappedComponent, animations = {}) => {
       };
     }
 
+    componentWillReceiveProps(nextProps, nextContext) {
+      this.resolveStyle(nextProps, this.getDriver(nextProps, nextContext));
+    }
+
     onLayout(event) {
       const { layout } = event.nativeEvent;
-      const driver = this.props.driver || this.context.animationDriver;
-      this.setState({ layout }, () => this.resolveStyle(this.props, driver));
+      const driver = this.getDriver();
+      if (!_.isEqual(layout, this.state.layout)) {
+        this.setState({ layout }, () => this.resolveStyle(this.props, driver));
+      }
+    }
+
+    getDriver(props = this.props, context = this.context) {
+      return props.driver || context.animationDriver;
     }
 
     resolveStyle(props, driver) {
