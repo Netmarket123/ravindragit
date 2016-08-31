@@ -35,10 +35,11 @@ export class ScrollView extends Component {
 
   render() {
     const { props, animationDriver } = this;
+    const { style = {} } = props;
     const contentContainerStyle = {
-      ...props.style.contentContainerStyle,
+      ...style.contentContainerStyle,
     };
-    delete props.style.contentContainerStyle;
+    delete style.contentContainerStyle;
 
     return (
       <RNScrollView
