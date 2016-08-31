@@ -7,7 +7,7 @@ When building an application, there is a need to create animations to enrich the
 ## Install
 
 ```bash
-npm install -S @shoutem/animation
+npm install --save @shoutem/animation
 ```
 
 ## Docs
