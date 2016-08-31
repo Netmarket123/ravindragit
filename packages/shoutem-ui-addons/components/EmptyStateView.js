@@ -6,6 +6,7 @@ import {
   Button,
   View,
   Text,
+  Icon,
 } from '@shoutem/ui';
 
 import { connectStyle } from '@shoutem/theme';
@@ -13,6 +14,7 @@ import { connectStyle } from '@shoutem/theme';
 class EmptyStateView extends Component {
   static defaultProps = {
     retryButtonTitle: 'TRY AGAIN',
+    icon: 'error',
   }
 
   constructor(props) {
@@ -30,14 +32,16 @@ class EmptyStateView extends Component {
     // Show retry button at the bottom only if
     // there is a onRetry action passed.
     return (
-      <Button styleName="full-width" onPress={this.onRetry}>
-        <Text>{retryButtonTitle}</Text>
-      </Button>
+      <View styleName="horizontal anchor-bottom">
+        <Button styleName="full-width" onPress={this.onRetry}>
+          <Text>{retryButtonTitle}</Text>
+        </Button>
+      </View>
     );
   }
 
   render() {
-    const { message, onRetry } = this.props;
+    const { icon, message, onRetry } = this.props;
 
     return (
       <View
@@ -45,7 +49,7 @@ class EmptyStateView extends Component {
         styleName="vertical flexible h-center v-center"
       >
         <View styleName="icon-placeholder">
-          {this.props.children}
+          <Icon name={icon} />
         </View>
 
         <Subtitle styleName="h-center">{message}</Subtitle>
@@ -60,6 +64,7 @@ EmptyStateView.propTypes = {
   ...EmptyStateView.propTypes,
   onRetry: React.PropTypes.func,
   message: React.PropTypes.string,
+  icon: React.PropTypes.string,
 };
 
 const StyledView = connectStyle('shoutem.ui.EmptyStateView')(EmptyStateView);

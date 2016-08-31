@@ -360,18 +360,17 @@ export default () => ({
   //
   'shoutem.ui.EmptyStateView': {
     'shoutem.ui.View': {
-      'shoutem.ui.Button': {
-        position: 'absolute',
-        bottom: 0,
-        width: window.width,
-      },
-
       'shoutem.ui.Subtitle': {
         marginTop: MEDIUM_GUTTER,
         width: 120,
       },
 
       'shoutem.ui.View': {
+        '.anchor-bottom': {
+          position: 'absolute',
+          bottom: 0,
+        },
+
         '.icon-placeholder': {
           height: 62,
           width: 62,
