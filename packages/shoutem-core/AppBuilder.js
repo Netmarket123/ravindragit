@@ -2,6 +2,8 @@ import React, {
   Component,
 } from 'react';
 
+import _ from 'lodash';
+
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
@@ -12,8 +14,6 @@ import coreExtensions from './coreExtensions';
 import { StyleProvider } from '@shoutem/theme';
 import { enableRio, apiStateMiddleware } from '@shoutem/redux-io';
 import { apiMiddleware } from 'redux-api-middleware';
-
-const fallBackThemeVariables = {};
 
 /**
  * Calls the lifecycle function with the given name on all
@@ -45,7 +45,8 @@ function createApplication(appContext) {
     constructor(props, context) {
       super(props, context);
       this.state = {
-        style: appContext.themeInit(fallBackThemeVariables),
+        theme: null,
+        style: null,
       };
     }
 
@@ -66,6 +67,27 @@ function createApplication(appContext) {
     }
 
     /**
+     * Returns the redux state of the app.
+     * @returns {*} The redux state.
+     */
+    setTheme(theme) {
+      const themes = this.getThemes();
+      const activeTheme = themes[theme];
+      if (!activeTheme) {
+        throw Error(`Active theme "${theme}" is not register in application.`);
+      }
+
+      // TODO(Braco) - add variables;
+      const style = _.isFunction(activeTheme) ? activeTheme() : activeTheme;
+
+      this.setState({ style, theme });
+    }
+
+    getTheme() {
+      return this.state.theme;
+    }
+
+    /**
      * Returns the extensions used to initialize the app.
      * @returns {*} The extensions.
      */
@@ -79,6 +101,14 @@ function createApplication(appContext) {
      */
     getScreens() {
       return Object.assign({}, appContext.screens);
+    }
+
+    /**
+     * Returns available themes in the app.
+     * @returns {*} The screens.
+     */
+    getThemes() {
+      return Object.assign({}, appContext.themes);
     }
 
     componentWillMount() {
@@ -153,13 +183,6 @@ function assertInitialRouteExists(initialRoute, screens) {
 
   if (!screens[initialRoute.screen]) {
     throw new Error('The initial route points to a screen that does not exist.');
-  }
-}
-
-function assertThemeInitExist(themeInit) {
-  if (!themeInit || (themeInit && typeof themeInit !== 'function')) {
-    throw Error('The app without an theme initial function cannot be created, ' +
-      'ThemeInit doesn\'t exists or is wrong type, it must be function!');
   }
 }
 
@@ -256,50 +279,49 @@ function createApplicationStore(appContext) {
 }
 
 /**
- * Extracts all of the screens from provided extension. This function will
- * return an object that has React Component assigned to screen name
+ * Extracts all of the canonical objects from provided extension. This function will
+ * return an object that has exported canonical type object assigned to it name
  * prefixed with extension name e.g.
  * {
- *  extension1.screenName1: ScreenComponent1,
- *  extension1.screenName2: ScreenComponent2,
+ *  extension1.canonicalName: canonicalValue,
  *  ...
  * }
  * @param extension The extension installed in app,
  * @param extensionName The name of installed extension
  * @returns {*} The screens object.
  */
-function extractExtensionScreens(extension, extensionName) {
-  const screens = {};
+function extractCanonicalObjectsFromExtensions(segment, extension, extensionName) {
+  const segmentData = {};
 
-  if (extension.screens) {
-    for (const screenName of Object.keys(extension.screens)) {
-      screens[`${extensionName}.${screenName}`] = extension.screens[screenName];
+  if (extension[segment]) {
+    for (const segmentName of Object.keys(extension[segment])) {
+      segmentData[`${extensionName}.${segmentName}`] = extension[segment][segmentName];
     }
   }
 
-  return screens;
+  return segmentData;
 }
 
 /**
- * Extracts all of the screens from provided extensions. This function will
- * return an object that has React Component assigned to screen name
+ * Extracts all of the canonical objects from provided extensions. This function will
+ * return an object that has exported canonical type object assigned to it name
  * prefixed with extension name e.g.
  * {
- *  extension1.screenName1: ScreenComponent1,
- *  extension1.screenName2: ScreenComponent2,
- *  extension2.screenName3: ScreenComponent3,
+ *  extension1.canonicalName: canonicalValue,
  *  ...
  * }
  * @param appContext The context configured through the builder API
  * @returns {*} The screens object.
  */
-function getApplicationScreens(appContext) {
+
+function getApplicationCanonicalObject(segment, appContext) {
   return Object.keys(appContext.extensions).reduce((prevResult, extensionName) => {
     const extension = appContext.extensions[extensionName];
-    const extensionScreens = extractExtensionScreens(extension, extensionName);
-    return Object.assign(prevResult, extensionScreens);
+    const segments = extractCanonicalObjectsFromExtensions(segment, extension, extensionName);
+    return Object.assign(prevResult, segments);
   }, {});
 }
+
 
 const APP_CONTEXT = Symbol('appContext');
 
@@ -336,11 +358,6 @@ export default class AppBuilder {
     return this;
   }
 
-  setThemeInit(themeInit) {
-    this[APP_CONTEXT].themeInit = themeInit;
-    return this;
-  }
-
   /**
    * Save only static content in app context, do not resolve dynamic content
    * which depends on state or it can be changed without new configuration.
@@ -355,13 +372,14 @@ export default class AppBuilder {
     assertExtensionsExist(appContext.extensions);
     appContext.extensions = includeCoreExtension(appContext.extensions);
 
-    appContext.screens = getApplicationScreens(appContext);
+    // TODO(Braco) - no themes case ?
+    appContext.themes = getApplicationCanonicalObject('themes', appContext);
+
+    appContext.screens = getApplicationCanonicalObject('screens', appContext);
     assertScreensExist(appContext.screens);
     if (Object.keys(appContext.initialRoute).length) {
       assertInitialRouteExists(appContext.initialRoute, appContext.screens);
     }
-
-    assertThemeInitExist(appContext.themeInit);
 
     appContext.store = createApplicationStore(appContext);
 
