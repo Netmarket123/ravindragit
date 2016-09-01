@@ -1,0 +1,11 @@
+{
+  "name": "@shoutem/ui-addons",
+  "version": "0.0.1",
+  "main": "index.js",
+  "peerDependencies": {
+    "react": "15.1.0",
+    "react-native": "0.28.0",
+    "@shoutem/ui": "0.0.26",
+    "@shoutem/theme": "0.0.6"
+  }
+}
