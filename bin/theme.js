@@ -354,4 +354,31 @@ export default () => ({
       padding: 0,
     },
   },
+
+  //
+  // Empty State (error page)
+  //
+  'shoutem.ui.EmptyStateView': {
+    'shoutem.ui.View': {
+      'shoutem.ui.Subtitle': {
+        marginTop: MEDIUM_GUTTER,
+        width: 120,
+      },
+
+      'shoutem.ui.View': {
+        '.anchor-bottom': {
+          position: 'absolute',
+          bottom: 0,
+        },
+
+        '.icon-placeholder': {
+          height: 62,
+          width: 62,
+          backgroundColor: 'rgba(3, 3, 3, 0.1)',
+          borderRadius: 31,
+          justifyContent: 'center',
+        },
+      },
+    },
+  },
 });
