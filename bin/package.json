@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@shoutem/core": "0.0.21",
-    "code-push": "1.10.0-beta",
-    "code-push-cli": "1.12.0-beta",
+    "code-push": "^1.10.0-beta",
+    "code-push-cli": "1.12.3",
     "command-line-args": "^2.1.6",
     "fs-extra": "^0.26.5",
     "glob": "^7.0.3",

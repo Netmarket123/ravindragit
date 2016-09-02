@@ -128,13 +128,6 @@
 			remoteGlobalIDString = 5DBEB1501B18CEA900B34395;
 			remoteInfo = RNVectorIcons;
 		};
-		27C9AD811D6F606E00F35A3D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5DCA7ECA45004FD2B1C2376C /* BVLinearGradient.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = BVLinearGradient;
-		};
 		27DDE1AE1D421B57007FADF2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 027F57F9B3AF4EA2A5524E44 /* AirMaps.xcodeproj */;
@@ -204,7 +197,6 @@
 		4814241B1B7B40778B2BA351 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		48ABB7C2C9EC45DBAB3078C2 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		4D7D7F9ACC7A460E84151DD3 /* libRNShare.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNShare.a; sourceTree = "<group>"; };
-		5DCA7ECA45004FD2B1C2376C /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		6615D1CCB6114D7DBF586011 /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 0; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
 		6D19753EEA2E424EB54C42A0 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		759F68D70E6540D599EA001E /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
@@ -377,14 +369,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		27C9AD7D1D6F606E00F35A3D /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				27C9AD821D6F606E00F35A3D /* libBVLinearGradient.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		27DDE1AB1D421B57007FADF2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -420,7 +404,6 @@
 				8CD7426F415F489387DEE40F /* CalendarManager.xcodeproj */,
 				027F57F9B3AF4EA2A5524E44 /* AirMaps.xcodeproj */,
 				8DFC55F436A24484A5A86933 /* CodePush.xcodeproj */,
-				5DCA7ECA45004FD2B1C2376C /* BVLinearGradient.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -563,10 +546,6 @@
 				{
 					ProductGroup = 27DDE1AB1D421B57007FADF2 /* Products */;
 					ProjectRef = 027F57F9B3AF4EA2A5524E44 /* AirMaps.xcodeproj */;
-				},
-				{
-					ProductGroup = 27C9AD7D1D6F606E00F35A3D /* Products */;
-					ProjectRef = 5DCA7ECA45004FD2B1C2376C /* BVLinearGradient.xcodeproj */;
 				},
 				{
 					ProductGroup = A486E9B51CFB21F800BC6403 /* Products */;
@@ -713,13 +692,6 @@
 			fileType = archive.ar;
 			path = libRNVectorIcons.a;
 			remoteRef = 274E88291CA17B5A0014C4A2 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		27C9AD821D6F606E00F35A3D /* libBVLinearGradient.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libBVLinearGradient.a;
-			remoteRef = 27C9AD811D6F606E00F35A3D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		27DDE1AF1D421B57007FADF2 /* libAirMaps.a */ = {
@@ -938,7 +910,6 @@
 					"$(SRCROOT)/../node_modules/react-native-calendar-manager/CalendarManager",
 					"$(SRCROOT)/../node_modules/react-native-maps/ios/AirMaps/**",
 					"$(SRCROOT)/../node_modules/react-native-code-push/ios/CodePush/**",
-					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 				);
 				INFOPLIST_FILE = ShoutemApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -971,7 +942,6 @@
 					"$(SRCROOT)/../node_modules/react-native-calendar-manager/CalendarManager",
 					"$(SRCROOT)/../node_modules/react-native-maps/ios/AirMaps/**",
 					"$(SRCROOT)/../node_modules/react-native-code-push/ios/CodePush/**",
-					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 				);
 				INFOPLIST_FILE = ShoutemApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
