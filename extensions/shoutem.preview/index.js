@@ -1,7 +1,12 @@
 import { Linking } from 'react-native';
 import rio from '@shoutem/redux-io';
+import React from 'react';
 import { fetchConfiguration } from './actions';
 import { getAppId, openInitialScreen } from 'shoutem.application';
+import { RefreshConfigButton } from './components/RefreshConfigButton';
+import { watchConfiguration } from './shared/watchConfiguration';
+
+export { fetchConfiguration };
 
 // TODO (Ivan): Remove this when authorization is available
 // eslint-disable-next-line max-len
@@ -30,8 +35,13 @@ function registerConfigurationSchema() {
   });
 }
 
+function appWillMount(app) {
+  app.createWidget(RefreshConfigButton, {});
+}
+
 function appDidMount(app) {
   registerConfigurationSchema();
+  watchConfiguration(app);
   const dispatch = app.getStore().dispatch;
   Linking.addEventListener('url', (deepLink) => {
     const appId = getAppIdFromUrl(deepLink.url);
@@ -55,6 +65,7 @@ function appWillUnmount() {
 }
 
 export {
+  appWillMount,
   appDidMount,
   appWillUnmount,
 };
