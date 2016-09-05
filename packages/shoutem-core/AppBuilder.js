@@ -1,8 +1,7 @@
-import React, {
-  Component,
-} from 'react';
+import React from 'react';
 
 import _ from 'lodash';
+import { WidgetsLayer, Widget } from './widget';
 
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
@@ -41,10 +40,14 @@ function callLifecycleFunction(app, extensions, functionName) {
  * @returns {App} The App class.
  */
 function createApplication(appContext) {
-  const App = class App extends Component {
+  const App = class App extends React.Component {
     constructor(props, context) {
       super(props, context);
+      this.updateWidget = this.updateWidget.bind(this);
+      this.deleteWidget = this.deleteWidget.bind(this);
       this.state = {
+        widgets: {},
+        appVersion: 1,
         theme: null,
         style: null,
       };
@@ -127,6 +130,34 @@ function createApplication(appContext) {
       return { screens: appContext.screens };
     }
 
+    updateWidget(widget) {
+      const widgets = {
+        ...this.state.widgets,
+        [widget.id]: widget.render(),
+      };
+      this.setState({ widgets });
+    }
+
+    createWidget(Component, props = {}) {
+      const widget = new Widget(Component, props, this.updateWidget, this.deleteWidget);
+
+      const widgets = {
+        ...this.state.widgets,
+        [widget.id]: widget.render(),
+      };
+
+      this.setState({ widgets });
+      return widget;
+    }
+
+    deleteWidget(widgetId) {
+      const widgets = {
+        ...this.state.widgets,
+      };
+      delete widgets[widgetId];
+      this.setState({ widgets });
+    }
+
     render() {
       const content = this.props.children || (
         <ScreenNavigator
@@ -138,7 +169,9 @@ function createApplication(appContext) {
       return (
         <Provider store={appContext.store}>
           <StyleProvider style={this.state.style}>
-            {content}
+            <WidgetsLayer widgets={this.state.widgets}>
+              {content}
+            </WidgetsLayer>
           </StyleProvider>
         </Provider>
       );
