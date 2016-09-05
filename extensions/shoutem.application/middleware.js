@@ -105,6 +105,9 @@ const navigateToShortcutScreen = store => next => action => {
             children,
             ...settings,
           },
+          context: {
+            layouts: activeLayouts,
+          },
         });
 
       // No need for error handling, if screen is invalid navigate to will throw Exception

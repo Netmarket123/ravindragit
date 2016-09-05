@@ -200,9 +200,6 @@ export default () => ({
   },
 
   'shoutem.ui.InlineMap': {
-    // TODO: why do we need all image sizes and styles here?
-    [INCLUDE]: ['imageSizes'],
-
     '.top-aligned': {
       justifyContent: 'flex-start',
     },

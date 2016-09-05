@@ -94,7 +94,7 @@ describe('connectStyle', () => {
           test: 1,
         },
       };
-      const demo = mount(<ConnectedClassComponent virtual/>, { context });
+      const demo = mount(<ConnectedClassComponent virtual />, { context });
       const instanceContext = demo.instance().getChildContext();
 
       assert.strictEqual(
