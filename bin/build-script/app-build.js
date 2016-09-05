@@ -110,7 +110,7 @@ class AppBuild {
     console.log(`starting build for app ${this.appId}`);
     this.prepareConfiguration()
       .then(() => this.prepareExtensions())
-      // .then(() => this.removeBabelrcFiles())
+      .then(() => this.removeBabelrcFiles())
       .then(() => {
         console.timeEnd('build time');
       })
