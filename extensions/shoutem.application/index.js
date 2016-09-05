@@ -7,14 +7,22 @@ import {
   createExecuteShortcutMiddleware,
 } from './middleware';
 import { combineReducers } from 'redux';
-import { loaded, storage } from '@shoutem/redux-io';
+import { loaded, storage, one } from '@shoutem/redux-io';
+import { extractAppActions } from './shared/extractAppActions';
+import { createOne } from './shared/createOne';
+import { getActiveTheme } from './shared/getActiveTheme';
+import { setActiveTheme } from './shared/setActiveTheme';
+import { getThemeFromStore } from './shared/getThemeFromStore';
+import { watchActiveTheme } from './shared/watchActiveTheme';
+import { openInitialScreen } from './shared/openInitialScreen';
 
 import {
   configurationReducer,
   executeShortcut,
   getAppId,
 } from './actions';
-import { getFirstShortcut } from './getFirstShortcut';
+
+const THEME_SCHEMA = 'shoutem.core.theme';
 
 const actions = {
   executeShortcut,
@@ -26,47 +34,33 @@ const reducer = combineReducers({
   shortcuts: storage('shoutem.core.shortcuts'),
   screens: storage('shoutem.core.screens'),
   extensions: storage('shoutem.core.extensions'),
-  themes: storage('shoutem.core.theme'),
+  themes: storage(THEME_SCHEMA),
+  activeTheme: one(THEME_SCHEMA, 'activeTheme'),
 });
 
 const appActions = {};
 
-function extractAppActions(app) {
-  const extensions = app.getExtensions();
-  Object.keys(extensions).forEach(extensionName => {
-    const extension = extensions[extensionName];
-    if (extension.actions) {
-      Object.keys(extension.actions).forEach(actionName => {
-        const action = extension.actions[actionName];
-        const key = `${extensionName}.${actionName}`;
-        appActions[key] = action;
-      });
-    }
-  });
-}
-
 function appWillMount(app) {
   if (_.get(configuration, 'data.type')) {
     const dispatch = app.getStore().dispatch;
-    dispatch(loaded(configuration, 'shoutem.core.configuration'));
-    extractAppActions(app);
-  }
-}
 
-function openInitialScreen(app) {
-  const store = app.getStore();
-  const configurationFromState = store.getState()['shoutem.application'].configuration;
-  const shortcuts = store.getState()['shoutem.application'].shortcuts;
-  const firstShortcut = getFirstShortcut(configurationFromState, shortcuts);
-  if (firstShortcut) {
-    store.dispatch(executeShortcut(firstShortcut));
+    // Save configuration to state
+    dispatch(loaded(configuration, 'shoutem.core.configuration'));
+
+    // Save activeTheme to state
+    const theme = getActiveTheme(configuration);
+    dispatch(loaded(createOne(theme, THEME_SCHEMA), THEME_SCHEMA, 'activeTheme'));
+
+    extractAppActions(app, appActions);
   }
+
+  watchActiveTheme(app);
 }
 
 function appDidMount(app) {
+  setActiveTheme(app, getThemeFromStore(app.getStore()));
   openInitialScreen(app);
 }
-
 
 const middleware = [
   createExecuteShortcutMiddleware(appActions),
