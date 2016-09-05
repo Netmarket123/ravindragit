@@ -1,6 +1,6 @@
 import { Linking } from 'react-native';
 import rio from '@shoutem/redux-io';
-import { findConfiguration } from './actions';
+import { fetchConfiguration } from './actions';
 import { getAppId, openInitialScreen } from 'shoutem.application';
 
 // TODO (Ivan): Remove this when authorization is available
@@ -37,14 +37,14 @@ function appDidMount(app) {
     const appId = getAppIdFromUrl(deepLink.url);
     if (appId) {
       // get new configuration for app id provided in deepLink
-      dispatch(findConfiguration(appId));
+      dispatch(fetchConfiguration(appId));
     }
   });
 
   const state = app.getStore().getState();
   const appId = getAppId(state);
   if (appId) {
-    dispatch(findConfiguration(appId)).then(() => {
+    dispatch(fetchConfiguration(appId)).then(() => {
       openInitialScreen(app);
     });
   }
