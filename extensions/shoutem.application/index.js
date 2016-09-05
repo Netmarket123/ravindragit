@@ -14,6 +14,7 @@ import { setActiveTheme } from './shared/setActiveTheme';
 import { getThemeFromStore } from './shared/getThemeFromStore';
 import { watchActiveTheme } from './shared/watchActiveTheme';
 import { openInitialScreen } from './shared/openInitialScreen';
+import { watchConfiguration } from './shared/watchConfiguration';
 
 import {
   configurationReducer,
@@ -73,4 +74,5 @@ export {
   appDidMount,
   getAppId,
   openInitialScreen,
+  watchConfiguration,
 };

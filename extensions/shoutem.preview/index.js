@@ -1,10 +1,8 @@
 import { Linking } from 'react-native';
 import rio from '@shoutem/redux-io';
-import React from 'react';
 import { fetchConfiguration } from './actions';
-import { getAppId, openInitialScreen } from 'shoutem.application';
+import { getAppId, openInitialScreen, watchConfiguration } from 'shoutem.application';
 import { RefreshConfigButton } from './components/RefreshConfigButton';
-import { watchConfiguration } from './shared/watchConfiguration';
 
 export { fetchConfiguration };
 
@@ -20,6 +18,10 @@ function getAppIdFromUrl(url) {
   }
 
   return appId;
+}
+
+function configurationChanged(app) {
+  openInitialScreen(app);
 }
 
 function registerConfigurationSchema() {
@@ -41,7 +43,7 @@ function appWillMount(app) {
 
 function appDidMount(app) {
   registerConfigurationSchema();
-  watchConfiguration(app);
+  watchConfiguration(app, () => configurationChanged(app));
   const dispatch = app.getStore().dispatch;
   Linking.addEventListener('url', (deepLink) => {
     const appId = getAppIdFromUrl(deepLink.url);
