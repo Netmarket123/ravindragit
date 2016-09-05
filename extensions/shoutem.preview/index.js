@@ -1,5 +1,6 @@
 import { Linking } from 'react-native';
-import rio, { find } from '@shoutem/redux-io';
+import rio from '@shoutem/redux-io';
+import { findConfiguration } from './actions';
 import { getAppId, openInitialScreen } from 'shoutem.application';
 
 // TODO (Ivan): Remove this when authorization is available
@@ -16,7 +17,7 @@ function getAppIdFromUrl(url) {
   return appId;
 }
 
-function appWillMount() {
+function registerConfigurationSchema() {
   rio.registerSchema({
     schema: 'shoutem.core.configuration',
     request: {
@@ -30,19 +31,20 @@ function appWillMount() {
 }
 
 function appDidMount(app) {
+  registerConfigurationSchema();
   const dispatch = app.getStore().dispatch;
   Linking.addEventListener('url', (deepLink) => {
     const appId = getAppIdFromUrl(deepLink.url);
     if (appId) {
       // get new configuration for app id provided in deepLink
-      dispatch(find('shoutem.core.configuration', '', { appId }));
+      dispatch(findConfiguration(appId));
     }
   });
 
   const state = app.getStore().getState();
   const appId = getAppId(state);
   if (appId) {
-    dispatch(find('shoutem.core.configuration', '', { appId })).then(() => {
+    dispatch(findConfiguration(appId)).then(() => {
       openInitialScreen(app);
     });
   }
@@ -53,7 +55,6 @@ function appWillUnmount() {
 }
 
 export {
-  appWillMount,
   appDidMount,
   appWillUnmount,
 };

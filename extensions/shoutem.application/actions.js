@@ -26,10 +26,11 @@ export const configurationReducer = function (state = {}, action) {
  * that should be provided to an action
  * @returns {{type: string, shortcut: *}} a redux action with type EXECUTE_SHORTCUT
  */
-export const executeShortcut = function (shortcut, navigationAction = 'navigateTo') {
+export const executeShortcut = function (shortcut, navigationAction = 'navigateTo', navigator) {
   return {
     type: EXECUTE_SHORTCUT,
     navigationAction,
+    navigator,
     shortcut,
   };
 };

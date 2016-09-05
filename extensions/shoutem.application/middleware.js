@@ -89,6 +89,7 @@ const navigateToShortcutScreen = store => next => action => {
     const settings = createScreenSettings(action.shortcut);
     const children = getChildShortcuts(store, action.shortcut);
     const navigateAction = navigation[action.navigationAction];
+    const navigator = action.navigator;
 
     activeLayouts = _.get(action, 'shortcut.attributes.screens');
 
@@ -108,7 +109,7 @@ const navigateToShortcutScreen = store => next => action => {
           context: {
             layouts: activeLayouts,
           },
-        });
+        }, navigator);
 
       // No need for error handling, if screen is invalid navigate to will throw Exception
       return next(openScreenAction());
