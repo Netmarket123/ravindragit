@@ -47,7 +47,6 @@ function createApplication(appContext) {
       this.deleteWidget = this.deleteWidget.bind(this);
       this.state = {
         widgets: {},
-        appVersion: 1,
         theme: null,
         style: null,
       };
