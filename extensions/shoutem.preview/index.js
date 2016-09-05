@@ -16,7 +16,7 @@ function getAppIdFromUrl(url) {
   return appId;
 }
 
-function appWillMount(app) {
+function appWillMount() {
   rio.registerSchema({
     schema: 'shoutem.core.configuration',
     request: {
@@ -27,13 +27,6 @@ function appWillMount(app) {
       },
     },
   });
-  const appId = getAppId(app);
-  if (appId) {
-    const dispatch = app.getStore().dispatch;
-    dispatch(find('shoutem.core.configuration', '', { appId })).then(() => {
-      openInitialScreen(app);
-    });
-  }
 }
 
 function appDidMount(app) {
@@ -45,6 +38,14 @@ function appDidMount(app) {
       dispatch(find('shoutem.core.configuration', '', { appId }));
     }
   });
+
+  const state = app.getStore().getState();
+  const appId = getAppId(state);
+  if (appId) {
+    dispatch(find('shoutem.core.configuration', '', { appId })).then(() => {
+      openInitialScreen(app);
+    });
+  }
 }
 
 function appWillUnmount() {
