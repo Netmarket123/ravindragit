@@ -1,5 +1,6 @@
 import { Linking } from 'react-native';
 import rio, { find } from '@shoutem/redux-io';
+import { getAppId, openInitialScreen } from 'shoutem.application';
 
 // TODO (Ivan): Remove this when authorization is available
 // eslint-disable-next-line max-len
@@ -15,7 +16,7 @@ function getAppIdFromUrl(url) {
   return appId;
 }
 
-function appDidMount(app) {
+function appWillMount(app) {
   rio.registerSchema({
     schema: 'shoutem.core.configuration',
     request: {
@@ -26,6 +27,16 @@ function appDidMount(app) {
       },
     },
   });
+  const appId = getAppId(app);
+  if (appId) {
+    const dispatch = app.getStore().dispatch;
+    dispatch(find('shoutem.core.configuration', '', { appId })).then(() => {
+      openInitialScreen(app);
+    });
+  }
+}
+
+function appDidMount(app) {
   const dispatch = app.getStore().dispatch;
   Linking.addEventListener('url', (deepLink) => {
     const appId = getAppIdFromUrl(deepLink.url);
@@ -41,6 +52,7 @@ function appWillUnmount() {
 }
 
 export {
+  appWillMount,
   appDidMount,
   appWillUnmount,
 };

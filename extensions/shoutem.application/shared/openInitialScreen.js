@@ -7,6 +7,6 @@ export function openInitialScreen(app) {
   const shortcuts = store.getState()['shoutem.application'].shortcuts;
   const firstShortcut = getFirstShortcut(configurationFromState, shortcuts);
   if (firstShortcut) {
-    store.dispatch(executeShortcut(firstShortcut));
+    store.dispatch(executeShortcut(firstShortcut, 'replaceWith'));
   }
 }

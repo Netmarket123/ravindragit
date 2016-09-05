@@ -77,4 +77,5 @@ export {
   appWillMount,
   appDidMount,
   getAppId,
+  openInitialScreen,
 };
