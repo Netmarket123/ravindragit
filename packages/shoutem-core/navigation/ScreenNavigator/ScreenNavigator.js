@@ -53,8 +53,12 @@ export class ScreenNavigator extends Component {
     this.state = {
       deactivatedRoute: null,
       activeRoute: null,
-      withNavBar: true,
       initialRoute: props.initialRoute,
+      /**
+       * Current route state.
+       * Saves route specific configuration.
+       */
+      routeState: this.getDefaultRouteState(),
     };
   }
 
@@ -147,6 +151,17 @@ export class ScreenNavigator extends Component {
     this.props.allowActions();
   }
 
+  /**
+   * Default screenState. Each screen expects to have state like this when rendered.
+   * This is important se Screens do not have to override/rollback changes made by previous screen.
+   * @returns {{withNavBar: boolean}}
+   */
+  getDefaultRouteState() {
+    return {
+      withNavBar: true,
+    };
+  }
+
   getLastRouteIndex() {
     if (!this.navigator) {
       return 0;
@@ -172,11 +187,29 @@ export class ScreenNavigator extends Component {
     return _.get(props, 'navigatorState.action');
   }
 
+  updateRouteState(update) {
+    const routeState = {
+      ...this.state.routeState,
+      ...update,
+    };
+    this.setState({ routeState });
+  }
+
+  /**
+   * Reset ScreenNavigator routeState to default screen state.
+   * Called on route change so screen/route doesn't have to take care
+   * on previous screen/route specific configuration.
+   */
+  resetRouteState() {
+    this.setState({ routeState: this.getDefaultRouteState() });
+  }
+
   activateRoute(activeRoute) {
     this.setState({ activeRoute });
   }
 
   deactivateRoute(deactivatedRoute, onRouteDeactivated = () => {}) {
+    this.resetRouteState();
     this.setState({ deactivatedRoute }, onRouteDeactivated);
   }
 
@@ -277,7 +310,7 @@ export class ScreenNavigator extends Component {
    * @returns {function(): null}
    */
   createRenderNavigationBar() {
-    if (this.state.withNavBar) {
+    if (this.state.routeState.withNavBar) {
       return this.props.renderNavigationBar;
     }
     return () => null;
@@ -318,7 +351,7 @@ export class ScreenNavigator extends Component {
         focused={focused}
         // eslint-disable-next-line react/jsx-no-bind
         setNavBarProps={state => focused && this.setNavBarState(state, route)}
-        shouldNavBarRender={withNavBar => this.setState({ withNavBar })}
+        shouldNavBarRender={withNavBar => this.updateRouteState({ withNavBar })}
       />
     );
   }
