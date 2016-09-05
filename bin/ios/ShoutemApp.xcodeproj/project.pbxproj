@@ -38,7 +38,6 @@
 		9E9E651E6B2047CFAE932FC4 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1F215385F682417CA8ED6E6B /* FontAwesome.ttf */; };
 		9ED9C5AEDCF9483BBE7BCEF5 /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D1672A7BB3B649BE9976D339 /* libRCTVideo.a */; };
 		A4BBF8401C7C9BD300CED113 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A4BBF83F1C7C9BD300CED113 /* libz.tbd */; };
-		E18527F7D0FE4E7DAB8AF942 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B7CE8F7D61634CD6B30E9EFC /* libBVLinearGradient.a */; };
 		E3EBC45710DF48A3948641EA /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75ED0EB74A8D4167ADD79341 /* libCodePush.a */; };
 		F70D8A1E2D2C4127BBFE1722 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98CC9CC2660D4E07BF98129E /* Ionicons.ttf */; };
 /* End PBXBuildFile section */
@@ -209,7 +208,6 @@
 		98CC9CC2660D4E07BF98129E /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		A4BBF83F1C7C9BD300CED113 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		B165BA48BA954339BF78C0C3 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
-		B7CE8F7D61634CD6B30E9EFC /* libBVLinearGradient.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libBVLinearGradient.a; sourceTree = "<group>"; };
 		D1672A7BB3B649BE9976D339 /* libRCTVideo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 0; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTVideo.a; sourceTree = "<group>"; };
 		E4BF60A42C4B479592D60D6E /* libAirMaps.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAirMaps.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -243,7 +241,6 @@
 				22C012825B964AB8BD44C685 /* libRNShare.a in Frameworks */,
 				8FD1F48C728A4EEAB5E8AAEB /* libCalendarManager.a in Frameworks */,
 				263E1A6A14D947EC81005298 /* libAirMaps.a in Frameworks */,
-				E18527F7D0FE4E7DAB8AF942 /* libBVLinearGradient.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
