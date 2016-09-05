@@ -74,7 +74,7 @@ function createApplication(appContext) {
       const themes = this.getThemes();
       const activeTheme = themes[theme];
       if (!activeTheme) {
-        throw Error(`Active theme "${theme}" is not register in application.`);
+        throw Error(`Active theme "${theme}" is not registered in application.`);
       }
 
       // TODO(Braco) - add variables;
