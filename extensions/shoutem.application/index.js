@@ -10,7 +10,6 @@ import { combineReducers } from 'redux';
 import { loaded, storage, one } from '@shoutem/redux-io';
 import { extractAppActions } from './shared/extractAppActions';
 import { createOne } from './shared/createOne';
-import { getActiveTheme } from './shared/getActiveTheme';
 import { setActiveTheme } from './shared/setActiveTheme';
 import { getThemeFromStore } from './shared/getThemeFromStore';
 import { watchActiveTheme } from './shared/watchActiveTheme';
@@ -46,10 +45,6 @@ function appWillMount(app) {
 
     // Save configuration to state
     dispatch(loaded(configuration, 'shoutem.core.configuration'));
-
-    // Save activeTheme to state
-    const theme = getActiveTheme(configuration);
-    dispatch(loaded(createOne(theme, THEME_SCHEMA), THEME_SCHEMA, 'activeTheme'));
 
     extractAppActions(app, appActions);
   }
