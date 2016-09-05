@@ -45,7 +45,7 @@ function createExecuteShortcutMiddleware(actions) {
         const children = getChildShortcuts(store, action.shortcut);
 
         if (typeof shortcutAction === 'function') {
-          return next(shortcutAction(settings, children, store.getState()));
+          return store.dispatch(shortcutAction(settings, children));
         }
 
         throw new Error(`Shortcut you tried to execute has no valid action (${actionName}),
