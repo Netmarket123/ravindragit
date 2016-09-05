@@ -9,7 +9,6 @@ import {
 import { combineReducers } from 'redux';
 import { loaded, storage, one } from '@shoutem/redux-io';
 import { extractAppActions } from './shared/extractAppActions';
-import { createOne } from './shared/createOne';
 import { setActiveTheme } from './shared/setActiveTheme';
 import { getThemeFromStore } from './shared/getThemeFromStore';
 import { watchActiveTheme } from './shared/watchActiveTheme';
