@@ -152,8 +152,8 @@ export class ScreenNavigator extends Component {
   }
 
   /**
-   * Default screenState. Each screen expects to have state like this when rendered.
-   * This is important se Screens do not have to override/rollback changes made by previous screen.
+   * Get default screenState. Each screen expects to have state like this when rendered.
+   * This is important so Screens do not have to override/rollback changes made by previous screen.
    * @returns {{withNavBar: boolean}}
    */
   getDefaultRouteState() {
