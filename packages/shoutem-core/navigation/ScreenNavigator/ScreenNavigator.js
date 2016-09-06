@@ -205,6 +205,7 @@ export class ScreenNavigator extends Component {
   }
 
   activateRoute(activeRoute) {
+    this.setNavBarState({}, activeRoute);
     this.setState({ activeRoute });
   }
 
