@@ -147,7 +147,13 @@ export class ScreenNavigator extends Component {
     // TODO(Braco) - is there a better way to trigger activateRoute when store is updated?
     // Defer prolongs route activation until store is updated
     // activateRoute is connected with deactivateRoute, it should NOT be call in same store update.
-    _.defer(() => this.activateRoute(route));
+    _.defer(() => {
+      // Reset previous NavBar state so Screen doesn't inherit
+      // old NavBar if it doesn't set NavBar props
+      this.setNavBarState({}, route);
+
+      this.activateRoute(route);
+    });
     this.props.allowActions();
   }
 
@@ -205,7 +211,6 @@ export class ScreenNavigator extends Component {
   }
 
   activateRoute(activeRoute) {
-    this.setNavBarState({}, activeRoute);
     this.setState({ activeRoute });
   }
 
