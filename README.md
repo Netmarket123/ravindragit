@@ -1,9 +1,9 @@
 # shoutem-client
 Shoutem React Native App
 
-### Important TODOs
-Please add all __important__ todos here so we can keep track and finish them.
-* Rename shoutem.ui components not to be named as extensions
+## Contributing
+
+Pull request are merged by reviewer. Every Pull request must have tests and no eslint error. This refers to all contributions related to client side of ShoutEm.
 
 ## Code style
 [Five JavaScript Style Guide](https://github.com/5minutes/javascript)
