@@ -10,6 +10,7 @@ import reducer, {
   setActiveNavigator,
   getTopNavigator,
   getNavigator,
+  getNavigationProperty,
   isNavigatorActive,
 } from './actions';
 import { ScreenNavigator } from './ScreenNavigator';
@@ -34,6 +35,7 @@ export {
   getTopNavigator,
   getNavigator,
   isNavigatorActive,
+  getNavigationProperty,
 
   // Action types
   NAVIGATE,
