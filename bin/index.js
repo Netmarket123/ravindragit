@@ -5,8 +5,6 @@ import {
 
 import { AppBuilder } from '@shoutem/core';
 
-import localConfig from './config.json';
-
 import { NavigationBar } from '@shoutem/ui';
 
 import extensions from './extensions.js';
