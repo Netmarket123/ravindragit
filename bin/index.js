@@ -20,7 +20,6 @@ function renderNavigationBar(navBarProps) {
 const App = new AppBuilder()
   .setExtensions(extensions)
   .setRenderNavigationBar(renderNavigationBar)
-  .setLocalConfig(localConfig)
   .build();
 
 // noinspection JSCheckFunctionSignatures

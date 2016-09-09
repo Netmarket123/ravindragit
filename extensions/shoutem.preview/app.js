@@ -27,9 +27,9 @@ export const appDidMount = function (app) {
     }
   });
 
-  const appId = app.getAppId() || getAppIdFromLocalConfiguration();
+  const appId = getAppIdFromLocalConfiguration();
   if (appId) {
-    dispatch(appActions.fetchConfiguration());
+    dispatch(appActions.fetchConfiguration(appId));
   }
 };
 

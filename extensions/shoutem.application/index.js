@@ -7,8 +7,9 @@ import {
 } from './middleware';
 import { watchConfiguration } from './shared/watchConfiguration';
 import { openInitialScreen } from './shared/openInitialScreen';
+import { getAppIdFromLocalConfiguration } from './shared/getAppIdFromLocalConfiguration';
 import { getAppId } from './shared/getAppId';
-import { SHOUTEM_CONFIGURATION_SCHEMA } from './const';
+import { CONFIGURATION_SCHEMA } from './const';
 import { appWillMount, appActions } from './app';
 
 import reducer, {
@@ -29,6 +30,7 @@ const middleware = [
 ];
 
 export {
+  getAppIdFromLocalConfiguration,
   configuration,
   actions,
   reducer,
@@ -37,5 +39,5 @@ export {
   getAppId,
   openInitialScreen,
   watchConfiguration,
-  SHOUTEM_CONFIGURATION_SCHEMA,
+  CONFIGURATION_SCHEMA,
 };

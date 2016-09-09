@@ -1,8 +1,7 @@
 import _ from 'lodash';
 import { combineReducers } from 'redux';
 import { storage, OBJECT_FETCHED, find } from '@shoutem/redux-io';
-import { SHOUTEM_CONFIGURATION_SCHEMA } from './const';
-const THEME_SCHEMA = 'shoutem.core.theme';
+import { CONFIGURATION_SCHEMA } from './const';
 
 // Because of chrome inspection bug we are exporting function as constants
 // Bug is we can not set breakpoint in files which export function directly
@@ -10,12 +9,12 @@ const THEME_SCHEMA = 'shoutem.core.theme';
 
 export const EXECUTE_SHORTCUT = 'shoutem.application.EXECUTE_SHORTCUT';
 
-export function fetchConfiguration() {
-  return find(SHOUTEM_CONFIGURATION_SCHEMA);
+export function fetchConfiguration(appId) {
+  return find(CONFIGURATION_SCHEMA, undefined, { appId });
 }
 
 export const configurationReducer = function (state = {}, action) {
-  if (_.get(action, 'meta.schema') !== SHOUTEM_CONFIGURATION_SCHEMA) {
+  if (_.get(action, 'meta.schema') !== CONFIGURATION_SCHEMA) {
     return state;
   }
 
@@ -65,5 +64,5 @@ export default combineReducers({
   shortcuts: storage('shoutem.core.shortcuts'),
   screens: storage('shoutem.core.screens'),
   extensions: storage('shoutem.core.extensions'),
-  themes: storage(THEME_SCHEMA),
+  themes: storage('shoutem.core.theme'),
 });

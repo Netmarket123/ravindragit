@@ -6,7 +6,7 @@ import { registerConfigurationSchema } from './shared/registerConfigurationSchem
 export const appActions = {};
 
 export function appWillMount(app) {
-  registerConfigurationSchema(app.getAppId());
+  registerConfigurationSchema();
   extractAppActions(app, appActions);
   watchActiveTheme(app, theme => setActiveTheme(app, theme));
 }
