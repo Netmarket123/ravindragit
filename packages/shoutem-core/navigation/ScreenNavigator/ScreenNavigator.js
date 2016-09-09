@@ -228,11 +228,11 @@ export class ScreenNavigator extends Component {
     const navigator = this.navigator;
     switch (action.type) {
       case NAVIGATE: {
-        if (!action.navigatorMethod || !navigator[action.navigatorMethod]) {
-          throw new Error(`Calling unexisting navigator method: ${action.navigatorMethod}, 
+        if (!action.operation || !navigator[action.operation]) {
+          throw new Error(`Calling unexisting navigator method: ${action.operation}, 
             while performing navigation action`);
         }
-        navigator[action.navigatorMethod](action.route);
+        navigator[action.operation](action.route);
         break;
       }
       case NAVIGATE_BACK: {

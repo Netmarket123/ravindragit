@@ -134,12 +134,12 @@ export const popNavigator = function (navigator) {
  *  parameter, the activeNavigator will be used if it is undefined.
  * @returns {*} The action.
  */
-const navigate = function (route, navigator, navigatorMethod = 'push') {
+const navigate = function (route, navigator, operation = 'push') {
   return {
     type: NAVIGATE,
     route,
     navigator,
-    navigatorMethod,
+    operation,
   };
 };
 
@@ -147,10 +147,10 @@ const navigate = function (route, navigator, navigatorMethod = 'push') {
  * Navigate to another screen with push navigation action.
  * @param route
  * @param navigator
- * @returns {{type, route, navigator, navigatorMethod}}
+ * @returns {{type, route, navigator, operation}}
  */
-export const navigateTo = function (route, navigator) {
-  return navigate(route, navigator, 'push');
+export const navigateTo = function (route, navigator, operation = 'push') {
+  return navigate(route, navigator, operation);
 };
 
 export const jumpTo = function (route, navigator) {
@@ -161,7 +161,7 @@ export const jumpTo = function (route, navigator) {
  * Pop to the first scene (route) in the stack, unmounting every other scene (routes).
  * https://facebook.github.io/react-native/docs/navigator.html#poptotop
  * @param navigator
- * @returns {{type, route, navigator, navigatorMethod}}
+ * @returns {{type, route, navigator, operation}}
  */
 export const popToTop = function (navigator) {
   return navigate(undefined, navigator, 'popToTop');
