@@ -7,6 +7,10 @@ import {
   openInitialScreen,
 } from 'shoutem.application';
 
+// Because of chrome inspection bug we are exporting function as constants
+// Bug is we can not set breakpoint in files which export function directly
+/* eslint-disable func-names */
+
 export const appWillMount = function (app) {
   watchConfiguration(app, () => {
     openInitialScreen(app);

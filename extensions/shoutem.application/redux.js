@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { combineReducers } from 'redux';
-import { storage, one, OBJECT_FETCHED, find } from '@shoutem/redux-io';
+import { storage, OBJECT_FETCHED, find } from '@shoutem/redux-io';
 import { SHOUTEM_CONFIGURATION_SCHEMA } from './const';
 const THEME_SCHEMA = 'shoutem.core.theme';
 
