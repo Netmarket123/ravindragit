@@ -127,6 +127,10 @@ function createApplication(appContext) {
       return { screens: appContext.screens };
     }
 
+    getAppId() {
+      return appContext.localConfig.appId;
+    }
+
     render() {
       const content = this.props.children || (
         <ScreenNavigator
@@ -350,6 +354,11 @@ export default class AppBuilder {
 
   setInitialRoute(route) {
     this[APP_CONTEXT].initialRoute = Object.assign({}, route);
+    return this;
+  }
+
+  setLocalConfig(config = {}) {
+    this[APP_CONTEXT].localConfig = config;
     return this;
   }
 
