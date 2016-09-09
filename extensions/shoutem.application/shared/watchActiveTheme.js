@@ -1,12 +1,11 @@
-import { setActiveTheme } from './setActiveTheme';
 import { getThemeFromStore } from './getThemeFromStore';
 
-export function watchActiveTheme(app) {
+export function watchActiveTheme(app, onChange = () => {}) {
   const store = app.getStore();
   store.subscribe(() => {
     const theme = getThemeFromStore(store);
     if (theme && theme !== app.getTheme()) {
-      setActiveTheme(app, theme);
+      onChange(theme);
     }
   });
 }

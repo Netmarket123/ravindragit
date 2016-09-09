@@ -4,7 +4,7 @@ const {
   NAVIGATION_ACTION_PERFORMED,
   NAVIGATE,
 } = navigation;
-import { EXECUTE_SHORTCUT } from './actions';
+import { EXECUTE_SHORTCUT } from './redux';
 
 /**
  * Creates screen settings for given shortcut.

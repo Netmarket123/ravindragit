@@ -1,5 +1,8 @@
-import * as _ from 'lodash';
-import { OBJECT_FETCHED } from '@shoutem/redux-io';
+import _ from 'lodash';
+import { combineReducers } from 'redux';
+import { storage, one, OBJECT_FETCHED, find } from '@shoutem/redux-io';
+import { SHOUTEM_CONFIGURATION_SCHEMA } from './const';
+const THEME_SCHEMA = 'shoutem.core.theme';
 
 // Because of chrome inspection bug we are exporting function as constants
 // Bug is we can not set breakpoint in files which export function directly
@@ -7,8 +10,12 @@ import { OBJECT_FETCHED } from '@shoutem/redux-io';
 
 export const EXECUTE_SHORTCUT = 'shoutem.application.EXECUTE_SHORTCUT';
 
+export function fetchConfiguration() {
+  return find(SHOUTEM_CONFIGURATION_SCHEMA);
+}
+
 export const configurationReducer = function (state = {}, action) {
-  if (_.get(action, 'meta.schema') !== 'shoutem.core.configuration') {
+  if (_.get(action, 'meta.schema') !== SHOUTEM_CONFIGURATION_SCHEMA) {
     return state;
   }
 
@@ -41,7 +48,7 @@ export const executeShortcut = function (shortcut, navigationAction = 'navigateT
  * @param state The redux state.
  * @returns {*} The app id.
  */
-export const getAppId = function (state) {
+export const getAppIdFromState = function (state) {
   return _.get(state, [
     'shoutem.application',
     'configuration',
@@ -51,3 +58,12 @@ export const getAppId = function (state) {
     'id',
   ]);
 };
+
+// create reducer with wanted default configuration
+export default combineReducers({
+  configuration: configurationReducer,
+  shortcuts: storage('shoutem.core.shortcuts'),
+  screens: storage('shoutem.core.screens'),
+  extensions: storage('shoutem.core.extensions'),
+  themes: storage(THEME_SCHEMA),
+});
