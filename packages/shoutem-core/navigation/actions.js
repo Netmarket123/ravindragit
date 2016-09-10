@@ -211,7 +211,7 @@ export const navigationActionPerformed = function (navigationAction, navigationS
  * @param prop
  * @returns {*}
  */
-export const getNavigation = function (state, prop) {
+export const getNavigation = function (state) {
   return state['shoutem.core'].navigation;
 };
 
