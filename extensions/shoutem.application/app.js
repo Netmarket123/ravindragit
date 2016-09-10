@@ -1,10 +1,21 @@
 import _ from 'lodash';
 import { extractAppActions } from './shared/extractAppActions';
 import { registerConfigurationSchema } from './shared/registerConfigurationSchema';
-import { appEvents } from './service/appEvents';
+import { configurationEvent } from './service/configurationEvent';
 import { ROOT_NAVIGATOR_NAME, popToTop, getNavigation } from '@shoutem/core/navigation';
+import { getActiveTheme } from './redux';
 
 export const appActions = {};
+
+function watchActiveTheme(app, onChange) {
+  const store = app.getStore();
+  store.subscribe(() => {
+    const theme = getActiveTheme(store.getState());
+    if (theme && theme !== app.getTheme()) {
+      onChange(theme);
+    }
+  });
+}
 
 function clearNavigation(app) {
   const store = app.getStore();
@@ -19,9 +30,9 @@ function clearNavigation(app) {
 }
 
 export function appWillMount(app) {
-  appEvents.init(app);
-  appEvents.prependActiveThemeListener(theme => app.setTheme(theme));
-  appEvents.prependConfigurationListener(() => clearNavigation(app));
+  configurationEvent.init(app);
+  configurationEvent.prependListener(() => clearNavigation(app));
+  watchActiveTheme(app, theme => app.setTheme(theme));
   registerConfigurationSchema();
   extractAppActions(app, appActions);
 }

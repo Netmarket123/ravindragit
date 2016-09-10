@@ -8,7 +8,7 @@ import {
 import { openInitialScreen } from './shared/openInitialScreen';
 import { CONFIGURATION_SCHEMA } from './const';
 import { appWillMount, appActions } from './app';
-import { appEvents } from './service/appEvents';
+import { configurationEvent } from './service/configurationEvent';
 
 import reducer, {
   executeShortcut,
@@ -37,5 +37,5 @@ export {
   appWillMount,
   openInitialScreen,
   CONFIGURATION_SCHEMA,
-  appEvents,
+  configurationEvent,
 };
