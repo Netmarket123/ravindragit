@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import configuration from './configuration.json';
 import { combineReducers } from 'redux';
 import { storage, OBJECT_FETCHED, find } from '@shoutem/redux-io';
 import { CONFIGURATION_SCHEMA } from './const';
@@ -9,11 +10,30 @@ import { CONFIGURATION_SCHEMA } from './const';
 
 export const EXECUTE_SHORTCUT = 'shoutem.application.EXECUTE_SHORTCUT';
 
+function getAppIdFromLocalConfiguration() {
+  return _.get(configuration, 'data.relationships.application.data.id');
+}
+
+/**
+ * App id should always be available in state.
+ * Other props should not be set like this because of RIO.
+ * RIO must resolve relationships for storage reducers.
+ */
+const defaultStateConfiguration = {
+  relationships: {
+    application: {
+      data: {
+        id: getAppIdFromLocalConfiguration(),
+      },
+    },
+  },
+};
+
 export function fetchConfiguration(appId) {
   return find(CONFIGURATION_SCHEMA, undefined, { appId });
 }
 
-export const configurationReducer = function (state = {}, action) {
+export const configurationReducer = function (state = defaultStateConfiguration, action) {
   if (_.get(action, 'meta.schema') !== CONFIGURATION_SCHEMA) {
     return state;
   }
@@ -42,21 +62,43 @@ export const executeShortcut = function (shortcut, navigationAction = 'navigateT
 };
 
 /**
+ * A selector that returns the configuration of the application.
+ *
+ * @param state The redux state.
+ * @returns {*} The app id.
+ */
+export const getConfiguration = function (state) {
+  return _.get(state, [
+    'shoutem.application',
+    'configuration',
+  ]);
+};
+
+/**
  * A selector that returns the id of the currently running application.
  *
  * @param state The redux state.
  * @returns {*} The app id.
  */
-export const getAppIdFromState = function (state) {
-  return _.get(state, [
-    'shoutem.application',
-    'configuration',
+export const getAppId = function (state) {
+  return _.get(getConfiguration(state), [
     'relationships',
     'application',
     'data',
     'id',
   ]);
 };
+
+/**
+ * A selector that returns active theme from configuration.
+ * @param state
+ * @returns {V}
+ */
+export const getActiveTheme = function (state) {
+  const themeConfig = _.get(getConfiguration(state), ['attributes', 'theme']);
+  return _.get(themeConfig, 'active.canonicalName') || _.get(themeConfig, 'default.canonicalName');
+};
+
 
 // create reducer with wanted default configuration
 export default combineReducers({

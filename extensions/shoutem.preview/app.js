@@ -1,7 +1,7 @@
 import { Linking } from 'react-native';
 import {
   actions as appActions,
-  getAppIdFromLocalConfiguration,
+  getAppId,
   watchConfiguration,
   openInitialScreen,
 } from 'shoutem.application';
@@ -28,14 +28,15 @@ export const appWillMount = function (app) {
 };
 
 export const appDidMount = function (app) {
-  const dispatch = app.getStore().dispatch;
+  const store = app.getStore();
+  const dispatch = store.dispatch;
   Linking.addEventListener('url', (deepLink) => {
     const appId = getAppIdFromUrl(deepLink.url);
     // get new configuration for app id provided in deepLink
     fetchConfiguration(appId, dispatch);
   });
 
-  const appId = getAppIdFromLocalConfiguration();
+  const appId = getAppId(store.getState());
   fetchConfiguration(appId, dispatch);
 };
 

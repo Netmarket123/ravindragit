@@ -7,14 +7,13 @@ import {
 } from './middleware';
 import { watchConfiguration } from './shared/watchConfiguration';
 import { openInitialScreen } from './shared/openInitialScreen';
-import { getAppIdFromLocalConfiguration } from './shared/getAppIdFromLocalConfiguration';
-import { getAppId } from './shared/getAppId';
 import { CONFIGURATION_SCHEMA } from './const';
 import { appWillMount, appActions } from './app';
 
 import reducer, {
   executeShortcut,
   fetchConfiguration,
+  getAppId,
 } from './redux';
 
 const actions = {
@@ -30,13 +29,12 @@ const middleware = [
 ];
 
 export {
-  getAppIdFromLocalConfiguration,
   configuration,
   actions,
+  getAppId,
   reducer,
   middleware,
   appWillMount,
-  getAppId,
   openInitialScreen,
   watchConfiguration,
   CONFIGURATION_SCHEMA,
