@@ -9,6 +9,7 @@ import { openInitialScreen } from './shared/openInitialScreen';
 import { CONFIGURATION_SCHEMA } from './const';
 import { appWillMount, appActions } from './app';
 import { configurationEvent } from './service/configurationEvent';
+import { resolveAppEndpoint } from './shared/resolveAppEndpoint';
 
 import reducer, {
   executeShortcut,
@@ -38,4 +39,5 @@ export {
   openInitialScreen,
   CONFIGURATION_SCHEMA,
   configurationEvent,
+  resolveAppEndpoint,
 };

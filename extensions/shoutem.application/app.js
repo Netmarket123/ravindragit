@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import rio from '@shoutem/redux-io';
 import { extractAppActions } from './shared/extractAppActions';
+import { resolveAppEndpoint } from './shared/resolveAppEndpoint';
 import { configurationEvent } from './service/configurationEvent';
 import { ROOT_NAVIGATOR_NAME, popToTop, getNavigation } from '@shoutem/core/navigation';
 import { getActiveTheme } from './redux';
@@ -16,7 +17,9 @@ function registerConfigurationSchema() {
   rio.registerSchema({
     schema: CONFIGURATION_SCHEMA,
     request: {
-      endpoint: 'http://apps.dev.sauros.hr/v1/apps/{appId}/configurations/current',
+      // appId is RIO url variable because it can be changed when fetching configuration
+      // in preview mode depending on provided appId in deeplink
+      endpoint: resolveAppEndpoint('configurations/current', '{appId}'),
       headers: {
         Authorization: authorization,
         Accept: 'application/vnd.api+json',
