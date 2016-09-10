@@ -2,7 +2,7 @@ import { Linking } from 'react-native';
 import {
   actions as appActions,
   getAppId,
-  watchConfiguration,
+  appEvents,
   openInitialScreen,
 } from 'shoutem.application';
 
@@ -22,9 +22,7 @@ function fetchConfiguration(appId, dispatch) {
 }
 
 export const appWillMount = function (app) {
-  watchConfiguration(app, () => {
-    openInitialScreen(app);
-  });
+  appEvents.addConfigurationListener(() => openInitialScreen(app));
 };
 
 export const appDidMount = function (app) {

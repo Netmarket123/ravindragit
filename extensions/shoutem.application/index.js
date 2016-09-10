@@ -5,10 +5,10 @@ import {
   navigateToShortcutScreen,
   createExecuteShortcutMiddleware,
 } from './middleware';
-import { watchConfiguration } from './shared/watchConfiguration';
 import { openInitialScreen } from './shared/openInitialScreen';
 import { CONFIGURATION_SCHEMA } from './const';
 import { appWillMount, appActions } from './app';
+import { appEvents } from './service/appEvents';
 
 import reducer, {
   executeShortcut,
@@ -36,6 +36,6 @@ export {
   middleware,
   appWillMount,
   openInitialScreen,
-  watchConfiguration,
   CONFIGURATION_SCHEMA,
+  appEvents,
 };
