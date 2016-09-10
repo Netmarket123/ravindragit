@@ -1,5 +1,4 @@
 import { Linking } from 'react-native';
-import { getAppIdFromUrl } from './shared/getAppIdFromUrl';
 import {
   actions as appActions,
   getAppIdFromLocalConfiguration,
@@ -10,6 +9,11 @@ import {
 // Because of chrome inspection bug we are exporting function as constants
 // Bug is we can not set breakpoint in files which export function directly
 /* eslint-disable func-names */
+
+function getAppIdFromUrl(url) {
+  const matches = url.match(/preview:\/\/open-app\/([0-9]*)/);
+  return matches.length ? matches[1] : undefined;
+}
 
 function fetchConfiguration(appId, dispatch) {
   if (appId) {
