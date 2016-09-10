@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 let activeConfiguration;
 
-export function watchConfiguration(app, onChange = () => {}) {
+export function watchConfiguration(app, onChange) {
   const store = app.getStore();
   store.subscribe(() => {
     const state = store.getState();
