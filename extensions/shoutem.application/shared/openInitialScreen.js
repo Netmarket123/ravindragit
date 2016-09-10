@@ -8,7 +8,7 @@ export function openInitialScreen(app) {
   const state = store.getState();
   const configurationFromState = state['shoutem.application'].configuration;
   const navigatorsStack = getNavigationProperty(state, 'navigatorsStack');
-  const shortcuts = store.getState()['shoutem.application'].shortcuts;
+  const shortcuts = state['shoutem.application'].shortcuts;
   const firstShortcut = getFirstShortcut(configurationFromState, shortcuts);
   if (firstShortcut) {
     // Check if there are any navigators to "pop"
