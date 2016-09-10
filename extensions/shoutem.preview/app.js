@@ -11,6 +11,12 @@ import {
 // Bug is we can not set breakpoint in files which export function directly
 /* eslint-disable func-names */
 
+function fetchConfiguration(appId, dispatch) {
+  if (appId) {
+    dispatch(appActions.fetchConfiguration(appId));
+  }
+}
+
 export const appWillMount = function (app) {
   watchConfiguration(app, () => {
     openInitialScreen(app);
@@ -21,16 +27,12 @@ export const appDidMount = function (app) {
   const dispatch = app.getStore().dispatch;
   Linking.addEventListener('url', (deepLink) => {
     const appId = getAppIdFromUrl(deepLink.url);
-    if (appId) {
-      // get new configuration for app id provided in deepLink
-      dispatch(appActions.fetchConfiguration(appId));
-    }
+    // get new configuration for app id provided in deepLink
+    fetchConfiguration(appId, dispatch);
   });
 
   const appId = getAppIdFromLocalConfiguration();
-  if (appId) {
-    dispatch(appActions.fetchConfiguration(appId));
-  }
+  fetchConfiguration(appId, dispatch);
 };
 
 export const appWillUnmount = function () {
