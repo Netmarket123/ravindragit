@@ -1,13 +1,13 @@
 import _ from 'lodash';
 import { getFirstShortcut } from './getFirstShortcut';
 import { executeShortcut } from '../redux';
-import { ROOT_NAVIGATOR_NAME, popToTop, getNavigationProperty } from '@shoutem/core/navigation';
+import { ROOT_NAVIGATOR_NAME, popToTop, getNavigation } from '@shoutem/core/navigation';
 
 export function openInitialScreen(app) {
   const store = app.getStore();
   const state = store.getState();
   const configurationFromState = state['shoutem.application'].configuration;
-  const navigatorsStack = getNavigationProperty(state, 'navigatorsStack');
+  const navigatorsStack = getNavigation(state).navigatorsStack;
   const shortcuts = state['shoutem.application'].shortcuts;
   const firstShortcut = getFirstShortcut(configurationFromState, shortcuts);
   if (firstShortcut) {
