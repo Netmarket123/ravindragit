@@ -150,7 +150,10 @@ export class ScreenNavigator extends Component {
     _.defer(() => {
       // Reset previous NavBar state so Screen doesn't inherit
       // old NavBar if it doesn't set NavBar props
-      this.setNavBarState({}, route);
+      const screen = this.getScreen(route.screen);
+      if (!this.doesScreenChangeNavBarProps(screen)) {
+        this.setNavBarState({}, route);
+      }
 
       this.activateRoute(route);
     });
@@ -175,6 +178,10 @@ export class ScreenNavigator extends Component {
     return this.navigator.getCurrentRoutes().length + 1;
   }
 
+  getScreen(screenName) {
+    return this.context.screens[screenName];
+  }
+
   getCurrentRoute() {
     const navigator = this.navigator;
     if (navigator) {
@@ -191,6 +198,11 @@ export class ScreenNavigator extends Component {
 
   getActionFromProps(props = this.props) {
     return _.get(props, 'navigatorState.action');
+  }
+
+  doesScreenChangeNavBarProps(screen) {
+    return _.get(screen, 'propTypes.setNavBarProps') ||
+      _.get(screen, 'WrappedComponent.propTypes.setNavBarProps');
   }
 
   updateRouteState(update) {
@@ -342,7 +354,7 @@ export class ScreenNavigator extends Component {
   }
 
   renderScene(route) {
-    const Screen = this.context.screens[route.screen];
+    const Screen = this.getScreen(route.screen);
 
     if (!Screen) {
       throw new Error(`You are trying to navigate to screen (${route.screen}) that doesn't exist. 
