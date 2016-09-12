@@ -55,7 +55,7 @@ function clearNavigation(app) {
 export function appWillMount(app) {
   configurationEvent.init(app);
   configurationEvent.prependListener(() => clearNavigation(app));
-  watchActiveTheme(app, theme => app.setTheme(theme));
+  watchActiveTheme(app, theme => app.setStyle(app.resolveThemeStyle(theme)));
   registerConfigurationSchema();
   extractAppActions(app, appActions);
 }

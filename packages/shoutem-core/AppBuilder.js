@@ -66,10 +66,10 @@ function createApplication(appContext) {
     }
 
     /**
-     * Returns the redux state of the app.
+     * Resolves theme style.
      * @returns {*} The redux state.
      */
-    setTheme(theme) {
+    resolveThemeStyle(theme) {
       const themes = this.getThemes();
       const activeTheme = themes[theme];
       if (!activeTheme) {
@@ -77,8 +77,13 @@ function createApplication(appContext) {
       }
 
       // TODO(Braco) - add variables;
-      const style = _.isFunction(activeTheme) ? activeTheme() : activeTheme;
+      return _.isFunction(activeTheme) ? activeTheme() : activeTheme;
+    }
 
+    /**
+     * Change App style.
+     */
+    setStyle(style) {
       this.setState({ style });
     }
 
