@@ -95,8 +95,9 @@ export const getAppId = function (state) {
  * @returns {V}
  */
 export const getActiveTheme = function (state) {
-  const themeConfig = _.get(getConfiguration(state), ['attributes', 'theme']);
-  return _.get(themeConfig, 'active.canonicalName') || _.get(themeConfig, 'default.canonicalName');
+  const themeSettings = _.get(getConfiguration(state), ['attributes', 'theme']);
+  return _.get(themeSettings, 'active.canonicalName') ||
+    _.get(themeSettings, 'default.canonicalName');
 };
 
 

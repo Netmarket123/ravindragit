@@ -45,7 +45,6 @@ function createApplication(appContext) {
     constructor(props, context) {
       super(props, context);
       this.state = {
-        theme: null,
         style: null,
       };
     }
@@ -80,11 +79,7 @@ function createApplication(appContext) {
       // TODO(Braco) - add variables;
       const style = _.isFunction(activeTheme) ? activeTheme() : activeTheme;
 
-      this.setState({ style, theme });
-    }
-
-    getTheme() {
-      return this.state.theme;
+      this.setState({ style });
     }
 
     /**

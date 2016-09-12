@@ -8,6 +8,7 @@ import { getActiveTheme } from './redux';
 import { CONFIGURATION_SCHEMA } from './const';
 
 export const appActions = {};
+let activeThemeName;
 
 // TODO (Ivan): Remove this when authorization is available
 // eslint-disable-next-line max-len
@@ -32,7 +33,8 @@ function watchActiveTheme(app, onChange) {
   const store = app.getStore();
   store.subscribe(() => {
     const theme = getActiveTheme(store.getState());
-    if (theme && theme !== app.getTheme()) {
+    if (theme && theme !== activeThemeName) {
+      activeThemeName = theme;
       onChange(theme);
     }
   });
