@@ -45,7 +45,6 @@ function createApplication(appContext) {
     constructor(props, context) {
       super(props, context);
       this.state = {
-        theme: null,
         style: null,
       };
     }
@@ -67,10 +66,10 @@ function createApplication(appContext) {
     }
 
     /**
-     * Returns the redux state of the app.
+     * Resolves theme style.
      * @returns {*} The redux state.
      */
-    setTheme(theme) {
+    resolveThemeStyle(theme) {
       const themes = this.getThemes();
       const activeTheme = themes[theme];
       if (!activeTheme) {
@@ -78,13 +77,14 @@ function createApplication(appContext) {
       }
 
       // TODO(Braco) - add variables;
-      const style = _.isFunction(activeTheme) ? activeTheme() : activeTheme;
-
-      this.setState({ style, theme });
+      return _.isFunction(activeTheme) ? activeTheme() : activeTheme;
     }
 
-    getTheme() {
-      return this.state.theme;
+    /**
+     * Change App style.
+     */
+    setStyle(style) {
+      this.setState({ style });
     }
 
     /**
