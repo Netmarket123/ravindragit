@@ -5,6 +5,9 @@ import { Navigator } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import _ from 'lodash';
+
+import { DriverPool } from '@shoutem/ui';
+
 import { SceneConfigs } from './SceneConfigs';
 import { SceneStyles } from './SceneStyles';
 
@@ -129,6 +132,10 @@ export class ScreenNavigator extends Component {
     if (this.state.deactivatedRoute !== this.state.activeRoute) {
       this.deactivateRoute(this.state.activeRoute);
     }
+
+    this.setState({
+      animationDriver: null,
+    });
     this.props.blockActions();
   }
 
@@ -376,17 +383,19 @@ export class ScreenNavigator extends Component {
 
   render() {
     const navigatorComponent = this.state.initialRoute ? (
-      <Navigator
-        ref={this.captureNavigatorRef}
-        initialRoute={this.state.initialRoute}
-        initialRouteStack={this.props.initialRouteStack}
-        configureScene={this.configureScene}
-        renderScene={this.renderScene}
-        navigationBar={this.renderNavigationBar()}
-        onDidFocus={this.onRouteChanged}
-        sceneStyle={this.props.sceneStyle}
-        onWillFocus={this.onRouteWillChange}
-      />
+      <DriverPool animationDriver={this.state.animationDriver}>
+        <Navigator
+          ref={this.captureNavigatorRef}
+          initialRoute={this.state.initialRoute}
+          initialRouteStack={this.props.initialRouteStack}
+          configureScene={this.configureScene}
+          renderScene={this.renderScene}
+          navigationBar={this.renderNavigationBar()}
+          onDidFocus={this.onRouteChanged}
+          sceneStyle={this.props.sceneStyle}
+          onWillFocus={this.onRouteWillChange}
+        />
+      </DriverPool>
     ) : null;
 
     return navigatorComponent;
