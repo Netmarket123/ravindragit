@@ -32,22 +32,19 @@ function installLocalExtension(extension, clearAfterInstall) {
   if (!extension) return Promise.resolve();
   const packageName = extension.id;
   const packagePath = extension.path;
-  const nodeModules = 'node_modules';
-  const installedExtensionPath = path.join(nodeModules, packageName);
+  const installedExtensionPath = path.join('node_modules', packageName);
+  // Do not copy paths containing node_modules, .git or .idea
+  const pathsToSkip = /^((?!(node_modules|\.git|\.idea)).)*$/;
 
   addDependenciesToSet(extension.dependencies, dependenciesSet);
   console.log(`Installing ${packageName}`);
   return new Promise((resolve) => {
-    fs.copy(packagePath, installedExtensionPath, () => {
-      rimraf(path.join(installedExtensionPath, nodeModules), () => {
-        rimraf(path.join(installedExtensionPath, '.git'), () => {
-          console.log(`${packageName} installed`);
-          if (clearAfterInstall) {
-            rimraf(packagePath, () => console.log(`delete ${packagePath}`));
-          }
-          resolve(extension);
-        });
-      });
+    fs.copy(packagePath, installedExtensionPath, { filter: pathsToSkip }, () => {
+      console.log(`${packageName} installed`);
+      if (clearAfterInstall) {
+        rimraf(packagePath, () => console.log(`delete ${packagePath}`));
+      }
+      resolve(extension);
     });
   });
 }

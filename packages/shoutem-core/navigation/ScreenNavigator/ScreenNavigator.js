@@ -53,8 +53,12 @@ export class ScreenNavigator extends Component {
     this.state = {
       deactivatedRoute: null,
       activeRoute: null,
-      withNavBar: true,
       initialRoute: props.initialRoute,
+      /**
+       * Current route state.
+       * Saves route specific configuration.
+       */
+      routeState: this.getDefaultRouteState(),
     };
   }
 
@@ -143,8 +147,28 @@ export class ScreenNavigator extends Component {
     // TODO(Braco) - is there a better way to trigger activateRoute when store is updated?
     // Defer prolongs route activation until store is updated
     // activateRoute is connected with deactivateRoute, it should NOT be call in same store update.
-    _.defer(() => this.activateRoute(route));
+    _.defer(() => {
+      // Reset previous NavBar state so Screen doesn't inherit
+      // old NavBar if it doesn't set NavBar props
+      const screen = this.getScreen(route.screen);
+      if (!this.doesScreenChangeNavBarProps(screen)) {
+        this.setNavBarState({}, route);
+      }
+
+      this.activateRoute(route);
+    });
     this.props.allowActions();
+  }
+
+  /**
+   * Get default screenState. Each screen expects to have state like this when rendered.
+   * This is important so Screens do not have to override/rollback changes made by previous screen.
+   * @returns {{withNavBar: boolean}}
+   */
+  getDefaultRouteState() {
+    return {
+      withNavBar: true,
+    };
   }
 
   getLastRouteIndex() {
@@ -152,6 +176,10 @@ export class ScreenNavigator extends Component {
       return 0;
     }
     return this.navigator.getCurrentRoutes().length + 1;
+  }
+
+  getScreen(screenName) {
+    return this.context.screens[screenName];
   }
 
   getCurrentRoute() {
@@ -172,11 +200,34 @@ export class ScreenNavigator extends Component {
     return _.get(props, 'navigatorState.action');
   }
 
+  doesScreenChangeNavBarProps(screen) {
+    return _.get(screen, 'propTypes.setNavBarProps') ||
+      _.get(screen, 'WrappedComponent.propTypes.setNavBarProps');
+  }
+
+  updateRouteState(update) {
+    const routeState = {
+      ...this.state.routeState,
+      ...update,
+    };
+    this.setState({ routeState });
+  }
+
+  /**
+   * Reset ScreenNavigator routeState to default screen state.
+   * Called on route change so screen/route doesn't have to take care
+   * on previous screen/route specific configuration.
+   */
+  resetRouteState() {
+    this.setState({ routeState: this.getDefaultRouteState() });
+  }
+
   activateRoute(activeRoute) {
     this.setState({ activeRoute });
   }
 
   deactivateRoute(deactivatedRoute, onRouteDeactivated = () => {}) {
+    this.resetRouteState();
     this.setState({ deactivatedRoute }, onRouteDeactivated);
   }
 
@@ -277,7 +328,7 @@ export class ScreenNavigator extends Component {
    * @returns {function(): null}
    */
   createRenderNavigationBar() {
-    if (this.state.withNavBar) {
+    if (this.state.routeState.withNavBar) {
       return this.props.renderNavigationBar;
     }
     return () => null;
@@ -303,7 +354,7 @@ export class ScreenNavigator extends Component {
   }
 
   renderScene(route) {
-    const Screen = this.context.screens[route.screen];
+    const Screen = this.getScreen(route.screen);
 
     if (!Screen) {
       throw new Error(`You are trying to navigate to screen (${route.screen}) that doesn't exist. 
@@ -318,7 +369,7 @@ export class ScreenNavigator extends Component {
         focused={focused}
         // eslint-disable-next-line react/jsx-no-bind
         setNavBarProps={state => focused && this.setNavBarState(state, route)}
-        shouldNavBarRender={withNavBar => this.setState({ withNavBar })}
+        shouldNavBarRender={withNavBar => this.updateRouteState({ withNavBar })}
       />
     );
   }

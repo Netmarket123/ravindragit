@@ -205,8 +205,14 @@ export const navigationActionPerformed = function (navigationAction, navigationS
   };
 };
 
-const getNavigationProperty = function (state, prop) {
-  return state['shoutem.core'].navigation[prop];
+/**
+ * Get navigation state from state.
+ * @param state
+ * @param prop
+ * @returns {*}
+ */
+export const getNavigation = function (state) {
+  return state['shoutem.core'].navigation;
 };
 
 /**
@@ -214,7 +220,7 @@ const getNavigationProperty = function (state, prop) {
  * @param state - root state
  */
 export const getTopNavigator = function (state) {
-  return _.last(getNavigationProperty(state, 'navigatorsStack'));
+  return _.last(getNavigation(state).navigatorsStack);
 };
 
 /**
@@ -225,7 +231,7 @@ export const getTopNavigator = function (state) {
  * @returns {boolean}
  */
 export const isNavigatorActive = function (state, navigator) {
-  return _.indexOf(getNavigationProperty(state, 'navigatorsStack'), navigator) >= 0;
+  return _.indexOf(getNavigation(state).navigatorsStack, navigator) >= 0;
 };
 
 /**
@@ -235,5 +241,5 @@ export const isNavigatorActive = function (state, navigator) {
  * @returns {*}
  */
 export const getNavigator = function (state, navigator) {
-  return getNavigationProperty(state, navigator);
+  return getNavigation(state)[navigator];
 };
