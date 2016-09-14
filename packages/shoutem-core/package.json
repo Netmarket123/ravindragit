@@ -1,9 +1,9 @@
 {
   "name": "@shoutem/core",
-  "version": "0.0.24",
+  "version": "0.0.25",
   "main": "index.js",
   "dependencies": {
-    "@shoutem/redux-io": "0.2.1",
+    "@shoutem/redux-io": "0.2.5-alpha.4",
     "@shoutem/theme": "*",
     "@shoutem/ui": "*",
     "@shoutem/animation": "*",
@@ -21,7 +21,7 @@
     "redux": "^3.3.1",
     "redux-api-middleware": "2.0.0-beta.1",
     "redux-logger": "^2.6.1",
-    "redux-thunk": "^1.0.3"
+    "redux-thunk": "^2.0.0"
   },
   "devDependencies": {
     "babel": "^6.3.26",
