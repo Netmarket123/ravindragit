@@ -1,6 +1,11 @@
 # shoutem-client
 Shoutem React Native App
 
+## Internal dependences
+* [5minutes/animation](https://github.com/5minutes/animation)  
+* [5minutes/theme](https://github.com/5minutes/theme)
+* [5minutes/ui](https://github.com/5minutes/ui) 
+
 ## Contributing
 
 Pull request are merged by reviewer. Every Pull request must have tests and no eslint error. This refers to all contributions related to client side of ShoutEm.

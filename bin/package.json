@@ -9,7 +9,7 @@
     "lint": "eslint ../"
   },
   "dependencies": {
-    "@shoutem/core": "0.0.23",
+    "@shoutem/core": "0.0.25",
     "code-push": "^1.10.0-beta",
     "code-push-cli": "1.12.3-beta",
     "command-line-args": "^2.1.6",
@@ -18,7 +18,7 @@
     "node-watch": "^0.3.5",
     "npm": "3.8.6",
     "react-native": "0.28.0",
-    "react-native-calendar-manager": "git+ssh://git@bitbucket.org/fiveminutes/react-native-calendar-manager.git",
+    "react-native-calendar-manager": "git+https://git@bitbucket.org/fiveminutes/react-native-calendar-manager.git",
     "react-native-maps": "5minutes/react-native-maps#friends-with-28",
     "request": "^2.72.0",
     "unzip": "edtechd/node-unzip"
