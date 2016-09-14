@@ -1,6 +1,7 @@
 package com.shoutemapp;
 
 import com.facebook.react.ReactActivity;
+import com.brentvatne.RCTVideo.ReactVideoPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.shoutem.calendar.CalendarManagerPackage;
 import cl.json.RNSharePackage;
@@ -45,6 +46,7 @@ public class MainActivity extends ReactActivity {
 
        return Arrays.<ReactPackage>asList(
                new MainReactPackage(),
+            new ReactVideoPackage(),
             new MapsPackage(this),
             new CalendarManagerPackage(),
             new RNSharePackage(),

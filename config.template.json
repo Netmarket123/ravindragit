@@ -5,13 +5,7 @@
     "production": false,
     "designMode": true,
     "offlineMode": false,
-    "configurationFilePath": "../extensions/shoutem.application/configuration.json",
-    "workingDirectories": [
-      "../packages/shoutem-core",
-      "../packages/shoutem-theme",
-      "../extensions/shoutem.application",
-      "../extensions/shoutem.code-push",
-      "../extensions/shoutem.preview"
-    ],
+    "configurationFilePath": "./node_modules/shoutem.application/configuration.json",
+    "workingDirectories": [],
     "extensionsJsPath": "./extensions.js"
 }
