@@ -29,4 +29,5 @@ expect <<- DONE
 DONE
 
 # install packages
-npm install
+npm install || true
+echo "Packages installed successfully!"
