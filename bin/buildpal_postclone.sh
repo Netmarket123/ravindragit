@@ -7,12 +7,23 @@ then
   echo "Application id is updated to $NID"
 fi
 
-# npm login
-npm adduser <<!
-$NPM_USERNAME
-$NPM_PASSWORD
-$NPM_EMAIL
-!
+echo "Updating Source..."
+expect <<- DONE
+  set timeout -1
+
+  spawn npm login
+  match_max 100000
+
+  expect "Username"    
+  send "$NPM_USERNAME\r"
+
+  expect "Password"
+  send "$NPM_PASSWORD\r" 
+
+  expect "Email"
+  send "$NPM_EMAIL\r"
+  expect eof
+DONE
 
 # install packages
 npm install
