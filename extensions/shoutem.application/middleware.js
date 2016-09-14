@@ -4,7 +4,7 @@ const {
   NAVIGATION_ACTION_PERFORMED,
   NAVIGATE,
 } = navigation;
-import { EXECUTE_SHORTCUT } from './redux';
+import { EXECUTE_SHORTCUT, setActiveShortcut } from './redux';
 
 /**
  * Creates screen settings for given shortcut.
@@ -34,7 +34,7 @@ function createExecuteShortcutMiddleware(actions) {
   return store => next => action => {
     if (action.type === EXECUTE_SHORTCUT) {
       const actionName = _.get(action, 'shortcut.attributes.action');
-
+      store.dispatch(setActiveShortcut(action.shortcut));
       if (!actionName) {
         return next(action);
       }

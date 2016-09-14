@@ -46,6 +46,22 @@ export const configurationReducer = function (state = defaultStateConfiguration,
   }
 };
 
+export const setActiveShortcutReducer = function (state = {}, action) {
+  switch (action.type) {
+    case 'ACTIVE_SHORTCUT':
+      return action.shortcut;
+    default:
+      return state;
+  }
+};
+
+export function setActiveShortcut(shortcut) {
+  return {
+    type: 'ACTIVE_SHORTCUT',
+    shortcut,
+  };
+}
+
 /**
  * Creates a redux action that is used to execute shortcuts provided by configuration
  * @param shortcut {Object} Shortcut object containing action to execute, and settings
@@ -108,4 +124,5 @@ export default combineReducers({
   screens: storage('shoutem.core.screens'),
   extensions: storage('shoutem.core.extensions'),
   themes: storage('shoutem.core.theme'),
+  activeShortcut: setActiveShortcutReducer,
 });
