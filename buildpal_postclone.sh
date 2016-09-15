@@ -31,3 +31,6 @@ DONE
 # install packages
 npm install
 echo "Packages installed successfully!"
+
+# link react projects
+rnpm link
