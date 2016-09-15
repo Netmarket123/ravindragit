@@ -6,7 +6,7 @@
 'use strict';
 
 const http = require('http');
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 const getLocalExtensions = require('./getLocalExtensions');
 const rimraf = require('rimraf');
@@ -41,6 +41,9 @@ class AppBuild {
 
   downloadConfiguration() {
     console.time('download configuration');
+    const configurationFolder = path.dirname(this.configurationFilePath)
+    fs.mkdirsSync(configurationFolder);
+
     const configurationFile = fs.createWriteStream(this.configurationFilePath);
     return new Promise((resolve, reject) => {
       http.get({
