@@ -18,7 +18,9 @@ function getDependencyDescriptor(packageName, version) {
 
 function addDependenciesToSet(dependencies, set) {
   _.forEach(dependencies, (version, name) => {
-    set.add(getDependencyDescriptor(name, version));
+    if (name) {
+      set.add(getDependencyDescriptor(name, version));
+    }
   });
 }
 
@@ -54,6 +56,7 @@ function appendZipExtensionTo(filePath) {
 }
 
 function downloadZipExtension(extension, destinationFolder) {
+  fs.mkdirsSync(destinationFolder);
   const extensionPath = path.join(destinationFolder, extension.id);
   const extensionWriteStream = fs.createWriteStream(appendZipExtensionTo(extensionPath));
   const extensionZipUrl = _.get(extension, 'attributes.location.app.package');
@@ -160,7 +163,9 @@ class ExtensionsInstaller {
         deleteDependenciesFromSet(shoutemDependencies, dependenciesSet);
         const dependenciesArray = [...dependenciesSet];
         console.log('Installing dependencies');
-        const dependenciesInstallPromise = npmInstall(dependenciesArray.join(' '));
+        const dependenciesInstallPromise = dependenciesArray.length ?
+          npmInstall(dependenciesArray.join(' ')) :
+          Promise.resolve();
 
         const installPromises = [
           ...localExtensionsInstallPromises,
