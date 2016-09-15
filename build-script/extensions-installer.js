@@ -118,6 +118,10 @@ function installZipExtension(extension) {
     .then((zipExtension) => installLocalExtension(zipExtension, 'clearAfterInstall'));
 }
 
+function installDependencies(dependenciesArray) {
+  return dependenciesArray.length ? npmInstall(dependenciesArray.join(' ')) : Promise.resolve();
+}
+
 const extensionInstaller = {
   zip: installZipExtension,
   npm: installNpmExtension,
@@ -155,17 +159,17 @@ class ExtensionsInstaller {
         const localExtensionsInstallPromises = this.localExtensions.map((extension) =>
           installLocalExtension(extension)
         );
+
         const remoteExtensionsInstallPromises = this.extensionsToInstall.map((extension) => {
           const extensionType = _.get(extension, 'attributes.location.app.type');
           return extensionInstaller[extensionType](extension);
         });
 
-        deleteDependenciesFromSet(shoutemDependencies, dependenciesSet);
-        const dependenciesArray = [...dependenciesSet];
-        console.log('Installing dependencies');
-        const dependenciesInstallPromise = dependenciesArray.length ?
-          npmInstall(dependenciesArray.join(' ')) :
-          Promise.resolve();
+        const dependenciesInstallPromise = Promise.all(remoteExtensionsInstallPromises).then(() => {
+          deleteDependenciesFromSet(shoutemDependencies, dependenciesSet);
+          const dependenciesArray = [...dependenciesSet];
+          return installDependencies(dependenciesArray);
+        });
 
         const installPromises = [
           ...localExtensionsInstallPromises,
