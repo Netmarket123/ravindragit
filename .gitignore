@@ -1,9 +1,8 @@
-# Build
-bin/build-script/tmp
-bin/assets/resources
-bin/extensions.js
-bin/config.json
-bin/temp
+build-script/tmp
+assets/resources
+extensions.js
+config.json
+temp
 
 # Logs
 logs
@@ -31,7 +30,7 @@ coverage
 build/Release
 
 # Dependency directory
-node_modules
+node_modules/
 
 # Optional npm cache directory
 .npm
@@ -39,9 +38,32 @@ node_modules
 # Optional REPL history
 .node_repl_history
 
-# Webstorm files
-.idea
-
-# Mac files
+# OSX
+#
 .DS_Store
-*/**/.DS_Store
+
+# Xcode
+#
+build/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*.xcuserstate
+project.xcworkspace
+
+# Android/IJ
+#
+.idea
+.gradle
+local.properties
