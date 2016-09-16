@@ -9,7 +9,7 @@
     "lint": "eslint ../"
   },
   "dependencies": {
-    "@shoutem/core": "0.0.26",
+    "@shoutem/core": "0.0.27",
     "@shoutem/redux-io": "0.2.5-alpha.4",
     "@shoutem/theme": "0.8.5",
     "@shoutem/ui": "0.8.5",
