@@ -65,7 +65,23 @@ import com.android.build.OutputFile
  * ]
  */
 
-apply from: "../../node_modules/react-native/react.gradle"
+/**
+ * make a shoutem build
+ */
+def shoutemBuild() {
+    apply from: "shoutem.gradle"
+}
+
+/**
+ * Run shoutem build before the project build task is started
+ */
+afterEvaluate { project ->
+    project.tasks.preBuild << {
+        shoutemBuild()
+    }
+}
+
+apply from: "react.gradle"
 apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
 /**
@@ -109,6 +125,12 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            buildConfigField "String", "CODE_PUSH_APP_KEY", CUSTOM_CODE_PUSH_APP_KEY
+        }
+
+        // TODO(Vladimir): remove this config when CodePush viabliity testing is over
+        debug {
+            buildConfigField "String", "CODE_PUSH_APP_KEY", CUSTOM_CODE_PUSH_APP_KEY
         }
     }
     // applicationVariants are e.g. debug, release
@@ -127,7 +149,6 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-maps')
     compile project(':react-native-calendar-manager')
     compile project(':react-native-video')
     compile project(':react-native-vector-icons')
