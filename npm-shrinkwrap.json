@@ -33,9 +33,9 @@
       "resolved": "https://registry.npmjs.org/@shoutem/ui/-/ui-0.8.5.tgz"
     },
     "@shoutem/ui-addons": {
-      "version": "0.0.2",
-      "from": "@shoutem/ui-addons@0.0.2",
-      "resolved": "https://registry.npmjs.org/@shoutem/ui-addons/-/ui-addons-0.0.2.tgz"
+      "version": "0.0.3",
+      "from": "@shoutem/ui-addons@0.0.3",
+      "resolved": "https://registry.npmjs.org/@shoutem/ui-addons/-/ui-addons-0.0.3.tgz"
     },
     "abbrev": {
       "version": "1.0.9",
