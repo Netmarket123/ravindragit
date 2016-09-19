@@ -8,9 +8,9 @@
       "resolved": "https://registry.npmjs.org/@shoutem/animation/-/animation-0.8.5.tgz"
     },
     "@shoutem/core": {
-      "version": "0.0.27",
-      "from": "@shoutem/core@0.0.27",
-      "resolved": "https://registry.npmjs.org/@shoutem/core/-/core-0.0.27.tgz"
+      "version": "0.0.28",
+      "from": "@shoutem/core@0.0.28",
+      "resolved": "https://registry.npmjs.org/@shoutem/core/-/core-0.0.28.tgz"
     },
     "@shoutem/json-api-denormalizer": {
       "version": "0.3.1",
@@ -35,7 +35,14 @@
     "@shoutem/ui": {
       "version": "0.8.5",
       "from": "@shoutem/ui@0.8.5",
-      "resolved": "https://registry.npmjs.org/@shoutem/ui/-/ui-0.8.5.tgz"
+      "resolved": "https://registry.npmjs.org/@shoutem/ui/-/ui-0.8.5.tgz",
+      "dependencies": {
+        "react-native-maps": {
+          "version": "0.6.0",
+          "from": "5minutes/react-native-maps#friends-with-28",
+          "resolved": "git://github.com/5minutes/react-native-maps.git#4488c1fb00251808f60f3edc6c1212b5c9bba3ee"
+        }
+      }
     },
     "@shoutem/ui-addons": {
       "version": "0.0.2",
@@ -3134,7 +3141,7 @@
     },
     "moment": {
       "version": "2.15.0",
-      "from": "moment@>=2.10.6 <3.0.0",
+      "from": "moment@>=2.13.0 <3.0.0",
       "resolved": "https://registry.npmjs.org/moment/-/moment-2.15.0.tgz"
     },
     "morgan": {
