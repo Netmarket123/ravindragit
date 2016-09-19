@@ -11,7 +11,8 @@
   "dependencies": {
     "@shoutem/animation": "0.8.5",
     "@shoutem/core": "0.0.27",
-    "@shoutem/redux-io": "^0.2.6",
+    "@shoutem/redux-io": "0.2.7",
+    "@shoutem/redux-composers": "0.1.0-beta.3",
     "@shoutem/theme": "0.8.5",
     "@shoutem/ui": "0.8.5",
     "@shoutem/ui-addons": "0.0.2",
