@@ -1,7 +1,7 @@
 'use-strict';
 
 const path = require('path');
-const fsExtra = require('fs-extra');
+const fs = require('fs-extra');
 const watch = require('node-watch');
 const getLocalExtensions = require('./getLocalExtensions.js');
 // eslint-disable-next-line import/no-unresolved
@@ -13,13 +13,15 @@ localExtensions.forEach((extension) => {
   const packagePath = extension.path;
   const nodeModules = 'node_modules';
   const installedExtensionPath = path.join(nodeModules, packageName);
+  const pathsToSkip = /^((?!(node_modules|\.git|\.idea)).)*$/;
+
   console.log(`Watching ${packageName}`);
   watch(packagePath, (filename) => {
     const localPath = filename.split(packagePath).pop();
     const destination = path.join(installedExtensionPath, localPath);
     if (filename !== nodeModules) {
       console.log(`Copying ${filename} to ${destination}`);
-      fsExtra.copy(filename, destination, (error) => {
+      fs.copy(filename, destination, { filter: pathsToSkip }, (error) => {
         if (error) {
           console.error(error);
         }
