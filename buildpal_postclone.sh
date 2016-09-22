@@ -1,12 +1,9 @@
 #!/bin/bash
 
-# rename config template
-mv config.template.json config.json
-
 # update NID of the application
 if [ "$NID" != '' ]
 then
-  sed -i '' "s/2080/$NID/g" "config.json"
+  sed "s/2080/$NID/g" config.template.json > config.json
   echo "Application id is updated to $NID"
 fi
 
