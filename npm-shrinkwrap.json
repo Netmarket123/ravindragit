@@ -13,9 +13,9 @@
       "resolved": "https://registry.npmjs.org/@shoutem/core/-/core-0.0.29.tgz"
     },
     "@shoutem/json-api-denormalizer": {
-      "version": "0.3.1",
-      "from": "@shoutem/json-api-denormalizer@>=0.3.1 <0.4.0",
-      "resolved": "https://registry.npmjs.org/@shoutem/json-api-denormalizer/-/json-api-denormalizer-0.3.1.tgz"
+      "version": "0.3.3",
+      "from": "@shoutem/json-api-denormalizer@>=0.3.3 <0.4.0",
+      "resolved": "https://registry.npmjs.org/@shoutem/json-api-denormalizer/-/json-api-denormalizer-0.3.3.tgz"
     },
     "@shoutem/redux-composers": {
       "version": "0.1.0-beta.3",
@@ -23,9 +23,9 @@
       "resolved": "https://registry.npmjs.org/@shoutem/redux-composers/-/redux-composers-0.1.0-beta.3.tgz"
     },
     "@shoutem/redux-io": {
-      "version": "0.2.7",
-      "from": "@shoutem/redux-io@0.2.7",
-      "resolved": "https://registry.npmjs.org/@shoutem/redux-io/-/redux-io-0.2.7.tgz"
+      "version": "0.2.9",
+      "from": "@shoutem/redux-io@0.2.9",
+      "resolved": "https://registry.npmjs.org/@shoutem/redux-io/-/redux-io-0.2.9.tgz"
     },
     "@shoutem/theme": {
       "version": "0.8.5",
@@ -6868,9 +6868,9 @@
       "resolved": "https://registry.npmjs.org/yeoman-welcome/-/yeoman-welcome-1.0.1.tgz"
     },
     "z-schema": {
-      "version": "3.17.0",
+      "version": "3.18.0",
       "from": "z-schema@>=3.17.0 <4.0.0",
-      "resolved": "https://registry.npmjs.org/z-schema/-/z-schema-3.17.0.tgz"
+      "resolved": "https://registry.npmjs.org/z-schema/-/z-schema-3.18.0.tgz"
     }
   }
 }
