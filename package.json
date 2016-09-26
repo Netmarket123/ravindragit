@@ -9,12 +9,12 @@
     "lint": "eslint ../"
   },
   "dependencies": {
-    "@shoutem/animation": "0.8.5",
-    "@shoutem/core": "0.0.29",
+    "@shoutem/animation": "0.8.6",
+    "@shoutem/core": "0.0.30",
     "@shoutem/redux-composers": "0.1.0-beta.3",
-    "@shoutem/redux-io": "0.2.9",
+    "@shoutem/redux-io": "0.2.10-alpha.3",
     "@shoutem/theme": "0.8.5",
-    "@shoutem/ui": "0.8.5",
+    "@shoutem/ui": "0.9.0",
     "@shoutem/ui-addons": "0.0.2",
     "code-push": "^1.10.0-beta",
     "code-push-cli": "1.12.3-beta",
