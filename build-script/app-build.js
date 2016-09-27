@@ -41,7 +41,7 @@ class AppBuild {
 
   downloadConfiguration() {
     console.time('download configuration');
-    const configurationFolder = path.dirname(this.configurationFilePath)
+    const configurationFolder = path.dirname(this.configurationFilePath);
     fs.mkdirsSync(configurationFolder);
 
     const configurationFile = fs.createWriteStream(this.configurationFilePath);
