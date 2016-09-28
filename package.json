@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@shoutem/animation": "0.8.6",
-    "@shoutem/core": "0.0.30",
+    "@shoutem/core": "0.0.31",
     "@shoutem/redux-composers": "0.1.0-beta.3",
     "@shoutem/redux-io": "0.2.10-alpha.3",
     "@shoutem/theme": "0.8.5",
