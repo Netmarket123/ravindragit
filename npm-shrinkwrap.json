@@ -48,7 +48,8 @@
       }
     },
     "@shoutem/ui-addons": {
-      "version": "0.0.3"
+      "version": "0.0.4",
+      "from": "@shoutem/ui-addons@0.0.4"
     },
     "abbrev": {
       "version": "1.0.9",
