@@ -9,11 +9,11 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@shoutem/animation": "0.8.6",
+    "@shoutem/animation": "0.8.7",
     "@shoutem/core": "0.0.31",
     "@shoutem/redux-composers": "0.1.0-beta.3",
     "@shoutem/redux-io": "0.2.10-alpha.3",
-    "@shoutem/theme": "0.8.6",
+    "@shoutem/theme": "0.8.7",
     "@shoutem/ui": "0.9.1",
     "@shoutem/ui-addons": "0.0.3",
     "es6-symbol": "^3.0.2",
