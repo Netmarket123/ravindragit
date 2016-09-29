@@ -3,9 +3,8 @@
   "version": "0.0.1",
   "dependencies": {
     "@shoutem/animation": {
-      "version": "0.8.6",
-      "from": "@shoutem/animation@0.8.6",
-      "resolved": "https://registry.npmjs.org/@shoutem/animation/-/animation-0.8.6.tgz"
+      "version": "0.8.7",
+      "from": "@shoutem/animation@0.8.7"
     },
     "@shoutem/core": {
       "version": "0.0.31",
@@ -28,19 +27,28 @@
       "resolved": "https://registry.npmjs.org/@shoutem/redux-io/-/redux-io-0.2.10-alpha.3.tgz"
     },
     "@shoutem/theme": {
-      "version": "0.8.6",
-      "from": "@shoutem/theme@0.8.6",
-      "resolved": "https://registry.npmjs.org/@shoutem/theme/-/theme-0.8.6.tgz"
+      "version": "0.8.7",
+      "from": "@shoutem/theme@0.8.7"
     },
     "@shoutem/ui": {
       "version": "0.9.1",
       "from": "@shoutem/ui@0.9.1",
-      "resolved": "https://registry.npmjs.org/@shoutem/ui/-/ui-0.9.1.tgz"
+      "resolved": "https://registry.npmjs.org/@shoutem/ui/-/ui-0.9.1.tgz",
+      "dependencies": {
+        "react-native-lightbox": {
+          "version": "0.6.0",
+          "from": "shoutem/react-native-lightbox",
+          "resolved": "git://github.com/shoutem/react-native-lightbox.git#42f63838a9e778bb554275b10f029140071f35d1"
+        },
+        "react-native-maps": {
+          "version": "0.6.0",
+          "from": "5minutes/react-native-maps#friends-with-28",
+          "resolved": "git://github.com/5minutes/react-native-maps.git#4488c1fb00251808f60f3edc6c1212b5c9bba3ee"
+        }
+      }
     },
     "@shoutem/ui-addons": {
-      "version": "0.0.3",
-      "from": "@shoutem/ui-addons@0.0.3",
-      "resolved": "https://registry.npmjs.org/@shoutem/ui-addons/-/ui-addons-0.0.3.tgz"
+      "version": "0.0.3"
     },
     "abbrev": {
       "version": "1.0.9",
@@ -5285,16 +5293,6 @@
       "from": "react-native-gesture-responder@0.1.1",
       "resolved": "https://registry.npmjs.org/react-native-gesture-responder/-/react-native-gesture-responder-0.1.1.tgz"
     },
-    "react-native-lightbox": {
-      "version": "0.6.0",
-      "from": "shoutem/react-native-lightbox",
-      "resolved": "git://github.com/shoutem/react-native-lightbox.git#42f63838a9e778bb554275b10f029140071f35d1"
-    },
-    "react-native-maps": {
-      "version": "0.6.0",
-      "from": "5minutes/react-native-maps#friends-with-28",
-      "resolved": "git://github.com/5minutes/react-native-maps.git#4488c1fb00251808f60f3edc6c1212b5c9bba3ee"
-    },
     "react-native-scroller": {
       "version": "0.0.6",
       "from": "react-native-scroller@0.0.6",
@@ -5462,7 +5460,7 @@
         "esprima-fb": {
           "version": "15001.1001.0-dev-harmony-fb",
           "from": "esprima-fb@>=15001.1001.0-dev-harmony-fb <15001.1002.0",
-          "resolved": "https://registry.npmjs.org/esprima-fb/-/esprima-fb-15001.1001.0-dev-harmony-fb.tgz"
+          "resolved": "http://registry.npmjs.org/esprima-fb/-/esprima-fb-15001.1001.0-dev-harmony-fb.tgz"
         }
       }
     },
