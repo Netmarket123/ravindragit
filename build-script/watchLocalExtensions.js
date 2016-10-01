@@ -19,9 +19,9 @@ localExtensions.forEach((extension) => {
   watch(packagePath, (filename) => {
     const localPath = filename.split(packagePath).pop();
     const destination = path.join(installedExtensionPath, localPath);
-    if (filename !== nodeModules) {
+    if (filename.match(pathsToSkip)) {
       console.log(`Copying ${filename} to ${destination}`);
-      fs.copy(filename, destination, { filter: pathsToSkip }, (error) => {
+      fs.copy(filename, destination, (error) => {
         if (error) {
           console.error(error);
         }
