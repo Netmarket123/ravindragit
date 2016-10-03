@@ -8,7 +8,7 @@
       "resolved": "https://registry.npmjs.org/@shoutem/animation/-/animation-0.8.7.tgz"
     },
     "@shoutem/core": {
-      "version": "0.0.32-beta.2"
+      "version": "0.0.32-beta.3"
     },
     "@shoutem/json-api-denormalizer": {
       "version": "0.3.3",
