@@ -11,6 +11,17 @@ const deploymentNames = {
   staging: 'Staging',
 };
 
+const deploymentKeyValidationErrorHandlers = [{
+  canHandle(error) {
+    return parseInt(error.statusCode === 404, 10);
+  },
+  handleFunction() {
+    console.log('create app on CodePush');
+    this.codePush.addApp(`${this.appId}`)
+      .then((app) => this.saveDeploymentKeys(app.name, codePushExtension));
+  },
+}];
+
 class AppRelease {
   constructor(config) {
     Object.assign(this, config);
@@ -71,21 +82,45 @@ class AppRelease {
     });
   }
 
+  validateDeploymentKeys(deploymentKeys) {
+    console.log('validate deployment keys');
+    return new Promise((resolve, reject) => {
+      this.codePush.getDeployments(`${this.appId}`)
+        .then((appDeployments) => resolve(_.difference(appDeployments, deploymentKeys).length))
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
+  saveDeploymentKeys(appName, codePushExtensionInstallation) {
+    console.log(`Saving new deployment keys for app: ${appName}`);
+    this.codePush.getDeployments(appName)
+      .then((deployments) =>
+      this.registerNewDeploymentKeysForInstallation(deployments, codePushExtensionInstallation))
+      .catch((error) => {
+        console.error(error);
+        process.exit(1);
+      });
+  }
+
   setup() {
     this.getCodePushExtensionInstallation()
       .then((codePushExtension) => {
         const deploymentKeys = _.get(codePushExtension, 'attributes.settings.deploymentKeys');
-        if (!deploymentKeys || deploymentKeys.length < 1) {
-          console.log('create app on CodePush');
-          this.codePush.addApp(`${this.appId}`)
-            .then((app) => this.codePush.getDeployments(app.name))
-            .then((deployments) =>
-              this.registerNewDeploymentKeysForInstallation(deployments, codePushExtension))
-            .catch((error) => {
-              console.error(error);
-              process.exit(1);
-            });
-        }
+        this.validateDeploymentKeys(deploymentKeys)
+          .then((isDepoymentKeysValid) => {
+            if (isDepoymentKeysValid) {
+              console.log(`App ${this.appId} has valid deployment keys`);
+            } else {
+              this.saveDeploymentKeys(`${this.appName}`, codePushExtension);
+            }
+          })
+          .catch((error) => {
+            const errorHandler = _.first(deploymentKeyValidationErrorHandlers,
+              handler => handler.canHandle(error));
+            errorHandler.handleFunction.bind(this)();
+          });
       })
       .catch((error) => {
         console.error(error);
