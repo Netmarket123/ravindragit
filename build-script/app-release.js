@@ -13,9 +13,9 @@ const deploymentNames = {
 
 const deploymentKeyValidationErrorHandlers = [{
   canHandle(error) {
-    return parseInt(error.statusCode === 404, 10);
+    return parseInt(error.statusCode, 10) === 404;
   },
-  handleFunction() {
+  handleFunction(codePushExtension) {
     console.log('create app on CodePush');
     this.codePush.addApp(`${this.appId}`)
       .then((app) => this.saveDeploymentKeys(app.name, codePushExtension));
@@ -109,8 +109,8 @@ class AppRelease {
       .then((codePushExtension) => {
         const deploymentKeys = _.get(codePushExtension, 'attributes.settings.deploymentKeys');
         this.validateDeploymentKeys(deploymentKeys)
-          .then((isDepoymentKeysValid) => {
-            if (isDepoymentKeysValid) {
+          .then((areDepoymentKeysValid) => {
+            if (areDepoymentKeysValid) {
               console.log(`App ${this.appId} has valid deployment keys`);
             } else {
               this.saveDeploymentKeys(`${this.appName}`, codePushExtension);
@@ -119,7 +119,7 @@ class AppRelease {
           .catch((error) => {
             const errorHandler = _.first(deploymentKeyValidationErrorHandlers,
               handler => handler.canHandle(error));
-            errorHandler.handleFunction.bind(this)();
+            errorHandler.handleFunction.bind(this)(codePushExtension);
           });
       })
       .catch((error) => {
