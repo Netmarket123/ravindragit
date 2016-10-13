@@ -26,6 +26,15 @@ class AppRelease {
   constructor(config) {
     Object.assign(this, config);
     this.codePush = new CodePush(this.codePushAccessKey);
+    this.setCodePushAppName(config.appId);
+  }
+
+  setCodePushAppName(appName) {
+    this.codePushAppName = appName;
+  }
+
+  getCodePushAppName() {
+    return this.codePushAppName;
   }
 
   registerNewDeploymentKeysForInstallation(deploymentKeys, extensionInstallation) {
@@ -85,7 +94,7 @@ class AppRelease {
   validateDeploymentKeys(deploymentKeys) {
     console.log('validate deployment keys');
     return new Promise((resolve, reject) => {
-      this.codePush.getDeployments(`${this.appId}`)
+      this.codePush.getDeployments(`${this.getCodePushAppName()}`)
         .then((appDeployments) => resolve(_.difference(appDeployments, deploymentKeys).length))
         .catch((error) => {
           reject(error);
@@ -111,7 +120,7 @@ class AppRelease {
         this.validateDeploymentKeys(deploymentKeys)
           .then((areDepoymentKeysValid) => {
             if (areDepoymentKeysValid) {
-              console.log(`App ${this.appId} has valid deployment keys`);
+              console.log(`App ${this.getCodePushAppName()} has valid deployment keys`);
             } else {
               this.saveDeploymentKeys(`${this.appName}`, codePushExtension);
             }
@@ -135,7 +144,7 @@ class AppRelease {
   release() {
     codePushExec.execute({
       type: codePushCli.CommandType.releaseReact,
-      appName: `${this.appId}`,
+      appName: `${this.getCodePushAppName()}`,
       deploymentName: this.getDeploymentName(),
       platform: 'ios',
     })
