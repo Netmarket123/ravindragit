@@ -17,32 +17,27 @@ const deploymentKeyValidationErrorHandlers = [{
   },
   handleFunction(codePushExtension) {
     console.log('create app on CodePush');
-    this.codePush.addApp(`${this.appId}`)
+    this.codePush.addApp(this.getCodePushAppName())
       .then((app) => this.saveDeploymentKeys(app.name, codePushExtension));
   },
 }];
 
 class AppRelease {
   constructor(config) {
-    Object.assign(this, config);
-    this.codePush = new CodePush(this.codePushAccessKey);
-    this.setCodePushAppName(config.appId);
-  }
-
-  setCodePushAppName(appName) {
-    this.codePushAppName = appName;
+    this.config = _.assign({}, config);
+    this.codePush = new CodePush(config.codePushAccessKey);
   }
 
   getCodePushAppName() {
-    return this.codePushAppName;
+    return `${this.config.appId}`;
   }
 
   registerNewDeploymentKeysForInstallation(deploymentKeys, extensionInstallation) {
     return new Promise((resolve, reject) => {
       request({
-        url: `http://${this.serverApiEndpoint}/v1/apps/${this.appId}/installations/${extensionInstallation.id}`,
+        url: `http://${this.config.serverApiEndpoint}/v1/apps/${this.config.appId}/installations/${extensionInstallation.id}`,
         headers: {
-          Authorization: this.authorization,
+          Authorization: this.config.authorization,
           Accept: 'application/vnd.api+json',
           'Content-Type': 'application/vnd.api+json',
         },
@@ -73,9 +68,9 @@ class AppRelease {
     console.log('get extension installation');
     return new Promise((resolve, reject) => {
       request.get({
-        url: `http://${this.serverApiEndpoint}/v1/apps/${this.appId}/installations/shoutem.code-push`,
+        url: `http://${this.config.serverApiEndpoint}/v1/apps/${this.config.appId}/installations/shoutem.code-push`,
         headers: {
-          Authorization: this.authorization,
+          Authorization: this.config.authorization,
           Accept: 'application/vnd.api+json',
         },
       }, (error, response, body) => {
@@ -94,7 +89,7 @@ class AppRelease {
   validateDeploymentKeys(deploymentKeys) {
     console.log('validate deployment keys');
     return new Promise((resolve, reject) => {
-      this.codePush.getDeployments(`${this.getCodePushAppName()}`)
+      this.codePush.getDeployments(this.getCodePushAppName())
         .then((appDeployments) => resolve(_.difference(appDeployments, deploymentKeys).length))
         .catch((error) => {
           reject(error);
@@ -122,13 +117,18 @@ class AppRelease {
             if (areDepoymentKeysValid) {
               console.log(`App ${this.getCodePushAppName()} has valid deployment keys`);
             } else {
-              this.saveDeploymentKeys(`${this.appName}`, codePushExtension);
+              console.log(`App ${this.getCodePushAppName()} has invalid deployment keys`);
+              this.saveDeploymentKeys(this.getCodePushAppName(), codePushExtension);
             }
           })
           .catch((error) => {
             const errorHandler = _.first(deploymentKeyValidationErrorHandlers,
               handler => handler.canHandle(error));
-            errorHandler.handleFunction.bind(this)(codePushExtension);
+            if (errorHandler) {
+              errorHandler.handleFunction.bind(this)(codePushExtension);
+            }
+            console.error(error);
+            process.exit(1);
           });
       })
       .catch((error) => {
@@ -138,18 +138,18 @@ class AppRelease {
   }
 
   getDeploymentName() {
-    return this.production ? deploymentNames.production : deploymentNames.staging;
+    return this.config.production ? deploymentNames.production : deploymentNames.staging;
   }
 
   release() {
     codePushExec.execute({
       type: codePushCli.CommandType.releaseReact,
-      appName: `${this.getCodePushAppName()}`,
+      appName: this.getCodePushAppName(),
       deploymentName: this.getDeploymentName(),
       platform: 'ios',
     })
       .then(() =>
-        console.log(`App with id:${this.appId} is successfully released`)
+        console.log(`App with id:${this.config.appId} is successfully released`)
       )
       .catch((error) => {
         console.error(error);
