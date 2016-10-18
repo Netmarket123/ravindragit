@@ -32,10 +32,14 @@ class AppRelease {
     return `${this.config.appId}`;
   }
 
+  getInstallationsEndpoint() {
+    return `http://${this.config.serverApiEndpoint}/v1/apps/${this.config.appId}/installations`;
+  }
+
   registerNewDeploymentKeysForInstallation(deploymentKeys, extensionInstallation) {
     return new Promise((resolve, reject) => {
       request({
-        url: `http://${this.config.serverApiEndpoint}/v1/apps/${this.config.appId}/installations/${extensionInstallation.id}`,
+        url: `${this.getInstallationsEndpoint()}/${extensionInstallation.id}`,
         headers: {
           Authorization: this.config.authorization,
           Accept: 'application/vnd.api+json',
@@ -68,7 +72,7 @@ class AppRelease {
     console.log('get extension installation');
     return new Promise((resolve, reject) => {
       request.get({
-        url: `http://${this.config.serverApiEndpoint}/v1/apps/${this.config.appId}/installations/shoutem.code-push`,
+        url: `${this.getInstallationsEndpoint()}/shoutem.code-push`,
         headers: {
           Authorization: this.config.authorization,
           Accept: 'application/vnd.api+json',
@@ -149,7 +153,7 @@ class AppRelease {
       platform: 'ios',
     })
       .then(() =>
-        console.log(`App with id:${this.config.appId} is successfully released`)
+        console.log('App is successfully released')
       )
       .catch((error) => {
         console.error(error);
