@@ -4,6 +4,7 @@ const CodePush = require('code-push');
 const codePushExec = require('code-push-cli/script/command-executor');
 const codePushCli = require('code-push-cli/definitions/cli');
 const request = require('request');
+const buildApiEndpoint = require('./buildApiEndpoint');
 const _ = require('lodash');
 
 const deploymentNames = {
@@ -17,32 +18,44 @@ const deploymentKeyValidationErrorHandlers = [{
   },
   handleFunction(codePushExtension) {
     console.log('create app on CodePush');
-    this.codePush.addApp(`${this.appId}`)
+    this.codePush.addApp(this.getCodePushAppName())
       .then((app) => this.saveDeploymentKeys(app.name, codePushExtension));
   },
 }];
 
+function getMissingDeploymentKeys(deploymentKeys) {
+  return _.filter(deploymentNames, (deploymentName) =>
+    !_.some(deploymentKeys, { name: deploymentName })
+  );
+}
+
+
+function hasDefaultDeploymentKeys(deploymentKeys) {
+  return getMissingDeploymentKeys(deploymentKeys).length < 1;
+}
+
 class AppRelease {
   constructor(config) {
-    Object.assign(this, config);
-    this.codePush = new CodePush(this.codePushAccessKey);
-    this.setCodePushAppName(config.appId);
-  }
-
-  setCodePushAppName(appName) {
-    this.codePushAppName = appName;
+    this.config = _.assign({}, config);
+    this.codePush = new CodePush(config.codePushAccessKey);
   }
 
   getCodePushAppName() {
-    return this.codePushAppName;
+    return `${this.config.appId}`;
+  }
+
+  getExtensionInstallationEndpoint(extensionInstallation) {
+    const serverApiEndpoint = this.config.serverApiEndpoint;
+    const appId = this.config.appId;
+    return buildApiEndpoint(serverApiEndpoint, appId, `installations/${extensionInstallation}`);
   }
 
   registerNewDeploymentKeysForInstallation(deploymentKeys, extensionInstallation) {
     return new Promise((resolve, reject) => {
       request({
-        url: `http://${this.serverApiEndpoint}/v1/apps/${this.appId}/installations/${extensionInstallation.id}`,
+        url: this.getExtensionInstallationEndpoint(extensionInstallation.id),
         headers: {
-          Authorization: this.authorization,
+          Authorization: this.config.authorization,
           Accept: 'application/vnd.api+json',
           'Content-Type': 'application/vnd.api+json',
         },
@@ -73,9 +86,9 @@ class AppRelease {
     console.log('get extension installation');
     return new Promise((resolve, reject) => {
       request.get({
-        url: `http://${this.serverApiEndpoint}/v1/apps/${this.appId}/installations/shoutem.code-push`,
+        url: this.getExtensionInstallationEndpoint('shoutem.code-push'),
         headers: {
-          Authorization: this.authorization,
+          Authorization: this.config.authorization,
           Accept: 'application/vnd.api+json',
         },
       }, (error, response, body) => {
@@ -94,12 +107,30 @@ class AppRelease {
   validateDeploymentKeys(deploymentKeys) {
     console.log('validate deployment keys');
     return new Promise((resolve, reject) => {
-      this.codePush.getDeployments(`${this.getCodePushAppName()}`)
-        .then((appDeployments) => resolve(_.difference(appDeployments, deploymentKeys).length))
+      this.codePush.getDeployments(this.getCodePushAppName())
+        .then((appDeployments) => {
+          if (hasDefaultDeploymentKeys(appDeployments)) {
+            const areDeploymentKeysValid = _.difference(appDeployments, deploymentKeys).length;
+            return resolve(areDeploymentKeysValid);
+          }
+          console.log('App does not have all default deployment keys on Code Push');
+          return this.createMissingDeploymentKeys().then(() => resolve(false));
+        })
         .catch((error) => {
           reject(error);
         });
     });
+  }
+
+  createDeploymentKey(deploymentKeyName) {
+    console.log(`Creating deployment key: ${deploymentKeyName}`);
+    return this.codePush.addDeployment(this.getCodePushAppName(), deploymentKeyName);
+  }
+
+  createMissingDeploymentKeys(deploymentKeys) {
+    console.log('Creating deployment keys on Code Push...');
+    const missingDeploymentKeys = getMissingDeploymentKeys(deploymentKeys);
+    return Promise.all(_.map(missingDeploymentKeys, (name) => this.createDeploymentKey(name)));
   }
 
   saveDeploymentKeys(appName, codePushExtensionInstallation) {
@@ -122,13 +153,22 @@ class AppRelease {
             if (areDepoymentKeysValid) {
               console.log(`App ${this.getCodePushAppName()} has valid deployment keys`);
             } else {
-              this.saveDeploymentKeys(`${this.appName}`, codePushExtension);
+              if (hasDefaultDeploymentKeys(deploymentKeys)) {
+                console.log('App does not have all default deployment keys saved');
+              } else {
+                console.log(`App ${this.getCodePushAppName()} has invalid deployment keys`);
+              }
+              this.saveDeploymentKeys(this.getCodePushAppName(), codePushExtension);
             }
           })
           .catch((error) => {
             const errorHandler = _.first(deploymentKeyValidationErrorHandlers,
               handler => handler.canHandle(error));
-            errorHandler.handleFunction.bind(this)(codePushExtension);
+            if (errorHandler) {
+              errorHandler.handleFunction.bind(this)(codePushExtension);
+            }
+            console.error(error);
+            process.exit(1);
           });
       })
       .catch((error) => {
@@ -138,19 +178,19 @@ class AppRelease {
   }
 
   getDeploymentName() {
-    return this.production ? deploymentNames.production : deploymentNames.staging;
+    return this.config.production ? deploymentNames.production : deploymentNames.staging;
   }
 
   release() {
     codePushExec.execute({
       type: codePushCli.CommandType.releaseReact,
-      appName: `${this.getCodePushAppName()}`,
+      appName: this.getCodePushAppName(),
       deploymentName: this.getDeploymentName(),
       platform: 'ios',
       development: !this.production,
     })
       .then(() =>
-        console.log(`App with id:${this.appId} is successfully released`)
+        console.log('App is successfully released')
       )
       .catch((error) => {
         console.error(error);
