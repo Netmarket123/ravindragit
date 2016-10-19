@@ -4,6 +4,7 @@ const CodePush = require('code-push');
 const codePushExec = require('code-push-cli/script/command-executor');
 const codePushCli = require('code-push-cli/definitions/cli');
 const request = require('request');
+const buildApiEndpoint = require('./buildApiEndpoint');
 const _ = require('lodash');
 
 const deploymentNames = {
@@ -44,7 +45,9 @@ class AppRelease {
   }
 
   getExtensionInstallationEndpoint(extensionInstallation) {
-    return `http://${this.config.serverApiEndpoint}/v1/apps/${this.config.appId}/installations/${extensionInstallation}`;
+    const serverApiEndpoint = this.config.serverApiEndpoint;
+    const appId = this.config.appId;
+    return buildApiEndpoint(serverApiEndpoint, appId, `installations/${extensionInstallation}`);
   }
 
   registerNewDeploymentKeysForInstallation(deploymentKeys, extensionInstallation) {
