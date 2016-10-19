@@ -111,7 +111,7 @@ class AppRelease {
             return resolve(areDeploymentKeysValid);
           }
           console.log('App does not have all default deployment keys on Code Push');
-          this.createMissingDeploymentKeys().then(() => resolve(false));
+          return this.createMissingDeploymentKeys().then(() => resolve(false));
         })
         .catch((error) => {
           reject(error);
