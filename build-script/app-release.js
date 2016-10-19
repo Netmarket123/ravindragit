@@ -94,11 +94,26 @@ class AppRelease {
     console.log('validate deployment keys');
     return new Promise((resolve, reject) => {
       this.codePush.getDeployments(this.getCodePushAppName())
-        .then((appDeployments) => resolve(_.difference(appDeployments, deploymentKeys).length))
+        .then((appDeployments) => {
+          if (appDeployments.length > 0) {
+            resolve(_.difference(appDeployments, deploymentKeys).length);
+          }
+          console.log('App does not have any deployment keys on Code Push');
+          this.createDefaultDeploymentKeys().then(() => resolve(false));
+        })
         .catch((error) => {
           reject(error);
         });
     });
+  }
+
+  createDepoymentKey(deploymentKeyName) {
+    return this.codePush.addDeployment(this.getCodePushAppName(), deploymentKeyName);
+  }
+
+  createDefaultDeploymentKeys() {
+    console.log('Creating deployment keys on Code Push...');
+    return Promise.all(_.map(deploymentNames, (name) => this.createDepoymentKey(name)));
   }
 
   saveDeploymentKeys(appName, codePushExtensionInstallation) {
@@ -121,7 +136,11 @@ class AppRelease {
             if (areDepoymentKeysValid) {
               console.log(`App ${this.getCodePushAppName()} has valid deployment keys`);
             } else {
-              console.log(`App ${this.getCodePushAppName()} has invalid deployment keys`);
+              if (_.isEmpty(deploymentKeys)) {
+                console.log('App does not have any saved deployment keys');
+              } else {
+                console.log(`App ${this.getCodePushAppName()} has invalid deployment keys`);
+              }
               this.saveDeploymentKeys(this.getCodePushAppName(), codePushExtension);
             }
           })
