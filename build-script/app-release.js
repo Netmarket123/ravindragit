@@ -43,14 +43,14 @@ class AppRelease {
     return `${this.config.appId}`;
   }
 
-  getInstallationsEndpoint() {
-    return `http://${this.config.serverApiEndpoint}/v1/apps/${this.config.appId}/installations`;
+  getExtensionInstallationEndpoint(extensionInstallation) {
+    return `http://${this.config.serverApiEndpoint}/v1/apps/${this.config.appId}/installations/${extensionInstallation}`;
   }
 
   registerNewDeploymentKeysForInstallation(deploymentKeys, extensionInstallation) {
     return new Promise((resolve, reject) => {
       request({
-        url: `${this.getInstallationsEndpoint()}/${extensionInstallation.id}`,
+        url: this.getExtensionInstallationEndpoint(extensionInstallation.id),
         headers: {
           Authorization: this.config.authorization,
           Accept: 'application/vnd.api+json',
@@ -83,7 +83,7 @@ class AppRelease {
     console.log('get extension installation');
     return new Promise((resolve, reject) => {
       request.get({
-        url: `${this.getInstallationsEndpoint()}/shoutem.code-push`,
+        url: this.getExtensionInstallationEndpoint('shoutem.code-push'),
         headers: {
           Authorization: this.config.authorization,
           Accept: 'application/vnd.api+json',
