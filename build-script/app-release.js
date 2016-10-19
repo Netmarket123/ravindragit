@@ -22,6 +22,17 @@ const deploymentKeyValidationErrorHandlers = [{
   },
 }];
 
+function getMissingDeploymentKeys(deploymentKeys) {
+  return _.filter(deploymentNames, (deploymentName) =>
+    !_.some(deploymentKeys, { name: deploymentName })
+  );
+}
+
+
+function hasDefaultDeploymentKeys(deploymentKeys) {
+  return getMissingDeploymentKeys(deploymentKeys).length < 1;
+}
+
 class AppRelease {
   constructor(config) {
     this.config = _.assign({}, config);
@@ -95,11 +106,12 @@ class AppRelease {
     return new Promise((resolve, reject) => {
       this.codePush.getDeployments(this.getCodePushAppName())
         .then((appDeployments) => {
-          if (appDeployments.length > 0) {
-            resolve(_.difference(appDeployments, deploymentKeys).length);
+          if (hasDefaultDeploymentKeys(appDeployments)) {
+            const areDeploymentKeysValid = _.difference(appDeployments, deploymentKeys).length;
+            return resolve(areDeploymentKeysValid);
           }
-          console.log('App does not have any deployment keys on Code Push');
-          this.createDefaultDeploymentKeys().then(() => resolve(false));
+          console.log('App does not have all default deployment keys on Code Push');
+          this.createMissingDeploymentKeys().then(() => resolve(false));
         })
         .catch((error) => {
           reject(error);
@@ -107,13 +119,15 @@ class AppRelease {
     });
   }
 
-  createDepoymentKey(deploymentKeyName) {
+  createDeploymentKey(deploymentKeyName) {
+    console.log(`Creating deployment key: ${deploymentKeyName}`);
     return this.codePush.addDeployment(this.getCodePushAppName(), deploymentKeyName);
   }
 
-  createDefaultDeploymentKeys() {
+  createMissingDeploymentKeys(deploymentKeys) {
     console.log('Creating deployment keys on Code Push...');
-    return Promise.all(_.map(deploymentNames, (name) => this.createDepoymentKey(name)));
+    const missingDeploymentKeys = getMissingDeploymentKeys(deploymentKeys);
+    return Promise.all(_.map(missingDeploymentKeys, (name) => this.createDeploymentKey(name)));
   }
 
   saveDeploymentKeys(appName, codePushExtensionInstallation) {
@@ -136,8 +150,8 @@ class AppRelease {
             if (areDepoymentKeysValid) {
               console.log(`App ${this.getCodePushAppName()} has valid deployment keys`);
             } else {
-              if (_.isEmpty(deploymentKeys)) {
-                console.log('App does not have any saved deployment keys');
+              if (hasDefaultDeploymentKeys(deploymentKeys)) {
+                console.log('App does not have all default deployment keys saved');
               } else {
                 console.log(`App ${this.getCodePushAppName()} has invalid deployment keys`);
               }
