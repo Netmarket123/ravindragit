@@ -6,6 +6,7 @@ const npm = require('npm/lib/npm.js');
 const fs = require('fs-extra');
 const rimraf = require('rimraf');
 const unzip = require('unzip');
+const shell = require('shelljs');
 const getLocalExtensions = require('./getLocalExtensions');
 const _ = require('lodash');
 const shoutemDependencies = require('../package.json').dependencies;
@@ -30,25 +31,13 @@ function deleteDependenciesFromSet(dependencies, set) {
   });
 }
 
-function installLocalExtension(extension, clearAfterInstall) {
+function installLocalExtension(extension) {
   if (!extension) return Promise.resolve();
   const packageName = extension.id;
   const packagePath = extension.path;
-  const installedExtensionPath = path.join('node_modules', packageName);
-  // Do not copy paths containing node_modules, .git or .idea
-  const pathsToSkip = /^((?!(node_modules|\.git|\.idea)).)*$/;
 
-  addDependenciesToSet(extension.dependencies, dependenciesSet);
-  console.log(`Installing ${packageName}`);
-  return new Promise((resolve) => {
-    fs.copy(packagePath, installedExtensionPath, { filter: pathsToSkip }, () => {
-      console.log(`${packageName} installed`);
-      if (clearAfterInstall) {
-        rimraf(packagePath, () => console.log(`delete ${packagePath}`));
-      }
-      resolve(extension);
-    });
-  });
+  addDependenciesToSet({ [packageName]: packagePath }, dependenciesSet);
+  return Promise.resolve(extension);
 }
 
 function appendZipExtensionTo(filePath) {
@@ -95,21 +84,25 @@ function getUnzippedExtension(extension) {
 function npmInstall(packageName) {
   console.log(`Installing ${packageName}`);
   return new Promise((resolve, reject) => {
-    npm.commands.install([`${packageName}`], (error) => {
-      if (error) {
+    shell.exec(`npm install ${packageName}`, (error) => {
+      if (!error) {
         reject(error);
+      } else {
+        console.log(`${packageName} installed`);
+        resolve();
       }
-      console.log(`${packageName} installed`);
-      resolve();
     });
   });
 }
 
 function installNpmExtension(extension) {
   return new Promise((resolve) => {
-    npmInstall(extension.id).then(() => {
-      resolve(extension);
-    });
+    // This actually could be any valid npm install argument (version range, GitHub repo,
+    // URL to .tgz file or event local path) but for now is always URL to .tgz stored on our server
+    const extensionPackageURL = _.get(extension, 'attributes.location.app.package');
+    const packageName = extension.id;
+    addDependenciesToSet({ [packageName]: extensionPackageURL }, dependenciesSet);
+    resolve(extension);
   });
 }
 

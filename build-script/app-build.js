@@ -50,7 +50,6 @@ class AppBuild {
         path: this.getConfigurationUrl(),
         host: this.serverApiEndpoint,
         headers: {
-          Authorization: this.authorization,
           Accept: 'application/vnd.api+json',
         },
       }, response => {
@@ -96,8 +95,18 @@ class AppBuild {
 
     return extensionsInstaller.installExtensions(this.production)
       .then((installedExtensions) => {
-        extensionsInstaller.createExtensionsJs(installedExtensions);
+        const extensionsJs = extensionsInstaller.createExtensionsJs(installedExtensions);
+        const preBuild = this.runPreBuild(installedExtensions);
+
+        return Promise.all([extensionsJs, preBuild]);
       });
+  }
+
+  runPreBuild() {
+    // TODO (Ivan) move this to shoutem.application extension when preBuild is available
+    const configuration = path.join('node_modules', 'shoutem.application', 'configuration.json');
+    fs.copySync(this.configurationFilePath, configuration);
+    return Promise.resolve();
   }
 
   prepareConfiguration() {
