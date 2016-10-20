@@ -109,6 +109,12 @@ class AppBuild {
     return Promise.resolve();
   }
 
+  cleanTempFolder() {
+    console.time('cleaning temp files');
+    rimraf.sync(path.join('.', 'temp', '*'));
+    console.timeEnd('cleaning temp files');
+  }
+
   prepareConfiguration() {
     if (this.offlineMode) {
       // Nothing to do, resolve to proceed with next build step
@@ -123,6 +129,7 @@ class AppBuild {
     this.prepareConfiguration()
       .then(() => this.prepareExtensions())
       .then(() => this.removeBabelrcFiles())
+      .then(() => this.cleanTempFolder())
       .then(() => {
         console.timeEnd('build time');
       })
