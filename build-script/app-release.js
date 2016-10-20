@@ -55,7 +55,6 @@ class AppRelease {
       request({
         url: this.getExtensionInstallationEndpoint(extensionInstallation.id),
         headers: {
-          Authorization: this.config.authorization,
           Accept: 'application/vnd.api+json',
           'Content-Type': 'application/vnd.api+json',
         },
@@ -88,7 +87,6 @@ class AppRelease {
       request.get({
         url: this.getExtensionInstallationEndpoint('shoutem.code-push'),
         headers: {
-          Authorization: this.config.authorization,
           Accept: 'application/vnd.api+json',
         },
       }, (error, response, body) => {
