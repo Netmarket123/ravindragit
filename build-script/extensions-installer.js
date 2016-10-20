@@ -97,9 +97,11 @@ function npmInstall(packageName) {
 
 function installNpmExtension(extension) {
   return new Promise((resolve) => {
-    const extensionInstallAttribute = _.get(extension, 'attributes.location.app.package');
+    // This actually could be any valid npm install argument (version range, GitHub repo,
+    // URL to .tgz file or event local path) but for now is always URL to .tgz stored on our server
+    const extensionPackageURL = _.get(extension, 'attributes.location.app.package');
     const packageName = extension.id;
-    addDependenciesToSet({ [packageName]: extensionInstallAttribute }, dependenciesSet);
+    addDependenciesToSet({ [packageName]: extensionPackageURL }, dependenciesSet);
     resolve(extension);
   });
 }
