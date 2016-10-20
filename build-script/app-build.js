@@ -95,16 +95,17 @@ class AppBuild {
 
     return extensionsInstaller.installExtensions(this.production)
       .then((installedExtensions) => {
-        const extensionsJs = extensionsInstaller.createExtensionsJs(installedExtensions)
+        const extensionsJs = extensionsInstaller.createExtensionsJs(installedExtensions);
         const preBuild = this.runPreBuild(installedExtensions);
 
         return Promise.all([extensionsJs, preBuild]);
       });
   }
 
-  runPreBuild(installedExtensions) {
+  runPreBuild() {
     // TODO (Ivan) move this to shoutem.application extension when preBuild is available
-    fs.copySync(this.configurationFilePath, path.join('node_modules', 'shoutem.application', 'configuration.json'));
+    const configuration = path.join('node_modules', 'shoutem.application', 'configuration.json');
+    fs.copySync(this.configurationFilePath, configuration);
     return Promise.resolve();
   }
 

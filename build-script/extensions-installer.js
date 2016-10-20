@@ -86,6 +86,8 @@ function npmInstall(packageName) {
   return new Promise((resolve, reject) => {
     shell.exec(`npm install ${packageName}`, (error) => {
       if (!error) {
+        reject(error);
+      } else {
         console.log(`${packageName} installed`);
         resolve();
       }
