@@ -3,6 +3,7 @@ package com.shoutemapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import com.shoutem.calendar.CalendarManagerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import cl.json.RNSharePackage;
@@ -32,6 +33,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new GoogleAnalyticsBridgePackage(),
             new CalendarManagerPackage(),
             new VectorIconsPackage(),
             new RNSharePackage(),
