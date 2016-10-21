@@ -18,7 +18,7 @@ const deploymentKeyValidationErrorHandlers = [{
   },
   handleFunction(codePushExtension) {
     console.log('create app on CodePush');
-    this.codePush.addApp(this.getCodePushAppName())
+    return this.codePush.addApp(this.getCodePushAppName())
       .then((app) => this.saveDeploymentKeys(app.name, codePushExtension));
   },
 }];
@@ -159,11 +159,12 @@ class AppRelease {
               this.saveDeploymentKeys(this.getCodePushAppName(), codePushExtension);
             }
           })
+          // eslint-disable-next-line consistent-return
           .catch((error) => {
             const errorHandler = _.first(deploymentKeyValidationErrorHandlers,
               handler => handler.canHandle(error));
             if (errorHandler) {
-              errorHandler.handleFunction.bind(this)(codePushExtension);
+              return errorHandler.handleFunction.bind(this)(codePushExtension);
             }
             console.error(error);
             process.exit(1);
