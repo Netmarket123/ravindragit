@@ -5295,6 +5295,11 @@
       "from": "react-native-gesture-responder@0.1.1",
       "resolved": "https://registry.npmjs.org/react-native-gesture-responder/-/react-native-gesture-responder-0.1.1.tgz"
     },
+    "react-native-google-analytics-bridge": {
+      "version": "3.1.0",
+      "from": "react-native-google-analytics-bridge@latest",
+      "resolved": "https://registry.npmjs.org/react-native-google-analytics-bridge/-/react-native-google-analytics-bridge-3.1.0.tgz"
+    },
     "react-native-scroller": {
       "version": "0.0.6",
       "from": "react-native-scroller@0.0.6",
