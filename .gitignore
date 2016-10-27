@@ -3,8 +3,8 @@ assets/resources
 extensions.js
 config.json
 temp
-package.json
-yarn.lock
+*package.json
+*yarn.lock
 
 # Logs
 logs
