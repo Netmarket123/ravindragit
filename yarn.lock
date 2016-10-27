@@ -1724,10 +1724,6 @@ dateformat@^1.0.11:
     get-stdin "^4.0.1"
     meow "^3.3.0"
 
-"davor.demo-ext@https://seext-dev.s3.amazonaws.com/davor/demo-ext/0.0.1/app.tgz":
-  version "0.0.1-build1477574691018"
-  resolved "https://seext-dev.s3.amazonaws.com/davor/demo-ext/0.0.1/app.tgz#bb87c5839585cd8152ac2dbeced860ec7ad9e7cf"
-
 debug@^2.0.0, debug@^2.1.0, debug@^2.1.1, debug@^2.2.0, debug@~2.2.0, debug@2:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.2.0.tgz#f87057e995b1a1f6ae6a4960664137bc56f039da"
@@ -4987,10 +4983,6 @@ react-native-share@1.0.13:
   version "1.0.13"
   resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-1.0.13.tgz#472d6b245eac449f5e8eb3419c65a17276ee8e47"
 
-react-native-side-menu@0.20.0:
-  version "0.20.0"
-  resolved "https://registry.yarnpkg.com/react-native-side-menu/-/react-native-side-menu-0.20.0.tgz#70e839d4c7e37caaa9fae15e67546bfeffb73e08"
-
 react-native-vector-icons@^2.0.3:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-2.1.0.tgz#37ff40e2fc753a56624846e7471282b818b92edc"
@@ -5747,62 +5739,6 @@ shelljs@^0.7.4:
     glob "^7.0.0"
     interpret "^1.0.0"
     rechoir "^0.6.2"
-
-"shoutem.application@https://seext-dev.s3.amazonaws.com/shoutem/application/0.0.3/app.tgz":
-  version "0.0.3"
-  resolved "https://seext-dev.s3.amazonaws.com/shoutem/application/0.0.3/app.tgz#a41efcd9e8f8ef51741f38054f367633bc83feab"
-
-"shoutem.cms@https://seext-dev.s3.amazonaws.com/shoutem/cms/0.3.6/app.tgz":
-  version "0.1.8"
-  resolved "https://seext-dev.s3.amazonaws.com/shoutem/cms/0.3.6/app.tgz#4556e281ae0d4e5dc39961ab33e7834f75cedf7e"
-
-"shoutem.code-push@https://seext-dev.s3.amazonaws.com/shoutem/code-push/0.0.2/app.tgz":
-  version "0.0.1"
-  resolved "https://seext-dev.s3.amazonaws.com/shoutem/code-push/0.0.2/app.tgz#1364d2bc5ab8046bd2d4240c0229b50507bd43ef"
-  dependencies:
-    react-native-code-push "^1.14.6-beta"
-
-"shoutem.layouts@https://seext-dev.s3.amazonaws.com/shoutem/layouts/0.0.1/app.tgz":
-  version "0.0.1"
-  resolved "https://seext-dev.s3.amazonaws.com/shoutem/layouts/0.0.1/app.tgz#aeeebadda9027fc7f9a4db818f43eb723170d276"
-
-"shoutem.menu@https://seext-dev.s3.amazonaws.com/shoutem/menu/0.0.5/app.tgz":
-  version "0.0.1"
-  resolved "https://seext-dev.s3.amazonaws.com/shoutem/menu/0.0.5/app.tgz#9bfac287c2f532d0786b7c72d79f8b7e5a50d927"
-
-"shoutem.navigation@https://seext-dev.s3.amazonaws.com/shoutem/navigation/0.2.2/app.tgz":
-  version "0.0.21"
-  resolved "https://seext-dev.s3.amazonaws.com/shoutem/navigation/0.2.2/app.tgz#32ee25eebbca01968dbf61d3cb05b65c78aa81f1"
-  dependencies:
-    react-native-side-menu "0.20.0"
-
-"shoutem.news@https://seext-dev.s3.amazonaws.com/shoutem/news/0.2.7/app.tgz":
-  version "0.2.6"
-  resolved "https://seext-dev.s3.amazonaws.com/shoutem/news/0.2.7/app.tgz#6722b8579fd77bea3daa3b4f9dcd0f5af821e5ce"
-
-"shoutem.preview@https://seext-dev.s3.amazonaws.com/shoutem/preview/0.0.3/app.tgz":
-  version "0.0.1"
-  resolved "https://seext-dev.s3.amazonaws.com/shoutem/preview/0.0.3/app.tgz#cdf007f6d6bf9ebb2ee412e755880620d753de9a"
-
-"shoutem.rss-news@https://seext-dev.s3.amazonaws.com/shoutem/rss-news/0.0.5/app.tgz":
-  version "0.0.2"
-  resolved "https://seext-dev.s3.amazonaws.com/shoutem/rss-news/0.0.5/app.tgz#eee53ba508a0cb469a705959857c5ea72ef8a738"
-
-"shoutem.rss-videos@https://seext-dev.s3.amazonaws.com/shoutem/rss-videos/0.0.3/app.tgz":
-  version "0.0.3"
-  resolved "https://seext-dev.s3.amazonaws.com/shoutem/rss-videos/0.0.3/app.tgz#96563ab6c9bc5c6a2b7b65eaffa065c857a68403"
-
-"shoutem.rss@https://seext-dev.s3.amazonaws.com/shoutem/rss/0.0.5/app.tgz":
-  version "0.0.2"
-  resolved "https://seext-dev.s3.amazonaws.com/shoutem/rss/0.0.5/app.tgz#ccb5c007c951ff0418afb9ea2d4d4d200e94b0a9"
-
-"shoutem.rubicon-theme@https://seext-dev.s3.amazonaws.com/shoutem/rubicon-theme/0.0.13/app.tgz":
-  version "0.0.1"
-  resolved "https://seext-dev.s3.amazonaws.com/shoutem/rubicon-theme/0.0.13/app.tgz#7455cf0b3a86c826970e69cd1d8d3f68d41f61bf"
-
-"shoutem.theme@https://seext-dev.s3.amazonaws.com/shoutem/theme/0.0.2/app.tgz":
-  version "0.0.1"
-  resolved "https://seext-dev.s3.amazonaws.com/shoutem/theme/0.0.2/app.tgz#ecfe59393adc62e91f310f131d1c7cf0ad80fab3"
 
 sigmund@~1.0.0:
   version "1.0.1"
