@@ -42,21 +42,7 @@
     "redux-thunk": "^2.0.0",
     "request": "^2.72.0",
     "shelljs": "^0.7.4",
-    "unzip": "edtechd/node-unzip",
-    "davor.demo-ext": "https://seext-dev.s3.amazonaws.com/davor/demo-ext/0.0.1/app.tgz",
-    "shoutem.application": "https://seext-dev.s3.amazonaws.com/shoutem/application/0.0.3/app.tgz",
-    "shoutem.cms": "https://seext-dev.s3.amazonaws.com/shoutem/cms/0.3.6/app.tgz",
-    "shoutem.code-push": "https://seext-dev.s3.amazonaws.com/shoutem/code-push/0.0.2/app.tgz",
-    "shoutem.layouts": "https://seext-dev.s3.amazonaws.com/shoutem/layouts/0.0.1/app.tgz",
-    "shoutem.menu": "https://seext-dev.s3.amazonaws.com/shoutem/menu/0.0.5/app.tgz",
-    "shoutem.navigation": "https://seext-dev.s3.amazonaws.com/shoutem/navigation/0.2.2/app.tgz",
-    "shoutem.news": "https://seext-dev.s3.amazonaws.com/shoutem/news/0.2.7/app.tgz",
-    "shoutem.preview": "https://seext-dev.s3.amazonaws.com/shoutem/preview/0.0.3/app.tgz",
-    "shoutem.rss": "https://seext-dev.s3.amazonaws.com/shoutem/rss/0.0.5/app.tgz",
-    "shoutem.rss-news": "https://seext-dev.s3.amazonaws.com/shoutem/rss-news/0.0.5/app.tgz",
-    "shoutem.rss-videos": "https://seext-dev.s3.amazonaws.com/shoutem/rss-videos/0.0.3/app.tgz",
-    "shoutem.rubicon-theme": "https://seext-dev.s3.amazonaws.com/shoutem/rubicon-theme/0.0.13/app.tgz",
-    "shoutem.theme": "https://seext-dev.s3.amazonaws.com/shoutem/theme/0.0.2/app.tgz"
+    "unzip": "edtechd/node-unzip"
   },
   "devDependencies": {
     "babel": "^6.3.26",
