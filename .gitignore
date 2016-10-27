@@ -3,6 +3,7 @@ assets/resources
 extensions.js
 config.json
 temp
+package.json
 
 # Logs
 logs
