@@ -365,6 +365,7 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
+				A4B1B9031DBE429200E61331 /* GoogleService-Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
 			name = ShoutemApp;
@@ -775,6 +776,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4B1B9051DBE429200E61331 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -791,6 +793,7 @@
 				0EB83006BFF548A290759A49 /* Rubik-Light.ttf in Resources */,
 				923FC9DB07B54381AA40A51A /* Rubik-LightItalic.ttf in Resources */,
 				9AE20636A8574C3DAA173F91 /* Rubik-Medium.ttf in Resources */,
+				A4B1B9041DBE429200E61331 /* GoogleService-Info.plist in Resources */,
 				6DF4BDC11B5F40E7B484208F /* Rubik-MediumItalic.ttf in Resources */,
 				AA3818E08E2C49C8A2B5EEFD /* Rubik-Regular.ttf in Resources */,
 				A098A3017E7246A89E7E7D6C /* Entypo.ttf in Resources */,
