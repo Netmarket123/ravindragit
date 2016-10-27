@@ -36,7 +36,7 @@ function installLocalExtension(extension) {
   const packageName = extension.id;
   const packagePath = extension.path;
 
-  addDependenciesToSet({ [packageName]: packagePath }, dependenciesSet);
+  addDependenciesToSet({ [packageName]: `file:${packagePath}` }, dependenciesSet);
   return Promise.resolve(extension);
 }
 
@@ -70,9 +70,7 @@ function getUnzippedExtension(extension) {
           unzip.Extract({ path: extensionPath }) // eslint-disable-line new-cap
             .on('close', () => {
               readStream.close();
-              rimraf(appendZipExtensionTo(extensionPath), () => {
-                console.log(`delete zip: ${appendZipExtensionTo(extensionPath)}`);
-              });
+              rimraf(appendZipExtensionTo(extensionPath), () => {});
               const zipExtension = getLocalExtensions([extensionPath])[0];
               resolve(zipExtension);
             })
@@ -81,10 +79,10 @@ function getUnzippedExtension(extension) {
   });
 }
 
-function npmInstall(packageName) {
+function npmInstall(packageName, productionEnv) {
   console.log(`Installing ${packageName}`);
   return new Promise((resolve, reject) => {
-    shell.exec(`npm install ${packageName}`, (error) => {
+    shell.exec(`yarn add ${packageName}`, (error) => {
       if (error) {
         reject(error);
       } else {
@@ -111,8 +109,8 @@ function installZipExtension(extension) {
     .then((zipExtension) => installLocalExtension(zipExtension, 'clearAfterInstall'));
 }
 
-function installDependencies(dependenciesArray) {
-  return dependenciesArray.length ? npmInstall(dependenciesArray.join(' ')) : Promise.resolve();
+function installDependencies(dependenciesArray, productionEnv) {
+  return dependenciesArray.length ? npmInstall(dependenciesArray.join(' '), productionEnv) : Promise.resolve();
 }
 
 const extensionInstaller = {
@@ -145,32 +143,27 @@ class ExtensionsInstaller {
 
   installExtensions(productionEnv) {
     return new Promise((resolve) => {
-      npm.load({
-        'production': productionEnv, // eslint-disable-line quote-props
-        'cache-min': 999999,
-      }, () => {
-        const localExtensionsInstallPromises = this.localExtensions.map((extension) =>
-          installLocalExtension(extension)
-        );
+      const localExtensionsInstallPromises = this.localExtensions.map((extension) =>
+        installLocalExtension(extension)
+      );
 
-        const remoteExtensionsInstallPromises = this.extensionsToInstall.map((extension) => {
-          const extensionType = _.get(extension, 'attributes.location.app.type');
-          return extensionInstaller[extensionType](extension);
-        });
-
-        const dependenciesInstallPromise = Promise.all(remoteExtensionsInstallPromises).then(() => {
-          deleteDependenciesFromSet(shoutemDependencies, dependenciesSet);
-          const dependenciesArray = [...dependenciesSet];
-          return installDependencies(dependenciesArray);
-        });
-
-        const installPromises = [
-          ...localExtensionsInstallPromises,
-          ...remoteExtensionsInstallPromises,
-          dependenciesInstallPromise,
-        ];
-        return resolve(Promise.all(installPromises));
+      const remoteExtensionsInstallPromises = this.extensionsToInstall.map((extension) => {
+        const extensionType = _.get(extension, 'attributes.location.app.type');
+        return extensionInstaller[extensionType](extension);
       });
+
+      const dependenciesInstallPromise = Promise.all(remoteExtensionsInstallPromises).then(() => {
+        deleteDependenciesFromSet(shoutemDependencies, dependenciesSet);
+        const dependenciesArray = [...dependenciesSet];
+        return installDependencies(dependenciesArray, productionEnv);
+      });
+
+      const installPromises = [
+        ...localExtensionsInstallPromises,
+        ...remoteExtensionsInstallPromises,
+        dependenciesInstallPromise,
+      ];
+      return resolve(Promise.all(installPromises));
     });
   }
 
@@ -179,12 +172,12 @@ class ExtensionsInstaller {
 
     installedExtensions.forEach((extension) => {
       if (extension) {
-        extensionsMapping.push(`'${extension.id}': require('${extension.id}')`);
+        extensionsMapping.push(`'${extension.id}': require('${extension.id}'),\n  `);
       }
     });
 
-    const extensionsString = extensionsMapping.join(',\n  ');
-    const data = `export default {\n  ${extensionsString},\n};\n`;
+    const extensionsString = extensionsMapping.join('');
+    const data = `export default {\n  ${extensionsString}};\n`;
 
     console.time('create extensions.js');
     return new Promise((resolve, reject) => {
