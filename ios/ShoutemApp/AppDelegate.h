@@ -9,7 +9,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+// FIREBASE MESSAGING START
+@import UserNotifications;
+
+@interface AppDelegate : UIResponder <UIApplicationDelegate,UNUserNotificationCenterDelegate>
 
 @property (nonatomic, strong) UIWindow *window;
 
