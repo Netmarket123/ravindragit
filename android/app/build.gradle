@@ -158,6 +158,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-restart')
     compile project(':react-native-google-analytics-bridge')
     compile project(':react-native-calendar-manager')
     compile project(':react-native-share')

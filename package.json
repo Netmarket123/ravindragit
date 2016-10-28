@@ -32,6 +32,7 @@
     "react-native-calendar-manager": "git+https://git@bitbucket.org/fiveminutes/react-native-calendar-manager.git",
     "react-native-code-push": "^1.14.6-beta",
     "react-native-google-analytics-bridge": "^3.1.0",
+    "react-native-restart": "0.0.1",
     "react-native-share": "1.0.13",
     "react-native-vector-icons": "^2.0.3",
     "react-native-video": "^0.8.0",
