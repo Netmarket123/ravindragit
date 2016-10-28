@@ -2,6 +2,8 @@
     package="com.shoutemapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
       android:name=".MainApplication"
@@ -22,14 +24,25 @@
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
+        android:launchMode="singleTop"
         android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
+        <intent-filter>
+            <action android:name="fcm.ACTION.NOTIFICATION_OPEN" />
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+      <receiver android:name=".BackgroundNotificationReceiver" >
+          <intent-filter android:priority="1" >
+              <action android:name="com.evollu.react.fcm.ReceiveNotification" />
+          </intent-filter>
+      </receiver>
       <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBAefhRlXEH3vCko-zZTX6PHllTR6av4WI"/>
+        <receiver android:name="com.evollu.react.fcm.FIRLocalMessagingPublisher"/>
     </application>
 
 </manifest>
