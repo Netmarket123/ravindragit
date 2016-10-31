@@ -509,6 +509,9 @@
 						CreatedOnToolsVersion = 6.2;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
+					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = EV533W4H92;
+					};
 				};
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "ShoutemApp" */;
@@ -851,8 +854,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = EV533W4H92;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -868,7 +872,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ShoutemApp;
-				PROVISIONING_PROFILE = "6e2029d0-1158-4327-87d4-f3173afe7945";
+				PROVISIONING_PROFILE = "b8dce026-abf2-4431-9479-a46c769f98e4";
+				PROVISIONING_PROFILE_SPECIFIER = "XC iOS Ad Hoc: *";
 			};
 			name = Debug;
 		};
@@ -878,8 +883,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: ShoutEm Inc (EV533W4H92)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = EV533W4H92;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -895,7 +901,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ShoutemApp;
-				PROVISIONING_PROFILE = "6e2029d0-1158-4327-87d4-f3173afe7945";
+				PROVISIONING_PROFILE = "b8dce026-abf2-4431-9479-a46c769f98e4";
+				PROVISIONING_PROFILE_SPECIFIER = "XC iOS Ad Hoc: *";
 			};
 			name = Release;
 		};
