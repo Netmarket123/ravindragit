@@ -1,6 +1,7 @@
 package com.shoutemapp;
 
 import com.facebook.react.ReactActivity;
+import com.brentvatne.RCTVideo.ReactVideoPackage;
 import com.shoutem.calendar.CalendarManagerPackage;
 import cl.json.RNSharePackage;
 import com.brentvatne.react.ReactVideoPackage;
@@ -44,6 +45,7 @@ public class MainActivity extends ReactActivity {
 
        return Arrays.<ReactPackage>asList(
                new MainReactPackage(),
+            new ReactVideoPackage(),
             new CalendarManagerPackage(),
             new RNSharePackage(),
                new ReactVideoPackage(),
