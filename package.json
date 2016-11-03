@@ -31,7 +31,7 @@
     "react-native-browser-polyfill": "^0.1.1",
     "react-native-calendar-manager": "git+https://git@bitbucket.org/fiveminutes/react-native-calendar-manager.git",
     "react-native-code-push": "^1.14.6-beta",
-    "react-native-google-analytics-bridge": "^3.1.0",
+    "react-native-google-analytics-bridge": "git+https://github.com/idehub/react-native-google-analytics-bridge.git",
     "react-native-restart": "0.0.1",
     "react-native-share": "1.0.13",
     "react-native-vector-icons": "^2.0.3",
