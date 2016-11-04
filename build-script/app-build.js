@@ -110,7 +110,8 @@ class AppBuild {
         if (_.isFunction(preBuild)) {
           preBuild(this.configuration, this.buildConfig);
         }
-      } catch(e) {
+      } catch (e) {
+        // eslint-disable no-empty
       }
     });
     return Promise.resolve();
