@@ -32,23 +32,23 @@ function getExtensionsFromConfigurations(configuration) {
  */
 class AppBuild {
   constructor(config) {
-    Object.assign(this, config);
+    this.buildConfig = _.assign({}, config);
   }
 
   getConfigurationUrl() {
-    return `/v1/apps/${this.appId}/configurations/current`;
+    return `/v1/apps/${this.buildConfig.appId}/configurations/current`;
   }
 
   downloadConfiguration() {
     console.time('download configuration');
-    const configurationFolder = path.dirname(this.configurationFilePath);
+    const configurationFolder = path.dirname(this.buildConfig.configurationFilePath);
     fs.mkdirsSync(configurationFolder);
 
-    const configurationFile = fs.createWriteStream(this.configurationFilePath);
+    const configurationFile = fs.createWriteStream(this.buildConfig.configurationFilePath);
     return new Promise((resolve, reject) => {
       http.get({
         path: this.getConfigurationUrl(),
-        host: this.serverApiEndpoint,
+        host: this.buildConfig.serverApiEndpoint,
         headers: {
           Accept: 'application/vnd.api+json',
         },
@@ -58,7 +58,7 @@ class AppBuild {
           configurationFile.on('finish', () => {
             configurationFile.close(() => {
               console.timeEnd('download configuration');
-              resolve(this.configurationPath);
+              resolve();
             });
           });
         } else {
@@ -71,7 +71,7 @@ class AppBuild {
   }
 
   getConfiguration() {
-    return require(path.join('..', this.configurationFilePath));
+    return require(path.join('..', this.buildConfig.configurationFilePath));
   }
 
   removeBabelrcFiles() {
@@ -85,15 +85,15 @@ class AppBuild {
   prepareExtensions() {
     this.configuration = this.getConfiguration();
     const extensions = getExtensionsFromConfigurations(this.configuration);
-    const localExtensions = getLocalExtensions(this.workingDirectories);
-    const extensionsJsPath = this.extensionsJsPath;
+    const localExtensions = getLocalExtensions(this.buildConfig.workingDirectories);
+    const extensionsJsPath = this.buildConfig.extensionsJsPath;
     const extensionsInstaller = new ExtensionsInstaller(
       localExtensions,
       extensions,
       extensionsJsPath
     );
 
-    return extensionsInstaller.installExtensions(this.production)
+    return extensionsInstaller.installExtensions(this.buildConfig.production)
       .then((installedExtensions) => {
         const extensionsJs = extensionsInstaller.createExtensionsJs(installedExtensions);
         const preBuild = this.runPreBuild(installedExtensions);
@@ -102,10 +102,17 @@ class AppBuild {
       });
   }
 
-  runPreBuild() {
-    // TODO (Ivan) move this to shoutem.application extension when preBuild is available
-    const configuration = path.join('node_modules', 'shoutem.application', 'configuration.json');
-    fs.copySync(this.configurationFilePath, configuration);
+  runPreBuild(extensions) {
+    _.forEach(extensions, (extension) => {
+      try {
+        const build = require(path.join(extension.id, 'build.js'));
+        const preBuild = build.preBuild;
+        if (_.isFunction(preBuild)) {
+          preBuild(this.configuration, this.buildConfig);
+        }
+      } catch(e) {
+      }
+    });
     return Promise.resolve();
   }
 
@@ -125,7 +132,7 @@ class AppBuild {
 
   run() {
     console.time('build time');
-    console.log(`starting build for app ${this.appId}`);
+    console.log(`starting build for app ${this.buildConfig.appId}`);
     this.prepareConfiguration()
       .then(() => this.prepareExtensions())
       .then(() => this.removeBabelrcFiles())
