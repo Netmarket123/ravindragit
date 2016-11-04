@@ -24,14 +24,14 @@
   NSDictionary *initProps = nil;
   NSString *_appId = [[NSUserDefaults standardUserDefaults] stringForKey:@"appId"];
   if (_appId) {
-    initProps = @{@"appId": _appId};
+    initProps = @{@"previewAppId": _appId};
   }
   
-//#ifdef DEBUG
-//  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
-//#else
+#ifdef DEBUG
+  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+#else
   jsCodeLocation = [CodePush bundleURL];
-//#endif
+#endif
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"ShoutemApp"
