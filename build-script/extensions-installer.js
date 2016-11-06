@@ -1,21 +1,12 @@
 'use strict';
 
-const path = require('path');
-const http = require('https');
 const fs = require('fs-extra');
-const rimraf = require('rimraf');
-const unzip = require('unzip');
 const shell = require('shelljs');
-const getLocalExtensions = require('./getLocalExtensions');
 const _ = require('lodash');
-const packageJson = require('../package.template.json');
+const packageJsonTemplate = require('../package.template.json');
 
-function addDependencies(dependencies) {
-  _.forEach(dependencies, (version, name) => {
-    if (name) {
-      _.assign(packageJson.dependencies, { [name]: version });
-    }
-  });
+function addDependencyToPackageJson(dependency, packageJson) {
+  _.assign(packageJson.dependencies, dependency);
 }
 
 function installLocalExtension(extension) {
@@ -23,47 +14,8 @@ function installLocalExtension(extension) {
   const packageName = extension.id;
   const packagePath = extension.path;
 
-  addDependencies({ [packageName]: `file:${packagePath}` });
+  addDependencyToPackageJson({ [packageName]: `file:${packagePath}` }, packageJsonTemplate);
   return Promise.resolve(extension);
-}
-
-function appendZipExtensionTo(filePath) {
-  return `${filePath}.zip`;
-}
-
-function downloadZipExtension(extension, destinationFolder) {
-  fs.mkdirsSync(destinationFolder);
-  const extensionPath = path.join(destinationFolder, extension.id);
-  const extensionWriteStream = fs.createWriteStream(appendZipExtensionTo(extensionPath));
-  const extensionZipUrl = _.get(extension, 'attributes.location.app.package');
-  return new Promise((resolve, reject) => {
-    http.get(extensionZipUrl, response => {
-      response.pipe(extensionWriteStream);
-      extensionWriteStream.on('finish', () => {
-        extensionWriteStream.close(() => resolve(extensionPath));
-      });
-    }).on('error', err => {
-      reject(err);
-    });
-  });
-}
-
-function getUnzippedExtension(extension) {
-  return new Promise(resolve => {
-    downloadZipExtension(extension, './temp')
-      .then((extensionPath) => {
-        const readStream = fs.createReadStream(appendZipExtensionTo(extensionPath));
-        readStream.pipe(
-          unzip.Extract({ path: extensionPath }) // eslint-disable-line new-cap
-            .on('close', () => {
-              readStream.close();
-              rimraf(appendZipExtensionTo(extensionPath), () => {});
-              const zipExtension = getLocalExtensions([extensionPath])[0];
-              resolve(zipExtension);
-            })
-        );
-      });
-  });
 }
 
 function yarnInstall() {
@@ -85,14 +37,9 @@ function installNpmExtension(extension) {
     // URL to .tgz file or event local path) but for now is always URL to .tgz stored on our server
     const extensionPackageURL = _.get(extension, 'attributes.location.app.package');
     const packageName = extension.id;
-    addDependencies({ [packageName]: extensionPackageURL });
+    addDependencyToPackageJson({ [packageName]: extensionPackageURL }, packageJsonTemplate);
     resolve(extension);
   });
-}
-
-function installZipExtension(extension) {
-  return getUnzippedExtension(extension)
-    .then((zipExtension) => installLocalExtension(zipExtension, 'clearAfterInstall'));
 }
 
 function writePackageJson(content) {
@@ -107,7 +54,6 @@ function writePackageJson(content) {
 }
 
 const extensionInstaller = {
-  zip: installZipExtension,
   npm: installNpmExtension,
 };
 
@@ -145,9 +91,9 @@ class ExtensionsInstaller {
         return extensionInstaller[extensionType](extension);
       });
 
-      const dependenciesInstallPromise = Promise.all(remoteExtensionsInstallPromises).then(() => {
-        return writePackageJson(packageJson).then(() => yarnInstall());
-      });
+      const dependenciesInstallPromise = Promise.all(remoteExtensionsInstallPromises).then(() =>
+        writePackageJson(packageJsonTemplate).then(() => yarnInstall())
+      );
 
       const installPromises = [
         ...localExtensionsInstallPromises,
