@@ -132,6 +132,10 @@ class AppBuild {
       .then(() => this.cleanTempFolder())
       .then(() => {
         console.timeEnd('build time');
+        if (this.workingDirectories.length && this.watch) {
+          const runWatchInNewWindow = require('./runWatchInNewWindow.js');
+          runWatchInNewWindow();
+        }
       })
       .catch((e) => {
         console.log(e);

@@ -5,8 +5,8 @@ const shell = require('shelljs');
 const _ = require('lodash');
 const packageJsonTemplate = require('../package.template.json');
 
-function addDependencyToPackageJson(dependency, packageJson) {
-  _.assign(packageJson.dependencies, dependency);
+function addDependencyToPackageJson(packageJson, name, version) {
+  _.assign(packageJson.dependencies, { [name]: version });
 }
 
 function installLocalExtension(extension) {
@@ -14,7 +14,7 @@ function installLocalExtension(extension) {
   const packageName = extension.id;
   const packagePath = extension.path;
 
-  addDependencyToPackageJson({ [packageName]: `file:${packagePath}` }, packageJsonTemplate);
+  addDependencyToPackageJson(packageJsonTemplate, packageName, `file:${packagePath}`);
   return Promise.resolve(extension);
 }
 
@@ -37,7 +37,7 @@ function installNpmExtension(extension) {
     // URL to .tgz file or event local path) but for now is always URL to .tgz stored on our server
     const extensionPackageURL = _.get(extension, 'attributes.location.app.package');
     const packageName = extension.id;
-    addDependencyToPackageJson({ [packageName]: extensionPackageURL }, packageJsonTemplate);
+    addDependencyToPackageJson(packageJsonTemplate, packageName, extensionPackageURL);
     resolve(extension);
   });
 }
@@ -52,10 +52,6 @@ function writePackageJson(content) {
     });
   });
 }
-
-const extensionInstaller = {
-  npm: installNpmExtension,
-};
 
 
 /**
@@ -81,27 +77,25 @@ class ExtensionsInstaller {
   }
 
   installExtensions() {
-    return new Promise((resolve) => {
-      const localExtensionsInstallPromises = this.localExtensions.map((extension) =>
-        installLocalExtension(extension)
-      );
+    const localExtensionsInstallPromises = this.localExtensions.map((extension) =>
+      installLocalExtension(extension)
+    );
 
-      const remoteExtensionsInstallPromises = this.extensionsToInstall.map((extension) => {
-        const extensionType = _.get(extension, 'attributes.location.app.type');
-        return extensionInstaller[extensionType](extension);
-      });
-
-      const dependenciesInstallPromise = Promise.all(remoteExtensionsInstallPromises).then(() =>
-        writePackageJson(packageJsonTemplate).then(() => yarnInstall())
-      );
-
-      const installPromises = [
-        ...localExtensionsInstallPromises,
-        ...remoteExtensionsInstallPromises,
-        dependenciesInstallPromise,
-      ];
-      return resolve(Promise.all(installPromises));
+    const remoteExtensionsInstallPromises = this.extensionsToInstall.map((extension) => {
+      return installNpmExtension(extension);
     });
+
+    const dependenciesInstallPromise = Promise.all(remoteExtensionsInstallPromises).then(() =>
+      writePackageJson(packageJsonTemplate).then(() => yarnInstall())
+    );
+
+    const installPromises = [
+      ...localExtensionsInstallPromises,
+      ...remoteExtensionsInstallPromises,
+      dependenciesInstallPromise,
+    ];
+
+    return Promise.all(installPromises);
   }
 
   createExtensionsJs(installedExtensions) {
