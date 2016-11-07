@@ -21,11 +21,7 @@
   NSURL *jsCodeLocation;
 
   // Appetizer.io params check
-  NSDictionary *initialProperties = nil;
-  NSString *_appId = [[NSUserDefaults standardUserDefaults] stringForKey:@"previewAppId"];
-  if (_appId) {
-    initialProperties = @{@"previewAppId": _appId};
-  }
+  NSDictionary *initialProperties = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
   
 #ifdef DEBUG
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
