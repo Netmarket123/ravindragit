@@ -8,9 +8,9 @@
       "resolved": "https://registry.npmjs.org/@shoutem/animation/-/animation-0.8.7.tgz"
     },
     "@shoutem/core": {
-      "version": "0.0.35",
-      "from": "@shoutem/core@0.0.35",
-      "resolved": "https://registry.npmjs.org/@shoutem/core/-/core-0.0.35.tgz"
+      "version": "0.0.36",
+      "from": "@shoutem/core@0.0.36",
+      "resolved": "https://registry.npmjs.org/@shoutem/core/-/core-0.0.36.tgz"
     },
     "@shoutem/json-api-denormalizer": {
       "version": "0.3.3",
@@ -227,9 +227,9 @@
       "resolved": "https://registry.npmjs.org/ast-traverse/-/ast-traverse-0.1.1.tgz"
     },
     "ast-types": {
-      "version": "0.9.0",
+      "version": "0.9.1",
       "from": "ast-types@>=0.0.0 <1.0.0",
-      "resolved": "https://registry.npmjs.org/ast-types/-/ast-types-0.9.0.tgz"
+      "resolved": "https://registry.npmjs.org/ast-types/-/ast-types-0.9.1.tgz"
     },
     "async": {
       "version": "1.5.2",
@@ -946,9 +946,9 @@
       "resolved": "https://registry.npmjs.org/co/-/co-3.0.6.tgz"
     },
     "code-point-at": {
-      "version": "1.0.1",
+      "version": "1.1.0",
       "from": "code-point-at@>=1.0.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/code-point-at/-/code-point-at-1.0.1.tgz"
+      "resolved": "https://registry.npmjs.org/code-point-at/-/code-point-at-1.1.0.tgz"
     },
     "code-push": {
       "version": "1.10.0-beta",
@@ -1614,9 +1614,9 @@
           "resolved": "https://registry.npmjs.org/duplexer2/-/duplexer2-0.1.4.tgz"
         },
         "got": {
-          "version": "5.7.0",
+          "version": "5.7.1",
           "from": "got@>=5.0.0 <6.0.0",
-          "resolved": "https://registry.npmjs.org/got/-/got-5.7.0.tgz"
+          "resolved": "https://registry.npmjs.org/got/-/got-5.7.1.tgz"
         },
         "stream-combiner2": {
           "version": "1.1.1",
@@ -2211,9 +2211,9 @@
           "resolved": "https://registry.npmjs.org/duplexer2/-/duplexer2-0.1.4.tgz"
         },
         "got": {
-          "version": "5.7.0",
+          "version": "5.7.1",
           "from": "got@>=5.2.0 <6.0.0",
-          "resolved": "https://registry.npmjs.org/got/-/got-5.7.0.tgz"
+          "resolved": "https://registry.npmjs.org/got/-/got-5.7.1.tgz"
         },
         "timed-out": {
           "version": "3.0.0",
@@ -2326,9 +2326,9 @@
       }
     },
     "graceful-fs": {
-      "version": "4.1.9",
+      "version": "4.1.10",
       "from": "graceful-fs@>=4.1.2 <5.0.0",
-      "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.1.9.tgz"
+      "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.1.10.tgz"
     },
     "graceful-readlink": {
       "version": "1.0.1",
@@ -5276,9 +5276,9 @@
       "resolved": "https://registry.npmjs.org/react-native-gesture-responder/-/react-native-gesture-responder-0.1.1.tgz"
     },
     "react-native-google-analytics-bridge": {
-      "version": "3.1.0",
+      "version": "4.0.0",
       "from": "git+https://github.com/idehub/react-native-google-analytics-bridge.git",
-      "resolved": "git+https://github.com/idehub/react-native-google-analytics-bridge.git#56ff0fc5cf27d590152bc37f7fbbe4fd4f0f72fc"
+      "resolved": "git+https://github.com/idehub/react-native-google-analytics-bridge.git#79897a602103d586a2ee322b1fa0c65bfaa5456b"
     },
     "react-native-lightbox": {
       "version": "0.6.0",
@@ -5472,9 +5472,9 @@
       }
     },
     "regenerator-runtime": {
-      "version": "0.9.5",
+      "version": "0.9.6",
       "from": "regenerator-runtime@>=0.9.5 <0.10.0",
-      "resolved": "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.9.5.tgz"
+      "resolved": "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.9.6.tgz"
     },
     "regex-cache": {
       "version": "0.4.3",
@@ -5534,9 +5534,9 @@
       "resolved": "https://registry.npmjs.org/replace-ext/-/replace-ext-0.0.1.tgz"
     },
     "request": {
-      "version": "2.76.0",
+      "version": "2.78.0",
       "from": "request@>=2.72.0 <3.0.0",
-      "resolved": "https://registry.npmjs.org/request/-/request-2.76.0.tgz",
+      "resolved": "https://registry.npmjs.org/request/-/request-2.78.0.tgz",
       "dependencies": {
         "form-data": {
           "version": "2.1.1",
@@ -5561,9 +5561,9 @@
       "resolved": "https://registry.npmjs.org/require-main-filename/-/require-main-filename-1.0.1.tgz"
     },
     "require-uncached": {
-      "version": "1.0.2",
+      "version": "1.0.3",
       "from": "require-uncached@>=1.0.2 <2.0.0",
-      "resolved": "https://registry.npmjs.org/require-uncached/-/require-uncached-1.0.2.tgz"
+      "resolved": "https://registry.npmjs.org/require-uncached/-/require-uncached-1.0.3.tgz"
     },
     "resolve": {
       "version": "1.1.7",
@@ -5626,9 +5626,9 @@
           "resolved": "https://registry.npmjs.org/duplexer2/-/duplexer2-0.1.4.tgz"
         },
         "got": {
-          "version": "5.7.0",
+          "version": "5.7.1",
           "from": "got@>=5.0.0 <6.0.0",
-          "resolved": "https://registry.npmjs.org/got/-/got-5.7.0.tgz"
+          "resolved": "https://registry.npmjs.org/got/-/got-5.7.1.tgz"
         },
         "latest-version": {
           "version": "2.0.0",
@@ -6360,9 +6360,9 @@
       "resolved": "https://registry.npmjs.org/typical/-/typical-2.6.0.tgz"
     },
     "ua-parser-js": {
-      "version": "0.7.10",
+      "version": "0.7.11",
       "from": "ua-parser-js@>=0.7.9 <0.8.0",
-      "resolved": "https://registry.npmjs.org/ua-parser-js/-/ua-parser-js-0.7.10.tgz"
+      "resolved": "https://registry.npmjs.org/ua-parser-js/-/ua-parser-js-0.7.11.tgz"
     },
     "uglify-js": {
       "version": "2.7.4",
