@@ -1,0 +1,19 @@
+// Packages
+*.tgz
+
+// Dependencies
+node_modules
+temp
+
+// Utils
+.git
+.idea
+
+// Builds
+ios/build
+android/build
+android/app/build
+
+// Local files
+config.json
+extensions.js
