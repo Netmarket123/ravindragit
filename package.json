@@ -1,7 +1,6 @@
 {
-  "name": "ShoutemApp",
-  "version": "0.0.1",
-  "private": true,
+  "name": "@shoutem/mobile-app",
+  "version": "0.11.0",
   "scripts": {
     "build": "node build-script",
     "start": "node node_modules/react-native/local-cli/cli.js start",
