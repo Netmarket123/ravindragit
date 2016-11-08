@@ -36,9 +36,8 @@ function getLocalExtensions(workingDirectories) {
               dependencies: packageDependecies,
             });
           }
-        } catch (e) {
-          console.log(e);
-          console.log(`Failed to load ${packagePath}`);
+        } catch (error) {
+          console.log(`Failed to load ${packagePath} with error: ${error}`);
           process.exit(1);
         }
       }

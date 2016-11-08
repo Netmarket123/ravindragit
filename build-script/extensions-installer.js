@@ -6,16 +6,17 @@ const _ = require('lodash');
 const packageJsonTemplate = require('../package.template.json');
 
 function addDependencyToPackageJson(packageJson, name, version) {
-  _.assign(packageJson.dependencies, { [name]: version });
+  // eslint-disable-next-line no-param-reassign
+  packageJson.dependencies[name] = version;
 }
 
 function installLocalExtension(extension) {
-  if (!extension) return Promise.resolve();
-  const packageName = extension.id;
-  const packagePath = extension.path;
+  if (extension) {
+    const packageName = extension.id;
+    const packagePath = extension.path;
 
-  addDependencyToPackageJson(packageJsonTemplate, packageName, `file:${packagePath}`);
-  return Promise.resolve(extension);
+    addDependencyToPackageJson(packageJsonTemplate, packageName, `file:${packagePath}`);
+  }
 }
 
 function yarnInstall() {
@@ -32,14 +33,11 @@ function yarnInstall() {
 }
 
 function installNpmExtension(extension) {
-  return new Promise((resolve) => {
-    // This actually could be any valid npm install argument (version range, GitHub repo,
-    // URL to .tgz file or event local path) but for now is always URL to .tgz stored on our server
-    const extensionPackageURL = _.get(extension, 'attributes.location.app.package');
-    const packageName = extension.id;
-    addDependencyToPackageJson(packageJsonTemplate, packageName, extensionPackageURL);
-    resolve(extension);
-  });
+  // This actually could be any valid npm install argument (version range, GitHub repo,
+  // URL to .tgz file or event local path) but for now is always URL to .tgz stored on our server
+  const extensionPackageURL = _.get(extension, 'attributes.location.app.package');
+  const packageName = extension.id;
+  addDependencyToPackageJson(packageJsonTemplate, packageName, extensionPackageURL);
 }
 
 function writePackageJson(content) {
@@ -77,28 +75,27 @@ class ExtensionsInstaller {
   }
 
   installExtensions() {
-    const localExtensionsInstallPromises = this.localExtensions.map((extension) =>
+    this.localExtensions.forEach((extension) =>
       installLocalExtension(extension)
     );
 
-    const remoteExtensionsInstallPromises = this.extensionsToInstall.map((extension) => {
-      return installNpmExtension(extension);
-    });
-
-    const dependenciesInstallPromise = Promise.all(remoteExtensionsInstallPromises).then(() =>
-      writePackageJson(packageJsonTemplate).then(() => yarnInstall())
+    this.extensionsToInstall.forEach((extension) =>
+      installNpmExtension(extension)
     );
 
-    const installPromises = [
-      ...localExtensionsInstallPromises,
-      ...remoteExtensionsInstallPromises,
-      dependenciesInstallPromise,
-    ];
+    const installedExtensions = [...this.localExtensions, ...this.extensionsToInstall];
 
-    return Promise.all(installPromises);
+    return writePackageJson(packageJsonTemplate)
+      .then(() => yarnInstall()
+        .then(() => Promise.resolve(installedExtensions))
+      );
   }
 
   createExtensionsJs(installedExtensions) {
+    if (_.isEmpty(installedExtensions)) {
+      return Promise.reject('[ERROR]: You are trying to build an app without any extensions');
+    }
+
     const extensionsMapping = [];
 
     installedExtensions.forEach((extension) => {

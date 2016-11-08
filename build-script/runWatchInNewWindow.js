@@ -1,5 +1,7 @@
 'use strict';
 
+// This script is inspired by runAndroid script from React Native by Facebook
+
 const childProcess = require('child_process');
 const path = require('path');
 const ps = require('ps-node');
@@ -32,7 +34,7 @@ function runWatchInNewWindow() {
         console.log(`Cannot start the watcher. Unknown platform ${process.platform}`);
       }
     } else {
-      console.log('Watcher already runned');
+      console.log('Watcher already running');
     }
   });
 }
