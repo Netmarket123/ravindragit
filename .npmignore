@@ -3,6 +3,9 @@ extensions.js
 config.json
 temp
 
+# Packages
+*.tgz
+
 # Logs
 logs
 *.log
@@ -58,8 +61,14 @@ DerivedData
 *.xcuserstate
 project.xcworkspace
 
-# Android/IJ
-#
-.idea
+# Android
+android/build
+android/app/build
 .gradle
 local.properties
+
+# Idea/Web Storm
+.idea
+
+# Git
+.git
