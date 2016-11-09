@@ -20,16 +20,18 @@
 {
   NSURL *jsCodeLocation;
 
+  // Appetizer.io params check
+  NSDictionary *initialProperties = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
   
 #ifdef DEBUG
-    jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 #else
-    jsCodeLocation = [CodePush bundleURL];
+  jsCodeLocation = [CodePush bundleURL];
 #endif
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"ShoutemApp"
-                                               initialProperties:nil
+                                               initialProperties:initialProperties
                                                    launchOptions:launchOptions];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 
