@@ -2,8 +2,9 @@ build-script/tmp
 extensions.js
 config.json
 temp
-package.json
-yarn.lock
+
+# Packages
+*.tgz
 
 # Logs
 logs
@@ -60,8 +61,14 @@ DerivedData
 *.xcuserstate
 project.xcworkspace
 
-# Android/IJ
-#
-.idea
+# Android
+android/build
+android/app/build
 .gradle
 local.properties
+
+# Idea/Web Storm
+.idea
+
+# Git
+.git
