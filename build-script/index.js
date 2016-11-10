@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const _ = require('lodash');
 const AppBuild = require('./app-build');
 // eslint-disable-next-line import/no-unresolved
 const config = require('../config.json');
@@ -16,6 +17,6 @@ const cli = commandLineArgs([
 ]);
 
 // merge command line arguments and config.json
-const buildConfig = Object.assign(config, cli.parse());
+const buildConfig = _.merge(config, cli.parse());
 const build = new AppBuild(buildConfig);
 build.run();

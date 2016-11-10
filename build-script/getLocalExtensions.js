@@ -17,34 +17,33 @@ const glob = require('glob');
  */
 function getLocalExtensions(workingDirectories) {
   const results = [];
-  console.time('load local extensions');
+  console.time('Load local extensions');
   [].concat(workingDirectories).forEach((workDirPattern) => {
     const paths = glob.sync(workDirPattern);
     paths.forEach((packagePath) => {
       const stat = fs.statSync(packagePath);
-
       if (stat && stat.isDirectory()) {
         try {
-          const packageJson = path.resolve(path.join(packagePath, 'package.json'));
-          const packageStat = fs.statSync(packageJson);
-
+          const packageJsonPath = path.resolve(path.join(packagePath, 'package.json'));
+          const packageStat = fs.statSync(packageJsonPath);
           if (packageStat && packageStat.isFile()) {
-            const packageName = require(packageJson).name;
-            const packageDependecies = require(packageJson).dependencies;
+            const packageJson = require(packageJsonPath);
+            const packageName = packageJson.name;
+            const packageDependecies = packageJson.dependencies;
             results.push({
               id: packageName,
               path: packagePath,
               dependencies: packageDependecies,
             });
           }
-        } catch (e) {
-          console.log(e);
-          console.log(`Skipping ${packagePath}`);
+        } catch (error) {
+          console.log(`Failed to load ${packagePath} with error: ${error}`);
+          process.exit(1);
         }
       }
     });
   });
-  console.timeEnd('load local extensions');
+  console.timeEnd('Load local extensions');
   return results;
 }
 

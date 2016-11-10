@@ -1,94 +1,31 @@
 'use strict';
 
-const path = require('path');
-const http = require('https');
-const npm = require('npm/lib/npm.js');
 const fs = require('fs-extra');
-const rimraf = require('rimraf');
-const unzip = require('unzip');
 const shell = require('shelljs');
-const getLocalExtensions = require('./getLocalExtensions');
 const _ = require('lodash');
-const shoutemDependencies = require('../package.json').dependencies;
+const packageJsonTemplate = require('../package.template.json');
 
-const dependenciesSet = new Set();
-
-function getDependencyDescriptor(packageName, version) {
-  return `${packageName}@${version}`;
-}
-
-function addDependenciesToSet(dependencies, set) {
-  _.forEach(dependencies, (version, name) => {
-    if (name) {
-      set.add(getDependencyDescriptor(name, version));
-    }
-  });
-}
-
-function deleteDependenciesFromSet(dependencies, set) {
-  _.forEach(dependencies, (version, name) => {
-    set.delete(getDependencyDescriptor(name, version));
-  });
+function addDependencyToPackageJson(packageJson, name, version) {
+  // eslint-disable-next-line no-param-reassign
+  packageJson.dependencies[name] = version;
 }
 
 function installLocalExtension(extension) {
-  if (!extension) return Promise.resolve();
-  const packageName = extension.id;
-  const packagePath = extension.path;
+  if (extension) {
+    const packageName = extension.id;
+    const packagePath = extension.path;
 
-  addDependenciesToSet({ [packageName]: packagePath }, dependenciesSet);
-  return Promise.resolve(extension);
+    addDependencyToPackageJson(packageJsonTemplate, packageName, `file:${packagePath}`);
+  }
 }
 
-function appendZipExtensionTo(filePath) {
-  return `${filePath}.zip`;
-}
-
-function downloadZipExtension(extension, destinationFolder) {
-  fs.mkdirsSync(destinationFolder);
-  const extensionPath = path.join(destinationFolder, extension.id);
-  const extensionWriteStream = fs.createWriteStream(appendZipExtensionTo(extensionPath));
-  const extensionZipUrl = _.get(extension, 'attributes.location.app.package');
+function yarnInstall() {
+  console.log('Installing dependencies');
   return new Promise((resolve, reject) => {
-    http.get(extensionZipUrl, response => {
-      response.pipe(extensionWriteStream);
-      extensionWriteStream.on('finish', () => {
-        extensionWriteStream.close(() => resolve(extensionPath));
-      });
-    }).on('error', err => {
-      reject(err);
-    });
-  });
-}
-
-function getUnzippedExtension(extension) {
-  return new Promise(resolve => {
-    downloadZipExtension(extension, './temp')
-      .then((extensionPath) => {
-        const readStream = fs.createReadStream(appendZipExtensionTo(extensionPath));
-        readStream.pipe(
-          unzip.Extract({ path: extensionPath }) // eslint-disable-line new-cap
-            .on('close', () => {
-              readStream.close();
-              rimraf(appendZipExtensionTo(extensionPath), () => {
-                console.log(`delete zip: ${appendZipExtensionTo(extensionPath)}`);
-              });
-              const zipExtension = getLocalExtensions([extensionPath])[0];
-              resolve(zipExtension);
-            })
-        );
-      });
-  });
-}
-
-function npmInstall(packageName) {
-  console.log(`Installing ${packageName}`);
-  return new Promise((resolve, reject) => {
-    shell.exec(`npm install ${packageName}`, (error) => {
+    shell.exec('yarn install', (error) => {
       if (error) {
         reject(error);
       } else {
-        console.log(`${packageName} installed`);
         resolve();
       }
     });
@@ -96,29 +33,23 @@ function npmInstall(packageName) {
 }
 
 function installNpmExtension(extension) {
-  return new Promise((resolve) => {
-    // This actually could be any valid npm install argument (version range, GitHub repo,
-    // URL to .tgz file or event local path) but for now is always URL to .tgz stored on our server
-    const extensionPackageURL = _.get(extension, 'attributes.location.app.package');
-    const packageName = extension.id;
-    addDependenciesToSet({ [packageName]: extensionPackageURL }, dependenciesSet);
-    resolve(extension);
+  // This actually could be any valid npm install argument (version range, GitHub repo,
+  // URL to .tgz file or event local path) but for now is always URL to .tgz stored on our server
+  const extensionPackageURL = _.get(extension, 'attributes.location.app.package');
+  const packageName = extension.id;
+  addDependencyToPackageJson(packageJsonTemplate, packageName, extensionPackageURL);
+}
+
+function writePackageJson(content) {
+  return new Promise((resolve, reject) => {
+    fs.writeFile('package.json', JSON.stringify(content, null, 2), (error) => {
+      if (error) {
+        reject(error);
+      }
+      resolve();
+    });
   });
 }
-
-function installZipExtension(extension) {
-  return getUnzippedExtension(extension)
-    .then((zipExtension) => installLocalExtension(zipExtension, 'clearAfterInstall'));
-}
-
-function installDependencies(dependenciesArray) {
-  return dependenciesArray.length ? npmInstall(dependenciesArray.join(' ')) : Promise.resolve();
-}
-
-const extensionInstaller = {
-  zip: installZipExtension,
-  npm: installNpmExtension,
-};
 
 
 /**
@@ -143,48 +74,38 @@ class ExtensionsInstaller {
     }
   }
 
-  installExtensions(productionEnv) {
-    return new Promise((resolve) => {
-      npm.load({
-        'production': productionEnv, // eslint-disable-line quote-props
-        'cache-min': 999999,
-      }, () => {
-        const localExtensionsInstallPromises = this.localExtensions.map((extension) =>
-          installLocalExtension(extension)
-        );
+  installExtensions() {
+    this.localExtensions.forEach((extension) =>
+      installLocalExtension(extension)
+    );
 
-        const remoteExtensionsInstallPromises = this.extensionsToInstall.map((extension) => {
-          const extensionType = _.get(extension, 'attributes.location.app.type');
-          return extensionInstaller[extensionType](extension);
-        });
+    this.extensionsToInstall.forEach((extension) =>
+      installNpmExtension(extension)
+    );
 
-        const dependenciesInstallPromise = Promise.all(remoteExtensionsInstallPromises).then(() => {
-          deleteDependenciesFromSet(shoutemDependencies, dependenciesSet);
-          const dependenciesArray = [...dependenciesSet];
-          return installDependencies(dependenciesArray);
-        });
+    const installedExtensions = [...this.localExtensions, ...this.extensionsToInstall];
 
-        const installPromises = [
-          ...localExtensionsInstallPromises,
-          ...remoteExtensionsInstallPromises,
-          dependenciesInstallPromise,
-        ];
-        return resolve(Promise.all(installPromises));
-      });
-    });
+    return writePackageJson(packageJsonTemplate)
+      .then(() => yarnInstall()
+        .then(() => Promise.resolve(installedExtensions))
+      );
   }
 
   createExtensionsJs(installedExtensions) {
+    if (_.isEmpty(installedExtensions)) {
+      return Promise.reject('[ERROR]: You are trying to build an app without any extensions');
+    }
+
     const extensionsMapping = [];
 
     installedExtensions.forEach((extension) => {
       if (extension) {
-        extensionsMapping.push(`'${extension.id}': require('${extension.id}')`);
+        extensionsMapping.push(`'${extension.id}': require('${extension.id}'),\n  `);
       }
     });
 
-    const extensionsString = extensionsMapping.join(',\n  ');
-    const data = `export default {\n  ${extensionsString},\n};\n`;
+    const extensionsString = extensionsMapping.join('');
+    const data = `export default {\n  ${extensionsString}};\n`;
 
     console.time('create extensions.js');
     return new Promise((resolve, reject) => {

@@ -15,6 +15,10 @@ localExtensions.forEach((extension) => {
   const installedExtensionPath = path.join(nodeModules, packageName);
   const pathsToSkip = /^((?!(node_modules|\.git|\.idea)).)*$/;
 
+  console.time(`Initializing ${packageName}`);
+  fs.copySync(packagePath, installedExtensionPath, { filter: pathsToSkip });
+  console.timeEnd(`Initializing ${packageName}`);
+
   console.log(`Watching ${packageName}`);
   watch(packagePath, (filename) => {
     const localPath = filename.split(packagePath).pop();

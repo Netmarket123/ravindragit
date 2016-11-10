@@ -139,7 +139,7 @@ class AppBuild {
   }
 
   prepareConfiguration() {
-    if (this.offlineMode) {
+    if (this.buildConfig.offlineMode) {
       // Nothing to do, resolve to proceed with next build step
       return new Promise((resolve) => resolve());
     }
@@ -155,6 +155,10 @@ class AppBuild {
       .then(() => this.cleanTempFolder())
       .then(() => {
         console.timeEnd('build time');
+        if (this.buildConfig.workingDirectories.length) {
+          const runWatchInNewWindow = require('./runWatchInNewWindow.js');
+          runWatchInNewWindow();
+        }
       })
       .catch((e) => {
         console.log(e);
