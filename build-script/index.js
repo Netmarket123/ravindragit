@@ -14,7 +14,6 @@ const cli = commandLineArgs([
   { name: 'configurationFilePath', type: String },
   { name: 'workingDirectories', type: String, multiple: true },
   { name: 'extensionsJsPath', type: String },
-  { name: 'watch', type: Boolean },
 ]);
 
 // merge command line arguments and config.json
