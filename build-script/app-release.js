@@ -12,6 +12,8 @@ const deploymentNames = {
   staging: 'Staging',
 };
 
+const IDENTICAL_PACKAGE_ERROR_KEYWORDS = ['uploaded', 'package', 'identical', 'same'];
+
 const deploymentKeyValidationErrorHandlers = [{
   canHandle(error) {
     return parseInt(error.statusCode, 10) === 404;
@@ -193,8 +195,10 @@ class AppRelease {
         console.log('App is successfully released')
       )
       .catch((error) => {
-        console.error(error);
-        process.exit(1);
+        console.warn(error);
+        if (!_.intersection(error.message.split(' '), IDENTICAL_PACKAGE_ERROR_KEYWORDS).length) {
+          process.exit(1);
+        }
       });
   }
 }
