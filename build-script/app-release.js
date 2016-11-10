@@ -187,6 +187,7 @@ class AppRelease {
       deploymentName: this.getDeploymentName(),
       platform: 'ios',
       development: !this.production,
+      plistFile: 'ios/ShoutemApp/Info.plist',
     })
       .then(() =>
         console.log('App is successfully released')
