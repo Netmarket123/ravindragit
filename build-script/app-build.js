@@ -40,6 +40,12 @@ class AppBuild {
     return `/v1/apps/${this.buildConfig.appId}/configurations/current`;
   }
 
+  resolveConfigurationHost() {
+    const hostSubdomain = this.buildConfig.production ? 'prod' : 'dev';
+
+    return `${hostSubdomain}.${this.buildConfig.serverApiEndpoint}`;
+  }
+
   downloadConfiguration() {
     console.time('download configuration');
     const configurationFolder = path.dirname(this.buildConfig.configurationFilePath);
@@ -49,7 +55,7 @@ class AppBuild {
     return new Promise((resolve, reject) => {
       http.get({
         path: this.getConfigurationUrlPath(),
-        host: this.buildConfig.serverApiEndpoint,
+        host: this.resolveConfigurationHost(),
         headers: {
           Accept: 'application/vnd.api+json',
         },
