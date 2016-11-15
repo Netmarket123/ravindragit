@@ -49,7 +49,9 @@ class AppRelease {
   getExtensionInstallationEndpoint(extensionInstallation) {
     const serverApiEndpoint = this.config.serverApiEndpoint;
     const appId = this.config.appId;
-    return buildApiEndpoint(serverApiEndpoint, appId, `installations/${extensionInstallation}`);
+    const production = this.config.production;
+    const path = `installations/${extensionInstallation}`;
+    return buildApiEndpoint(serverApiEndpoint, appId, path, production);
   }
 
   registerNewDeploymentKeysForInstallation(deploymentKeys, extensionInstallation) {

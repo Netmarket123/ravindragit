@@ -5,13 +5,14 @@
 
 'use strict';
 
-const http = require('http');
 const fs = require('fs-extra');
 const path = require('path');
 const getLocalExtensions = require('./getLocalExtensions');
 const rimraf = require('rimraf');
 const ExtensionsInstaller = require('./extensions-installer.js');
 const process = require('process');
+const request = require('request');
+const buildApiEndpoint = require('./buildApiEndpoint');
 const _ = require('lodash');
 
 function getExtensionsFromConfigurations(configuration) {
@@ -36,14 +37,13 @@ class AppBuild {
     this.buildConfig = _.assign({}, config);
   }
 
-  getConfigurationUrlPath() {
-    return `/v1/apps/${this.buildConfig.appId}/configurations/current`;
-  }
+  getConfigurationUrl() {
+    const serverApiEndpoint = this.buildConfig.serverApiEndpoint;
+    const appId = this.buildConfig.appId;
+    const production = this.buildConfig.production;
+    const path = `configurations/current`;
 
-  resolveConfigurationHost() {
-    const hostSubdomain = this.buildConfig.production ? 'prod' : 'dev';
-
-    return `${hostSubdomain}.${this.buildConfig.serverApiEndpoint}`;
+    return buildApiEndpoint(serverApiEndpoint, appId, path, production);
   }
 
   downloadConfiguration() {
@@ -51,23 +51,22 @@ class AppBuild {
     const configurationFolder = path.dirname(this.buildConfig.configurationFilePath);
     fs.mkdirsSync(configurationFolder);
 
-    const configurationFile = fs.createWriteStream(this.buildConfig.configurationFilePath);
+    const configurationFilePath = this.buildConfig.configurationFilePath;
     return new Promise((resolve, reject) => {
-      http.get({
-        path: this.getConfigurationUrlPath(),
-        host: this.resolveConfigurationHost(),
+      request.get({
+        url: this.getConfigurationUrl(),
         headers: {
           Accept: 'application/vnd.api+json',
         },
-      }, response => {
+      }, (error, response, body) => {
         if (response.statusCode === 200) {
-          response.pipe(configurationFile);
-          configurationFile.on('finish', () => {
-            configurationFile.close(() => {
-              console.timeEnd('download configuration');
-              resolve();
-            });
-          });
+          fs.writeJson(configurationFilePath, JSON.parse(body), error => {
+            if (error) {
+              reject(error);
+            }
+            console.timeEnd('download configuration');
+            resolve();
+          })
         } else {
           reject('Configuration download failed!');
         }
