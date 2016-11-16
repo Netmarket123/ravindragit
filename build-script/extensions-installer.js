@@ -20,7 +20,8 @@ function installLocalExtension(extension) {
 }
 
 function yarnInstall() {
-  console.log('Installing dependencies');
+  console.log('Installing dependencies:');
+  console.log(JSON.stringify(packageJsonTemplate.dependencies, null, 2));
   return new Promise((resolve, reject) => {
     shell.exec('yarn install', (error) => {
       if (error) {
@@ -84,7 +85,6 @@ class ExtensionsInstaller {
     );
 
     const installedExtensions = [...this.localExtensions, ...this.extensionsToInstall];
-
     return writePackageJson(packageJsonTemplate)
       .then(() => yarnInstall()
         .then(() => Promise.resolve(installedExtensions))
