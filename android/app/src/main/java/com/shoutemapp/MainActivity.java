@@ -1,6 +1,7 @@
 package com.shoutemapp;
 
 import com.facebook.react.ReactActivity;
+import android.content.Intent;
 
 public class MainActivity extends ReactActivity {
 
@@ -11,5 +12,14 @@ public class MainActivity extends ReactActivity {
     @Override
     protected String getMainComponentName() {
         return "ShoutemApp";
+    }
+
+    /**
+     * Update the launch intent on notification click
+     */
+    @Override
+    public void onNewIntent (Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
     }
 }

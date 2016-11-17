@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -57,7 +59,14 @@ public class BackgroundNotificationReceiver extends BroadcastReceiver {
     private void sendNotification(Context context,String id, String title, String messageBody, Map<String, String> data) {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        //PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent intent = getLaunchIntent(context);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("userInteraction", true);
+        //TODO: add more stuff to bundle
+        intent.putExtra("notification", bundle);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -71,8 +80,8 @@ public class BackgroundNotificationReceiver extends BroadcastReceiver {
                     .setContentText(messageBody)
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
                     .setAutoCancel(true)
-                    .setSound(defaultSoundUri);
-            //.setContentIntent(pendingIntent);
+                    .setSound(defaultSoundUri)
+                    .setContentIntent(pendingIntent);
         } else {
             notificationBuilder = new NotificationCompat.Builder(context)
                     .setSmallIcon(context.getApplicationInfo().icon)
@@ -84,5 +93,22 @@ public class BackgroundNotificationReceiver extends BroadcastReceiver {
         }
 
         notificationManager.notify(notificationBuilder.hashCode(), notificationBuilder.build());
+    }
+
+    public Class getMainActivityClass(Context context) {
+        String packageName = context.getPackageName();
+        Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
+        String className = launchIntent.getComponent().getClassName();
+        try {
+            return Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @NonNull
+    private Intent getLaunchIntent(Context context) {
+        return new Intent(context, getMainActivityClass(context));
     }
 }
