@@ -15,7 +15,7 @@ const request = require('request');
 const buildApiEndpoint = require('./buildApiEndpoint');
 const _ = require('lodash');
 
-function getExtensionsFromConfigurations(configuration) {
+function getExtensionsFromConfiguration(configuration) {
   return _.filter(configuration.included, { type: 'shoutem.core.extensions' });
 }
 
@@ -48,10 +48,6 @@ class AppBuild {
 
   downloadConfiguration() {
     console.time('download configuration');
-    const configurationFolder = path.dirname(this.buildConfig.configurationFilePath);
-    fs.mkdirsSync(configurationFolder);
-
-    const configurationFilePath = this.buildConfig.configurationFilePath;
     return new Promise((resolve, reject) => {
       request.get({
         url: this.getConfigurationUrl(),
@@ -60,13 +56,9 @@ class AppBuild {
         },
       }, (error, response, body) => {
         if (response.statusCode === 200) {
-          fs.writeJson(configurationFilePath, JSON.parse(body), error => {
-            if (error) {
-              reject(error);
-            }
-            console.timeEnd('download configuration');
-            resolve();
-          })
+          const configuration = JSON.parse(body);
+          console.timeEnd('download configuration');
+          resolve(configuration);
         } else {
           reject('Configuration download failed!');
         }
@@ -76,21 +68,9 @@ class AppBuild {
     });
   }
 
-  getConfiguration() {
-    return require(path.join('..', this.buildConfig.configurationFilePath));
-  }
-
-  removeBabelrcFiles() {
-    console.time('removing .babelrc files');
-
-    rimraf.sync(path.join('.', 'node_modules', '*', '.babelrc'));
-
-    console.timeEnd('removing .babelrc files');
-  }
-
-  prepareExtensions() {
-    this.configuration = this.getConfiguration();
-    const extensions = getExtensionsFromConfigurations(this.configuration);
+  prepareExtensions(configuration) {
+    this.configuration = configuration;
+    const extensions = getExtensionsFromConfiguration(this.configuration);
     const localExtensions = getLocalExtensions(this.buildConfig.workingDirectories);
     const extensionsJsPath = this.buildConfig.extensionsJsPath;
     const extensionsInstaller = new ExtensionsInstaller(
@@ -137,6 +117,14 @@ class AppBuild {
     return Promise.resolve();
   }
 
+  removeBabelrcFiles() {
+    console.time('removing .babelrc files');
+
+    rimraf.sync(path.join('.', 'node_modules', '*', '.babelrc'));
+
+    console.timeEnd('removing .babelrc files');
+  }
+
   cleanTempFolder() {
     console.time('cleaning temp files');
     rimraf.sync(path.join('.', 'temp', '*'));
@@ -145,18 +133,15 @@ class AppBuild {
 
   prepareConfiguration() {
     if (this.buildConfig.offlineMode) {
+      const configuration = require(path.resolve(this.buildConfig.configurationFilePath));
       // Nothing to do, resolve to proceed with next build step
-      return new Promise((resolve) => resolve());
+      return Promise.resolve(configuration);
     }
     return this.downloadConfiguration();
   }
 
-  run() {
-    console.time('build time');
-    console.log(`starting build for app ${this.buildConfig.appId}`);
-    this.prepareConfiguration()
-      .then(() => this.prepareExtensions())
-      .then(() => this.removeBabelrcFiles())
+  buildAppBundle(configuration) {
+    return this.prepareExtensions(configuration).then(() => this.removeBabelrcFiles())
       .then(() => this.cleanTempFolder())
       .then(() => {
         console.timeEnd('build time');
@@ -164,7 +149,14 @@ class AppBuild {
           const runWatchInNewWindow = require('./runWatchInNewWindow.js');
           runWatchInNewWindow();
         }
-      })
+      });
+  }
+
+  run() {
+    console.time('build time');
+    console.log(`starting build for app ${this.buildConfig.appId}`);
+    this.prepareConfiguration()
+      .then((configuration) => this.buildAppBundle(configuration))
       .catch((e) => {
         console.log(e);
         process.exit(1);
