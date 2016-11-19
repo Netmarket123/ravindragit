@@ -7,17 +7,30 @@
 
 const fs = require('fs-extra');
 const path = require('path');
-const getLocalExtensions = require('./getLocalExtensions');
+const _ = require('lodash');
 const rimraf = require('rimraf');
-const ExtensionsInstaller = require('./extensions-installer.js');
 const process = require('process');
 const request = require('request');
+const exec = require('child_process').exec;
+const yazl = require('yazl');
+
+const getLocalExtensions = require('./getLocalExtensions');
+const ExtensionsInstaller = require('./extensions-installer.js');
 const buildApiEndpoint = require('./buildApiEndpoint');
-const _ = require('lodash');
+
+const AppRelease = require('./app-release');
 
 function getExtensionsFromConfiguration(configuration) {
   return _.filter(configuration.included, { type: 'shoutem.core.extensions' });
 }
+
+function getExtensionLocations(extensions) {
+  return _.map(extensions, (extension) => _.get(extension, 'attributes.location.app.package'));
+}
+
+const bundleNameGenerators = {
+  ios: () => 'main.jsbundle',
+};
 
 /**
  * AppBuild builds application by running build steps
@@ -35,6 +48,7 @@ function getExtensionsFromConfiguration(configuration) {
 class AppBuild {
   constructor(config) {
     this.buildConfig = _.assign({}, config);
+    this.appRelease = new AppRelease(this.buildConfig);
   }
 
   getConfigurationUrl() {
@@ -68,9 +82,7 @@ class AppBuild {
     });
   }
 
-  prepareExtensions(configuration) {
-    this.configuration = configuration;
-    const extensions = getExtensionsFromConfiguration(this.configuration);
+  prepareExtensions(extensions) {
     const localExtensions = getLocalExtensions(this.buildConfig.workingDirectories);
     const extensionsJsPath = this.buildConfig.extensionsJsPath;
     const extensionsInstaller = new ExtensionsInstaller(
@@ -123,6 +135,7 @@ class AppBuild {
     rimraf.sync(path.join('.', 'node_modules', '*', '.babelrc'));
 
     console.timeEnd('removing .babelrc files');
+    console.log('');
   }
 
   cleanTempFolder() {
@@ -140,23 +153,128 @@ class AppBuild {
     return this.downloadConfiguration();
   }
 
-  buildAppBundle(configuration) {
-    return this.prepareExtensions(configuration).then(() => this.removeBabelrcFiles())
-      .then(() => this.cleanTempFolder())
+  buildExtensions(configuration) {
+    return this.prepareExtensions(configuration).then(() => this.removeBabelrcFiles());
+  }
+
+  getBinaryVersion() {
+    // TODO(Ivan): read binary version from app configuration
+    return '1.0.0';
+  }
+
+  getOutputFolder() {
+    return path.join('temp', `${this.buildConfig.appId}`);
+  }
+
+  getEntryFileName() {
+    return `index.${this.buildConfig.platform}.js`;
+  }
+
+  getBundleName() {
+    const platform = this.buildConfig.platform;
+    const defaultNameGenerator = (platform) => `index.${platform}.bundle`;
+
+    return _.get(bundleNameGenerators, platform, defaultNameGenerator)(platform);
+  }
+
+  runReactNativeBundle() {
+    console.log('Starting react-native bundle\n');
+    console.time('Build bundle');
+    const assetsDest = this.getOutputFolder();
+    const bundleOutput = path.join(assetsDest, this.getBundleName());
+    const platform = this.buildConfig.platform;
+    const dev = !this.buildConfig.production;
+    const entryFile = this.getEntryFileName();
+    const rnBundleCommand = [
+      'react-native',
+      'bundle',
+      `--assets-dest ${assetsDest}`,
+      `--bundle-output ${bundleOutput}`,
+      `--platform ${platform}`,
+      `--dev ${dev}`,
+      `--entry-file ${entryFile}`,
+    ];
+
+    fs.mkdirSync(assetsDest);
+    return new Promise((resolve, reject) => {
+      const reactNativeBundleProcess = exec(rnBundleCommand.join(' '), error => {
+        console.timeEnd('Build bundle');
+        console.log('');
+        if (error !== null) {
+          console.log('Bundling error: ' + error);
+          reject(error);
+        }
+        resolve(assetsDest);
+      });
+
+      reactNativeBundleProcess.stdout.pipe(process.stdout);
+      reactNativeBundleProcess.stderr.pipe(process.stderr);
+    });
+  }
+
+  zipBundle(bundleFolder) {
+    console.log('zip');
+    return new Promise((resolve, reject) => {
+      const files = fs.walkSync(bundleFolder);
+      const zipFile = new yazl.ZipFile();
+      const packagePath = `${bundleFolder}.zip`
+      const writeStream = fs.createWriteStream(packagePath);
+      zipFile.outputStream.pipe(writeStream)
+        .on("error", function (error) {
+          reject(error);
+        })
+        .on("close", function () {
+          resolve(packagePath);
+        });
+
+      _.forEach(files, (file) => {
+        const pathInZip = path.relative(bundleFolder, file);
+        zipFile.addFile(file, pathInZip);
+      });
+      zipFile.end();
+    });
+  }
+
+  prepareReleasePackage() {
+    return this.runReactNativeBundle().then((bundleFolderPath) => this.zipBundle(bundleFolderPath))
+  }
+
+  cacheBundle(bundlePath) {
+    fs.copySync(bundlePath, path.join('bundle-test', `${path.basename(bundlePath)}`));
+    fs.writeJsonSync(path.join('bundle-test', 'configuration.json'), this.configuration);
+  }
+
+  run() {
+    console.time('build time');
+    console.log(`starting build for app ${this.buildConfig.appId}`);
+    this.cleanTempFolder();
+    this.prepareConfiguration()
+      .then((configuration) => {
+        this.configuration = configuration;
+        const extensions = getExtensionsFromConfiguration(this.configuration);
+        const cachedExtensions = getExtensionsFromConfiguration(require('../bundle-test/configuration.json'));
+        console.log(_.difference(getExtensionLocations(extensions), getExtensionLocations(cachedExtensions)));
+        if (_.difference(getExtensionLocations(extensions), getExtensionLocations(cachedExtensions)).length) {
+          return this.buildExtensions(extensions)
+            .then(() => this.prepareReleasePackage())
+        }
+
+        return Promise.resolve('bundle-test/2470.zip');
+      })
+      .then((packagePath) => {
+        if (this.buildConfig.appId === 2470) {
+          return this.cacheBundle(packagePath);
+        } else {
+          return this.appRelease.release(packagePath, this.getBinaryVersion())
+        }
+      })
       .then(() => {
         console.timeEnd('build time');
         if (this.buildConfig.workingDirectories.length) {
           const runWatchInNewWindow = require('./runWatchInNewWindow.js');
           runWatchInNewWindow();
         }
-      });
-  }
-
-  run() {
-    console.time('build time');
-    console.log(`starting build for app ${this.buildConfig.appId}`);
-    this.prepareConfiguration()
-      .then((configuration) => this.buildAppBundle(configuration))
+      })
       .catch((e) => {
         console.log(e);
         process.exit(1);
