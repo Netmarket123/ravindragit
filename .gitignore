@@ -4,6 +4,7 @@ config.json
 temp
 package.json
 yarn.lock
+Podfile
 
 # Logs
 logs
