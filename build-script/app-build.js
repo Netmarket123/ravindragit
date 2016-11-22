@@ -251,15 +251,16 @@ class AppBuild {
     this.prepareConfiguration()
       .then((configuration) => {
         this.configuration = configuration;
+        return this.appRelease.setup(configuration);
+      })
+      .then(() => {
         const extensions = getExtensionsFromConfiguration(this.configuration);
         const cachedExtensions = getExtensionsFromConfiguration(require('../bundle-test/configuration.json'));
-        console.log(_.difference(getExtensionLocations(extensions), getExtensionLocations(cachedExtensions)));
-        if (_.difference(getExtensionLocations(extensions), getExtensionLocations(cachedExtensions)).length) {
-          return this.buildExtensions(extensions)
-            .then(() => this.prepareReleasePackage())
+        if (_.isEqual(getExtensionLocations(extensions), getExtensionLocations(cachedExtensions)) && this.buildConfig.appId !== 2470) {
+          return Promise.resolve('bundle-test/2470.zip');
         }
-
-        return Promise.resolve('bundle-test/2470.zip');
+        return this.buildExtensions(extensions)
+          .then(() => this.prepareReleasePackage())
       })
       .then((packagePath) => {
         if (this.buildConfig.appId === 2470) {

@@ -1,8 +1,6 @@
 'use strict';
 
 const CodePush = require('code-push');
-const codePushExec = require('code-push-cli/script/command-executor');
-const codePushCli = require('code-push-cli/definitions/cli');
 const request = require('request');
 const buildApiEndpoint = require('./buildApiEndpoint');
 const _ = require('lodash');
@@ -145,7 +143,7 @@ class AppRelease {
     }
 
     const deploymentKeys = _.get(codePushExtension, 'attributes.settings.deploymentKeys');
-    this.validateDeploymentKeys(deploymentKeys)
+    return this.validateDeploymentKeys(deploymentKeys)
       .then((areDepoymentKeysValid) => {
         if (areDepoymentKeysValid) {
           console.log(`App ${this.getCodePushAppName()} has valid deployment keys`);
