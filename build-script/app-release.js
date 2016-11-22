@@ -178,7 +178,8 @@ class AppRelease {
       this.getDeploymentName(), path, binaryVersion, {}, currentProgress => {
         process.stdout.clearLine();
         process.stdout.cursorTo(0);
-        process.stdout.write(`Uploading bundle: ${Math.round(currentProgress)}%`);
+        const lastChar = currentProgress === 100 ? '\n' : '';
+        process.stdout.write(`Uploading bundle: ${Math.round(currentProgress)}%${lastChar}`);
       })
       .then(() => {
         console.timeEnd('Code Push release');

@@ -6,5 +6,8 @@
   "offlineMode": false,
   "configurationFilePath": "./temp/configuration.json",
   "workingDirectories": [],
-  "extensionsJsPath": "./extensions.js"
+  "extensionsJsPath": "./extensions.js",
+  "baseAppId": 2470,
+  "cacheFolder": "./cached-bundles",
+  "runReleaseSteps": false
 }

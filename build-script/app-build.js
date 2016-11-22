@@ -1,5 +1,5 @@
 /* eslint global-require: "off" */
-/* global requre needs to be enabled because files to be required are
+/* global require needs to be enabled because files to be required are
  * determined dynamically
 */
 
@@ -47,8 +47,31 @@ const bundleNameGenerators = {
  */
 class AppBuild {
   constructor(config) {
-    this.buildConfig = _.assign({}, config);
-    this.appRelease = new AppRelease(this.buildConfig);
+    this.buildConfig = _.assign({ cacheFolder: 'cache' }, config);
+    if (config.runReleaseSteps && !this.isBuildingBaseApp()) {
+      this.appRelease = new AppRelease(this.buildConfig);
+    }
+  }
+
+  isBuildingBaseApp() {
+    const { baseAppId, appId } = this.buildConfig;
+    return baseAppId === appId;
+  }
+
+  shouldUseCachedBundle(extensions) {
+    const cachedExtensions = getExtensionsFromConfiguration(require('../bundle-test/configuration.json'));
+    let cachedBundleExists;
+
+    if (this.isBuildingBaseApp()) {
+      try {
+        cachedBundleExists = fs.statSync(this.getCachedBundlePath()).isFile();
+      } catch (err) {
+        cachedBundleExists = false;
+      }
+    }
+
+    return _.isEqual(getExtensionLocations(extensions), getExtensionLocations(cachedExtensions)) &&
+      !cachedBundleExists;
   }
 
   getConfigurationUrl() {
@@ -213,7 +236,7 @@ class AppBuild {
   }
 
   zipBundle(bundleFolder) {
-    console.log('zip');
+    console.log('Zipping the bundle');
     return new Promise((resolve, reject) => {
       const files = fs.walkSync(bundleFolder);
       const zipFile = new yazl.ZipFile();
@@ -240,32 +263,49 @@ class AppBuild {
   }
 
   cacheBundle(bundlePath) {
-    fs.copySync(bundlePath, path.join('bundle-test', `${path.basename(bundlePath)}`));
-    fs.writeJsonSync(path.join('bundle-test', 'configuration.json'), this.configuration);
+    try {
+      fs.mkdirSync(this.buildConfig.cacheFolder);
+    } catch (error) {
+      if (error.code === 'EEXIST') {
+        console.log('Cache folder already exists. Continue with caching.')
+      }
+    }
+    fs.copySync(bundlePath, this.getCachedBundlePath());
+    fs.writeJsonSync(this.getCachedConfigurationPath(), this.configuration);
+  }
+
+  getCachedConfigurationPath() {
+    return path.join(this.buildConfig.cacheFolder, 'configuration.json')
+  }
+
+  getCachedBundlePath() {
+    return path.join(this.buildConfig.cacheFolder, `${this.buildConfig.baseAppId}.zip`);
   }
 
   run() {
     console.time('build time');
     console.log(`starting build for app ${this.buildConfig.appId}`);
+    // clear any previous build's temp files
     this.cleanTempFolder();
     this.prepareConfiguration()
       .then((configuration) => {
         this.configuration = configuration;
-        return this.appRelease.setup(configuration);
+        if (this.appRelease) {
+          return this.appRelease.setup(configuration);
+        }
       })
       .then(() => {
         const extensions = getExtensionsFromConfiguration(this.configuration);
-        const cachedExtensions = getExtensionsFromConfiguration(require('../bundle-test/configuration.json'));
-        if (_.isEqual(getExtensionLocations(extensions), getExtensionLocations(cachedExtensions)) && this.buildConfig.appId !== 2470) {
-          return Promise.resolve('bundle-test/2470.zip');
+        if (this.shouldUseCachedBundle(extensions)) {
+          return Promise.resolve(this.getCachedBundlePath());
         }
         return this.buildExtensions(extensions)
           .then(() => this.prepareReleasePackage())
       })
       .then((packagePath) => {
-        if (this.buildConfig.appId === 2470) {
+        if (this.isBuildingBaseApp()) {
           return this.cacheBundle(packagePath);
-        } else {
+        } else if (this.appRelease) {
           return this.appRelease.release(packagePath, this.getBinaryVersion())
         }
       })
@@ -275,6 +315,8 @@ class AppBuild {
           const runWatchInNewWindow = require('./runWatchInNewWindow.js');
           runWatchInNewWindow();
         }
+        // clear after yourself
+        this.cleanTempFolder();
       })
       .catch((e) => {
         console.log(e);
