@@ -190,7 +190,7 @@ class AppRelease {
       appName: this.getCodePushAppName(),
       deploymentName: this.getDeploymentName(),
       platform: 'ios',
-      development: !this.production,
+      development: this.config.debug,
       plistFile: 'ios/ShoutemApp/Info.plist',
     })
       .then(() =>
