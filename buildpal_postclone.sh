@@ -28,6 +28,9 @@ fi
 
 echo $file > config.json
 
+# print config.json to console
+cat config.json
+
 # copy package.template.json to package.json
 cp package.template.json package.json
 
