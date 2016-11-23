@@ -22,3 +22,6 @@ echo $file > config.json
 
 # copy package.template.json to package.json
 cp package.template.json package.json
+
+# copy Podfile.template to Podfile
+cp ios/Podfile.template ios/Podfile
