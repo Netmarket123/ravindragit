@@ -21,7 +21,8 @@ const buildApiEndpoint = require('./buildApiEndpoint');
 const AppRelease = require('./app-release');
 
 function getExtensionsFromConfiguration(configuration) {
-  return _.filter(configuration.included, { type: 'shoutem.core.extensions' });
+  const includedObjects = _.get(configuration, 'included', []);
+  return _.filter(includedObjects, { type: 'shoutem.core.extensions' });
 }
 
 function getExtensionLocations(extensions) {
@@ -51,6 +52,13 @@ class AppBuild {
     if (config.runReleaseSteps && !this.isBuildingBaseApp()) {
       this.appRelease = new AppRelease(this.buildConfig);
     }
+
+    this.setupCaching();
+  }
+
+  setupCaching() {
+    fs.ensureDirSync(this.buildConfig.cacheFolder);
+    fs.ensureFileSync(this.getCachedConfigurationPath());
   }
 
   isBuildingBaseApp() {
@@ -59,7 +67,9 @@ class AppBuild {
   }
 
   shouldUseCachedBundle(extensions) {
-    const cachedExtensions = getExtensionsFromConfiguration(require('../bundle-test/configuration.json'));
+    const cachedConfigurationPath = this.getCachedConfigurationPath();
+    const cachedConfiguration = fs.readJsonSync(cachedConfigurationPath, { throws: false });
+    const cachedExtensions = getExtensionsFromConfiguration(cachedConfiguration);
     let cachedBundleExists;
 
     if (this.isBuildingBaseApp()) {
@@ -263,13 +273,6 @@ class AppBuild {
   }
 
   cacheBundle(bundlePath) {
-    try {
-      fs.mkdirSync(this.buildConfig.cacheFolder);
-    } catch (error) {
-      if (error.code === 'EEXIST') {
-        console.log('Cache folder already exists. Continue with caching.')
-      }
-    }
     fs.copySync(bundlePath, this.getCachedBundlePath());
     fs.writeJsonSync(this.getCachedConfigurationPath(), this.configuration);
   }
