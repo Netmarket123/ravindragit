@@ -2,8 +2,8 @@
   "appId": 2080,
   "serverApiEndpoint": "apps.dev.sauros.hr",
   "production": false,
-  "designMode": true,
   "offlineMode": false,
+  "debug": true,
   "configurationFilePath": "./temp/configuration.json",
   "workingDirectories": [],
   "extensionsJsPath": "./extensions.js"
