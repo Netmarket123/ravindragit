@@ -9,5 +9,6 @@
   "extensionsJsPath": "./extensions.js",
   "baseAppId": 2470,
   "cacheFolder": "./cached-bundles",
+  "cacheBaseApp": false,
   "runReleaseSteps": false
 }

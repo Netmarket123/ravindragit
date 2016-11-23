@@ -81,7 +81,7 @@ class AppBuild {
     }
 
     return _.isEqual(getExtensionLocations(extensions), getExtensionLocations(cachedExtensions)) &&
-      !cachedBundleExists;
+      !cachedBundleExists && this.buildConfig.cacheBaseApp;
   }
 
   getConfigurationUrl() {
@@ -272,6 +272,10 @@ class AppBuild {
     return this.runReactNativeBundle().then((bundleFolderPath) => this.zipBundle(bundleFolderPath))
   }
 
+  shouldCacheBundle() {
+    this.isBuildingBaseApp() && this.buildConfig.cacheBaseApp;
+  }
+
   cacheBundle(bundlePath) {
     fs.copySync(bundlePath, this.getCachedBundlePath());
     fs.writeJsonSync(this.getCachedConfigurationPath(), this.configuration);
@@ -306,7 +310,7 @@ class AppBuild {
           .then(() => this.prepareReleasePackage())
       })
       .then((packagePath) => {
-        if (this.isBuildingBaseApp()) {
+        if (this.shouldCacheBundle()) {
           return this.cacheBundle(packagePath);
         } else if (this.appRelease) {
           return this.appRelease.release(packagePath, this.getBinaryVersion())
