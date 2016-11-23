@@ -11,14 +11,25 @@ then
 fi
 
 # update build type to production
-if [ "$BUILD_TYPE" = 'Release' ]
+if [ "$CONFIGURATION" = 'prod' ]
 then
   tmp=$(echo "$file" | sed 's/"production".*/"production": true,/g')
+  file=$tmp
+  echo "Changed configuration to production."
+fi
+
+# update build type to release
+if [ "$BUILD_TYPE" = 'Release' ]
+then
+  tmp=$(echo "$file" | sed 's/"debug".*/"debug": false,/g')
   file=$tmp
   echo "Changed build type to release."
 fi
 
 echo $file > config.json
+
+# print config.json to console
+cat config.json
 
 # copy package.template.json to package.json
 cp package.template.json package.json

@@ -26,7 +26,6 @@ function getExtensionsFromConfigurations(configuration) {
  *      @key Number appId
  *      @key String serverApiEndpoint
  *      @key boolean debug builds debug build
- *      @key boolean designMode get designMode app configuration
  *      @key String configurationFilePath path to where app configuration should be saved
  *      @key String extensionsDir local extensions directory
  *      @key String extensionsJsPath path to extension.js
