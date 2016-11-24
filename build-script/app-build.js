@@ -140,17 +140,15 @@ class AppBuild {
     return this.downloadConfiguration();
   }
 
-  buildExtensions() {
-    return this.prepareExtensions().then(() => this.removeBabelrcFiles());
-  }
-
   run() {
     console.time('build time');
     console.log(`starting build for app ${this.buildConfig.appId}`);
     // clear any previous build's temp files
     this.cleanTempFolder();
     this.prepareConfiguration()
-      .then(() => this.buildExtensions())
+      .then(() => this.prepareExtensions())
+      .then(() => this.removeBabelrcFiles())
+      .then(() => this.cleanTempFolder())
       .then(() => {
         console.timeEnd('build time');
         if (this.buildConfig.workingDirectories.length) {
