@@ -1,6 +1,18 @@
 # shoutem-client
 Shoutem React Native App
 
+## Build instructions
+
+### iOS
+
+####cocoapods
+[Install cocoapods](https://guides.cocoapods.org/using/getting-started.html#installation)
+```sudo gem install cocoapods```
+
+```cd ios && pod install```
+
+To build/run the project from the xcode import the `ShoutemApp.xcworkspace` instead of `ShoutemApp.xcodeproj`
+
 ## Internal dependences
 * [5minutes/animation](https://github.com/5minutes/animation)  
 * [5minutes/theme](https://github.com/5minutes/theme)

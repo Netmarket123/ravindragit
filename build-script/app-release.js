@@ -2,8 +2,12 @@
 
 const CodePush = require('code-push');
 const request = require('request');
-const buildApiEndpoint = require('./buildApiEndpoint');
 const _ = require('lodash');
+const fs = require('fs-extra');
+const path = require('path');
+const exec = require('child_process').exec;
+const yazl = require('yazl');
+const buildApiEndpoint = require('./buildApiEndpoint');
 
 const deploymentNames = {
   production: 'Production',
@@ -33,6 +37,10 @@ function getMissingDeploymentKeys(deploymentKeys) {
 function hasDefaultDeploymentKeys(deploymentKeys) {
   return getMissingDeploymentKeys(deploymentKeys).length < 1;
 }
+
+const bundleNameGenerators = {
+  ios: () => 'main.jsbundle',
+};
 
 class AppRelease {
   constructor(config) {
@@ -172,10 +180,92 @@ class AppRelease {
     return this.config.production ? deploymentNames.production : deploymentNames.staging;
   }
 
-  release(path, binaryVersion) {
+  getBinaryVersion() {
+    // TODO(Ivan): read binary version from app configuration
+    return '1.0.0';
+  }
+
+  getOutputFolder() {
+    return path.join('temp', `${this.config.appId}`);
+  }
+
+  getEntryFileName() {
+    return `index.${this.config.platform}.js`;
+  }
+
+  getBundleName() {
+    const platform = this.config.platform;
+    const defaultNameGenerator = (p) => `index.${p}.bundle`;
+
+    return _.get(bundleNameGenerators, platform, defaultNameGenerator)(platform);
+  }
+
+  runReactNativeBundle() {
+    console.log('Starting react-native bundle\n');
+    console.time('Build bundle');
+    const assetsDest = this.getOutputFolder();
+    const bundleOutput = path.join(assetsDest, this.getBundleName());
+    const platform = this.config.platform;
+    const dev = this.config.debug;
+    const entryFile = this.getEntryFileName();
+    const rnBundleCommand = [
+      'react-native',
+      'bundle',
+      `--assets-dest ${assetsDest}`,
+      `--bundle-output ${bundleOutput}`,
+      `--platform ${platform}`,
+      `--dev ${dev}`,
+      `--entry-file ${entryFile}`,
+    ];
+
+    fs.mkdirSync(assetsDest);
+    return new Promise((resolve, reject) => {
+      const reactNativeBundleProcess = exec(rnBundleCommand.join(' '), error => {
+        console.timeEnd('Build bundle');
+        console.log('');
+        if (error !== null) {
+          console.log(`Bundling error: ${error}`);
+          reject(error);
+        }
+        resolve(assetsDest);
+      });
+
+      reactNativeBundleProcess.stdout.pipe(process.stdout);
+      reactNativeBundleProcess.stderr.pipe(process.stderr);
+    });
+  }
+
+  zipBundle(bundleFolder) {
+    console.log('Zipping the bundle');
+    return new Promise((resolve, reject) => {
+      const files = fs.walkSync(bundleFolder);
+      const zipFile = new yazl.ZipFile();
+      const packagePath = `${bundleFolder}.zip`;
+      const writeStream = fs.createWriteStream(packagePath);
+      zipFile.outputStream.pipe(writeStream)
+        .on('error', function (error) {
+          reject(error);
+        })
+        .on('close', function () {
+          resolve(packagePath);
+        });
+
+      _.forEach(files, (file) => {
+        const pathInZip = path.relative(bundleFolder, file);
+        zipFile.addFile(file, pathInZip);
+      });
+      zipFile.end();
+    });
+  }
+
+  prepareReleasePackage() {
+    return this.runReactNativeBundle().then((bundleFolderPath) => this.zipBundle(bundleFolderPath));
+  }
+
+  release(packagePath) {
     console.time('Code Push release');
     return this.codePush.release(this.getCodePushAppName(),
-      this.getDeploymentName(), path, binaryVersion, {}, currentProgress => {
+      this.getDeploymentName(), packagePath, this.getBinaryVersion(), {}, currentProgress => {
         process.stdout.clearLine();
         process.stdout.cursorTo(0);
         const lastChar = currentProgress === 100 ? '\n' : '';
