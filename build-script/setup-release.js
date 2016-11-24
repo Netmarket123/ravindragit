@@ -20,7 +20,7 @@ const build = new AppBuild(releaseConfig);
 
 build.downloadConfiguration()
   .then((configuration) => {
-    if (!build.isBuildingBaseApp()) {
+    if (releaseConfig.appId !== releaseConfig.baseAppId) {
       const release = new AppRelease(releaseConfig);
       release.setup(configuration);
     }
