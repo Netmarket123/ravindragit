@@ -2,6 +2,7 @@
 
 const AppRelease = require('./app-release');
 const AppBuild = require('./app-build');
+const BundleCache = require('./bundle-cache');
 // eslint-disable-next-line import/no-unresolved
 const config = require('../config.json');
 const commandLineArgs = require('command-line-args');
@@ -18,17 +19,22 @@ const cli = commandLineArgs([
 const releaseConfig = Object.assign({}, config, cli.parse());
 const app = new AppRelease(releaseConfig);
 const build = new AppBuild(releaseConfig);
+const bundleCache = new BundleCache(releaseConfig);
 build.cleanTempFolder();
 build.prepareConfiguration()
-  .then(() => {
-    if (build.shouldUseCachedBundle()) {
-      return Promise.resolve(build.getCachedBundlePath());
+  .then((configuration) => {
+    if (bundleCache.isCachingEnabled()) {
+      bundleCache.setConfiguration(configuration);
+    }
+
+    if (bundleCache.shouldUseCachedBundle(configuration)) {
+      return Promise.resolve(bundleCache.getCachedBundlePath());
     }
     return app.prepareReleasePackage();
   })
   .then((packagePath) => {
-    if (build.shouldCacheBundle()) {
-      return build.cacheBundle(packagePath);
+    if (bundleCache.shouldCacheBundle()) {
+      return bundleCache.cacheBundle(packagePath);
     }
     return app.release(packagePath);
   })

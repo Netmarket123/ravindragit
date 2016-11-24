@@ -2,6 +2,7 @@
 
 const _ = require('lodash');
 const AppBuild = require('./app-build');
+const BundleCache = require('./bundle-cache');
 // eslint-disable-next-line import/no-unresolved
 const config = require('../config.json');
 const commandLineArgs = require('command-line-args');
@@ -21,10 +22,12 @@ const cli = commandLineArgs([
 // merge command line arguments and config.json
 const buildConfig = _.merge(config, cli.parse());
 const build = new AppBuild(buildConfig);
+const bundleCache = new BundleCache(buildConfig);
+
 build.prepareConfiguration()
-  .then(() => {
-    if (build.shouldUseCachedBundle()) {
-      return Promise.resolve(build.getCachedBundlePath());
+  .then((configuration) => {
+    if (bundleCache.shouldUseCachedBundle(configuration)) {
+      return Promise.resolve(bundleCache.getCachedBundlePath());
     }
     return build.buildExtensions();
   })

@@ -16,17 +16,7 @@ const request = require('request');
 const getLocalExtensions = require('./getLocalExtensions');
 const ExtensionsInstaller = require('./extensions-installer.js');
 const buildApiEndpoint = require('./buildApiEndpoint');
-
-const AppRelease = require('./app-release');
-
-function getExtensionsFromConfiguration(configuration) {
-  const includedObjects = _.get(configuration, 'included', []);
-  return _.filter(includedObjects, { type: 'shoutem.core.extensions' });
-}
-
-function getExtensionLocations(extensions) {
-  return _.map(extensions, (extension) => _.get(extension, 'attributes.location.app.package'));
-}
+const getExtensionsFromConfiguration = require('./getExtensionsFromConfiguration');
 
 /**
  * AppBuild builds application by running build steps
@@ -43,37 +33,6 @@ function getExtensionLocations(extensions) {
 class AppBuild {
   constructor(config) {
     this.buildConfig = _.assign({ cacheFolder: 'cache' }, config);
-    this.setupCaching();
-  }
-
-  setupCaching() {
-    fs.ensureDirSync(this.buildConfig.cacheFolder);
-    fs.ensureFileSync(this.getCachedConfigurationPath());
-  }
-
-  isBuildingBaseApp() {
-    const baseAppId = this.buildConfig.baseAppId;
-    const appId = this.buildConfig.appId;
-    return baseAppId === appId;
-  }
-
-  shouldUseCachedBundle() {
-    const extensions = getExtensionsFromConfiguration(this.configuration);
-    const cachedConfigurationPath = this.getCachedConfigurationPath();
-    const cachedConfiguration = fs.readJsonSync(cachedConfigurationPath, { throws: false });
-    const cachedExtensions = getExtensionsFromConfiguration(cachedConfiguration);
-    let cachedBundleExists;
-
-    if (this.isBuildingBaseApp()) {
-      try {
-        cachedBundleExists = fs.statSync(this.getCachedBundlePath()).isFile();
-      } catch (err) {
-        cachedBundleExists = false;
-      }
-    }
-
-    return _.isEqual(getExtensionLocations(extensions), getExtensionLocations(cachedExtensions)) &&
-      !cachedBundleExists && this.buildConfig.cacheBaseApp;
   }
 
   getConfigurationUrl() {
@@ -183,23 +142,6 @@ class AppBuild {
 
   buildExtensions() {
     return this.prepareExtensions().then(() => this.removeBabelrcFiles());
-  }
-
-  shouldCacheBundle() {
-    return this.isBuildingBaseApp() && this.buildConfig.cacheBaseApp;
-  }
-
-  cacheBundle(bundlePath) {
-    fs.copySync(bundlePath, this.getCachedBundlePath());
-    fs.writeJsonSync(this.getCachedConfigurationPath(), this.configuration);
-  }
-
-  getCachedConfigurationPath() {
-    return path.join(this.buildConfig.cacheFolder, 'configuration.json')
-  }
-
-  getCachedBundlePath() {
-    return path.join(this.buildConfig.cacheFolder, `${this.buildConfig.baseAppId}.zip`);
   }
 
   run() {
