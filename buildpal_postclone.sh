@@ -31,8 +31,10 @@ echo $file > config.json
 # print config.json to console
 cat config.json
 
-# copy package.template.json to package.json
-cp package.template.json package.json
+# install build script dependencies
+cd build-script
+yarn install
+cd ..
 
 # copy Podfile.template to Podfile
 cp ios/Podfile.template ios/Podfile
