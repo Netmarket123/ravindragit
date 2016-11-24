@@ -3,7 +3,6 @@ package com.shoutemapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.airbnb.android.react.maps.MapsPackage;
 import com.avishayil.rnrestart.ReactNativeRestartPackage;
 import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import com.shoutem.calendar.CalendarManagerPackage;
@@ -35,7 +34,6 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new MapsPackage(),
             new ReactNativeRestartPackage(),
             new GoogleAnalyticsBridgePackage(),
             new CalendarManagerPackage(),
