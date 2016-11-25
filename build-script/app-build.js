@@ -5,6 +5,7 @@
 
 'use strict';
 
+const shell = require('shelljs');
 const fs = require('fs-extra');
 const path = require('path');
 const getLocalExtensions = require('./getLocalExtensions');
@@ -102,8 +103,9 @@ class AppBuild {
       .then((installedExtensions) => {
         const extensionsJs = extensionsInstaller.createExtensionsJs(installedExtensions);
         const preBuild = this.executeBuildLifecycleHook(installedExtensions, 'preBuild');
+        const installNativeDependencies = extensionsInstaller.installNativeDependencies(installedExtensions);
 
-        return Promise.all([extensionsJs, preBuild]);
+        return Promise.all([extensionsJs, preBuild, installNativeDependencies]);
       });
   }
 
@@ -150,11 +152,24 @@ class AppBuild {
     return this.downloadConfiguration();
   }
 
+  runReactNativeLink() {
+    return new Promise((resolve, reject) => {
+      shell.exec('react-native link', (error) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+
   run() {
     console.time('build time');
     console.log(`starting build for app ${this.buildConfig.appId}`);
     this.prepareConfiguration()
       .then(() => this.prepareExtensions())
+      .then(() => this.runReactNativeLink())
       .then(() => this.removeBabelrcFiles())
       .then(() => this.cleanTempFolder())
       .then(() => {
