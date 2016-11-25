@@ -123,19 +123,18 @@ class ExtensionsInstaller {
   }
 
   installNativeDependencies(installedExtensions) {
+    console.log('Starting pods install');
+    console.time('Installing pods');
     const podFileTemplate = fs.readFileSync('ios/Podfile.template', 'utf8', (error) =>
       Promise.reject(error)
     );
     const podspecPaths = _.reduce(installedExtensions, (paths, extension) =>
-      paths.concat(glob.sync(`node_modules/${extension.id}/**/*.podspec`))
+      paths.concat(glob.sync(`node_modules/${extension.id}/*.podspec`))
     , []);
-    console.log(podspecPaths);
-    console.log(podFileTemplate);
     const pods = _.map(podspecPaths, (podspecPath) =>
       `pod '${path.basename(podspecPath, '.podspec')}', :path => '../${podspecPaths}'`
     );
     const podFileContent = podFileTemplate.replace(/## <Extension dependencies>/g, pods.join('\n'));
-    console.log(podFileContent);
     fs.writeFileSync('ios/Podfile', podFileContent);
 
     return new Promise((resolve, reject) => {
@@ -143,6 +142,7 @@ class ExtensionsInstaller {
         if (error) {
           reject(error);
         } else {
+          console.timeEnd('Installing pods');
           resolve();
         }
       });
