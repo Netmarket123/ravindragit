@@ -21,6 +21,7 @@
     "es6-symbol": "^3.0.2",
     "fs-extra": "^0.26.5",
     "glob": "^7.0.3",
+    "glob-to-regexp": "^0.3.0",
     "lodash": "^4.10.1",
     "moment": "^2.13.0",
     "node-watch": "^0.3.5",
