@@ -64,6 +64,8 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
+ios/Podfile.lock
+ios/Podfile
 
 # Android
 android/build
