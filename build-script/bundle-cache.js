@@ -46,7 +46,7 @@ class BundleCache {
   }
 
   cacheBundle(bundlePath, configuration) {
-    fs.copySync(bundlePath, configuration);
+    fs.copySync(bundlePath, this.getCachedBundlePath());
     fs.writeJsonSync(this.getCachedConfigurationPath(), configuration);
   }
 }
