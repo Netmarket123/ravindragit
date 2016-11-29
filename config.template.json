@@ -6,5 +6,6 @@
   "debug": true,
   "configurationFilePath": "./temp/configuration.json",
   "workingDirectories": [],
-  "extensionsJsPath": "./extensions.js"
+  "extensionsJsPath": "./extensions.js",
+  "skipNativeDependencies": false
 }

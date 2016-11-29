@@ -103,7 +103,12 @@ class AppBuild {
       .then((installedExtensions) => {
         const extensionsJs = extensionsInstaller.createExtensionsJs(installedExtensions);
         const preBuild = this.executeBuildLifecycleHook(installedExtensions, 'preBuild');
-        const installNativeDependencies = extensionsInstaller.installNativeDependencies(installedExtensions);
+        let installNativeDependencies;
+
+        if (!this.buildConfig.skipNativeDependencies) {
+          installNativeDependencies = extensionsInstaller.installNativeDependencies(installedExtensions)
+            .then(() => this.runReactNativeLink());
+        }
 
         return Promise.all([extensionsJs, preBuild, installNativeDependencies]);
       });
@@ -169,7 +174,6 @@ class AppBuild {
     console.log(`starting build for app ${this.buildConfig.appId}`);
     this.prepareConfiguration()
       .then(() => this.prepareExtensions())
-      .then(() => this.runReactNativeLink())
       .then(() => this.removeBabelrcFiles())
       .then(() => this.cleanTempFolder())
       .then(() => {
