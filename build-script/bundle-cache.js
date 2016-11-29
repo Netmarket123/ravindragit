@@ -7,19 +7,19 @@ const getExtensionsFromConfiguration = require('./getExtensionsFromConfiguration
 const getExtensionLocations = require('./getExtensionLocations');
 
 class BundleCache {
-  constructor(config) {
-    this.config = _.assign({ cacheFolder: 'cache' }, config);
+  constructor(buildConfig) {
+    this.buildConfig = _.assign({ cacheFolder: 'cache' }, buildConfig);
     this.setupCaching();
   }
 
   setupCaching() {
-    fs.ensureDirSync(this.config.cacheFolder);
+    fs.ensureDirSync(this.buildConfig.cacheFolder);
     fs.ensureFileSync(this.getCachedConfigurationPath());
   }
 
   isCachingEnabled() {
-    const baseAppId = this.config.baseAppId;
-    const appId = this.config.appId;
+    const baseAppId = this.buildConfig.baseAppId;
+    const appId = this.buildConfig.appId;
     return baseAppId === appId;
   }
 
@@ -30,32 +30,24 @@ class BundleCache {
     const cachedExtensions = getExtensionsFromConfiguration(cachedConfiguration);
 
     return _.isEqual(getExtensionLocations(extensions), getExtensionLocations(cachedExtensions)) &&
-       this.config.cacheBaseApp;
+       this.buildConfig.cacheBaseApp;
   }
 
   shouldCacheBundle() {
-    return this.isCachingEnabled() && this.config.cacheBaseApp;
-  }
-
-  setConfiguration(configuration) {
-    this.configuration = configuration;
-  }
-
-  getConfiguration() {
-    return this.configuration;
+    return this.isCachingEnabled() && this.buildConfig.cacheBaseApp;
   }
 
   getCachedBundlePath() {
-    return path.join(this.config.cacheFolder, `${this.config.baseAppId}.zip`);
+    return path.join(this.buildConfig.cacheFolder, `${this.buildConfig.baseAppId}.zip`);
   }
 
   getCachedConfigurationPath() {
-    return path.join(this.config.cacheFolder, 'configuration.json');
+    return path.join(this.buildConfig.cacheFolder, 'configuration.json');
   }
 
-  cacheBundle(bundlePath) {
-    fs.copySync(bundlePath, this.getCachedBundlePath());
-    fs.writeJsonSync(this.getCachedConfigurationPath(), this.getConfiguration());
+  cacheBundle(bundlePath, configuration) {
+    fs.copySync(bundlePath, configuration);
+    fs.writeJsonSync(this.getCachedConfigurationPath(), configuration);
   }
 }
 

@@ -32,7 +32,7 @@ const getExtensionsFromConfiguration = require('./getExtensionsFromConfiguration
  */
 class AppBuild {
   constructor(config) {
-    this.buildConfig = _.assign({ cacheFolder: 'cache' }, config);
+    this.buildConfig = _.assign({}, config);
   }
 
   getConfigurationUrl() {

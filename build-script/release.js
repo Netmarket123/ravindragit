@@ -20,21 +20,19 @@ const releaseConfig = Object.assign({}, config, cli.parse());
 const app = new AppRelease(releaseConfig);
 const build = new AppBuild(releaseConfig);
 const bundleCache = new BundleCache(releaseConfig);
+let appConfiguration;
 build.cleanTempFolder();
 build.prepareConfiguration()
   .then((configuration) => {
-    if (bundleCache.isCachingEnabled()) {
-      bundleCache.setConfiguration(configuration);
-    }
-
-    if (bundleCache.shouldUseCachedBundle(configuration)) {
+    appConfiguration = configuration;
+    if (bundleCache.shouldUseCachedBundle(appConfiguration)) {
       return Promise.resolve(bundleCache.getCachedBundlePath());
     }
     return app.prepareReleasePackage();
   })
   .then((packagePath) => {
     if (bundleCache.shouldCacheBundle()) {
-      return bundleCache.cacheBundle(packagePath);
+      return bundleCache.cacheBundle(packagePath, appConfiguration);
     }
     return app.release(packagePath);
   })
