@@ -4,33 +4,16 @@ const path = require('path');
 const fs = require('fs-extra');
 const watch = require('node-watch');
 const globToRegExp = require('glob-to-regexp');
+const parseGitignore = require('parse-gitignore');
 const _ = require('lodash');
 const getLocalExtensions = require('./getLocalExtensions.js');
 // eslint-disable-next-line import/no-unresolved
 const config = require('../config.json');
 
-function concatFileContents(files) {
-  let fileContent = '';
-  _.forEach(files, file => {
-    try {
-      fileContent += fs.readFileSync(file, 'utf8');
-    } catch (error) {
-      if (error.code !== 'ENOENT') {
-        console.log(error);
-        process.exit(1);
-      }
-    }
-  });
-  return fileContent;
-}
-
 function getIgnoreListForPath(folder) {
-  const ignoreFile = concatFileContents([
-    path.join(folder, '.gitignore'),
-    path.join(folder, '.npmignore'),
-  ]);
-  return _.filter(ignoreFile.split('\n'), (fileName) =>
-    !_.startsWith(fileName, '#') && !_.isEmpty(fileName));
+  const gitignorePatterns = parseGitignore(path.join(folder, '.gitignore'));
+  const npmignorePatterns = parseGitignore(path.join(folder, '.npmignore'));
+  return _.union(gitignorePatterns, npmignorePatterns);
 }
 
 const localExtensions = getLocalExtensions(config.workingDirectories);
