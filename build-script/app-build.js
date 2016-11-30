@@ -1,5 +1,5 @@
 /* eslint global-require: "off" */
-/* global requre needs to be enabled because files to be required are
+/* global require needs to be enabled because files to be required are
  * determined dynamically
 */
 
@@ -8,17 +8,16 @@
 const shell = require('shelljs');
 const fs = require('fs-extra');
 const path = require('path');
-const getLocalExtensions = require('./getLocalExtensions');
+const _ = require('lodash');
 const rimraf = require('rimraf');
-const ExtensionsInstaller = require('./extensions-installer.js');
 const process = require('process');
 const request = require('request');
-const buildApiEndpoint = require('./buildApiEndpoint');
-const _ = require('lodash');
 
-function getExtensionsFromConfigurations(configuration) {
-  return _.filter(configuration.included, { type: 'shoutem.core.extensions' });
-}
+
+const getLocalExtensions = require('./getLocalExtensions');
+const ExtensionsInstaller = require('./extensions-installer.js');
+const buildApiEndpoint = require('./buildApiEndpoint');
+const getExtensionsFromConfiguration = require('./getExtensionsFromConfiguration');
 
 /**
  * AppBuild builds application by running build steps
@@ -48,10 +47,6 @@ class AppBuild {
 
   downloadConfiguration() {
     console.time('download configuration');
-    const configurationFolder = path.dirname(this.buildConfig.configurationFilePath);
-    fs.mkdirsSync(configurationFolder);
-
-    const configurationFilePath = this.buildConfig.configurationFilePath;
     return new Promise((resolve, reject) => {
       request.get({
         url: this.getConfigurationUrl(),
@@ -60,13 +55,10 @@ class AppBuild {
         },
       }, (error, response, body) => {
         if (response.statusCode === 200) {
-          fs.writeJson(configurationFilePath, JSON.parse(body), error => {
-            if (error) {
-              reject(error);
-            }
-            console.timeEnd('download configuration');
-            resolve();
-          })
+          const configuration = JSON.parse(body);
+          console.timeEnd('download configuration');
+          this.configuration = configuration;
+          resolve(configuration);
         } else {
           reject('Configuration download failed!');
         }
@@ -76,21 +68,8 @@ class AppBuild {
     });
   }
 
-  getConfiguration() {
-    return require(path.join('..', this.buildConfig.configurationFilePath));
-  }
-
-  removeBabelrcFiles() {
-    console.time('removing .babelrc files');
-
-    rimraf.sync(path.join('.', 'node_modules', '*', '.babelrc'));
-
-    console.timeEnd('removing .babelrc files');
-  }
-
   prepareExtensions() {
-    this.configuration = this.getConfiguration();
-    const extensions = getExtensionsFromConfigurations(this.configuration);
+    const extensions = getExtensionsFromConfiguration(this.configuration);
     const localExtensions = getLocalExtensions(this.buildConfig.workingDirectories);
     const extensionsJsPath = this.buildConfig.extensionsJsPath;
     const platform = this.buildConfig.platform;
@@ -144,6 +123,15 @@ class AppBuild {
     return Promise.resolve();
   }
 
+  removeBabelrcFiles() {
+    console.time('removing .babelrc files');
+
+    rimraf.sync(path.join('.', 'node_modules', '*', '.babelrc'));
+
+    console.timeEnd('removing .babelrc files');
+    console.log('');
+  }
+
   cleanTempFolder() {
     console.time('cleaning temp files');
     rimraf.sync(path.join('.', 'temp', '*'));
@@ -152,10 +140,16 @@ class AppBuild {
 
   prepareConfiguration() {
     if (this.buildConfig.offlineMode) {
+      const configuration = require(path.resolve(this.buildConfig.configurationFilePath));
+      this.configuration = configuration;
       // Nothing to do, resolve to proceed with next build step
-      return new Promise((resolve) => resolve());
+      return Promise.resolve(configuration);
     }
     return this.downloadConfiguration();
+  }
+
+  buildExtensions() {
+    return this.prepareExtensions().then(() => this.removeBabelrcFiles());
   }
 
   runReactNativeLink() {
@@ -173,10 +167,10 @@ class AppBuild {
   run() {
     console.time('build time');
     console.log(`starting build for app ${this.buildConfig.appId}`);
+    // clear any previous build's temp files
+    this.cleanTempFolder();
     this.prepareConfiguration()
-      .then(() => this.prepareExtensions())
-      .then(() => this.removeBabelrcFiles())
-      .then(() => this.cleanTempFolder())
+      .then(() => this.buildExtensions())
       .then(() => {
         console.timeEnd('build time');
         if (this.buildConfig.workingDirectories.length) {

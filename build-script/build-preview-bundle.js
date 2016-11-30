@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const AppRelease = require('./app-release');
+const _ = require('lodash');
 const AppBuild = require('./app-build');
 const BundleCache = require('./bundle-cache');
 // eslint-disable-next-line import/no-unresolved
@@ -11,32 +11,26 @@ const cli = commandLineArgs([
   { name: 'appId', type: Number },
   { name: 'serverApiEndpoint', type: String },
   { name: 'production', type: Boolean },
+  { name: 'offlineMode', type: Boolean },
+  { name: 'configurationFilePath', type: String },
+  { name: 'workingDirectories', type: String, multiple: true },
+  { name: 'extensionsJsPath', type: String },
   { name: 'codePushAccessKey', type: String },
   { name: 'platform', type: String },
 ]);
 
 // merge command line arguments and config.json
-const releaseConfig = Object.assign({}, config, cli.parse());
-const app = new AppRelease(releaseConfig);
-const build = new AppBuild(releaseConfig);
-const bundleCache = new BundleCache(releaseConfig);
-let appConfiguration;
-build.cleanTempFolder();
+const buildConfig = _.merge(config, cli.parse());
+const build = new AppBuild(buildConfig);
+const bundleCache = new BundleCache(buildConfig);
+
 build.prepareConfiguration()
   .then((configuration) => {
-    appConfiguration = configuration;
-    if (bundleCache.shouldUseCachedBundle(appConfiguration)) {
+    if (bundleCache.shouldUseCachedBundle(configuration)) {
       return Promise.resolve(bundleCache.getCachedBundlePath());
     }
-    return app.prepareReleasePackage();
+    return build.buildExtensions();
   })
-  .then((packagePath) => {
-    if (bundleCache.shouldCacheBundle()) {
-      return bundleCache.cacheBundle(packagePath, appConfiguration);
-    }
-    return app.release(packagePath);
-  })
-  .then(() => build.cleanTempFolder())
   .catch((e) => {
     console.log(e);
     process.exit(1);

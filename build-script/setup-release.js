@@ -1,9 +1,10 @@
 #!/usr/bin/env node
-
+const fs = require('fs-extra');
+const commandLineArgs = require('command-line-args');
 const AppRelease = require('./app-release');
+const AppBuild = require('./app-build');
 // eslint-disable-next-line import/no-unresolved
 const config = require('../config.json');
-const commandLineArgs = require('command-line-args');
 
 const cli = commandLineArgs([
   { name: 'appId', type: Number },
@@ -15,5 +16,17 @@ const cli = commandLineArgs([
 
 // merge command line arguments and config.json
 const releaseConfig = Object.assign({}, config, cli.parse());
-const release = new AppRelease(releaseConfig);
-release.setup();
+const build = new AppBuild(releaseConfig);
+
+build.downloadConfiguration()
+  .then((configuration) => {
+    if (releaseConfig.appId !== releaseConfig.baseAppId) {
+      const release = new AppRelease(releaseConfig);
+      release.setup(configuration);
+    }
+    fs.writeJsonSync(releaseConfig.configurationFilePath, configuration);
+  })
+  .catch((e) => {
+    console.log(e);
+    process.exit(1);
+  });
