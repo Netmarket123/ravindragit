@@ -10,5 +10,6 @@
   "baseAppId": 2470,
   "cacheFolder": "./cached-bundles",
   "cacheBaseApp": false,
-  "runReleaseSteps": false
+  "runReleaseSteps": false,
+  "skipNativeDependencies": false
 }

@@ -35,6 +35,3 @@ cat config.json
 cd build-script
 yarn install
 cd ..
-
-# copy Podfile.template to Podfile
-cp ios/Podfile.template ios/Podfile

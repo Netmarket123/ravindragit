@@ -14,7 +14,6 @@ const cli = commandLineArgs([
   { name: 'configurationFilePath', type: String },
   { name: 'workingDirectories', type: String, multiple: true },
   { name: 'extensionsJsPath', type: String },
-  { name: 'codePushAccessKey', type: String },
   { name: 'platform', type: String },
 ]);
 
