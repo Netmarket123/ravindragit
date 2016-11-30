@@ -6,6 +6,7 @@ const _ = require('lodash');
 const fs = require('fs-extra');
 const path = require('path');
 const exec = require('child_process').exec;
+const readLine = require('readline');
 const yazl = require('yazl');
 const buildApiEndpoint = require('./buildApiEndpoint');
 
@@ -266,8 +267,8 @@ class AppRelease {
     console.time('Code Push release');
     return this.codePush.release(this.getCodePushAppName(),
       this.getDeploymentName(), packagePath, this.getBinaryVersion(), {}, currentProgress => {
-        process.stdout.clearLine();
-        process.stdout.cursorTo(0);
+        readLine.clearLine(process.stdout, 0);
+        readLine.cursorTo(process.stdout, 0);
         const lastChar = currentProgress === 100 ? '\n' : '';
         process.stdout.write(`Uploading bundle: ${Math.round(currentProgress)}%${lastChar}`);
       })
