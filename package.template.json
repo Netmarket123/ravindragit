@@ -5,7 +5,9 @@
     "build": "node build-script",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "watch": "node ./build-script/watchLocalExtensions.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "run-ios": "node build-script --platform ios && react-native run-ios",
+    "run-android": "node build-script --platform android && react-native run-android"
   },
   "dependencies": {
     "@shoutem/animation": "0.8.8-alpha.0",
@@ -37,6 +39,7 @@
     "react-native-restart": "0.0.1",
     "react-native-share": "1.0.13",
     "react-native-vector-icons": "^2.0.3",
+    "react-native-maps": "^0.8.2",
     "react-native-video": "^0.8.0",
     "react-redux": "^4.4.0",
     "redux": "^3.3.1",

@@ -1,8 +1,10 @@
 'use strict';
 
 const fs = require('fs-extra');
+const path = require('path');
 const shell = require('shelljs');
 const _ = require('lodash');
+const glob = require('glob');
 const packageJsonTemplate = require('../package.template.json');
 
 function addDependencyToPackageJson(packageJson, name, version) {
@@ -118,6 +120,35 @@ class ExtensionsInstaller {
         resolve();
       });
     });
+  }
+
+  installNativeDependencies(installedExtensions, platform = 'ios') {
+    if (platform === 'ios') {
+      console.log('Starting pods install');
+      console.time('Installing pods');
+      const podFileTemplate = fs.readFileSync('ios/Podfile.template', 'utf8', (error) =>
+        Promise.reject(error)
+      );
+      const podspecPaths = _.reduce(installedExtensions, (paths, extension) =>
+          paths.concat(glob.sync(`node_modules/${extension.id}/*.podspec`))
+        , []);
+      const pods = _.map(podspecPaths, (podspecPath) =>
+        `pod '${path.basename(podspecPath, '.podspec')}', :path => '../${podspecPaths}'`
+      );
+      const podFileContent = podFileTemplate.replace(/## <Extension dependencies>/g, pods.join('\n'));
+      fs.writeFileSync('ios/Podfile', podFileContent);
+
+      return new Promise((resolve, reject) => {
+        shell.exec('cd ios && pod install', (error) => {
+          if (error) {
+            reject(error);
+          } else {
+            console.timeEnd('Installing pods');
+            resolve();
+          }
+        });
+      });
+    }
   }
 }
 
