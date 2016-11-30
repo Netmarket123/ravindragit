@@ -93,20 +93,21 @@ class AppBuild {
     const extensions = getExtensionsFromConfigurations(this.configuration);
     const localExtensions = getLocalExtensions(this.buildConfig.workingDirectories);
     const extensionsJsPath = this.buildConfig.extensionsJsPath;
-    const extensionsInstaller = new ExtensionsInstaller(
+    const platform = this.buildConfig.platform;
+    const installer = new ExtensionsInstaller(
       localExtensions,
       extensions,
       extensionsJsPath
     );
 
-    return extensionsInstaller.installExtensions(this.buildConfig.production)
-      .then((installedExtensions) => {
-        const extensionsJs = extensionsInstaller.createExtensionsJs(installedExtensions);
-        const preBuild = this.executeBuildLifecycleHook(installedExtensions, 'preBuild');
+    return installer.installExtensions(this.buildConfig.production)
+      .then((extensions) => {
+        const extensionsJs = installer.createExtensionsJs(extensions);
+        const preBuild = this.executeBuildLifecycleHook(extensions, 'preBuild');
         let installNativeDependencies;
 
         if (!this.buildConfig.skipNativeDependencies) {
-          installNativeDependencies = extensionsInstaller.installNativeDependencies(installedExtensions)
+          installNativeDependencies = installer.installNativeDependencies(extensions, platform)
             .then(() => this.runReactNativeLink());
         }
 

@@ -6,8 +6,8 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "watch": "node ./build-script/watchLocalExtensions.js",
     "lint": "eslint .",
-    "run-ios": "node build-script && react-native run-ios",
-    "run-android": "node build-script && react-native run-android"
+    "run-ios": "node build-script --platform ios && react-native run-ios",
+    "run-android": "node build-script --platform android && react-native run-android"
   },
   "dependencies": {
     "@shoutem/animation": "0.8.8-alpha.0",
