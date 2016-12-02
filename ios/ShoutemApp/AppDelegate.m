@@ -19,6 +19,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
+//NativeModuleInjectionMark-appDelegate-applicationDidFinishLaunchingWithOptions
 
   // Appetizer.io params check
   NSDictionary *initialProperties = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"initialProps"];
@@ -50,4 +51,5 @@
                       sourceApplication:sourceApplication annotation:annotation];
 }
 
+//NativeModuleInjectionMark-appDelegate-body
 @end
