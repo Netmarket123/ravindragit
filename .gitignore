@@ -69,4 +69,5 @@ project.xcworkspace
 local.properties
 
 # Cocoapods
+ios/Podfile.lock
 Pods/
