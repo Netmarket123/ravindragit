@@ -34,13 +34,19 @@
                                                       moduleName:@"ShoutemApp"
                                                initialProperties: initialProperties
                                                    launchOptions:launchOptions];
-  rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
+  rootView.backgroundColor = [UIColor clearColor];
+  
+  UIView *backgroundView = [[[NSBundle mainBundle] loadNibNamed:@"LaunchImage" owner:self options:nil] firstObject];
+  
+  [backgroundView addSubview:rootView];
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
-  rootViewController.view = rootView;
+  rootViewController.view = backgroundView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  rootView.frame = backgroundView.frame;
+
   return YES;
 }
 
