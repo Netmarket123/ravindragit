@@ -36,7 +36,7 @@
                                                    launchOptions:launchOptions];
   rootView.backgroundColor = [UIColor clearColor];
   
-  UIView *backgroundView = [[[NSBundle mainBundle] loadNibNamed:@"LaunchImage" owner:self options:nil] firstObject];
+  UIView *backgroundView = [[[NSBundle mainBundle] loadNibNamed:@"LaunchScreen" owner:self options:nil] firstObject];
   
   [backgroundView addSubview:rootView];
 

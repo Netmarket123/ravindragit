@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -26,6 +27,7 @@
 		14BC0CBE1DBA09B9000FFB6B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14BC0CBD1DBA09B9000FFB6B /* SystemConfiguration.framework */; };
 		14BC0CC01DBA09C6000FFB6B /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 14BC0CBF1DBA09C6000FFB6B /* libsqlite3.0.tbd */; };
 		14FB65A5708F47B3A0A42938 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 40D0AF613C1A4641A0FC53FD /* Ionicons.ttf */; };
+		2787A9AA1DFB06A400CED4F3 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2787A9A91DFB06A400CED4F3 /* LaunchScreen.xib */; };
 		279BE67A1D9D0A5A0038502E /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 279BE6791D9D0A190038502E /* libRCTLinking.a */; };
 		2B6A5CDF15814F5496DD376F /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BEEFC842334D4C0098EA2A74 /* libz.tbd */; };
 		43490AE02E4B4594AD83365F /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE04DB2D9BBF4B52848D7035 /* libAirMaps.a */; };
@@ -288,6 +290,7 @@
 		1F6C9D902A9741FD8E0F16D0 /* Rubik-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Light.ttf"; path = "../node_modules/@shoutem/ui/fonts/Rubik-Light.ttf"; sourceTree = "<group>"; };
 		21511D369623E94092CF2E24 /* Pods-ShoutemApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShoutemApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ShoutemApp/Pods-ShoutemApp.debug.xcconfig"; sourceTree = "<group>"; };
 		216437AF4D1A415480E40362 /* libRCTRestart.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTRestart.a; sourceTree = "<group>"; };
+		2787A9A91DFB06A400CED4F3 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		279BE6741D9D0A190038502E /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		28D8B4CDF73A43A29C57263B /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		2BFD8204FA6A400C87751025 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
@@ -476,6 +479,7 @@
 		13B07FAE1A68108700A75B9A /* ShoutemApp */ = {
 			isa = PBXGroup;
 			children = (
+				2787A9A91DFB06A400CED4F3 /* LaunchScreen.xib */,
 				A4DFE9241DED8B460030CE0B /* ShoutemApp.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -1056,6 +1060,7 @@
 				A1F8E3AA3C3C4D1487B915E4 /* Octicons.ttf in Resources */,
 				DEBCAA5F2CD749ADB242AB07 /* Zocial.ttf in Resources */,
 				9948637768A541F383D5B20E /* rubicon-icon-font.ttf in Resources */,
+				2787A9AA1DFB06A400CED4F3 /* LaunchScreen.xib in Resources */,
 				4A70736E87B94476BC6D3E01 /* OFL.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
