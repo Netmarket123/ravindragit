@@ -65,22 +65,6 @@ import com.android.build.OutputFile
  * ]
  */
 
-/**
- * make a shoutem build
- */
-def shoutemBuild() {
-    apply from: "shoutem.gradle"
-}
-
-/**
- * Run shoutem build before the project build task is started
- */
-afterEvaluate { project ->
-    project.tasks.preBuild << {
-        shoutemBuild()
-    }
-}
-
 apply from: "react.gradle"
 apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
