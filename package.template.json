@@ -1,6 +1,6 @@
 {
   "name": "@shoutem/mobile-app",
-  "version": "0.26.0",
+  "version": "0.27.0",
   "scripts": {
     "build": "node build-script",
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -15,7 +15,7 @@
     "@shoutem/redux-composers": "0.1.0-beta.4",
     "@shoutem/redux-io": "0.2.11-alpha.10",
     "@shoutem/theme": "^0.8.8",
-    "@shoutem/ui": "0.10.0",
+    "@shoutem/ui": "0.10.1",
     "@shoutem/ui-addons": "0.0.6",
     "lodash": "^4.10.1",
     "moment": "^2.13.0",
