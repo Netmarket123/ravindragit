@@ -1,5 +1,6 @@
 'use strict';
-
+// TODO (Ivan): Remove this script when fix is available in React Native
+// or we find a better workaround
 const fs = require('fs-extra');
 const path = require('path');
 
