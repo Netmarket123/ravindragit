@@ -7,7 +7,8 @@
     "watch": "node ./build-script/watchLocalExtensions.js",
     "lint": "eslint .",
     "run-ios": "node build-script --platform ios && react-native run-ios",
-    "run-android": "node build-script --platform android && react-native run-android"
+    "run-android": "node build-script --platform android && react-native run-android",
+    "postinstall": "node build-script/postinstall"
   },
   "dependencies": {
     "@shoutem/animation": "^0.8.10",
