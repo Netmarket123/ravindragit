@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+'use strict';
+
 const AppRelease = require('./app-release');
 const AppBuild = require('./app-build');
 const BundleCache = require('./bundle-cache');
