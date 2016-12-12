@@ -21,7 +21,7 @@
     "moment": "^2.13.0",
     "whatwg-fetch": "1.0.0",
     "react": "15.4.0",
-    "react-native": "0.39.0",
+    "react-native": "0.39.2",
     "react-native-browser-polyfill": "^0.1.1",
     "react-native-calendar-manager": "git+https://git@bitbucket.org/fiveminutes/react-native-calendar-manager.git",
     "react-native-code-push": "^1.14.6-beta",
