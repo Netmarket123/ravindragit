@@ -123,7 +123,7 @@ class ExtensionsInstaller {
   }
 
   installNativeDependencies(installedExtensions, platform = 'ios') {
-    if (platform === 'ios') {
+    if (platform === 'ios' && false) {
       console.log('Starting pods install');
       console.time('Installing pods');
       const podFileTemplate = fs.readFileSync('ios/Podfile.template', 'utf8', (error) =>
