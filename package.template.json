@@ -13,7 +13,7 @@
     "@shoutem/animation": "^0.8.10",
     "@shoutem/core": "0.0.40",
     "@shoutem/redux-composers": "0.1.0-beta.4",
-    "@shoutem/redux-io": "0.2.11-alpha.10",
+    "@shoutem/redux-io": "0.2.11-alpha.11",
     "@shoutem/theme": "^0.8.8",
     "@shoutem/ui": "0.10.1",
     "@shoutem/ui-addons": "0.0.6",
