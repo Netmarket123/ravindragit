@@ -9,6 +9,7 @@
 
 #import "AppDelegate.h"
 #import "CodePush.h"
+#import <AVFoundation/AVFoundation.h>
 
 #import "RCTBundleURLProvider.h"
 #import "RCTRootView.h"
@@ -21,9 +22,15 @@
   NSURL *jsCodeLocation;
 //NativeModuleInjectionMark-appDelegate-applicationDidFinishLaunchingWithOptions
 
+  // This overrides silent switch and allows audio to play even if hardware switch is set to silent
+  AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    NSError *setCategoryError = nil;
+    [audioSession setCategory:AVAudioSessionCategoryPlayback
+                        error:&setCategoryError];
+
   // Appetizer.io params check
   NSDictionary *initialProperties = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"initialProps"];
-  
+
 #ifdef DEBUG
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 #else
@@ -35,9 +42,9 @@
                                                initialProperties: initialProperties
                                                    launchOptions:launchOptions];
   rootView.backgroundColor = [UIColor clearColor];
-  
+
   UIView *backgroundView = [[[NSBundle mainBundle] loadNibNamed:@"LaunchScreen" owner:self options:nil] firstObject];
-  
+
   [backgroundView addSubview:rootView];
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
