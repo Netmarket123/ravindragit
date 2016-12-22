@@ -52,6 +52,7 @@ class AppBuild {
         url: this.getConfigurationUrl(),
         headers: {
           Accept: 'application/vnd.api+json',
+          Authorization: `Bearer ${this.buildConfig.authorization}`,
         },
       }, (error, response, body) => {
         if (response.statusCode === 200) {
@@ -60,6 +61,7 @@ class AppBuild {
           this.configuration = configuration;
           resolve(configuration);
         } else {
+          console.log(response);
           reject('Configuration download failed!');
         }
       }).on('error', err => {
