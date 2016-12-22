@@ -139,6 +139,15 @@ android {
             }
         }
     }
+    productFlavors {
+        customized {
+            minSdkVersion 16
+            applicationId 'com.shoutemapp'
+            targetSdkVersion 22
+            versionCode 1
+            versionName '1.0'
+        }
+    }
 }
 
 dependencies {
