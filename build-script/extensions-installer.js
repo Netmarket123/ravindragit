@@ -14,10 +14,9 @@ function addDependencyToPackageJson(packageJson, name, version) {
 
 function installLocalExtension(extension) {
   if (extension) {
-    const packageName = extension.id;
     const packagePath = extension.path;
 
-    addDependencyToPackageJson(packageJsonTemplate, packageName, `file:${packagePath}`);
+    yarnAdd(`file:${packagePath}`, 'force');
   }
 }
 
@@ -26,6 +25,19 @@ function yarnInstall() {
   console.log(JSON.stringify(packageJsonTemplate.dependencies, null, 2));
   return new Promise((resolve, reject) => {
     shell.exec('yarn install', (error) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
+  });
+}
+
+function yarnAdd(dependency, force) {
+  console.log(`Adding:`);
+  return new Promise((resolve, reject) => {
+    shell.exec(`yarn add ${force ? '--force' : ''} ${dependency}`, (error) => {
       if (error) {
         reject(error);
       } else {
