@@ -17,6 +17,7 @@ const cli = commandLineArgs([
   { name: 'extensionsJsPath', type: String },
   { name: 'codePushAccessKey', type: String },
   { name: 'platform', type: String },
+  { name: 'authorization', type: String },
 ]);
 
 // merge command line arguments and config.json

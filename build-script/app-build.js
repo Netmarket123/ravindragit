@@ -52,6 +52,7 @@ class AppBuild {
         url: this.getConfigurationUrl(),
         headers: {
           Accept: 'application/vnd.api+json',
+          Authorization: `Bearer ${this.buildConfig.authorization}`,
         },
       }, (error, response, body) => {
         if (response.statusCode === 200) {

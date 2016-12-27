@@ -68,6 +68,7 @@ class AppRelease {
         headers: {
           Accept: 'application/vnd.api+json',
           'Content-Type': 'application/vnd.api+json',
+          Authorization: `Bearer ${this.config.authorization}`,
         },
         method: 'PATCH',
         json: true,

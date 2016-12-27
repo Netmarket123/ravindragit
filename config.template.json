@@ -1,6 +1,7 @@
 {
   "appId": 2080,
   "serverApiEndpoint": "apps.dev.sauros.hr",
+  "authorization": "",
   "production": false,
   "offlineMode": false,
   "debug": true,
