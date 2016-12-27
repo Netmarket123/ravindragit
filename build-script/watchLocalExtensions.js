@@ -33,25 +33,24 @@ localExtensions.forEach((extension) => {
     }, true);
 
   console.time(`Initializing ${packageName}`);
-  fs.copySync(packagePath, installedExtensionPath, {
-    filter: shouldCopyFile,
-    dereference: true,
+  fs.move(installedExtensionPath, packageName, { clubber: true }, (error) => {
+    console.log(`Watching ${packageName}`);
+    if (error) {
+      console.error(`Error: ${error} initializing watcher for package ${packageName}`);
+      process.exit(1);
+    }
+    watch(packagePath, (filename) => {
+      const localPath = filename.split(packagePath).pop();
+      const destination = path.join(packageName, localPath);
+      if (shouldCopyFile(filename)) {
+        console.log(`Copying ${filename} to ${destination}`);
+        fs.copy(filename, destination, (copyError) => {
+          if (copyError) {
+            console.error(copyError);
+          }
+        });
+      }
+    });
   });
   console.timeEnd(`Initializing ${packageName}`);
-
-  console.log(`Watching ${packageName}`);
-  watch(packagePath, (filename) => {
-    const localPath = filename.split(packagePath).pop();
-    const destination = path.join(installedExtensionPath, localPath);
-    if (shouldCopyFile(filename)) {
-      console.log(`Copying ${filename} to ${destination}`);
-      fs.copy(filename, destination, (error) => {
-        if (error) {
-          console.error(error);
-        }
-
-        return;
-      });
-    }
-  });
 });
