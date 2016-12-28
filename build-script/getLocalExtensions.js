@@ -8,6 +8,7 @@
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
+const excludePackages = require(path.resolve('config.json')).excludePackages;
 
 /**
  * Gets collection of all local extensions where
@@ -30,11 +31,13 @@ function getLocalExtensions(workingDirectories) {
             const packageJson = require(packageJsonPath);
             const packageName = packageJson.name;
             const packageDependecies = packageJson.dependencies;
-            results.push({
-              id: packageName,
-              path: packagePath,
-              dependencies: packageDependecies,
-            });
+            if (excludePackages.indexOf(packageName) === -1) {
+              results.push({
+                id: packageName,
+                path: packagePath,
+                dependencies: packageDependecies,
+              });
+            }
           }
         } catch (error) {
           console.log(`Failed to load ${packagePath} with error: ${error}`);

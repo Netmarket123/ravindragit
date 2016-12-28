@@ -5,26 +5,18 @@ const path = require('path');
 const shell = require('shelljs');
 const _ = require('lodash');
 const glob = require('glob');
-const packageJsonTemplate = require('../package.template.json');
+const packageJsonTemplate = require(path.resolve('package.template.json'));
+const excludePackages = require(path.resolve('config.json')).excludePackages;
 
 function addDependencyToPackageJson(packageJson, name, version) {
   // eslint-disable-next-line no-param-reassign
   packageJson.dependencies[name] = version;
 }
 
-function installLocalExtension(extension) {
-  if (extension) {
-    const packagePath = extension.path;
-
-    yarnAdd(`file:${packagePath}`, 'force');
-  }
-}
-
-function yarnInstall() {
-  console.log('Installing dependencies:');
-  console.log(JSON.stringify(packageJsonTemplate.dependencies, null, 2));
+function yarnAdd(dependency, force) {
+  console.log(`Adding: ${dependency}`);
   return new Promise((resolve, reject) => {
-    shell.exec('yarn install', (error) => {
+    shell.exec(`yarn add ${force ? '--force' : ''} ${dependency}`, (error) => {
       if (error) {
         reject(error);
       } else {
@@ -34,10 +26,21 @@ function yarnInstall() {
   });
 }
 
-function yarnAdd(dependency, force) {
-  console.log(`Adding:`);
+function installLocalExtension(extension) {
+  if (extension) {
+    const packagePath = extension.path;
+
+    return yarnAdd(`file:${packagePath}`, 'force');
+  }
+
+  return Promise.resolve();
+}
+
+function yarnInstall() {
+  console.log('Installing dependencies:');
+  console.log(JSON.stringify(packageJsonTemplate.dependencies, null, 2));
   return new Promise((resolve, reject) => {
-    shell.exec(`yarn add ${force ? '--force' : ''} ${dependency}`, (error) => {
+    shell.exec('yarn install', (error) => {
       if (error) {
         reject(error);
       } else {
@@ -75,7 +78,7 @@ function writePackageJson(content) {
  * @param  String extensionsJsPath path to extension.js file
  */
 class ExtensionsInstaller {
-  constructor(localExtensions, extensions, extensionsJsPath) {
+  constructor(localExtensions = [], extensions = [], extensionsJsPath = '') {
     this.localExtensions = localExtensions;
     this.extensionsJsPath = extensionsJsPath;
     this.extensionsToInstall = [];
@@ -84,25 +87,24 @@ class ExtensionsInstaller {
       this.extensionsToInstall = extensions.filter((extension) =>
         _.get(extension, 'attributes.location.app.type') &&
         (!localExtensions.some(localExtension => localExtension.id === extension.id) ||
-        localExtensions.length <= 0)
+        localExtensions.length <= 0) && excludePackages.indexOf(extension.id) === -1
       );
     }
   }
 
   installExtensions() {
-    this.localExtensions.forEach((extension) =>
-      installLocalExtension(extension)
-    );
-
     this.extensionsToInstall.forEach((extension) =>
       installNpmExtension(extension)
     );
 
     const installedExtensions = [...this.localExtensions, ...this.extensionsToInstall];
+    excludePackages.forEach(packageName => delete packageJsonTemplate.dependencies[packageName]);
     return writePackageJson(packageJsonTemplate)
-      .then(() => yarnInstall()
-        .then(() => Promise.resolve(installedExtensions))
-      );
+      .then(() => yarnInstall())
+      .then(() => Promise.all(
+        this.localExtensions.map((extension) => installLocalExtension(extension))
+      ))
+      .then(() => Promise.resolve(installedExtensions));
   }
 
   createExtensionsJs(installedExtensions) {
@@ -147,7 +149,8 @@ class ExtensionsInstaller {
       const pods = _.map(podspecPaths, (podspecPath) =>
         `pod '${path.basename(podspecPath, '.podspec')}', :path => '../${podspecPaths}'`
       );
-      const podFileContent = podFileTemplate.replace(/## <Extension dependencies>/g, pods.join('\n'));
+      const extensionsPlaceholderRegExp = /## <Extension dependencies>/g;
+      const podFileContent = podFileTemplate.replace(extensionsPlaceholderRegExp, pods.join('\n'));
       fs.writeFileSync('ios/Podfile', podFileContent);
 
       return new Promise((resolve, reject) => {
