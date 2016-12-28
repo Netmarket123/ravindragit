@@ -5,20 +5,35 @@ const path = require('path');
 const shell = require('shelljs');
 const _ = require('lodash');
 const glob = require('glob');
-const packageJsonTemplate = require('../package.template.json');
+const packageJsonTemplate = require(path.resolve('package.template.json'));
+const excludePackages = require(path.resolve('config.json')).excludePackages;
 
 function addDependencyToPackageJson(packageJson, name, version) {
   // eslint-disable-next-line no-param-reassign
   packageJson.dependencies[name] = version;
 }
 
+function yarnAdd(dependency, force) {
+  console.log(`Adding: ${dependency}`);
+  return new Promise((resolve, reject) => {
+    shell.exec(`yarn add ${force ? '--force' : ''} ${dependency}`, (error) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
+  });
+}
+
 function installLocalExtension(extension) {
   if (extension) {
-    const packageName = extension.id;
     const packagePath = extension.path;
 
-    addDependencyToPackageJson(packageJsonTemplate, packageName, `file:${packagePath}`);
+    return yarnAdd(`file:${packagePath}`, 'force');
   }
+
+  return Promise.resolve();
 }
 
 function yarnInstall() {
@@ -63,34 +78,36 @@ function writePackageJson(content) {
  * @param  String extensionsJsPath path to extension.js file
  */
 class ExtensionsInstaller {
-  constructor(localExtensions, extensions, extensionsJsPath) {
+  constructor(localExtensions = [], extensions = [], extensionsJsPath = '') {
     this.localExtensions = localExtensions;
     this.extensionsJsPath = extensionsJsPath;
     this.extensionsToInstall = [];
+    const isLocalExtension = (extension) =>
+      (!localExtensions.some(localExtension => localExtension.id === extension.id) ||
+    localExtensions.length <= 0);
+    const isExtensionExcluded = (extension) => excludePackages.indexOf(extension.id) === -1;
 
     if (extensions) {
       this.extensionsToInstall = extensions.filter((extension) =>
         _.get(extension, 'attributes.location.app.type') &&
-        (!localExtensions.some(localExtension => localExtension.id === extension.id) ||
-        localExtensions.length <= 0)
+        isLocalExtension(extension) && isExtensionExcluded(extensions)
       );
     }
   }
 
   installExtensions() {
-    this.localExtensions.forEach((extension) =>
-      installLocalExtension(extension)
-    );
-
     this.extensionsToInstall.forEach((extension) =>
       installNpmExtension(extension)
     );
 
     const installedExtensions = [...this.localExtensions, ...this.extensionsToInstall];
+    excludePackages.forEach(packageName => delete packageJsonTemplate.dependencies[packageName]);
     return writePackageJson(packageJsonTemplate)
-      .then(() => yarnInstall()
-        .then(() => Promise.resolve(installedExtensions))
-      );
+      .then(() => yarnInstall())
+      .then(() => Promise.all(
+        this.localExtensions.map((extension) => installLocalExtension(extension))
+      ))
+      .then(() => Promise.resolve(installedExtensions));
   }
 
   createExtensionsJs(installedExtensions) {
@@ -135,7 +152,8 @@ class ExtensionsInstaller {
       const pods = _.map(podspecPaths, (podspecPath) =>
         `pod '${path.basename(podspecPath, '.podspec')}', :path => '../${podspecPaths}'`
       );
-      const podFileContent = podFileTemplate.replace(/## <Extension dependencies>/g, pods.join('\n'));
+      const extensionsPlaceholderRegExp = /## <Extension dependencies>/g;
+      const podFileContent = podFileTemplate.replace(extensionsPlaceholderRegExp, pods.join('\n'));
       fs.writeFileSync('ios/Podfile', podFileContent);
 
       return new Promise((resolve, reject) => {
