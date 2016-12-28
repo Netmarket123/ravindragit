@@ -82,12 +82,15 @@ class ExtensionsInstaller {
     this.localExtensions = localExtensions;
     this.extensionsJsPath = extensionsJsPath;
     this.extensionsToInstall = [];
+    const isLocalExtension = (extension) =>
+      (!localExtensions.some(localExtension => localExtension.id === extension.id) ||
+    localExtensions.length <= 0);
+    const isExtensionExcluded = (extension) => excludePackages.indexOf(extension.id) === -1;
 
     if (extensions) {
       this.extensionsToInstall = extensions.filter((extension) =>
         _.get(extension, 'attributes.location.app.type') &&
-        (!localExtensions.some(localExtension => localExtension.id === extension.id) ||
-        localExtensions.length <= 0) && excludePackages.indexOf(extension.id) === -1
+        isLocalExtension(extension) && isExtensionExcluded(extensions)
       );
     }
   }

@@ -28,13 +28,9 @@ function watchWorkingDirectories() {
     const ignoreList = getIgnoreListForPath(packagePath);
     const installedExtensionPath = path.join(nodeModules, packageName);
     const shouldCopyFile = (filePath) =>
-      _.reduce(ignoreList, (shouldCopy, ignorePath) => {
-        if (shouldCopy) {
-          return globToRegExp(path.join(packagePath, ignorePath)).test(filePath);
-        }
-
-        return false;
-      }, true);
+      !_.some(ignoreList, (ignorePath) =>
+         globToRegExp(path.join(packagePath, ignorePath)).test(filePath)
+      );
     console.log(`Watching: ${packageName}`);
     watch(packagePath, (filename) => {
       const localPath = filename.split(packagePath).pop();
