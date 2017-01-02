@@ -85,12 +85,12 @@ class ExtensionsInstaller {
     const isLocalExtension = (extension) =>
       (!localExtensions.some(localExtension => localExtension.id === extension.id) ||
     localExtensions.length <= 0);
-    const isExtensionExcluded = (extension) => excludePackages.indexOf(extension.id) === -1;
+    const isExtensionExcluded = (extension) => _.includes(excludePackages, extension.id);
 
     if (extensions) {
       this.extensionsToInstall = extensions.filter((extension) =>
         _.get(extension, 'attributes.location.app.type') &&
-        isLocalExtension(extension) && isExtensionExcluded(extensions)
+        isLocalExtension(extension) && !isExtensionExcluded(extension)
       );
     }
   }
