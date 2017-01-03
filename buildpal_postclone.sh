@@ -1,35 +1,44 @@
 #!/bin/bash
 
-file=$(cat config.template.json)
+ruby <<-EORUBY
+ 
+  	require 'json'
+	require 'fileutils'
 
-# update NID of the application
-if [ "$NID" != '' ]
-then
-  tmp=$(echo "$file" | sed "s/2080/$NID/g")
-  file=$tmp
-  echo "Application id is updated to $NID."
-fi
+	json = File.read('config.template.json')
+	config = JSON.parse(json)
 
-# update build type to production
-if [ "$CONFIGURATION" = 'prod' ]
-then
-  tmp=$(echo "$file" | sed 's/"production".*/"production": true,/g')
-  file=$tmp
-  echo "Changed configuration to production."
-fi
+	# update NID of the application
+	if ENV['NID']
+		config['appId'] = ENV['NID']
+		puts "Application id is updated to " + ENV['NID']
+	end
 
-# update build type to release
-if [ "$BUILD_TYPE" = 'Release' ]
-then
-  tmp=$(echo "$file" | sed 's/"debug".*/"debug": false,/g')
-  file=$tmp
-  echo "Changed build type to release."
-fi
+	# update authorization token
+	if ENV['AUTHORIZATION']
+		config['authorization'] = ENV['AUTHORIZATION']
+		puts "Authorization token is updated."
+	end
 
-echo $file > config.json
+	# update build type to production
+	if ENV['CONFIGURATION'] == 'prod'
+		config['production'] = true
+		puts "Changed configuration to production."
+	end
 
-# print config.json to console
-cat config.json
+	# update build type to release
+	if ENV['BUILD_TYPE'] == 'Release'
+		config['debug'] = false
+		puts "Changed build type to release."
+	end
+
+	File.open('config.json', "w") do |f|
+		f.write config.to_json
+	end
+
+	puts config.to_json
+ 
+EORUBY
 
 # install build script dependencies
 cd build-script
