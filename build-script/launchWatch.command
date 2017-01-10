@@ -7,7 +7,7 @@ clear
 THIS_DIR=$(dirname "$0")
 pushd "$THIS_DIR"
 cd ..
-node "build-script/watchLocalExtensions.js"
+node "build-script/watch-local-extensions.js"
 popd
 
 echo "Process terminated. Press <enter> to close the window"

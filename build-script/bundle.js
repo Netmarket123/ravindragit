@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 
 const _ = require('lodash');
-const AppBuild = require('./app-build');
-const BundleCache = require('./bundle-cache');
+const AppBundle = require('./app-bundle');
 // eslint-disable-next-line import/no-unresolved
 const config = require('../config.json');
 const commandLineArgs = require('command-line-args');
@@ -15,24 +14,12 @@ const cli = commandLineArgs([
   { name: 'configurationFilePath', type: String },
   { name: 'workingDirectories', type: String, multiple: true },
   { name: 'extensionsJsPath', type: String },
-  { name: 'codePushAccessKey', type: String },
   { name: 'platform', type: String },
   { name: 'authorization', type: String },
+  { name: 'outputFolder', type: String },
 ]);
 
 // merge command line arguments and config.json
 const buildConfig = _.merge(config, cli.parse());
-const build = new AppBuild(buildConfig);
-const bundleCache = new BundleCache(buildConfig);
-
-build.prepareConfiguration()
-  .then((configuration) => {
-    if (bundleCache.shouldUseCachedBundle(configuration)) {
-      return Promise.resolve(bundleCache.getCachedBundlePath());
-    }
-    return build.buildExtensions();
-  })
-  .catch((e) => {
-    console.log(e);
-    process.exit(1);
-  });
+const bundle = new AppBundle(buildConfig);
+bundle.runReactNativeBundle();
