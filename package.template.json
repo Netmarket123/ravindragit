@@ -9,8 +9,8 @@
     "lint": "eslint .",
     "run-ios": "node build-script --platform ios && react-native run-ios",
     "run-android": "node build-script --platform android && react-native run-android --flavor=customized",
-    "bundle-ios": "node build-script --platform ios && node build-script/bundle --platform ios",
-    "bundle-android": "node build-script --platform android && node build-script/bundle --platform android"
+    "bundle-ios": "node build-script/bundle --platform ios",
+    "bundle-android": "node build-script/bundle --platform android"
   },
   "dependencies": {
     "@shoutem/animation": "^0.8.10",

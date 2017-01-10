@@ -170,7 +170,7 @@ class AppBuild {
     console.log(`starting build for app ${this.buildConfig.appId}`);
     // clear any previous build's temp files
     this.cleanTempFolder();
-    this.prepareConfiguration()
+    return this.prepareConfiguration()
       .then(() => this.buildExtensions())
       .then(() => {
         console.timeEnd('build time');
