@@ -5,6 +5,9 @@ const AppBuild = require('./app-build');
 // eslint-disable-next-line import/no-unresolved
 const commandLineArgs = require('command-line-args');
 const path = require('path');
+const fs = require('fs-extra');
+
+const DEFAULT_CONFIG = 'config.json';
 
 const cli = commandLineArgs([
   { name: 'configPath', type: String },
@@ -20,9 +23,10 @@ const cli = commandLineArgs([
 ]);
 
 const cliArgs = cli.parse();
-const configPath = cliArgs.configPath || path.resolve('config.json');
+const configPath = cliArgs.configPath || path.resolve(DEFAULT_CONFIG);
 const config = require(configPath);
 // merge command line arguments and config.json
 const buildConfig = _.merge(config, cliArgs);
+fs.writeJsonSync(DEFAULT_CONFIG, buildConfig);
 const build = new AppBuild(buildConfig);
 build.run();
