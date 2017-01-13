@@ -19,6 +19,8 @@ const ExtensionsInstaller = require('./extensions-installer.js');
 const buildApiEndpoint = require('./buildApiEndpoint');
 const getExtensionsFromConfiguration = require('./getExtensionsFromConfiguration');
 
+const reactNativeLocalCli = `node node_modules/react-native/local-cli/cli.js`;
+
 /**
  * AppBuild builds application by running build steps
  * @param  {Object} config
@@ -155,7 +157,7 @@ class AppBuild {
 
   runReactNativeLink() {
     return new Promise((resolve, reject) => {
-      shell.exec('react-native link', (error) => {
+      shell.exec(`${reactNativeLocalCli} link`,  (error) => {
         if (error) {
           reject(error);
         } else {
