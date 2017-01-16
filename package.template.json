@@ -1,6 +1,6 @@
 {
   "name": "@shoutem/mobile-app",
-  "version": "0.39.0-platform.0",
+  "version": "0.39.0-platform.1",
   "scripts": {
     "build": "node build-script",
     "start": "node node_modules/react-native/local-cli/cli.js start",

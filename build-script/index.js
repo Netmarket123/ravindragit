@@ -23,6 +23,7 @@ const cli = commandLineArgs([
   { name: 'excludePackages', type: String, multiple: true },
   { name: 'baseAppId', type: String },
   { name: 'cacheBaseApp', type: String },
+  { name: 'cacheFolder', type: String },
   { name: 'skipNativeDependencies', type: String },
 ]);
 
