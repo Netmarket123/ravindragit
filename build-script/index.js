@@ -20,6 +20,10 @@ const cli = commandLineArgs([
   { name: 'extensionsJsPath', type: String },
   { name: 'platform', type: String },
   { name: 'authorization', type: String },
+  { name: 'excludePackages', type: String, multiple: true },
+  { name: 'baseAppId', type: String },
+  { name: 'cacheBaseApp', type: String },
+  { name: 'skipNativeDependencies', type: String },
 ]);
 
 const cliArgs = cli.parse();
