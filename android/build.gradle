@@ -13,6 +13,8 @@ buildscript {
 }
 
 allprojects {
+    // uncomented by the CLI on windows to shorten file paths
+    //<CLI> buildDir = "C:/tmp/${rootProject.name}/${project.name}"
     repositories {
         mavenLocal()
         jcenter()
