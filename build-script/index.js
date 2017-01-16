@@ -24,6 +24,8 @@ const cli = commandLineArgs([
   { name: 'baseAppId', type: String },
   { name: 'cacheBaseApp', type: String },
   { name: 'cacheFolder', type: String },
+  { name: 'platformsFolder', type: String },
+  { name: 'buildFolder', type: String },
   { name: 'skipNativeDependencies', type: String },
 ]);
 

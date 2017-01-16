@@ -47,7 +47,7 @@ class AppBundle {
       `--entry-file ${entryFile}`,
     ];
 
-    fs.mkdirSync(assetsDest);
+    fs.ensureDirSync(assetsDest);
     return new Promise((resolve, reject) => {
       const reactNativeBundleProcess = exec(rnBundleCommand.join(' '), error => {
         console.timeEnd('Build bundle');
