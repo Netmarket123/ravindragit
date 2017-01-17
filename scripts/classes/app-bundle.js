@@ -14,8 +14,8 @@ class AppBundle {
     this.config = _.assign({}, config);
   }
 
-  getOutputFolder() {
-    return this.config.outputFolder || path.join('temp', `${this.config.appId}`);
+  getOutputDirectory() {
+    return this.config.outputDirectory || path.join('temp', `${this.config.appId}`);
   }
 
   getEntryFileName() {
@@ -32,7 +32,7 @@ class AppBundle {
   createReactNativeBundle() {
     console.log('Starting react-native bundle\n');
     console.time('Build bundle');
-    const assetsDest = this.getOutputFolder();
+    const assetsDest = this.getOutputDirectory();
     const bundleOutput = path.join(assetsDest, this.getBundleName());
     const platform = this.config.platform;
     const dev = this.config.debug;
