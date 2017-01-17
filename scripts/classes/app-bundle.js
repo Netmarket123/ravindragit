@@ -29,7 +29,7 @@ class AppBundle {
     return _.get(bundleNameGenerators, platform, defaultNameGenerator)(platform);
   }
 
-  runReactNativeBundle() {
+  createReactNativeBundle() {
     console.log('Starting react-native bundle\n');
     console.time('Build bundle');
     const assetsDest = this.getOutputFolder();

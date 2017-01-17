@@ -5,7 +5,7 @@ const path = require('path');
 const shell = require('shelljs');
 const _ = require('lodash');
 const glob = require('glob');
-const packageJsonTemplate = require(path.resolve('package.template.json'));
+const packageJsonTemplate = fs.readJsonSync(path.resolve('package.template.json'));
 const excludePackages = require(path.resolve('config.json')).excludePackages;
 
 function addDependencyToPackageJson(packageJson, name, version) {

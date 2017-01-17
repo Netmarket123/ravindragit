@@ -14,10 +14,10 @@ const process = require('process');
 const request = require('request');
 
 
-const getLocalExtensions = require('./get-local-extensions');
+const getLocalExtensions = require('./../helpers/get-local-extensions');
 const ExtensionsInstaller = require('./extensions-installer.js');
-const buildApiEndpoint = require('./build-api-endpoint');
-const getExtensionsFromConfiguration = require('./get-extensions-from-configuration');
+const buildApiEndpoint = require('./../helpers/build-api-endpoint');
+const getExtensionsFromConfiguration = require('./../helpers/get-extensions-from-configuration');
 
 /**
  * AppBuild builds application by running build steps
@@ -175,7 +175,7 @@ class AppBuild {
       .then(() => {
         console.timeEnd('build time');
         if (this.buildConfig.workingDirectories.length) {
-          const runWatchInNewWindow = require('./run-watch-in-new-window.js');
+          const runWatchInNewWindow = require('./../helpers/run-watch-in-new-window.js');
           runWatchInNewWindow();
         }
       })

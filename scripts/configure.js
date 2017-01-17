@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const _ = require('lodash');
-const AppBuild = require('./app-build');
+const AppBuild = require('./classes/app-build');
 // eslint-disable-next-line import/no-unresolved
 const commandLineArgs = require('command-line-args');
 const path = require('path');
@@ -21,17 +21,12 @@ const cli = commandLineArgs([
   { name: 'platform', type: String },
   { name: 'authorization', type: String },
   { name: 'excludePackages', type: String, multiple: true },
-  { name: 'baseAppId', type: String },
-  { name: 'cacheBaseApp', type: String },
-  { name: 'cacheFolder', type: String },
-  { name: 'platformsFolder', type: String },
-  { name: 'buildFolder', type: String },
   { name: 'skipNativeDependencies', type: String },
 ]);
 
 const cliArgs = cli.parse();
-const configPath = cliArgs.configPath || path.resolve(DEFAULT_CONFIG);
-const config = require(configPath);
+const configPath = cliArgs.configPath || DEFAULT_CONFIG;
+const config = fs.readJsonSync(path.resolve(configPath));
 // merge command line arguments and config.json
 const buildConfig = _.merge(config, cliArgs);
 fs.writeJsonSync(DEFAULT_CONFIG, buildConfig);

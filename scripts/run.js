@@ -3,8 +3,9 @@
 const _ = require('lodash');
 const commandLineArgs = require('command-line-args');
 const path = require('path');
+const fs = require('fs-extra');
 const shelljs = require('shelljs');
-const validateArgsWithConfig = require('./validate-args-with-config');
+const validateArgsWithConfig = require('./helpers/validate-args-with-config');
 
 const cli = commandLineArgs([
   { name: 'platform', type: String },
@@ -20,14 +21,15 @@ const cli = commandLineArgs([
 
 const cliArgs = cli.parse();
 const configPath = path.resolve('config.json');
-const config = require(configPath);
+const config = fs.readJsonSync(configPath);
 validateArgsWithConfig(cliArgs, config);
 
 const runConfig = _.omit(cliArgs, 'platform');
 const getRunArgument = (argument, value) => `--${argument} ${value}`;
-const reactNativeRunCommand = _.reduce(runConfig, (command, value, argument) =>
-  `${command} ${value ? (getRunArgument(argument, value)) : value}`
-  , `react-native run-${cliArgs.platform}`);
+const reactNativeRunArguments = _.reduce(runConfig, (args, value, argument) =>
+  `${args} ${value ? (getRunArgument(argument, value)) : value}`
+  , '');
 
+const reactNativeRunCommand = `react-native run-${cliArgs.platform} ${reactNativeRunArguments}`;
 console.log(reactNativeRunCommand);
 shelljs.exec(reactNativeRunCommand);
