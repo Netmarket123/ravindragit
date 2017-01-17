@@ -20,7 +20,8 @@ const buildApiEndpoint = require('./../helpers/build-api-endpoint');
 const getExtensionsFromConfiguration = require('./../helpers/get-extensions-from-configuration');
 
 /**
- * AppBuild builds application by running build steps
+ * AppConfigurator configure application for running other steps (app bundling, run or build)
+ * It installs extensions and adds native dependencies and static assets to main project
  * @param  {Object} config
  *  {
  *      @key Number appId
@@ -31,7 +32,7 @@ const getExtensionsFromConfiguration = require('./../helpers/get-extensions-from
  *      @key String extensionsJsPath path to extension.js
  *  }
  */
-class AppBuild {
+class AppConfigurator {
   constructor(config) {
     this.buildConfig = _.assign({}, config);
   }
@@ -186,4 +187,4 @@ class AppBuild {
   }
 }
 
-module.exports = AppBuild;
+module.exports = AppConfigurator;

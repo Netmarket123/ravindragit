@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const _ = require('lodash');
-const AppBuild = require('./classes/app-build');
+const AppConfigurator = require('./classes/app-configurator');
 // eslint-disable-next-line import/no-unresolved
 const commandLineArgs = require('command-line-args');
 const path = require('path');
@@ -30,5 +30,5 @@ const config = fs.readJsonSync(path.resolve(configPath));
 // merge command line arguments and config.json
 const buildConfig = _.merge(config, cliArgs);
 fs.writeJsonSync(DEFAULT_CONFIG, buildConfig);
-const build = new AppBuild(buildConfig);
-build.run();
+const configure = new AppConfigurator(buildConfig);
+configure.run();
