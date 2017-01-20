@@ -12,15 +12,27 @@ const getLocalExtensions = require('./getLocalExtensions.js');
 // eslint-disable-next-line import/no-unresolved
 const configJsonPath = path.resolve('config.json');
 
+// eslint-disable-next-line max-len
+const PACKAGER_DEFAULTS_JS_PATH = path.resolve(path.join('node_modules', 'react-native', 'packager', 'defaults.js'));
+const defaultsReplacePlaceholder = 'exports.providesModuleNodeModules = [';
+
 function getIgnoreListForPath(folder) {
   const gitignorePatterns = parseGitignore(path.join(folder, '.gitignore'));
   const npmignorePatterns = parseGitignore(path.join(folder, '.npmignore'));
   return _.union(gitignorePatterns, npmignorePatterns);
 }
 
+function rewritePackagerDefaultsJs(watchedPackages) {
+  const defaultsContent = fs.readFileSync(PACKAGER_DEFAULTS_JS_PATH, 'utf8');
+  const nodeModules = `${defaultsReplacePlaceholder}\n  '${watchedPackages.join(`', \n  '`)}',`;
+  const rewritedDefaultsContent = defaultsContent.replace(defaultsReplacePlaceholder, nodeModules);
+  fs.writeFileSync(PACKAGER_DEFAULTS_JS_PATH, rewritedDefaultsContent, 'utf8');
+}
+
 function watchWorkingDirectories() {
   const config = fs.readJsonSync(configJsonPath);
   const localExtensions = getLocalExtensions(config.workingDirectories);
+  rewritePackagerDefaultsJs(_.map(localExtensions, (ext) => ext.id));
   localExtensions.forEach((extension) => {
     const packageName = extension.id;
     const packagePath = extension.path;
