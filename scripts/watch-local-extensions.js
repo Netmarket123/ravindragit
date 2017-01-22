@@ -8,7 +8,7 @@ const parseGitignore = require('parse-gitignore');
 const _ = require('lodash');
 const shelljs = require('shelljs');
 
-const getLocalExtensions = require('./getLocalExtensions.js');
+const getLocalExtensions = require('./helpers/get-local-extensions.js');
 // eslint-disable-next-line import/no-unresolved
 const configJsonPath = path.resolve('config.json');
 

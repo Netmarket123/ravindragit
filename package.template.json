@@ -1,13 +1,14 @@
 {
   "name": "@shoutem/mobile-app",
-  "version": "0.38.7",
+  "version": "0.39.0-platform.2",
   "scripts": {
-    "build": "node build-script",
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "watch": "node ./build-script/watchLocalExtensions.js",
+    "watch": "node scripts/watch-local-extensions.js",
+    "setup": "cd scripts && yarn install",
     "lint": "eslint .",
-    "run-ios": "node build-script --platform ios && node node_modules/react-native/local-cli/cli.js run-ios",
-    "run-android": "node build-script --platform android && node node_modules/react-native/local-cli/cli.js run-android --variant=customized"
+    "configure": "node scripts/configure",
+    "run": "node scripts/run",
+    "bundle": "node scripts/bundle"
   },
   "dependencies": {
     "@shoutem/animation": "^0.8.10",

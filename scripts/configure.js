@@ -1,13 +1,16 @@
 #!/usr/bin/env node
 
 const _ = require('lodash');
-const AppBuild = require('./app-build');
-const BundleCache = require('./bundle-cache');
+const AppConfigurator = require('./classes/app-configurator');
 // eslint-disable-next-line import/no-unresolved
-const config = require('../config.json');
 const commandLineArgs = require('command-line-args');
+const path = require('path');
+const fs = require('fs-extra');
+
+const DEFAULT_CONFIG = 'config.json';
 
 const cli = commandLineArgs([
+  { name: 'configPath', type: String },
   { name: 'appId', type: Number },
   { name: 'serverApiEndpoint', type: String },
   { name: 'production', type: Boolean },
@@ -15,24 +18,17 @@ const cli = commandLineArgs([
   { name: 'configurationFilePath', type: String },
   { name: 'workingDirectories', type: String, multiple: true },
   { name: 'extensionsJsPath', type: String },
-  { name: 'codePushAccessKey', type: String },
   { name: 'platform', type: String },
   { name: 'authorization', type: String },
+  { name: 'excludePackages', type: String, multiple: true },
+  { name: 'skipNativeDependencies', type: String },
 ]);
 
+const cliArgs = cli.parse();
+const configPath = cliArgs.configPath || DEFAULT_CONFIG;
+const config = fs.readJsonSync(path.resolve(configPath));
 // merge command line arguments and config.json
-const buildConfig = _.merge(config, cli.parse());
-const build = new AppBuild(buildConfig);
-const bundleCache = new BundleCache(buildConfig);
-
-build.prepareConfiguration()
-  .then((configuration) => {
-    if (bundleCache.shouldUseCachedBundle(configuration)) {
-      return Promise.resolve(bundleCache.getCachedBundlePath());
-    }
-    return build.buildExtensions();
-  })
-  .catch((e) => {
-    console.log(e);
-    process.exit(1);
-  });
+const buildConfig = _.merge(config, cliArgs);
+fs.writeJsonSync(DEFAULT_CONFIG, buildConfig);
+const configure = new AppConfigurator(buildConfig);
+configure.run();

@@ -14,15 +14,16 @@ const process = require('process');
 const request = require('request');
 
 
-const getLocalExtensions = require('./getLocalExtensions');
+const getLocalExtensions = require('./../helpers/get-local-extensions');
 const ExtensionsInstaller = require('./extensions-installer.js');
-const buildApiEndpoint = require('./buildApiEndpoint');
-const getExtensionsFromConfiguration = require('./getExtensionsFromConfiguration');
+const buildApiEndpoint = require('./../helpers/build-api-endpoint');
+const getExtensionsFromConfiguration = require('./../helpers/get-extensions-from-configuration');
 
 const reactNativeLocalCli = `node node_modules/react-native/local-cli/cli.js`;
 
 /**
- * AppBuild builds application by running build steps
+ * AppConfigurator configure application for running other steps (app bundling, run or build)
+ * It installs extensions and adds native dependencies and static assets to main project
  * @param  {Object} config
  *  {
  *      @key Number appId
@@ -33,7 +34,7 @@ const reactNativeLocalCli = `node node_modules/react-native/local-cli/cli.js`;
  *      @key String extensionsJsPath path to extension.js
  *  }
  */
-class AppBuild {
+class AppConfigurator {
   constructor(config) {
     this.buildConfig = _.assign({}, config);
   }
@@ -172,12 +173,12 @@ class AppBuild {
     console.log(`starting build for app ${this.buildConfig.appId}`);
     // clear any previous build's temp files
     this.cleanTempFolder();
-    this.prepareConfiguration()
+    return this.prepareConfiguration()
       .then(() => this.buildExtensions())
       .then(() => {
         console.timeEnd('build time');
         if (this.buildConfig.workingDirectories.length) {
-          const runWatchInNewWindow = require('./runWatchInNewWindow.js');
+          const runWatchInNewWindow = require('./../helpers/run-watch-in-new-window.js');
           runWatchInNewWindow();
         }
       })
@@ -188,4 +189,4 @@ class AppBuild {
   }
 }
 
-module.exports = AppBuild;
+module.exports = AppConfigurator;
