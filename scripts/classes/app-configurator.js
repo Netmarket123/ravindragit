@@ -19,6 +19,8 @@ const ExtensionsInstaller = require('./extensions-installer.js');
 const buildApiEndpoint = require('./../helpers/build-api-endpoint');
 const getExtensionsFromConfiguration = require('./../helpers/get-extensions-from-configuration');
 
+const reactNativeLocalCli = `node node_modules/react-native/local-cli/cli.js`;
+
 /**
  * AppConfigurator configure application for running other steps (app bundling, run or build)
  * It installs extensions and adds native dependencies and static assets to main project
@@ -156,7 +158,7 @@ class AppConfigurator {
 
   runReactNativeLink() {
     return new Promise((resolve, reject) => {
-      shell.exec('react-native link', (error) => {
+      shell.exec(`${reactNativeLocalCli} link`,  (error) => {
         if (error) {
           reject(error);
         } else {
