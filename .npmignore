@@ -2,10 +2,13 @@ build-script/tmp
 extensions.js
 config.json
 temp
-cached-bundles
-package.json
+
+# Yarn files
 yarn.lock
-Podfile
+
+# Packages
+*.tgz
+package/
 
 # Logs
 logs
@@ -44,7 +47,7 @@ node_modules/
 
 # Xcode
 #
-build/
+ios/build/
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -61,13 +64,17 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
+ios/Podfile.lock
+ios/Podfile
 
-# Android/IJ
-#
-.idea
+# Android
+android/build
+android/app/build
 .gradle
 local.properties
 
-# Cocoapods
-ios/Podfile.lock
-Pods/
+# Idea/Web Storm
+.idea
+
+# Git
+.git
