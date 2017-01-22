@@ -1,5 +1,6 @@
 @echo off
 title Shoutem Watcher
-node "%~dp0..\local-cli\cli.js" start
+cd ../..
+node "scripts\watch-local-extensions.js"
 pause
 exit
