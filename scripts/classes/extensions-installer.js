@@ -16,13 +16,11 @@ function addDependencyToPackageJson(packageJson, name, version) {
 function yarnAdd(dependency, force) {
   console.log(`Adding: ${dependency}`);
   return new Promise((resolve, reject) => {
-    shell.exec(`yarn add ${force ? '--force' : ''} ${dependency}`, (error) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve();
-      }
-    });
+    if (shell.exec(`yarn add ${force ? '--force' : ''} ${dependency}`).code !== 0) {
+      reject(`Error with installing ${dependency}`);
+    } else {
+      resolve();
+    }
   });
 }
 
