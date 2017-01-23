@@ -69,6 +69,6 @@ watchWorkingDirectories();
 // Watch changes on config.json and trigger build and re-watch for working directories
 watch(configJsonPath, () => {
   console.log('config.json changed. Rebuilding the app...');
-  shelljs.exec('node build-script');
+  shelljs.exec('npm run configure');
   watchWorkingDirectories();
 });
