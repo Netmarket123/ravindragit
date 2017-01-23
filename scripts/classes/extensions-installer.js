@@ -5,7 +5,7 @@ const path = require('path');
 const shell = require('shelljs');
 const _ = require('lodash');
 const glob = require('glob');
-const packageJsonTemplate = require(path.resolve('package.template.json'));
+const packageJsonTemplate = fs.readJsonSync(path.resolve('package.template.json'));
 const excludePackages = require(path.resolve('config.json')).excludePackages;
 
 function addDependencyToPackageJson(packageJson, name, version) {
@@ -148,7 +148,7 @@ class ExtensionsInstaller {
           paths.concat(glob.sync(`node_modules/${extension.id}/*.podspec`))
         , []);
       const pods = _.map(podspecPaths, (podspecPath) =>
-        `pod '${path.basename(podspecPath, '.podspec')}', :path => '../${podspecPaths}'`
+        `pod '${path.basename(podspecPath, '.podspec')}', :path => '../${podspecPath}'`
       );
       const extensionsPlaceholderRegExp = /## <Extension dependencies>/g;
       const podFileContent = podFileTemplate.replace(extensionsPlaceholderRegExp, pods.join('\n'));

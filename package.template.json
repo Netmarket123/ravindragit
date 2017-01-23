@@ -1,13 +1,14 @@
 {
   "name": "@shoutem/mobile-app",
-  "version": "0.37.0",
+  "version": "0.39.0-platform.2",
   "scripts": {
-    "build": "node build-script",
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "watch": "node ./build-script/watchLocalExtensions.js",
+    "watch": "node scripts/watch-local-extensions.js",
+    "setup": "cd scripts && yarn install",
     "lint": "eslint .",
-    "run-ios": "node build-script --platform ios && react-native run-ios",
-    "run-android": "node build-script --platform android && react-native run-android --flavor=customized"
+    "configure": "node scripts/configure",
+    "run": "node scripts/run",
+    "bundle": "node scripts/bundle"
   },
   "dependencies": {
     "@shoutem/animation": "^0.8.10",
@@ -15,7 +16,7 @@
     "@shoutem/redux-composers": "0.1.0-beta.4",
     "@shoutem/redux-io": "0.2.11-alpha.11",
     "@shoutem/theme": "^0.8.8",
-    "@shoutem/ui": "0.10.5",
+    "@shoutem/ui": "0.10.6-alpha.0",
     "@shoutem/ui-addons": "0.0.6",
     "lodash": "^4.10.1",
     "moment": "^2.13.0",
@@ -25,7 +26,7 @@
     "react-native-browser-polyfill": "^0.1.1",
     "react-native-calendar-manager": "git+https://git@bitbucket.org/fiveminutes/react-native-calendar-manager.git",
     "react-native-code-push": "^1.14.6-beta",
-    "react-native-google-analytics-bridge": "git+https://github.com/idehub/react-native-google-analytics-bridge.git",
+    "react-native-google-analytics-bridge": "4.0.3",
     "react-native-restart": "0.0.1",
     "react-native-share": "1.0.13",
     "react-native-vector-icons": "^2.0.3",
