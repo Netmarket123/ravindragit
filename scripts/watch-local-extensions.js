@@ -25,14 +25,18 @@ function getIgnoreListForPath(folder) {
 function rewritePackagerDefaultsJs(watchedPackages) {
   const defaultsContent = fs.readFileSync(PACKAGER_DEFAULTS_JS_PATH, 'utf8');
   const nodeModules = `${defaultsReplacePlaceholder}\n  '${watchedPackages.join(`', \n  '`)}',`;
-  const rewritedDefaultsContent = defaultsContent.replace(defaultsReplacePlaceholder, nodeModules);
-  fs.writeFileSync(PACKAGER_DEFAULTS_JS_PATH, rewritedDefaultsContent, 'utf8');
+  const rewrittenDefaultsContent = defaultsContent.replace(defaultsReplacePlaceholder, nodeModules);
+  fs.writeFileSync(PACKAGER_DEFAULTS_JS_PATH, rewrittenDefaultsContent, 'utf8');
+}
+
+function getExtensionIds(extensions) {
+  return _.map(extensions, (extension) => extension.id);
 }
 
 function watchWorkingDirectories() {
   const config = fs.readJsonSync(configJsonPath);
   const localExtensions = getLocalExtensions(config.workingDirectories);
-  rewritePackagerDefaultsJs(_.map(localExtensions, (ext) => ext.id));
+  rewritePackagerDefaultsJs(getExtensionIds(localExtensions));
   localExtensions.forEach((extension) => {
     const packageName = extension.id;
     const packagePath = extension.path;
