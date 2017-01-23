@@ -150,7 +150,7 @@ class ExtensionsInstaller {
           paths.concat(glob.sync(`node_modules/${extension.id}/*.podspec`))
         , []);
       const pods = _.map(podspecPaths, (podspecPath) =>
-        `pod '${path.basename(podspecPath, '.podspec')}', :path => '../${podspecPaths}'`
+        `pod '${path.basename(podspecPath, '.podspec')}', :path => '../${podspecPath}'`
       );
       const extensionsPlaceholderRegExp = /## <Extension dependencies>/g;
       const podFileContent = podFileTemplate.replace(extensionsPlaceholderRegExp, pods.join('\n'));
