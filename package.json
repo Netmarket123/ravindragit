@@ -1,6 +1,6 @@
 {
   "name": "@shoutem/mobile-app",
-  "version": "0.40.0",
+  "version": "0.40.2",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "watch": "node scripts/watch-local-extensions.js",
@@ -12,11 +12,11 @@
   },
   "dependencies": {
     "@shoutem/animation": "^0.8.10",
-    "@shoutem/core": "0.0.41",
+    "@shoutem/core": "0.0.42",
     "@shoutem/redux-composers": "0.1.0-beta.4",
     "@shoutem/redux-io": "0.2.11-alpha.11",
-    "@shoutem/theme": "^0.8.8",
-    "@shoutem/ui": "0.10.6-alpha.0",
+    "@shoutem/theme": "^0.8.10",
+    "@shoutem/ui": "0.10.7",
     "@shoutem/ui-addons": "0.0.6",
     "lodash": "^4.10.1",
     "moment": "^2.13.0",
@@ -32,7 +32,7 @@
     "react-native-vector-icons": "^2.0.3",
     "react-native-maps": "git+https://github.com/5minutes/react-native-maps.git#google-play-dependency-fix",
     "react-native-video": "^0.8.0",
-    "react-redux": "5.0.0-rc.1",
+    "react-redux": "5.0.2",
     "redux": "^3.3.1",
     "redux-action-buffer": "^1.0.1",
     "redux-persist": "4.1.0",
