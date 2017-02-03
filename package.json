@@ -1,6 +1,6 @@
 {
   "name": "@shoutem/mobile-app",
-  "version": "0.41.1,
+  "version": "0.41.1",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "watch": "node scripts/watch-local-extensions.js",
