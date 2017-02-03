@@ -26,11 +26,14 @@ const config = fs.readJsonSync(configPath);
 validateArgsWithConfig(cliArgs, config);
 
 const runConfig = _.omit(cliArgs, 'platform');
+if (cliArgs.platform === 'android' && !runConfig.variant) {
+  runConfig.variant = 'customized';
+}
 const getRunArgument = (argument, value) => `--${argument} ${value}`;
 const reactNativeRunArguments = _.reduce(runConfig, (args, value, argument) =>
   `${args} ${value ? (getRunArgument(argument, value)) : value}`
   , '');
 
-const reactNativeRunCommand = `${reactNativeLocalCli} run-${cliArgs.platform} ${reactNativeRunArguments}`;
-console.log(reactNativeRunCommand);
-shelljs.exec(reactNativeRunCommand);
+const reactNativeRun = `${reactNativeLocalCli} run-${cliArgs.platform} ${reactNativeRunArguments}`;
+console.log(reactNativeRun);
+shelljs.exec(reactNativeRun);
