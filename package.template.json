@@ -1,6 +1,6 @@
 {
   "name": "@shoutem/mobile-app",
-  "version": "0.40.3",
+  "version": "0.41.0",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "watch": "node scripts/watch-local-extensions.js",
@@ -32,7 +32,7 @@
     "react-native-vector-icons": "^2.0.3",
     "react-native-maps": "git+https://github.com/5minutes/react-native-maps.git#google-play-dependency-fix",
     "react-native-video": "^0.8.0",
-    "react-redux": "5.0.2",
+    "react-redux": "^5.0.2",
     "redux": "^3.3.1",
     "redux-action-buffer": "^1.0.1",
     "redux-persist": "4.1.0",
