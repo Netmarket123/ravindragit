@@ -13,7 +13,7 @@ const rimraf = require('rimraf');
 const process = require('process');
 const request = require('request');
 
-
+const AppBinaryConfigurator = require('./app-binary-configurator');
 const getLocalExtensions = require('./../helpers/get-local-extensions');
 const ExtensionsInstaller = require('./extensions-installer.js');
 const buildApiEndpoint = require('./../helpers/build-api-endpoint');
@@ -91,7 +91,11 @@ class AppConfigurator {
 
         if (!this.buildConfig.skipNativeDependencies) {
           installNativeDependencies = installer.installNativeDependencies(extensions, platform)
-            .then(() => this.runReactNativeLink());
+            .then(() => this.runReactNativeLink())
+            .then(() => {
+              const appBinaryConfigurator = new AppBinaryConfigurator(this.buildConfig);
+              return appBinaryConfigurator.configureApp();
+            });
         }
 
         return Promise.all([extensionsJs, preBuild, installNativeDependencies]);
