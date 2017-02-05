@@ -6,33 +6,33 @@ const androidResourcesDirectory = './android/app/src/main/res';
 module.exports = {
   launchScreen: {
     images: [{
-      savePath: 'icon-1.png',
+      savePath: path.join(androidResourcesDirectory, 'drawable', 'splash.png'),
+      width: 1280,
+      height: 1920,
+    }, {
+      savePath: path.join(androidResourcesDirectory, 'drawable-hdpi', 'splash.png'),
+      width: 480,
+      height: 800,
+    }, {
+      savePath: path.join(androidResourcesDirectory, 'drawable-ldpi', 'splash.png'),
+      width: 200,
+      height: 320,
+    }, {
+      savePath: path.join(androidResourcesDirectory, 'drawable-mdpi', 'splash.png'),
       width: 320,
       height: 480,
     }, {
-      name: 'icon-2.png',
-      width: 640,
-      height: 960,
+      savePath: path.join(androidResourcesDirectory, 'drawable-xhdpi', 'splash.png'),
+      width: 720,
+      height: 1280,
     }, {
-      name: 'icon-3.png',
-      width: 640,
-      height: 1136,
+      savePath: path.join(androidResourcesDirectory, 'drawable-xxhdpi', 'splash.png'),
+      width: 960,
+      height: 1600,
     }, {
-      name: 'icon-4.png',
-      width: 1242,
-      height: 2208,
-    }, {
-      name: 'icon-5.png',
-      width: 750,
-      height: 1334,
-    }, {
-      name: 'icon-7.png',
-      width: 640,
-      height: 960,
-    }, {
-      name: 'icon-8.png',
-      width: 640,
-      height: 1136,
+      savePath: path.join(androidResourcesDirectory, 'drawable-xxxhdpi', 'splash.png'),
+      width: 1280,
+      height: 1920,
     }],
   },
   appIcon: {
