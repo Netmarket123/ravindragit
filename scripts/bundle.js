@@ -2,7 +2,7 @@
 
 const _ = require('lodash');
 const fs = require('fs-extra');
-const AppBundle = require('./classes/app-bundle');
+const AppBundler = require('./classes/app-bundler');
 // eslint-disable-next-line import/no-unresolved
 const commandLineArgs = require('command-line-args');
 const path = require('path');
@@ -20,6 +20,6 @@ validateArgsWithConfig(cliArgs, config);
 
 // merge command line arguments and config.json
 const buildConfig = _.merge(config, cliArgs);
-const bundle = new AppBundle(buildConfig);
+const bundler = new AppBundler(buildConfig);
 
-bundle.createReactNativeBundle();
+bundler.createReactNativeBundle();

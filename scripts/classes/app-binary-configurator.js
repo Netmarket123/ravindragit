@@ -88,6 +88,7 @@ class AppBinaryConfigurator {
   }
 
   getAppIconUrl() {
+    // TODO (Ivan): Change this when android icon is available in publishing properties
     return this.publishingProperties.iphone_application_icon_hd_ios7;
   }
 
@@ -98,7 +99,7 @@ class AppBinaryConfigurator {
     return downloadAndResizeImage(appIcon, './assets/appIcon.png', resizeConfig);
   }
 
-  configureAppInfo() {
+  saveAppInfoIntoInfoPlist() {
     console.log('Setting Info.plist');
     const infoPlistFile = fs.readFileSync('./ios/ShoutemApp/Info.plist', 'utf8');
     const infoPlist = plist.parse(infoPlistFile);
@@ -106,6 +107,12 @@ class AppBinaryConfigurator {
     infoPlist.CFBundleIdentifier = this.publishingProperties.iphone_bundle_id;
     infoPlist.CFBundleShortVersionString = this.config.binaryVersionName || '5.0.0';
     fs.writeFileSync('./ios/ShoutemApp/Info.plist', plist.build(infoPlist));
+  }
+
+  configureAppInfo() {
+    if (this.config.platform) {
+      this.saveAppInfoIntoInfoPlist();
+    }
   }
 
   configureApp() {

@@ -5,7 +5,7 @@
 
 'use strict';
 
-const shell = require('shelljs');
+const spawn = require('superspawn').spawn;
 const fs = require('fs-extra');
 const path = require('path');
 const _ = require('lodash');
@@ -19,7 +19,15 @@ const ExtensionsInstaller = require('./extensions-installer.js');
 const buildApiEndpoint = require('./../helpers/build-api-endpoint');
 const getExtensionsFromConfiguration = require('./../helpers/get-extensions-from-configuration');
 
-const reactNativeLocalCli = `node node_modules/react-native/local-cli/cli.js`;
+function rewritePackagerDefaultsJs() {
+  // eslint-disable-next-line max-len
+  const PACKAGER_DEFAULTS_JS_PATH = path.resolve(path.join('node_modules', 'react-native', 'packager', 'defaults.js'));
+  const defaultsReplacePlaceholder = 'exports.providesModuleNodeModules = [';
+  const defaultsContent = fs.readFileSync(PACKAGER_DEFAULTS_JS_PATH, 'utf8');
+  const nodeModules = `${defaultsReplacePlaceholder}\n  '.*',`;
+  const rewrittenDefaultsContent = defaultsContent.replace(defaultsReplacePlaceholder, nodeModules);
+  fs.writeFileSync(PACKAGER_DEFAULTS_JS_PATH, rewrittenDefaultsContent, 'utf8');
+}
 
 /**
  * AppConfigurator configure application for running other steps (app bundling, run or build)
@@ -161,15 +169,7 @@ class AppConfigurator {
   }
 
   runReactNativeLink() {
-    return new Promise((resolve, reject) => {
-      shell.exec(`${reactNativeLocalCli} link`,  (error) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve();
-        }
-      });
-    });
+    return spawn('react-native', ['link'], { stderr: 'inherit', stdio: 'inherit' });
   }
 
   run() {
@@ -180,6 +180,7 @@ class AppConfigurator {
     return this.prepareConfiguration()
       .then(() => this.buildExtensions())
       .then(() => {
+        rewritePackagerDefaultsJs();
         console.timeEnd('build time');
         if (this.buildConfig.workingDirectories.length) {
           const runWatchInNewWindow = require('./../helpers/run-watch-in-new-window.js');

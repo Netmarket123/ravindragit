@@ -1,4 +1,5 @@
 'use strict';
+
 const iosLaunchScreenDirectory = './ios/ShoutemApp/Images.xcassets/LaunchImage.launchimage/';
 const iosAppIconDirectory = './ios/ShoutemApp/Images.xcassets/AppIcon.appiconset/';
 
