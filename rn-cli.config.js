@@ -7,13 +7,13 @@ const path = require('path');
 function getRoots() {
   if (__dirname.match(/node_modules[\/\\]react-native[\/\\]local-cli$/)) {
     // packager is running from node_modules of another project
-    return [path.resolve(__dirname, '../../..')];
+    return [path.resolve(__dirname, '../..')];
   } else if (__dirname.match(/Pods[\/\\]React[\/\\]packager$/)) {
     // packager is running from node_modules of another project
-    return [path.resolve(__dirname, '../../..')];
+    return [path.resolve(__dirname, '../..')];
   }
 
-  return [path.resolve(__dirname, '..')];
+  return [path.resolve(__dirname)];
 }
 
 /**
