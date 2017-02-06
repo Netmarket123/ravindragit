@@ -29,7 +29,7 @@ const runConfig = _.omit(cliArgs, 'platform');
 if (cliArgs.platform === 'android' && !runConfig.variant) {
   runConfig.variant = 'customized';
 }
-const getRunArgument = (argument, value) => `--${argument} ${value}`;
+const getRunArgument = (argument, value) => `--${argument} "${value}"`;
 const reactNativeRunArguments = _.reduce(runConfig, (args, value, argument) =>
   `${args} ${value ? (getRunArgument(argument, value)) : value}`
   , '');
