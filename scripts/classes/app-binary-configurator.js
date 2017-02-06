@@ -103,19 +103,44 @@ class AppBinaryConfigurator {
     return downloadAndResizeImage(appIcon, './assets/appIcon.png', resizeConfig);
   }
 
+  getBinaryVersionName() {
+    return this.config.binaryVersionName || '5.0.0';
+  }
+
+  getBinaryVersionCode() {
+    return this.config.binaryVersionCode || 1;
+  }
+
   saveAppInfoIntoInfoPlist() {
     console.log('Setting Info.plist');
-    const infoPlistFile = fs.readFileSync('./ios/ShoutemApp/Info.plist', 'utf8');
+    const infoPlistPath = './ios/ShoutemApp/Info.plist';
+    const infoPlistFile = fs.readFileSync(infoPlistPath, 'utf8');
     const infoPlist = plist.parse(infoPlistFile);
     infoPlist.CFBundleName = this.publishingProperties.iphone_title;
     infoPlist.CFBundleIdentifier = this.publishingProperties.iphone_bundle_id;
-    infoPlist.CFBundleShortVersionString = this.config.binaryVersionName || '5.0.0';
-    fs.writeFileSync('./ios/ShoutemApp/Info.plist', plist.build(infoPlist));
+    infoPlist.CFBundleShortVersionString = this.getBinaryVersionName();
+    fs.writeFileSync(infoPlistPath, plist.build(infoPlist));
+  }
+
+  saveAppInfoIntoBuildGradle() {
+    console.log('Setting build.gradle');
+    let newBuildGradle;
+    const buildGradlePath = './android/app/build.gradle';
+    const buildGradle = fs.readFileSync(buildGradlePath, 'utf8');
+    const applicationId = this.publishingProperties.android_market_package_name;
+    newBuildGradle = buildGradle
+      .replace(/applicationId\s.*/g, `applicationId '${applicationId}'`)
+      .replace(/versionCode\s.*/g, `versionCode ${this.getBinaryVersionCode()}`)
+      .replace(/versionName\s.*/g, `versionName '${this.getBinaryVersionName()}'`)
+      .replace(/ShoutemApplicationName/g, this.publishingProperties.android_title);
+    fs.writeFileSync(buildGradlePath, newBuildGradle);
   }
 
   configureAppInfo() {
-    if (this.config.platform) {
+    if (this.config.platform === 'ios') {
       this.saveAppInfoIntoInfoPlist();
+    } else {
+      this.saveAppInfoIntoBuildGradle();
     }
   }
 

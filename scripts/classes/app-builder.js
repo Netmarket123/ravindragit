@@ -3,19 +3,11 @@
 const _ = require('lodash');
 const path = require('path');
 const spawn = require('superspawn').spawn;
-const shell = require('shelljs');
+const fs = require('fs-extra');
 
-class AppBuilder {
-  constructor(config) {
-    this.config = _.assign({}, config);
-  }
-
-  getOutputDirectory() {
-    return this.config.outputDirectory || path.join('temp', `${this.config.appId}`);
-  }
-
-  build() {
-    spawn('xcodebuild', [
+const buildHandlers = {
+  ios() {
+    return spawn('xcodebuild', [
       'archive',
       '-workspace',
       'ios/ShoutemApp.xcworkspace',
@@ -39,8 +31,32 @@ class AppBuilder {
         `${path.join(this.getOutputDirectory(), 'ShoutemApp.xcarchive')}`,
         '-exportPath',
         `${path.join(this.getOutputDirectory(), 'ShoutemApp.ipa')}`,
-      ], { stderr: 'inherit', stdio: 'inherit' })
-    );
+      ], { stderr: 'inherit', stdio: 'inherit' }));
+  },
+  android() {
+    return spawn('./gradlew', ['assembleCustomizedRelease'], {
+      cwd: 'android',
+      stdio: 'inherit',
+      stderr: 'inherit',
+    }).then(() => {
+      console.log(`Copying .apk to ${this.getOutputDirectory()}`);
+      const apkPath = path.join('android', 'app', 'build', 'outputs', 'apk');
+      fs.copySync(apkPath, this.getOutputDirectory());
+    });
+  },
+};
+
+class AppBuilder {
+  constructor(config) {
+    this.config = _.assign({}, config);
+  }
+
+  getOutputDirectory() {
+    return this.config.outputDirectory || path.join('temp', `${this.config.appId}`);
+  }
+
+  build() {
+    buildHandlers[this.config.platform].bind(this)();
   }
 }
 
