@@ -16,7 +16,7 @@ function addDependencyToPackageJson(packageJson, name, version) {
 function npmInstall(dependencies) {
   const dependenciesArray = [].concat(dependencies);
   // eslint-disable-next-line prefer-template
-  console.log(`Installing dependencies${dependencies ? ': ' + dependenciesArray.join(' ') : ''}}`);
+  console.log(`Installing dependencies${dependencies ? ': ' + dependenciesArray.join(' ') : ''}`);
   return new Promise((resolve, reject) => {
     shell.exec(`npm install ${dependenciesArray.join(' ')}`, (error) => {
       if (error) {
@@ -102,6 +102,9 @@ class ExtensionsInstaller {
       installNpmExtension(extension)
     );
 
+    // We need to use npm when installing local extension, because we had a lot of
+    // issues when using yarn. But we use yarn when there aren't any local extension
+    // because of its performance benefits.
     const install = this.localExtensions.length ? npmInstall : yarnInstall;
 
     const installedExtensions = [...this.localExtensions, ...this.extensionsToInstall];
