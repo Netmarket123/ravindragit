@@ -22,4 +22,8 @@ validateArgsWithConfig(cliArgs, config);
 const buildConfig = _.merge(config, cliArgs);
 const app = new AppBuilder(buildConfig);
 
-app.build();
+app.build()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });

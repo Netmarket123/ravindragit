@@ -56,7 +56,7 @@ class AppBuilder {
   }
 
   build() {
-    buildHandlers[this.config.platform].bind(this)();
+    return buildHandlers[this.config.platform].bind(this)();
   }
 }
 
