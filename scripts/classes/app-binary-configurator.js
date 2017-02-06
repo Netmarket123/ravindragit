@@ -56,10 +56,14 @@ class AppBinaryConfigurator {
     this.binarySettings = binarySettings[this.config.platform];
   }
 
+  getLegacyApiHost() {
+    return this.config.legacyApiEndpoint || 'api.dev.sauros.hr';
+  }
+
   getPublishingProperties() {
     return new Promise((resolve, reject) => {
       request.get({
-        url: `http://api.dev.sauros.hr/api/applications/publishing_properties.json?design_mode=false&device_type=iphone&platform=native&nid=${this.config.appId}&version=58`,
+        url: `http://${this.getLegacyApiHost()}/api/applications/publishing_properties.json?nid=${this.config.appId}`,
         headers: {
           Authorization: `Bearer ${this.config.authorization}`,
         },
