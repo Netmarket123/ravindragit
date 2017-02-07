@@ -18,7 +18,7 @@ function npmInstall(dependencies) {
   // eslint-disable-next-line prefer-template
   console.log(`Installing dependencies${dependencies ? ': ' + dependenciesArray.join(' ') : ''}`);
   return new Promise((resolve, reject) => {
-    shell.exec(`npm install ${dependenciesArray.join(' ')}`, (error) => {
+    shell.exec(`npm install --save ${dependenciesArray.join(' ')}`, (error) => {
       if (error) {
         reject(error);
       } else {
