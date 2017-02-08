@@ -14,7 +14,7 @@ const binarySettings = {
   android: androidBinarySettings,
 };
 
-function downloadImageToPath(imageUrl, savePath) {
+function downloadImage(imageUrl, savePath) {
   return new Promise((resolve, reject) => {
     request(imageUrl)
       .pipe(fs.createWriteStream(savePath))
@@ -34,7 +34,7 @@ function downloadImageToPath(imageUrl, savePath) {
  * @returns {*|Promise.<TResult>|Promise<T>}
  */
 function downloadAndResizeImage(imageUrl, downloadPath, resizeConfig) {
-  return downloadImageToPath(imageUrl, downloadPath, resizeConfig).then((imagePath) => {
+  return downloadImage(imageUrl, downloadPath, resizeConfig).then((imagePath) => {
     const resizingPromises = _.map(resizeConfig.images, (image) =>
       new Promise((resolve, reject) => {
         sharp(imagePath)
@@ -57,7 +57,11 @@ class AppBinaryConfigurator {
   }
 
   getLegacyApiHost() {
-    return this.config.legacyApiEndpoint || 'api.dev.sauros.hr';
+    if (!this.config.legacyApiEndpoint) {
+      process.exitCode = 1;
+      throw new Error('legacyApiEndpoint is not set in build config.');
+    }
+    return this.config.legacyApiEndpoint;
   }
 
   getPublishingProperties() {
@@ -81,13 +85,14 @@ class AppBinaryConfigurator {
   }
 
   getLaunchScreenUrl() {
+    // uploading launch image in builder only sets this image, so we are using it on both platforms
     return this.publishingProperties.iphone_launch_image_portrait;
   }
 
   configureLaunchScreen() {
     const launchScreen = this.getLaunchScreenUrl();
     const resizeConfig = this.binarySettings.launchScreen;
-    console.log('Setting launch screen...');
+    console.log('Configuring launch screen...');
     return downloadAndResizeImage(launchScreen, './assets/launchScreen.png', resizeConfig);
   }
 
@@ -99,20 +104,22 @@ class AppBinaryConfigurator {
   configureAppIcon() {
     const appIcon = this.getAppIconUrl();
     const resizeConfig = this.binarySettings.appIcon;
-    console.log('Setting app icon...');
+    console.log('Configuring app icon...');
     return downloadAndResizeImage(appIcon, './assets/appIcon.png', resizeConfig);
   }
 
   getBinaryVersionName() {
+    // we fallback to default one so CLI doesn't have to handle version
     return this.config.binaryVersionName || '5.0.0';
   }
 
   getBinaryVersionCode() {
+    // we fallback to default one so CLI doesn't have to handle version
     return this.config.binaryVersionCode || 1;
   }
 
-  saveAppInfoIntoInfoPlist() {
-    console.log('Setting Info.plist');
+  configureAppInfoIOS() {
+    console.log('Configuring Info.plist');
     const infoPlistPath = './ios/ShoutemApp/Info.plist';
     const infoPlistFile = fs.readFileSync(infoPlistPath, 'utf8');
     const infoPlist = plist.parse(infoPlistFile);
@@ -122,8 +129,8 @@ class AppBinaryConfigurator {
     fs.writeFileSync(infoPlistPath, plist.build(infoPlist));
   }
 
-  saveAppInfoIntoBuildGradle() {
-    console.log('Setting build.gradle');
+  configureAppInfoAndroid() {
+    console.log('Configuring build.gradle');
     let newBuildGradle;
     const buildGradlePath = './android/app/build.gradle';
     const buildGradle = fs.readFileSync(buildGradlePath, 'utf8');
@@ -138,9 +145,9 @@ class AppBinaryConfigurator {
 
   configureAppInfo() {
     if (this.config.platform === 'ios') {
-      this.saveAppInfoIntoInfoPlist();
-    } else {
-      this.saveAppInfoIntoBuildGradle();
+      this.configureAppInfoIOS();
+    } else if (this.config.platform === 'android') {
+      this.configureAppInfoAndroid();
     }
   }
 

@@ -9,14 +9,10 @@ const buildHandlers = {
   ios() {
     return spawn('xcodebuild', [
       'archive',
-      '-workspace',
-      'ios/ShoutemApp.xcworkspace',
-      '-scheme',
-      'ShoutemApp',
-      '-configuration',
-      'Release',
-      '-archivePath',
-      `${path.join(this.getOutputDirectory(), 'ShoutemApp.xcarchive')}`,
+      '-workspace', 'ios/ShoutemApp.xcworkspace',
+      '-scheme', 'ShoutemApp',
+      '-configuration', 'Release',
+      '-archivePath', `${path.join(this.getOutputDirectory(), 'ShoutemApp.xcarchive')}`,
       'CODE_SIGNING_REQUIRED=NO',
       'CODE_SIGN_IDENTITY=',
     ], {
