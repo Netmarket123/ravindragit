@@ -2,7 +2,6 @@
 /* global require needs to be enabled because files to be required are
  * determined dynamically
 */
-/* eslint-disable import/no-unresolved */
 'use strict';
 
 const spawn = require('superspawn').spawn;

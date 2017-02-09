@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unresolved */
 'use strict';
 
 const fs = require('fs-extra');

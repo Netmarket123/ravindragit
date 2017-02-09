@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unresolved */
 'use strict';
 
 const _ = require('lodash');
