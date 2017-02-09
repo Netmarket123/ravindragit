@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 'use strict';
 
 const _ = require('lodash');
@@ -131,11 +132,10 @@ class AppBinaryConfigurator {
 
   configureAppInfoAndroid() {
     console.log('Configuring build.gradle');
-    let newBuildGradle;
     const buildGradlePath = './android/app/build.gradle';
     const buildGradle = fs.readFileSync(buildGradlePath, 'utf8');
     const applicationId = this.publishingProperties.android_market_package_name;
-    newBuildGradle = buildGradle
+    const newBuildGradle = buildGradle
       .replace(/applicationId\s.*/g, `applicationId '${applicationId}'`)
       .replace(/versionCode\s.*/g, `versionCode ${this.getBinaryVersionCode()}`)
       .replace(/versionName\s.*/g, `versionName '${this.getBinaryVersionName()}'`)

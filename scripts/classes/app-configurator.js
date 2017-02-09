@@ -2,7 +2,7 @@
 /* global require needs to be enabled because files to be required are
  * determined dynamically
 */
-
+/* eslint-disable import/no-unresolved */
 'use strict';
 
 const spawn = require('superspawn').spawn;
@@ -51,9 +51,9 @@ class AppConfigurator {
     const serverApiEndpoint = this.buildConfig.serverApiEndpoint;
     const appId = this.buildConfig.appId;
     const production = this.buildConfig.production;
-    const path = `configurations/current`;
+    const apiPath = 'configurations/current';
 
-    return buildApiEndpoint(serverApiEndpoint, appId, path, production);
+    return buildApiEndpoint(serverApiEndpoint, appId, apiPath, production);
   }
 
   downloadConfiguration() {
@@ -92,13 +92,13 @@ class AppConfigurator {
     );
 
     return installer.installExtensions(this.buildConfig.production)
-      .then((extensions) => {
-        const extensionsJs = installer.createExtensionsJs(extensions);
-        const preBuild = this.executeBuildLifecycleHook(extensions, 'preBuild');
+      .then((installedExts) => {
+        const extensionsJs = installer.createExtensionsJs(installedExts);
+        const preBuild = this.executeBuildLifecycleHook(installedExts, 'preBuild');
         let installNativeDependencies;
 
         if (!this.buildConfig.skipNativeDependencies) {
-          installNativeDependencies = installer.installNativeDependencies(extensions, platform)
+          installNativeDependencies = installer.installNativeDependencies(installedExts, platform)
             .then(() => this.runReactNativeLink())
             .then(() => {
               const appBinaryConfigurator = new AppBinaryConfigurator(this.buildConfig);

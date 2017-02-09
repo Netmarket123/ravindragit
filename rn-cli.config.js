@@ -1,5 +1,3 @@
-'use strict';
-
 const blacklist = require('./node_modules/react-native/packager/blacklist');
 
 /**
@@ -16,7 +14,7 @@ const config = {
    */
   getBlacklistRE(platform) {
     return blacklist(platform, [
-      /scripts\/.*/
+      /scripts\/.*/,
     ]);
   },
 };

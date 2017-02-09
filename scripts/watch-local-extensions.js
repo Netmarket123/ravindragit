@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 'use-strict';
 
 const path = require('path');
@@ -6,10 +7,8 @@ const watch = require('node-watch');
 const globToRegExp = require('glob-to-regexp');
 const parseGitignore = require('parse-gitignore');
 const _ = require('lodash');
-const shelljs = require('shelljs');
 
 const getLocalExtensions = require('./helpers/get-local-extensions.js');
-// eslint-disable-next-line import/no-unresolved
 const configJsonPath = path.resolve('config.json');
 
 function getIgnoreListForPath(folder) {
