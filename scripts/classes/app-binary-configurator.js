@@ -2,7 +2,6 @@
 
 const _ = require('lodash');
 const fs = require('fs-extra');
-const path = require('path');
 const request = require('request');
 const sharp = require('sharp');
 const plist = require('plist');
@@ -126,6 +125,7 @@ class AppBinaryConfigurator {
     infoPlist.CFBundleName = this.publishingProperties.iphone_title;
     infoPlist.CFBundleIdentifier = this.publishingProperties.iphone_bundle_id;
     infoPlist.CFBundleShortVersionString = this.getBinaryVersionName();
+    infoPlist.LSApplicationCategoryType = this.publishingProperties.primary_category_name;
     fs.writeFileSync(infoPlistPath, plist.build(infoPlist));
   }
 

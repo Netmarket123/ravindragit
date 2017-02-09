@@ -20,8 +20,8 @@ const buildApiEndpoint = require('./../helpers/build-api-endpoint');
 const getExtensionsFromConfiguration = require('./../helpers/get-extensions-from-configuration');
 
 function rewritePackagerDefaultsJs() {
-  // eslint-disable-next-line max-len
-  const PACKAGER_DEFAULTS_JS_PATH = path.resolve(path.join('node_modules', 'react-native', 'packager', 'defaults.js'));
+  const defaultsJsPath = path.join('node_modules', 'react-native', 'packager', 'defaults.js');
+  const PACKAGER_DEFAULTS_JS_PATH = path.resolve(defaultsJsPath);
   const defaultsReplacePlaceholder = 'exports.providesModuleNodeModules = [';
   const defaultsContent = fs.readFileSync(PACKAGER_DEFAULTS_JS_PATH, 'utf8');
   const nodeModules = `${defaultsReplacePlaceholder}\n  '.*',`;
