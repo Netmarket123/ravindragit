@@ -122,8 +122,10 @@ class AppBinaryConfigurator {
     const infoPlistPath = './ios/ShoutemApp/Info.plist';
     const infoPlistFile = fs.readFileSync(infoPlistPath, 'utf8');
     const infoPlist = plist.parse(infoPlistFile);
+    const bundleSuffix = this.config.bundleIdSuffix ? `.${this.config.bundleIdSuffix}` : '';
+    const bundleId = `${this.publishingProperties.iphone_bundle_id}${bundleSuffix}`;
     infoPlist.CFBundleName = this.publishingProperties.iphone_title;
-    infoPlist.CFBundleIdentifier = this.publishingProperties.iphone_bundle_id;
+    infoPlist.CFBundleIdentifier = bundleId;
     infoPlist.CFBundleShortVersionString = this.getBinaryVersionName();
     infoPlist.LSApplicationCategoryType = this.publishingProperties.primary_category_name;
     fs.writeFileSync(infoPlistPath, plist.build(infoPlist));

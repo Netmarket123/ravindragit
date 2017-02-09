@@ -1,5 +1,6 @@
 {
-	"version":"1.0.8",
-	"appetize":"{}",
-	"extensions": [],
+	"version":"1.0.9",
+  "mobileAppVersion": "0.44.0",
+	"appetize":"APPETIZE_KEY",
+	"dependencies": {}
 }

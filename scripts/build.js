@@ -11,6 +11,7 @@ const validateArgsWithConfig = require('./helpers/validate-args-with-config');
 const cli = commandLineArgs([
   { name: 'platform', type: String },
   { name: 'outputDirectory', type: String },
+  { name: 'configuration', type: String },
 ]);
 
 const cliArgs = cli.parse();
