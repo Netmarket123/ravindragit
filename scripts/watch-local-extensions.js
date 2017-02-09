@@ -52,6 +52,5 @@ watchWorkingDirectories();
 
 // Watch changes on config.json and trigger build and re-watch for working directories
 watch(configJsonPath, () => {
-  console.log('config.json changed.');
-  watchWorkingDirectories();
+  console.error('config.json changed. You should rebuild the app!');
 });
