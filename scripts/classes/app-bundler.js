@@ -9,7 +9,7 @@ const bundleNameGenerators = {
   ios: () => 'main.jsbundle',
 };
 
-class AppBundle {
+class AppBundler {
   constructor(config) {
     this.config = _.assign({}, config);
   }
@@ -65,4 +65,4 @@ class AppBundle {
   }
 }
 
-module.exports = AppBundle;
+module.exports = AppBundler;

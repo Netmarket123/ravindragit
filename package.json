@@ -8,7 +8,8 @@
     "lint": "eslint .",
     "configure": "node scripts/configure",
     "run": "node scripts/run",
-    "bundle": "node scripts/bundle"
+    "bundle": "node scripts/bundle",
+    "build": "node scripts/build"
   },
   "dependencies": {
     "@shoutem/animation": "^0.8.10",
