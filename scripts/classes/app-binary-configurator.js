@@ -137,9 +137,9 @@ class AppBinaryConfigurator {
     const buildGradle = fs.readFileSync(buildGradlePath, 'utf8');
     const applicationId = this.publishingProperties.android_market_package_name;
     const newBuildGradle = buildGradle
-      .replace(/applicationId\s.*/g, `applicationId '${applicationId}'`)
-      .replace(/versionCode\s.*/g, `versionCode ${this.getBinaryVersionCode()}`)
-      .replace(/versionName\s.*/g, `versionName '${this.getBinaryVersionName()}'`)
+      .replace(/\sapplicationId\s.*/g, ` applicationId '${applicationId}'`)
+      .replace(/\sversionCode\s.*/g, ` versionCode ${this.getBinaryVersionCode()}`)
+      .replace(/\sversionName\s.*/g, ` versionName '${this.getBinaryVersionName()}'`)
       .replace(/ShoutemApplicationName/g, this.publishingProperties.android_title);
     fs.writeFileSync(buildGradlePath, newBuildGradle);
   }
