@@ -125,6 +125,7 @@ class AppBinaryConfigurator {
     const bundleSuffix = this.config.bundleIdSuffix ? `.${this.config.bundleIdSuffix}` : '';
     const bundleId = `${this.publishingProperties.iphone_bundle_id}${bundleSuffix}`;
     infoPlist.CFBundleName = this.publishingProperties.iphone_title;
+    infoPlist.CFBundleDisplayName = this.publishingProperties.iphone_title;
     infoPlist.CFBundleIdentifier = bundleId;
     infoPlist.CFBundleShortVersionString = this.getBinaryVersionName();
     infoPlist.LSApplicationCategoryType = this.publishingProperties.primary_category_name;
